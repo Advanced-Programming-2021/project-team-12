@@ -1,4 +1,4 @@
-package card.trap.trap_effect;
+package models.card.trap.trap_effect;
 
 public class ReverseAttack implements TrapEffect{
     public void run(){

@@ -1,6 +1,7 @@
-package card.monster;
+package models.card.monster;
 
-import card.monster.monster_effect.MonsterEffect;
+import models.card.monster.monster_effect.MonsterEffect;
+import models.card.monster.monster_effect.MonsterEffect;
 //import card.spell.SpellCard;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class MonsterCard {
     }
 
     public MonsterCard(int level, int attack, int defence, String effect, MonsterMode monsterMode,
-                       boolean isRitual, String name, int price, Attribute attribute,MonsterEffect monsterEffect) {
+                       boolean isRitual, String name, int price, Attribute attribute, MonsterEffect monsterEffect) {
     this.level=level;
     this.attack=attack;
     this.defence=defence;

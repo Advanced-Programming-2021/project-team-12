@@ -1,6 +1,6 @@
-package card.trap;
+package models.card.trap;
 
-import card.trap.trap_effect.TrapEffect;
+import models.card.trap.trap_effect.TrapEffect;
 
 import java.util.ArrayList;
 

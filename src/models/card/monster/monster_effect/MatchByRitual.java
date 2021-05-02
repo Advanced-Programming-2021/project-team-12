@@ -1,4 +1,4 @@
-package card.monster.monster_effect;
+package models.card.monster.monster_effect;
 
 import card.monster.monster_effect.MonsterEffect;
 

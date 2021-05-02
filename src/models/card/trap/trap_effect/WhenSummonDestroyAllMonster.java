@@ -1,4 +1,4 @@
-package card.trap.trap_effect;
+package models.card.trap.trap_effect;
 
 public class WhenSummonDestroyAllMonster implements TrapEffect{
     @Override

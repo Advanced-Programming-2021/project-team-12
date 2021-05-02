@@ -1,4 +1,4 @@
-package card.trap.trap_effect;
+package models.card.trap.trap_effect;
 
 public class DestroyOpponentCard implements TrapEffect{
     public void run(){
