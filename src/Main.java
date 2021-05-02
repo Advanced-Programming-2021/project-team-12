@@ -4,7 +4,7 @@ import models.*;
 import controllers.*;
 
 public class Main{
-    public static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner;
     public static void main(String[] args){
         new RegisteritionMenu();
     }
