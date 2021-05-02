@@ -1,6 +1,6 @@
-package card.monster.monster_effect;
+package models.card.monster.monster_effect;
 
-import card.monster.monster_effect.MonsterEffect;
+import models.card.monster.monster_effect.MonsterEffect;
 
 public class IncreaseOthersAttackTillFaceUp implements MonsterEffect {
     public void run(){

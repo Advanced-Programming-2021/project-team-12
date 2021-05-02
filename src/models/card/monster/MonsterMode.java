@@ -1,4 +1,4 @@
-package card.monster;
+package models.card.monster;
 
 public enum MonsterMode {
     WARRIOR,WARRIOR_BEAST,FIEND,AQUA,BEAST,PYRO,SPELLCASTER,THUNDRO,DRAGON,MACHINE,ROCK,INSECT,CYBERSE,FAIRY,SERPENTSEA

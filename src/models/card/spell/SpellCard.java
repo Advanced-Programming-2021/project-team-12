@@ -1,6 +1,6 @@
-package card.spell;
+package models.card.spell;
 
-import card.spell.spell_effect.SpellEffect;
+import models.card.spell.spell_effect.SpellEffect;
 //import card.trap.TrapCard;
 
 import java.util.ArrayList;
