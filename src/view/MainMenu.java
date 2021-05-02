@@ -1,11 +1,15 @@
 package view;
+<<<<<<< HEAD
 
+=======
+import models.Deck;
+>>>>>>> 704ed2426074855b158952f9e6440f5977315d45
 import models.User;
 
 public class MainMenu {
-    public User user;
+    public static User user;
     public MainMenu(User user) {
-        this.user = user;
+        MainMenu.user = user;
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();
@@ -20,13 +24,13 @@ public class MainMenu {
             else if (input.matches("menu enter shop"))
                 Shop.run();
             else if (input.matches("menu enter deck"))
-               Deck.run();
+                Deck.run();
             else if (input.matches("menu enter import or export"))
-               ImportOrExport.run();
+                ImportOrExport.run();
             else if (input.matches("menu enter duel"))
-               Duel.run();
+                Duel.run();
             else if (input.matches("menu show-current"))
-                   System.out.println("Main Menu");
+                System.out.println("Main Menu");
             else 
                 System.out.println("invalid command!");
         }

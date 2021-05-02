@@ -1,10 +1,14 @@
 package view;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 704ed2426074855b158952f9e6440f5977315d45
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.plaf.synth.SynthSplitPaneUI;
-
+import models.User;
 public class Profile {
-    public static run() {
+    public static void run() {
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();
@@ -24,7 +28,7 @@ public class Profile {
         }
     }
 
-    private static changeNickName(String input) {
+    private static void changeNickName(String input) {
         Matcher matcher;
         String nickName;
         matcher = getCommandMatcher(input, "(--nickname|-n) ([\\w]+)");
@@ -37,7 +41,7 @@ public class Profile {
         }
     }
 
-    private static changePassword(String input) {
+    private static void changePassword(String input) {
         Matcher matcher;
         String currentPassword;
         String newPassword;
