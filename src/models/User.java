@@ -1,8 +1,4 @@
 package models;
-<<<<<<< HEAD
-
-=======
->>>>>>> 704ed2426074855b158952f9e6440f5977315d45
 import java.util.ArrayList;
 
 public class User {
@@ -21,10 +17,6 @@ public class User {
         this.nickName = nickName;
         this.password = password;
         users.add(this);
-    }
-
-    public static ArrayList<User> getUsers() {
-
     }
 
     public ArrayList<Card> getActiveCards() {
@@ -86,12 +78,6 @@ public class User {
                 return user;
         return null;
     }
-
-<<<<<<< HEAD
-    public int getScore() {
-
-    }
-=======
     public static ArrayList<User> getUsers(){
         return users;
     }
@@ -99,6 +85,4 @@ public class User {
     public int getScore() {
         return score;
     }
-
->>>>>>> 704ed2426074855b158952f9e6440f5977315d45
 }

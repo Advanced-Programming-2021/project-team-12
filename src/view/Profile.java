@@ -1,8 +1,4 @@
 package view;
-<<<<<<< HEAD
-
-=======
->>>>>>> 704ed2426074855b158952f9e6440f5977315d45
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.plaf.synth.SynthSplitPaneUI;

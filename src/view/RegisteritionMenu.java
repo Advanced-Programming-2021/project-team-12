@@ -1,14 +1,4 @@
 package view;
-<<<<<<< HEAD:src/view/RegistrationMenu.java
-
-import controllers.SaveUser;
-import models.User;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-public class RegistrationMenu {
-    public RegistrationMenu() {
-=======
 import controllers.SaveUser;
 import models.User;
 import java.util.regex.Matcher;
@@ -16,7 +6,6 @@ import java.util.regex.Pattern;
 
 public class RegisteritionMenu {
     public RegisteritionMenu() {
->>>>>>> 704ed2426074855b158952f9e6440f5977315d45:src/view/RegisteritionMenu.java
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();

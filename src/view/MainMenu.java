@@ -1,9 +1,4 @@
 package view;
-<<<<<<< HEAD
-
-=======
-import models.Deck;
->>>>>>> 704ed2426074855b158952f9e6440f5977315d45
 import models.User;
 
 public class MainMenu {
