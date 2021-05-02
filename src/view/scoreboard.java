@@ -1,11 +1,15 @@
+package view;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import models.User;
 
 public class Scoreboard {
     public static void run(){
         ArrayList<User> sortedUser = sortUser();
         int rank = 1;
         for (User user : sortedUser) {
-            System.out.println(rank + "- " + user.getNickName + ": " + user.getScore);
+            System.out.println(rank + "- " + user.getNickName() + ": " + user.getScore());
             rank++;
         }
     }

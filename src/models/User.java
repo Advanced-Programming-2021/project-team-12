@@ -1,3 +1,4 @@
+package models;
 import java.util.ArrayList;
 
 public class User {
@@ -76,6 +77,14 @@ public class User {
             if (user.getNickName().equals(nickName))
                 return user;
         return null;
+    }
+
+    public static ArrayList<User> getUsers(){
+        return users;
+    }
+
+    public int getScore() {
+        return score;
     }
 
 }

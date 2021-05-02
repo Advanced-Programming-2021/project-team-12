@@ -1,6 +1,8 @@
+package view;
+import models.User;
 
 public class MainMenu {
-    public User user;
+    public static User user;
     public MainMenu(User user) {
         this.user = user;
         String input;
