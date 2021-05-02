@@ -2,6 +2,6 @@
 ## Team --
 
 ### Team Members:
-- AliMirzaee 99109382
-- AlirezaDanaee 99109228
-- MohamadSharify 99100411
+- Ali Mirzaee 99109382
+- Alireza Danaee 99109228
+- Mohamad Sharify 99100411
