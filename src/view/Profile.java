@@ -1,3 +1,5 @@
+package view;
+
 import java.util.regex.Matcher;
 import javax.swing.plaf.synth.SynthSplitPaneUI;
 

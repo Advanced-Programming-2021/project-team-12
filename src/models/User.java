@@ -1,9 +1,11 @@
+package models;
+
 import java.util.ArrayList;
 
 public class User {
     private String userName;
     private String nickName;
-    private String passowrd;
+    private String password;
     private int score;
     private ArrayList<Card> allCards;
     private ArrayList<Card> secondaryDeck;
@@ -14,8 +16,12 @@ public class User {
     public User(String nickName, String userName, String password) {
         this.userName = userName;
         this.nickName = nickName;
-        this.passowrd = password;
+        this.password = password;
         users.add(this);
+    }
+
+    public static ArrayList<User> getUsers() {
+
     }
 
     public ArrayList<Card> getActiveCards() {
@@ -31,11 +37,11 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.passowrd = password;
+        this.password = password;
     }
 
     public boolean checkPassword(String password) {
-        if (this.passowrd.equals(password))
+        if (this.password.equals(password))
             return true;
         return false;
     }
@@ -78,4 +84,7 @@ public class User {
         return null;
     }
 
+    public int getScore() {
+
+    }
 }

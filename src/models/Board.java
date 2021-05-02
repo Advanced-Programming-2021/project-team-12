@@ -1,3 +1,5 @@
-public class Board {
+package models;
+
+public class Board implements RequiredForEffects{
     
 }

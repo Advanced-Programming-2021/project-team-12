@@ -1,8 +1,12 @@
+package view;
+
+import controllers.SaveUser;
+import models.User;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-public class RegisteritionMenu {
-    public RegisteritionMenu() {
+public class RegistrationMenu {
+    public RegistrationMenu() {
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();
