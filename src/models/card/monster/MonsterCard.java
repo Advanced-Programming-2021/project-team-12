@@ -1,7 +1,9 @@
 package models.card.monster;
 
+import models.Board;
 import models.card.monster.monster_effect.MonsterEffect;
 import models.card.monster.monster_effect.MonsterEffect;
+import models.Board.*;
 //import card.spell.SpellCard;
 
 import java.util.ArrayList;
@@ -44,9 +46,14 @@ public class MonsterCard {
         return level;
     }
     public int getAttack(){
+        Board board=new Board();
+        if(board.doThisMonsterExistFacedUp("CommandKnight")) return (attack+400);
         return attack;
     }
-    public int getDefence(){
+    public int getDefence(boolean isFacedUp){
+        Board board=new Board();
+        if((name.equals("CommandKnight"))&&(board.howManyMonsterIsOnTheBoard()>1)&&isFacedUp) return 100000000;
+        // I should regard effect on or not
         return defence;
     }
     public int getPrice(){
