@@ -19,7 +19,7 @@ public class MainMenu {
             else if (input.matches("menu enter shop"))
                 Shop.run();
             else if (input.matches("menu enter deck"))
-                Deck.run();
+                DeckMenu.run();
             else if (input.matches("menu enter import or export"))
                 ImportOrExport.run();
             else if (input.matches("menu enter duel"))
