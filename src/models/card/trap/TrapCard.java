@@ -35,13 +35,13 @@ public class TrapCard {
         return price;
     }
 
-    public boolean isLimit() {
+    public boolean ckeckIsLimit() {
         return isLimit;
     }
     public void runEffect(){
         this.trapEffect.run();
     }
-    public TrapCard getTrapCardByName(String name){
+    public static TrapCard getTrapCardByName(String name){
         for (TrapCard trapCard : trapCards)
             if (trapCard.name.equals(name)) return trapCard;
         return null;

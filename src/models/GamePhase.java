@@ -1,4 +1,9 @@
 package models;
-public class GamePhase {
-    
+public enum GamePhase {
+    DRAW, 
+    STANDBY, 
+    MAIN1,
+    BATTLE, 
+    MAIN2,
+    END
 }

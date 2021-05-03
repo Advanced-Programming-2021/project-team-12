@@ -1,4 +1,5 @@
 package models;
-public class PlayerTurn {
-    
+public enum PlayerTurn {
+    FIRSTPLAYER,
+    SECONDPLAYER
 }

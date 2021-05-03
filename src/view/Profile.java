@@ -1,7 +1,6 @@
 package view;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.plaf.synth.SynthSplitPaneUI;
 import models.User;
 public class Profile {
     public static void run() {

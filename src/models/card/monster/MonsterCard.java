@@ -81,7 +81,7 @@ public class MonsterCard {
     public boolean checkIsRitual() {
         return isRitual;
     }
-    public MonsterCard getMonsterCardByName(String name){
+    public static MonsterCard getMonsterCardByName(String name){
         for (MonsterCard monsterCard : monsterCards)
             if (monsterCard.name.equals(name)) return monsterCard;
         return null;

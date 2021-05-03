@@ -53,7 +53,7 @@ public class SpellCard {
     public void runEffect() {
         this.spellEffect.run();
     }
-    public SpellCard getSpellCardByName(String name){
+    public static SpellCard getSpellCardByName(String name){
         for (SpellCard spellCard : spellCards)
             if (spellCard.name.equals(name)) return spellCard;
         return null;
