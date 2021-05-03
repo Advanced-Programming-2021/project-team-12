@@ -58,4 +58,7 @@ public class SpellCard {
             if (spellCard.name.equals(name)) return spellCard;
         return null;
     }
+    public static void welcomeToEffect(){
+
+    }
 }
