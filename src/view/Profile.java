@@ -9,7 +9,7 @@ public class Profile {
             input = Main.scanner.nextLine().trim();
             if (input.compareTo("menu exit") == 0)
                 return;
-            else if (input.matches("profile change (--nickname|-n) [\\w]+"))
+            else if (input.matches("profile change (--nickname|-n) [\\w-]+"))
                 changeNickName(input);
             else if (input.matches("profile change (--password|-p) --current [\\w]+ --new [\\w]+")
                     || input.matches("profile change (--password|-p) --new [\\w]+ --current [\\w]+"))
@@ -26,7 +26,7 @@ public class Profile {
     private static void changeNickName(String input) {
         Matcher matcher;
         String nickName;
-        matcher = getCommandMatcher(input, "(--nickname|-n) ([\\w]+)");
+        matcher = getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
         nickName = matcher.group(2);
         if (User.getUserByNickName(nickName) == null)
             System.out.println("user with nickname " + nickName + " already exists");
