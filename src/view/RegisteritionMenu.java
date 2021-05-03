@@ -11,15 +11,15 @@ public class RegisteritionMenu {
             input = Main.scanner.nextLine().trim();
             if (input.compareTo("Exit") == 0)
                 return;
-            else if (input.matches("user login (--username|-u) [\\w]+ (--password|-p) [\\w]+")
-                    || input.matches("user login (--password|-p) [\\w]+ (--username|-u) [\\w]+"))
+            else if (input.matches("user login (--username|-u) [\\w-]+ (--password|-p) [\\w]+")
+                    || input.matches("user login (--password|-p) [\\w]+ (--username|-u) [\\w-]+"))
                 login(input);
-            else if (input.matches("user create (--username|-u) [\\w]+ (--nickname|-n) [\\w]+ (--password|-p) [\\w]+")
-                    || input.matches("user create (--username|-u) [\\w]+ (--password|-p) [\\w]+ (--nickname|-n) [\\w]+")
-                    || input.matches("user create (--nickname|-n) [\\w]+ (--password|-p) [\\w]+ (--username|-u) [\\w]+")
-                    || input.matches("user create (--nickname|-n) [\\w]+ (--username|-u) [\\w]+ (--password|-p) [\\w]+")
-                    || input.matches("user create (--password|-p) [\\w]+ (--username|-u) [\\w]+ (--nickname|-n) [\\w]+")
-                    || input.matches("user create (--password|-p) [\\w]+ (--nickname|-n) [\\w]+ (--username|-u) [\\w]+"))
+            else if (input.matches("user create (--username|-u) [\\w-]+ (--nickname|-n) [\\w-]+ (--password|-p) [\\w]+")
+                    || input.matches("user create (--username|-u) [\\w-]+ (--password|-p) [\\w]+ (--nickname|-n) [\\w-]+")
+                    || input.matches("user create (--nickname|-n) [\\w-]+ (--password|-p) [\\w]+ (--username|-u) [\\w-]+")
+                    || input.matches("user create (--nickname|-n) [\\w-]+ (--username|-u) [\\w-]+ (--password|-p) [\\w]+")
+                    || input.matches("user create (--password|-p) [\\w]+ (--username|-u) [\\w-]+ (--nickname|-n) [\\w-]+")
+                    || input.matches("user create (--password|-p) [\\w]+ (--nickname|-n) [\\w-]+ (--username|-u) [\\w-]+"))
                 signin(input);
             else if (input.matches("menu show-current"))
                 System.out.println("Login Menu");
@@ -63,7 +63,7 @@ public class RegisteritionMenu {
 
     private static String getUserNameFromInput(String input){
         Matcher matcher;
-        matcher = getCommandMatcher(input, "(--username|-u) ([\\w]+)");
+        matcher = getCommandMatcher(input, "(--username|-u) ([\\w-]+)");
         matcher.find();
         return  matcher.group(2);
     }
@@ -77,7 +77,7 @@ public class RegisteritionMenu {
 
     private static String getNickNameFromInput(String input){
         Matcher matcher;
-        matcher = getCommandMatcher(input, "(--nickname|-n) ([\\w]+)");
+        matcher = getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
         matcher.find();
         return matcher.group(2);
     }

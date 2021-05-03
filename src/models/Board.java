@@ -32,6 +32,10 @@ public class Board {
             currentPlayer = Game.firstPlayer;
             opponentPlayer = Game.secondPlayer;
         }
+        else {
+            currentPlayer = Game.secondPlayer;
+            opponentPlayer = Game.firstPlayer;
+        }
         currentPlayerLP = currentPlayer.getLP();
         opponentPlayerLP = opponentPlayer.getLP();
         currentPlayerGraveyardCard = currentPlayer.getGraveyadCard();
