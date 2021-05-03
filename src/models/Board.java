@@ -23,7 +23,7 @@ public class Board {
     }
 
     public static void showBoeard() {
-
+        loadData();
     }
 
     public static void loadData() {

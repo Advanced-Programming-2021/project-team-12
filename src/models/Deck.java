@@ -31,11 +31,13 @@ public class Deck {
     }
 
     public void addCard(String cardName) {
-
+        Card card = Card.getCardByName(cardName);
+        cards.add(card);
     }
 
     public void removeCard(String cardName) {
-        
+        Card card = Card.getCardByName(cardName);
+        cards.remove(card);
     }
 
 }
