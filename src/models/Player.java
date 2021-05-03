@@ -12,7 +12,8 @@ public class Player {
     private HashMap<Integer, Card> fieldCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> monsterZoneCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> spellZoneCardNumbers = new HashMap<>();
-    private HashMap<Integer, Card> handCards = new HashMap<>(); 
+    private HashMap<Integer, Card> handCards = new HashMap<>();
+    private boolean isHeUsedSuijin;
 
     public Player(String name) {
         this.name = name;
@@ -57,4 +58,11 @@ public class Player {
         return spellZoneCardNumbers;
     }
 
+    public boolean isHeUsedSuijin() {
+        return isHeUsedSuijin;
+    }
+
+    public void setHeUsedSuijin(boolean heUsedSuijin) {
+        isHeUsedSuijin = heUsedSuijin;
+    }
 }

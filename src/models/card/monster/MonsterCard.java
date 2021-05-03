@@ -1,9 +1,11 @@
 package models.card.monster;
 
+import controllers.move.Attack;
 import models.Board;
 import models.card.monster.monster_effect.MonsterEffect;
 import models.card.monster.monster_effect.MonsterEffect;
 import models.Board.*;
+import view.Effect;
 //import card.spell.SpellCard;
 
 import java.util.ArrayList;
@@ -46,14 +48,19 @@ public class MonsterCard {
         return level;
     }
     public int getAttack(){
-        Board board=new Board();
-        if(board.doThisMonsterExistFacedUp("CommandKnight")) return (attack+400);
+        if(Board.doThisMonsterExistFacedUp("CommandKnight")) return (attack+400);
         return attack;
     }
     public int getDefence(boolean isFacedUp){
-        Board board=new Board();
-        if((name.equals("CommandKnight"))&&(board.howManyMonsterIsOnTheBoard()>1)&&isFacedUp) return 100000000;
+        if((name.equals("CommandKnight"))&&(Board.howManyMonsterIsOnTheBoard()>1)&&isFacedUp) return 100000000;
         // I should regard effect on or not
+        if(name.equals("Suijin")){
+            if(isFacedUp) {
+                if (Effect.run("Suijin").equals("yes")) {
+
+                }
+            }
+        }
         return defence;
     }
     public int getPrice(){
@@ -85,5 +92,14 @@ public class MonsterCard {
         for (MonsterCard monsterCard : monsterCards)
             if (monsterCard.name.equals(name)) return monsterCard;
         return null;
+    }
+    public static void welcomeToEffect(){
+        String addressDestroyer= Attack.whatAddressDestroyedNow();
+        String destroyer=Attack.whatKindaCardGetDestroyedNow();
+        String defender=Attack.whatKindaCardIsDefenderNow();
+        if(destroyer.equals("YomiShip")){
+            Attack.destroyThisAddress(destroyer);
+        }
+
     }
 }

@@ -46,15 +46,15 @@ public class Board {
         opponentPlayerSpellZoneCard = opponentPlayer.getSPellZoneCard();
     }
 
-    public int howManyMonsterIsOnTheBoard(){
+    public static int howManyMonsterIsOnTheBoard(){
 
     }
 
-    public boolean doThisMonsterExist(String monsterName){
+    public static boolean doThisMonsterExist(String monsterName){
 
     }
 
-    public boolean doThisMonsterExistFacedUp(String monsterName){
+    public static boolean doThisMonsterExistFacedUp(String monsterName){
 
     }
 

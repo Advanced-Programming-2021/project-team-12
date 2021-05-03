@@ -46,4 +46,7 @@ public class TrapCard {
             if (trapCard.name.equals(name)) return trapCard;
         return null;
     }
+    public static void welcomeToEffect(){
+
+    }
 }
