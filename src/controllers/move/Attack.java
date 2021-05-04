@@ -6,11 +6,11 @@ import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
 
 public class Attack {
-    public static String whatKindaCardIsDefenderNow() {
-    }
-
     //Dear Alireza you have to call "timeToEffect" method after every attack(when attack get over)
     public void run(Address address){
+        
+    }
+    public static String whatKindOfCardIsDefenderNow() {
         
     }
     public void timeToEffect(){
