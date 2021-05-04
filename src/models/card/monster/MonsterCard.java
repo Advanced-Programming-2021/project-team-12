@@ -62,26 +62,18 @@ public class MonsterCard {
         if ((name.equals("CommandKnight")) && (Board.howManyMonsterIsOnTheBoard() > 1) && isFacedUp) return 100000000;
         // I should regard effect on or not
         if (isFacedUp) {
-            if (name.equals("Suijin")) if(whenSuijinIsDefending()) return 100000000;
+            if (name.equals("Suijin")) if (whenSuijinIsDefending()) return 100000000;
         }
         return defence;
     }
 
     public boolean whenSuijinIsDefending() {
         int index = Attack.whatIndexOfDefender();
-        if (Game.playerTurn == PlayerTurn.FIRSTPLAYER) {
-            if (!Game.firstPlayer.doIndexExistInSuijin(index))
-                if (Effect.run("Suijin").equals("yes")) {
-                   Game.firstPlayer.addIndexToSuijin(index);
-                     return true;
-                }
-        } else {
-            if (!Game.secondPlayer.doIndexExistInSuijin(index))
-                if (Effect.run("Suijin").equals("yes")) {
-                    Game.secondPlayer.addIndexToSuijin(index);
-                    return true;
-                }
-        }
+        if (!Attack.whichPlayerIsAttacker().doIndexExistInSuijin(index))
+            if (Effect.run("Suijin").equals("yes")) {
+                Attack.whichPlayerIsAttacker().addIndexToSuijin(index);
+                return true;
+            }
         return false;
     }
 
@@ -122,11 +114,13 @@ public class MonsterCard {
     public static void welcomeToEffect() {
         String addressDestroyer = Attack.whatAddressDestroyedNow();
         String destroyer = Attack.whatKindaCardGetDestroyedNow();
-        String defender = Attack.whatKindaCardIsDefenderNow();
+        String defender = Attack.whatKindOfCardIsDefenderNow();
         if (destroyer.equals("YomiShip")) {
             Attack.destroyThisAddress(destroyer);
         }
-
+        if (defender.equals("Marshmallon")) {
+            if (Attack.isDefenderFacedDown()) Attack.whichPlayerIsAttacker().decreaseLP(1000);
+        }
     }
 
     public static void welcomeToEffectStandBy() {

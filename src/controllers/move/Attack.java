@@ -1,6 +1,7 @@
 package controllers.move;
 
 import models.Address;
+import models.Player;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
@@ -28,6 +29,15 @@ public class Attack {
         //written by mohamad
     }
     public static int whatIndexOfDefender(){
+
+    }
+    public static boolean isDefenderFacedDown(){
+
+    }
+    public static Player whichPlayerIsAttacker(){
+
+    }
+    public static Player whichPlayerIsDefender(){
 
     }
 }
