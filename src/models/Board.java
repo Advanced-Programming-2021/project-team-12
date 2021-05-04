@@ -42,20 +42,28 @@ public class Board {
         currentPlayerHandCard = currentPlayer.getHandCard();
         currentPlayerFieldCard = currentPlayer.getFieldCard();
         currentPlayerMonsterZoneCard = currentPlayer.getMonsterZoneCard();
-        currentPlayerSpellZoneCard = currentPlayer.getSPellZoneCard();
+        currentPlayerSpellZoneCard = currentPlayer.getSpellZoneCard();
         opponentPlayerGraveyardCard = opponentPlayer.getGraveyadCard();
         opponentPlayerHandCard = opponentPlayer.getHandCard();
         opponentPlayerFieldCard = opponentPlayer.getFieldCard();
         opponentPlayerMonsterZoneCard = opponentPlayer.getMonsterZoneCard();
-        opponentPlayerSpellZoneCard = opponentPlayer.getSPellZoneCard();
+        opponentPlayerSpellZoneCard = opponentPlayer.getSpellZoneCard();
     }
 
     public static int howManyMonsterIsOnTheBoard(){
-
+        loadData();
+        int count = 0;
+        count += currentPlayerMonsterZoneCard.size();
+        count += opponentPlayerMonsterZoneCard.size();
+        return count;
     }
 
     public static boolean doThisMonsterExist(String monsterName){
-
+        Card monsterCard = Card.getCardByName(monsterName);
+        if (currentPlayerMonsterZoneCard.containsValue(monsterCard)
+            || opponentPlayerMonsterZoneCard.containsValue(monsterCard))
+            return true;
+        return false;
     }
 
     public static boolean doThisMonsterExistFacedUp(String monsterName){
@@ -93,6 +101,11 @@ public class Board {
             if (address.ckeckIsMine())
                 return currentPlayerHandCard;
             else return opponentPlayerHandCard;
+        }
+        if (address.getKind().equals("graveyard")) {
+                if (address.ckeckIsMine())
+                    return currentPlayerGraveyardCard;
+                else return opponentPlayerGraveyardCard;
         }
         return null;
     }

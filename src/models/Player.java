@@ -23,7 +23,28 @@ public class Player {
         this.name = name;
         LP = 1000;
         User user = User.getUserByName(name);
-        unusedCards = user.getActiveCards();
+        unusedCards = (ArrayList<Card>) user.getActiveCards().clone();
+        allCardsOfPlayer = (ArrayList<Card>) user.getActiveCards().clone();
+        for (int i = 0; i < 6; i++) 
+            addCardFromUnusedToHand();
+    }
+
+    public String setCard(Card card, String cardState) {
+        HashMap<Integer, Card> stateHashMap = getHashMapByKind(cardState);
+        if (cardState.equals("field")
+            || cardState.equals("graveyard"))
+            stateHashMap.put(stateHashMap.size() + 1, card);
+        else {
+            int max = 5;
+            if (cardState.equals("hand")) 
+                max = 6;
+            int place = getFirstEmptyPlace(stateHashMap, max);
+            if (place == 0)
+                return "it is full";
+            else     
+                stateHashMap.put(place, card);
+        }
+        return "set successfully";
     }
 
     public void setName(String name) {
@@ -58,7 +79,7 @@ public class Player {
         return monsterZoneCardNumbers;
     }
 
-    public HashMap<Integer, Card> getSPellZoneCard() {
+    public HashMap<Integer, Card> getSpellZoneCard() {
         return spellZoneCardNumbers;
     }
 
@@ -94,7 +115,7 @@ public class Player {
     public String addCardFromUnusedToHand() {
         int count = unusedCards.size();
         if (count == 0)
-            return "his hand is empty";
+            return "unused is empty";
         if (isHandFull())
             return "Hand is full";
         Random random = new Random();   
@@ -102,12 +123,23 @@ public class Player {
         int place = getFirstEmptyPlace(handCardNumbers, 5);
         handCardNumbers.put(place, unusedCards.get(i));
         unusedCards.remove(i);
-        return "add successfully";
+        return handCardNumbers.get(place).getCardName();
     }
 
     public void removeCard(Address address) {
+        if (Board.isAddressEmpty(address))
+            return;
         HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
+        int place = address.getNumber();
         removeCardHashMap.remove(address.getNumber());
+        if (address.getKind().matches("(field|graveyard)")) {
+            for (int i = place; i < removeCardHashMap.size(); i++) {
+                if (removeCardHashMap.containsKey(i + 1)) {
+                    removeCardHashMap.put(i, removeCardHashMap.get(i + 1));
+                    removeCardHashMap.remove(i + 1);
+                }
+            }
+        }
     }
 
     public Card getCardByAddress(Address address) {
@@ -116,20 +148,26 @@ public class Player {
     }
 
     public HashMap<Integer, Card> getHashMapByAddress(Address address) {
-        if (address.getKind().equals("monster"))
+        return getHashMapByKind(address.getKind());
+    }
+
+    public HashMap<Integer, Card> getHashMapByKind(String kind) {
+        if (kind.equals("monster"))
             return monsterZoneCardNumbers;
-        if (address.getKind().equals("spell"))
+        if (kind.equals("spell"))
             return spellZoneCardNumbers;
-        if (address.getKind().equals("field")) 
+        if (kind.equals("field")) 
             return fieldCardNumbers;
-        if (address.getKind().equals("hand"))
+        if (kind.equals("hand"))
             return handCardNumbers;
+        if (kind.equals("graveyard"))
+            return graveyardCardNumbers;
         return null;
     }
 
-    public int getFirstEmptyPlace(HashMap<Integer, Card> CardNumbers, int max) {
+    public int getFirstEmptyPlace(HashMap<Integer, Card> cardNumbers, int max) {
         for(int i = 1; i <= max; i++) 
-            if (!CardNumbers.containsKey(i))
+            if (!cardNumbers.containsKey(i))
                 return i;
         return 0;
     }

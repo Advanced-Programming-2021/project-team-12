@@ -1,4 +1,5 @@
 package models;
+
 import java.util.ArrayList;
 
 public class User {
@@ -78,7 +79,8 @@ public class User {
                 return user;
         return null;
     }
-    public static ArrayList<User> getUsers(){
+
+    public static ArrayList<User> getUsers() {
         return users;
     }
 

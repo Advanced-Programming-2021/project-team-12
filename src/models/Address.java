@@ -18,7 +18,7 @@ public class Address {
             else this.isMine = true;
         }
         else {
-            matcher = getCommandMatcher(address, "(select )*--(field)( --opponent)*");
+            matcher = getCommandMatcher(address, "(select )*--(field|graveyard)( --opponent)*");
             this.kind = matcher.group(2);
             this.number = 0;
             if (matcher.group(3).equals(" --opponent")) 
@@ -43,6 +43,7 @@ public class Address {
         if (address.matches("(select )*--monster( --opponent)* [12345]")
            || address.matches("(select )*--spell( --opponent)* [12345]")
            || address.matches("(select )*--field( --opponent)*")
+           || address.matches("(select )*--graveyard( --opponent)*")
            || address.matches("(select )*--hand( --opponent)* [123456]"))
             return true;
         else return false;
