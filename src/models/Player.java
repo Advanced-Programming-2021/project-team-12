@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class Player {
     private String name;
+    private String nickName;
     private int LP;
     private ArrayList<Card> unusedCards = new ArrayList<>();
     private HashMap<Integer, Card> handCardNumbers = new HashMap<>();
@@ -14,37 +15,86 @@ public class Player {
     private HashMap<Integer, Card> monsterZoneCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> spellZoneCardNumbers = new HashMap<>();
     private ArrayList<Card> allCardsOfPlayer = new ArrayList<>();
+    private HashMap<Integer, Boolean> isMonsterFaceUp = new HashMap<>();
+    private HashMap<Integer, Boolean> isSpellFaceUp = new HashMap<>();
     private ArrayList<Integer> indexOfCardUsedSuijin;
     {
         indexOfCardUsedSuijin = new ArrayList<>();
     }
 
-    public Player(String name) {
-        this.name = name;
-        LP = 1000;
-        User user = User.getUserByName(name);
+    public Player(User user) {
+        this.name = user.getName();;
+        LP = 8000;
+        this.nickName = user.getNickName();
         unusedCards = (ArrayList<Card>) user.getActiveCards().clone();
         allCardsOfPlayer = (ArrayList<Card>) user.getActiveCards().clone();
         for (int i = 0; i < 6; i++) 
             addCardFromUnusedToHand();
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public Boolean isFieldEmpty() {
+        return !fieldCardNumbers.containsKey(1);
+    }
+
     public String setCard(Card card, String cardState) {
         HashMap<Integer, Card> stateHashMap = getHashMapByKind(cardState);
-        if (cardState.equals("field")
-            || cardState.equals("graveyard"))
-            stateHashMap.put(stateHashMap.size() + 1, card);
+        int place = 1;
+        if (cardState.equals("field")) {
+            graveyardCardNumbers.put(stateHashMap.size() + 1, fieldCardNumbers.get(1));
+            fieldCardNumbers.remove(1);
+            fieldCardNumbers.put(1, card);
+        }
+        else if (cardState.equals("graveyard"))
+            graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, card);
         else {
             int max = 5;
             if (cardState.equals("hand")) 
                 max = 6;
-            int place = getFirstEmptyPlace(stateHashMap, max);
+            place = getFirstEmptyPlace(stateHashMap, max);
             if (place == 0)
                 return "it is full";
             else     
                 stateHashMap.put(place, card);
         }
+        if (getFaceHashMapByKind(cardState) != null) {
+            getFaceHashMapByKind(cardState).put(place, false);
+        }
         return "set successfully";
+    }
+
+    public void setCardFaceUp(Address address) {
+        getFaceHashMapByKind(address.getKind()).put(address.getNumber(), true);
+    }
+
+    public HashMap<Integer, Boolean> getMonsterFaceCards() {
+        return isMonsterFaceUp;
+    }
+
+    public HashMap<Integer, Boolean> getSpellFaceCards() {
+        return isSpellFaceUp;
+    }
+
+    public void setCardFaceDown(Address address) {
+        getFaceHashMapByKind(address.getKind()).put(address.getNumber(), false);
+    }
+
+    public HashMap<Integer, Boolean> getFaceHashMapByKind(String kind) {
+        if (kind.equals("monster"))
+            return isMonsterFaceUp;
+        if (kind.equals("spell"))
+            return isSpellFaceUp;
+        return null;
+    }
+
+    public String moveCardWithAddress(Address beginningAddress, Address destinationAddress) {
+        HashMap<Integer, Card> beginningHashMap = getHashMapByAddress(beginningAddress);
+        if (!beginningHashMap.containsKey(beginningAddress.getNumber()))
+            return "there is no card in beginningAddress";
+        return setCard(beginningHashMap.get(beginningAddress.getNumber()), destinationAddress.getKind());
     }
 
     public void setName(String name) {
@@ -67,7 +117,7 @@ public class Player {
         return handCardNumbers;
     }
 
-    public HashMap<Integer, Card> getGraveyadCard() {
+    public HashMap<Integer, Card> getGraveyardCard() {
         return graveyardCardNumbers;
     }
 
@@ -132,7 +182,7 @@ public class Player {
         HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
         int place = address.getNumber();
         removeCardHashMap.remove(address.getNumber());
-        if (address.getKind().matches("(field|graveyard)")) {
+        if (address.getKind().matches("graveyard")) {
             for (int i = place; i < removeCardHashMap.size(); i++) {
                 if (removeCardHashMap.containsKey(i + 1)) {
                     removeCardHashMap.put(i, removeCardHashMap.get(i + 1));
@@ -140,6 +190,10 @@ public class Player {
                 }
             }
         }
+        else if (address.getKind().matches("(field)"))
+            fieldCardNumbers.remove(1);
+        if (getFaceHashMapByKind(address.getKind()) != null)
+                getFaceHashMapByKind(address.getKind()).remove(address.getNumber());
     }
 
     public Card getCardByAddress(Address address) {

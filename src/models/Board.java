@@ -1,4 +1,5 @@
 package models;
+
 import view.Game;
 import java.util.HashMap;
 
@@ -12,11 +13,15 @@ public class Board {
     private static HashMap<Integer, Card> currentPlayerFieldCard = new HashMap<>();
     private static HashMap<Integer, Card> currentPlayerMonsterZoneCard = new HashMap<>();
     private static HashMap<Integer, Card> currentPlayerSpellZoneCard = new HashMap<>();
+    private static HashMap<Integer, Boolean> currentPlayerIsMonsterFaceUp = new HashMap<>();
+    private static HashMap<Integer, Boolean> currentPlayerIsSPellFaceUp = new HashMap<>();
     private static HashMap<Integer, Card> opponentPlayerGraveyardCard = new HashMap<>();
     private static HashMap<Integer, Card> opponentPlayerHandCard = new HashMap<>();
     private static HashMap<Integer, Card> opponentPlayerFieldCard = new HashMap<>();
     private static HashMap<Integer, Card> opponentPlayerMonsterZoneCard = new HashMap<>();
     private static HashMap<Integer, Card> opponentPlayerSpellZoneCard = new HashMap<>();
+    private static HashMap<Integer, Boolean> opponentPlayerIsMonsterFaceUp = new HashMap<>();
+    private static HashMap<Integer, Boolean> opponentPlayerIsSPellFaceUp = new HashMap<>();
 
     public static void run() {
 
@@ -31,26 +36,29 @@ public class Board {
         if (playerturn.compareTo(PlayerTurn.FIRSTPLAYER) == 0) {
             currentPlayer = Game.firstPlayer;
             opponentPlayer = Game.secondPlayer;
-        }
-        else {
+        } else {
             currentPlayer = Game.secondPlayer;
             opponentPlayer = Game.firstPlayer;
         }
         currentPlayerLP = currentPlayer.getLP();
         opponentPlayerLP = opponentPlayer.getLP();
-        currentPlayerGraveyardCard = currentPlayer.getGraveyadCard();
+        currentPlayerGraveyardCard = currentPlayer.getGraveyardCard();
         currentPlayerHandCard = currentPlayer.getHandCard();
         currentPlayerFieldCard = currentPlayer.getFieldCard();
         currentPlayerMonsterZoneCard = currentPlayer.getMonsterZoneCard();
         currentPlayerSpellZoneCard = currentPlayer.getSpellZoneCard();
-        opponentPlayerGraveyardCard = opponentPlayer.getGraveyadCard();
+        currentPlayerIsMonsterFaceUp = currentPlayer.getMonsterFaceCards();
+        currentPlayerIsSPellFaceUp = currentPlayer.getSpellFaceCards();
+        opponentPlayerGraveyardCard = opponentPlayer.getGraveyardCard();
         opponentPlayerHandCard = opponentPlayer.getHandCard();
         opponentPlayerFieldCard = opponentPlayer.getFieldCard();
         opponentPlayerMonsterZoneCard = opponentPlayer.getMonsterZoneCard();
         opponentPlayerSpellZoneCard = opponentPlayer.getSpellZoneCard();
+        opponentPlayerIsMonsterFaceUp = opponentPlayer.getMonsterFaceCards();
+        opponentPlayerIsSPellFaceUp = opponentPlayer.getSpellFaceCards();
     }
 
-    public static int howManyMonsterIsOnTheBoard(){
+    public static int howManyMonsterIsOnTheBoard() {
         loadData();
         int count = 0;
         count += currentPlayerMonsterZoneCard.size();
@@ -58,16 +66,24 @@ public class Board {
         return count;
     }
 
-    public static boolean doThisMonsterExist(String monsterName){
+    public static boolean doThisMonsterExist(String monsterName) {
         Card monsterCard = Card.getCardByName(monsterName);
         if (currentPlayerMonsterZoneCard.containsValue(monsterCard)
-            || opponentPlayerMonsterZoneCard.containsValue(monsterCard))
+                || opponentPlayerMonsterZoneCard.containsValue(monsterCard))
             return true;
         return false;
     }
 
-    public static boolean doThisMonsterExistFacedUp(String monsterName){
-
+    public static boolean doThisMonsterExistFacedUp(String monsterName) {
+        for (int i = 1; i <= 5; i++) {
+            if (currentPlayerMonsterZoneCard.containsKey(i) && currentPlayerIsMonsterFaceUp.get(i)
+                    && currentPlayerMonsterZoneCard.get(i).getCardName().equals(monsterName))
+                return true;
+            if (opponentPlayerMonsterZoneCard.containsKey(i) && opponentPlayerIsMonsterFaceUp.get(i)
+                    && opponentPlayerMonsterZoneCard.get(i).getCardName().equals(monsterName))
+                return true;
+        }
+        return false;
     }
 
     public static boolean isAddressEmpty(Address address) {
@@ -85,27 +101,32 @@ public class Board {
         if (address.getKind().equals("monster")) {
             if (address.ckeckIsMine())
                 return currentPlayerMonsterZoneCard;
-            else return opponentPlayerMonsterZoneCard;
+            else
+                return opponentPlayerMonsterZoneCard;
         }
         if (address.getKind().equals("spell")) {
             if (address.ckeckIsMine())
                 return currentPlayerSpellZoneCard;
-            else return opponentPlayerSpellZoneCard;
+            else
+                return opponentPlayerSpellZoneCard;
         }
         if (address.getKind().equals("field")) {
             if (address.ckeckIsMine())
                 return currentPlayerFieldCard;
-            else return opponentPlayerFieldCard;
+            else
+                return opponentPlayerFieldCard;
         }
         if (address.getKind().equals("hand")) {
             if (address.ckeckIsMine())
                 return currentPlayerHandCard;
-            else return opponentPlayerHandCard;
+            else
+                return opponentPlayerHandCard;
         }
         if (address.getKind().equals("graveyard")) {
-                if (address.ckeckIsMine())
-                    return currentPlayerGraveyardCard;
-                else return opponentPlayerGraveyardCard;
+            if (address.ckeckIsMine())
+                return currentPlayerGraveyardCard;
+            else
+                return opponentPlayerGraveyardCard;
         }
         return null;
     }

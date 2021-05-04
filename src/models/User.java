@@ -24,6 +24,10 @@ public class User {
         return activeCards;
     }
 
+    public void increaseScore(int score) {
+        this.score += score;
+    }
+
     public ArrayList<Card> getAllCards() {
         return allCards;
     }
