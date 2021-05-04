@@ -13,8 +13,10 @@ public class Player {
     private HashMap<Integer, Card> monsterZoneCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> spellZoneCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> handCards = new HashMap<>();
-    private boolean isHeUsedSuijin;
-
+    private ArrayList<Integer> indexOfCardUsedSuijin;
+    {
+        indexOfCardUsedSuijin=new ArrayList<>();
+    }
     public Player(String name) {
         this.name = name;
         LP = 1000;
@@ -58,11 +60,10 @@ public class Player {
         return spellZoneCardNumbers;
     }
 
-    public boolean isHeUsedSuijin() {
-        return isHeUsedSuijin;
+    public void addIndexToSuijin(int index){
+        indexOfCardUsedSuijin.add(index);
     }
-
-    public void setHeUsedSuijin(boolean heUsedSuijin) {
-        isHeUsedSuijin = heUsedSuijin;
+    public boolean doIndexExistInSuijin(int index){
+        return indexOfCardUsedSuijin.contains(index);
     }
 }

@@ -27,4 +27,7 @@ public class Attack {
     public static String whatKindaCardGetDestroyedNow(){
         //written by mohamad
     }
+    public static int whatIndexOfDefender(){
+
+    }
 }
