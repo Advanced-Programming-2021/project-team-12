@@ -20,6 +20,10 @@ public class Card {
         cards.add(this);
     }
 
+    public static ArrayList<Card> getAllCards() {
+        return cards;
+    }
+
     public String getCardName() {
         return name;
     }

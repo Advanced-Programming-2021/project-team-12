@@ -40,4 +40,16 @@ public class Deck {
         cards.remove(card);
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public ArrayList<Deck> getDecksOfUser(User user) {
+        ArrayList<Deck> deckOfUser = new ArrayList<>();
+        for (Deck deck : decks) 
+            if (deck.getUser().equals(user))
+                deckOfUser.add(deck);
+        return deckOfUser;
+    }
+
 }

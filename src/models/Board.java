@@ -62,4 +62,39 @@ public class Board {
 
     }
 
+    public static boolean isAddressEmpty(Address address) {
+        HashMap<Integer, Card> addressHashMap = getHashMapByAddress(address);
+        return addressHashMap.containsKey(address.getNumber());
+    }
+
+    public static Card getCardByAddress(Address address) {
+        HashMap<Integer, Card> addressHashMap = getHashMapByAddress(address);
+        return addressHashMap.get(address.getNumber());
+    }
+
+    public static HashMap<Integer, Card> getHashMapByAddress(Address address) {
+        loadData();
+        if (address.getKind().equals("monster")) {
+            if (address.ckeckIsMine())
+                return currentPlayerMonsterZoneCard;
+            else return opponentPlayerMonsterZoneCard;
+        }
+        if (address.getKind().equals("spell")) {
+            if (address.ckeckIsMine())
+                return currentPlayerSpellZoneCard;
+            else return opponentPlayerSpellZoneCard;
+        }
+        if (address.getKind().equals("field")) {
+            if (address.ckeckIsMine())
+                return currentPlayerFieldCard;
+            else return opponentPlayerFieldCard;
+        }
+        if (address.getKind().equals("hand")) {
+            if (address.ckeckIsMine())
+                return currentPlayerHandCard;
+            else return opponentPlayerHandCard;
+        }
+        return null;
+    }
+
 }
