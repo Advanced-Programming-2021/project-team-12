@@ -11,16 +11,27 @@ public class DrawPhase {
         while (true) {
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$"))
-                nextPhase();
+                break;
             else
                 System.out.println("invalid command");
         }
     }
     public void drawOneCard(){
         if(Game.playerTurn==PlayerTurn.FIRSTPLAYER){
-            Game.firstPlayer.
+            String newAddedCard = Game.firstPlayer.addCardFromUnusedToHand();
+            System.out.println("new card added to the hand : " + newAddedCard);
         } else{
-
+            String newAddedCard = Game.secondPlayer.addCardFromUnusedToHand();
+            System.out.println("new card added to the hand : " + newAddedCard);
+        }
+        //if no card loser
+        //esme card ro bayad bedoonam
+    }
+    public void checkIfGameEnded(){
+        if(Game.firstPlayer.getLP() < 0){
+            //mirzaei koja beram
+        } else if(Game.secondPlayer.getLP()< 0){
+            //mirzaei koja beram
         }
     }
 }
