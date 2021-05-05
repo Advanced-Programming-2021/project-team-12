@@ -1,5 +1,6 @@
 package models;
 
+import models.card.monster.MonsterCard;
 import view.Game;
 import java.util.HashMap;
 
@@ -130,5 +131,19 @@ public class Board {
         }
         return null;
     }
+    public static int sumOfLevelOfFacedUpMonsters(){
 
+
+    }
+
+    public static void destroyAllRivalTrapAndSpells() {
+    }
+
+    public static MonsterCard whatKindaMonsterIsHere(Address address) {
+
+
+
+
+        return null;
+    }
 }

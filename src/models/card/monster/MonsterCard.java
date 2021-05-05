@@ -1,6 +1,7 @@
 package models.card.monster;
 
 import controllers.move.Attack;
+import controllers.move.SetSpell;
 import models.Board;
 import models.Player;
 import models.PlayerTurn;
@@ -54,11 +55,22 @@ public class MonsterCard {
     }
 
     public int getAttack() {
-        if (Board.doThisMonsterExistFacedUp("CommandKnight")) return (attack + 400);
+        int attack=this.attack;
+        if(SetSpell.doAnyOneHaveYami()){
+          if(monsterMode==MonsterMode.SPELLCASTER || monsterMode==MonsterMode.FIEND) attack =+ 200;
+          if(monsterMode==MonsterMode.FAIRY) attack=-200;
+        }
+        if (Board.doThisMonsterExistFacedUp("CommandKnight")) attack =+ 400;
+        if(name.equals("Calculator")) return 300*Board.sumOfLevelOfFacedUpMonsters();//doubt
         return attack;
     }
 
     public int getDefence(boolean isFacedUp) {
+        int defence=this.defence;
+        if(SetSpell.doAnyOneHaveYami()){
+            if(monsterMode==MonsterMode.SPELLCASTER || monsterMode==MonsterMode.FIEND) defence =+ 200;
+            if(monsterMode==MonsterMode.FAIRY) defence=-200;
+        }
         if ((name.equals("CommandKnight")) && (Board.howManyMonsterIsOnTheBoard() > 1) && isFacedUp) return 100000000;
         // I should regard effect on or not
         if (isFacedUp) {
@@ -125,5 +137,12 @@ public class MonsterCard {
 
     public static void welcomeToEffectStandBy() {
 
+    }
+
+    public int  getNormalAttack() {
+        return attack;
+    }
+    public int getNormalDefence(){
+        return defence;
     }
 }
