@@ -1,6 +1,7 @@
 package models.card.monster;
 
 import controllers.move.Attack;
+import controllers.move.SetSpell;
 import models.Board;
 import models.Player;
 import models.PlayerTurn;
@@ -54,11 +55,45 @@ public class MonsterCard {
     }
 
     public int getAttack() {
-        if (Board.doThisMonsterExistFacedUp("CommandKnight")) return (attack + 400);
+        int attack = this.attack;
+        if(SetSpell.doAnyOneHaveUmiruka()){
+            if(monsterMode==MonsterMode.AQUA){
+                attack +=500;
+            }
+        }
+        if(monsterMode==MonsterMode.BEAST||monsterMode==MonsterMode.WARRIOR_BEAST){
+            if(SetSpell.doIHaveClosedForest()){
+                attack +=100*Board.numberOfAllMonstersInGraveYard();
+            }
+        }
+        if(SetSpell.doAnyOneHaveForest){
+            if(monsterMode==MonsterMode.BEAST||monsterMode==MonsterMode.WARRIOR_BEAST||monsterMode==MonsterMode.INSECT)
+                attack += 200;
+        }
+        if (SetSpell.doAnyOneHaveYami()) {
+            if (monsterMode == MonsterMode.SPELLCASTER || monsterMode == MonsterMode.FIEND) attack += 200;
+            if (monsterMode == MonsterMode.FAIRY) attack -= 200;
+        }
+        if (Board.doThisMonsterExistFacedUp("CommandKnight")) attack = +400;
+        if (name.equals("Calculator")) return 300 * Board.sumOfLevelOfFacedUpMonsters();//doubt
         return attack;
     }
 
     public int getDefence(boolean isFacedUp) {
+        int defence = this.defence;
+        if(SetSpell.doAnyOneHaveUmiruka()){
+            if(monsterMode==MonsterMode.AQUA){
+                defence -=400;
+            }
+        }
+        if(SetSpell.doAnyOneHaveForest){
+            if(monsterMode==MonsterMode.BEAST||monsterMode==MonsterMode.WARRIOR_BEAST||monsterMode==MonsterMode.INSECT)
+                defence += 200;
+        }
+        if (SetSpell.doAnyOneHaveYami()) {
+            if (monsterMode == MonsterMode.SPELLCASTER || monsterMode == MonsterMode.FIEND) defence += 200;
+            if (monsterMode == MonsterMode.FAIRY) defence -= 200;
+        }
         if ((name.equals("CommandKnight")) && (Board.howManyMonsterIsOnTheBoard() > 1) && isFacedUp) return 100000000;
         // I should regard effect on or not
         if (isFacedUp) {
@@ -125,5 +160,13 @@ public class MonsterCard {
 
     public static void welcomeToEffectStandBy() {
 
+    }
+
+    public int getNormalAttack() {
+        return attack;
+    }
+
+    public int getNormalDefence() {
+        return defence;
     }
 }

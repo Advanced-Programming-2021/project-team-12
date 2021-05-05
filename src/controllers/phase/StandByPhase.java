@@ -1,5 +1,6 @@
 package controllers.phase;
 
+import controllers.move.SetSpell;
 import view.Game;
 import view.Main;
 
@@ -23,5 +24,14 @@ public class StandByPhase {
         } else if(Game.secondPlayer.getLP()< 0){
             //mirzaei koja beram
         }
-    }     
+    }
+    public static void payMessengerOfPeaceSpellCardHarm(){
+        if(SetSpell.doIHaveMessengerOfPeace()){
+            System.out.println("Do you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?" +
+                    "(type \"yes\" or \"not\"");
+            if(Main.scanner.nextLine().equals("yes")) SetSpell.destroyMessengerOfPeace();
+            else Game.whoseTurnPlayer().decreaseLP(100);
+
+        }
+    }
 }
