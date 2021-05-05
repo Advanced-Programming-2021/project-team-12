@@ -27,9 +27,9 @@ public class EndPhase {
     }
     public void printWhosTurnIsIt(){
         if(Game.playerTurn == PlayerTurn.FIRSTPLAYER){
-            System.out.println("its " + Game.firstPlayer.getNickname() + "’s turn");
+            System.out.println("its " + Game.firstPlayer.getNickName() + "’s turn");
         } else {
-            System.out.println("its " + Game.secondPlayer.getNickname() + "’s turn");
+            System.out.println("its " + Game.secondPlayer.getNickName() + "’s turn");
         }
     }
 }

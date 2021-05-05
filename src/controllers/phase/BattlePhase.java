@@ -335,7 +335,7 @@ public class BattlePhase {
                     else if(input.matches("^[ ]*summon[ ]*$"))
                         summon(getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
                     else if(input.matches("^[ ]*set[ ]*$"))
-                        whatIsSet(selectedCard);
+                        System.out.println("you can’t do this action in this phase");
                    else if(input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
                         System.out.println("you can’t change this card position");
                     else if(input.matches("^[ ]*flip-summon[ ]*$"))
@@ -360,18 +360,6 @@ public class BattlePhase {
         }
     }
     private void summon(Matcher matcher){
-        
-    }
-    private void whatIsSet(String string){
-        
-    }
-    private void setMonster(Matcher matcher){
-        
-    }
-    private void setTrap(Matcher matcher){
-        
-    }
-    private void setSpell(Matcher matcher){
         
     }
     private void showSelectedCard(Matcher matcher){
