@@ -363,7 +363,7 @@ public class MainPhase1 {
         
     }
     private void whatIsSet(String string){
-        
+        //mirzei addressbegire card bede
     }
     private void setMonster(Matcher matcher){
         
