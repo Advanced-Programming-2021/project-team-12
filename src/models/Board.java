@@ -146,4 +146,7 @@ public class Board {
 
         return null;
     }
+
+    public static int numberOfAllMonstersInGraveYard() {
+    }
 }
