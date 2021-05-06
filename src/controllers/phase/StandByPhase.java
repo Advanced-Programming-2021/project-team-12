@@ -20,8 +20,8 @@ public class StandByPhase {
         }
     }
     public void resetMoves(){
-        Game.firstPlayer.
-        Game.secondPlayer.
+        Game.firstPlayer.setHeSummonedOrSet(false);
+        Game.secondPlayer.setHeSummonedOrSet(false);
     }
     public void checkIfGameEnded(){
         if(Game.firstPlayer.getLP() < 0){
