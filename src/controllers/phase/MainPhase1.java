@@ -501,24 +501,26 @@ public class MainPhase1 {
     }
 
     private void setPosition(String input, Matcher matcher) {
-        Player currentPlayer=Game.whoseTurnPlayer();
+        Player currentPlayer = Game.whoseTurnPlayer();
         if (matcher.find()) {
             int index = currentPlayer.getIndexOfThisCardByAddress(matcher.group(1));
             Matcher matcher1 = getCommandMatcher(input, "^[ ]*set -- position (attack|defense)[ ]*$");
             if (matcher1.find()) {
                 if (matcher1.group(1).equals("attack")) {
                     if (currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
-                        if(currentPlayer.didWeChangePositionThisCardInThisTurn(index)){
+                        if (currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
                             currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
                             currentPlayer.convertThisMonsterFromAttackToDefence(matcher.group(1));
-                        }
+                            System.out.println("monster card position changed successfully");
+                        } else System.out.println("you already changed this card position in this turn");
                     } else System.out.println("this card is already in the wanted position");
                 } else {
                     if (!currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
-                        if(currentPlayer.didWeChangePositionThisCardInThisTurn(index)){
+                        if (currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
                             currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
                             currentPlayer.convertThisMonsterFromDefenceToAttack(matcher.group(1));
-                        }
+                            System.out.println("monster card position changed successfully");
+                        } else System.out.println("you already changed this card position in this turn");
                     } else System.out.println("this card is already in the wanted position");
                 }
             }
@@ -526,11 +528,11 @@ public class MainPhase1 {
     }
 
     private void showGraveyard() {
-    Board.showGraveyard();
+        Board.showGraveyard();
     }
 
     private void showFieldZoneCard() {
-    Game.whoseTurnPlayer().showFieldZoneCard();
+        Game.whoseTurnPlayer().showFieldZoneCard();
     }
 
     private void showOpponentFieldZoneCard() {

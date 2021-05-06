@@ -24,6 +24,8 @@ public class StandByPhase {
         Game.secondPlayer.setHeSummonedOrSet(false);
         Game.firstPlayer.setDidWeChangePositionThisCardInThisTurnCompletelyFalse();
         Game.secondPlayer.setDidWeChangePositionThisCardInThisTurnCompletelyFalse();
+        Game.firstPlayer.setDidWeAttackByThisCadInThisCardInThisTurnCompletelyFalse();
+        Game.secondPlayer.setDidWeAttackByThisCadInThisCardInThisTurnCompletelyFalse();
     }
     public void checkIfGameEnded(){
         if(Game.firstPlayer.getLP() < 0){

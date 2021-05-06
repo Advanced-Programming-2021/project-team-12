@@ -10,24 +10,26 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Player {
+    private boolean[] didWeAttackByThisCadInThisCard;
     private boolean isHeSummonedOrSet;
     private boolean[] didWeChangePositionThisCardInThisTurn;
     private String name;
     private String nickName;
     private int LP;
-    private ArrayList<Card> unusedCards = new ArrayList<>();
+    private ArrayList<Card> unusedCards = new ArrayList<>();//might be wrong
     private HashMap<Integer, Card> handCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> graveyardCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> fieldCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> monsterZoneCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> spellZoneCardNumbers = new HashMap<>();
-    private ArrayList<Card> allCardsOfPlayer = new ArrayList<>();
+    private ArrayList<Card> allCardsOfPlayer = new ArrayList<>();//might be wrong
     private HashMap<Integer, Boolean> isMonsterFaceUp = new HashMap<>();
     private HashMap<Integer, Boolean> isSpellFaceUp = new HashMap<>();
     private ArrayList<Integer> indexOfCardUsedSuijin;
     {
         indexOfCardUsedSuijin = new ArrayList<>();
         didWeChangePositionThisCardInThisTurn=new boolean[100];
+        didWeAttackByThisCadInThisCard=new boolean[100];
     }
 
     public Player(User user) {
@@ -295,11 +297,21 @@ public class Player {
     public boolean didWeChangePositionThisCardInThisTurn(int index) {
         return didWeChangePositionThisCardInThisTurn[index];
     }
-    public int getIndexOfThisCardByAddress(String address){
-
-    }
     public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse(){
         Arrays.fill(didWeChangePositionThisCardInThisTurn, false);
+    }
+    public void setDidWeAttackByThisCadInThisCardInThisTurn(int index){
+        didWeAttackByThisCadInThisCard[index]=true;
+    }
+
+    public boolean didWeAttackByThisCadInThisCardInThisTurn(int index) {
+        return didWeAttackByThisCadInThisCard[index];
+    }
+    public void setDidWeAttackByThisCadInThisCardInThisTurnCompletelyFalse(){
+        Arrays.fill(didWeAttackByThisCadInThisCard, false);
+    }
+    public int getIndexOfThisCardByAddress(String address){
+
     }
 
     public void showFieldZoneCard() {
