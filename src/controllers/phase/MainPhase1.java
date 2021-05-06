@@ -406,7 +406,7 @@ public class MainPhase1 {
     private void showGraveyard(){
         
     }
-    private void showFieldzoneCard(){
+    private void showFieldZoneCard(){
         
     }
     private void showOpponentFieldzoneCard(){
