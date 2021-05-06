@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class SpellCard {
     private String effect;
+    private String description;
     private int price;
     private SpellMode spellMode;
     private boolean isLimit;
@@ -24,6 +25,14 @@ public class SpellCard {
         this.price=price;
         this.spellEffect=spellEffect;
         spellCards.add(this);
+    }
+
+    public void setDesctiption(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public static ArrayList<SpellCard> getSpellCards() {

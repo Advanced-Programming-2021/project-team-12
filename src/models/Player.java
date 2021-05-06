@@ -40,6 +40,18 @@ public class Player {
         return !fieldCardNumbers.containsKey(1);
     }
 
+    public Boolean isCardFaceUp(Address address) {
+        if (address.getKind().equals("monster")) {
+            if (isMonsterFaceUp.containsKey(address.getNumber()))
+                return isMonsterFaceUp.get(address.getNumber());
+        }
+        if (address.getKind().equals("spell")) {
+            if (isSpellFaceUp.containsKey(address.getNumber()))
+                return isSpellFaceUp.get(address.getNumber());
+        }
+        return null;
+    }
+
     public String setCard(Card card, String cardState) {
         HashMap<Integer, Card> stateHashMap = getHashMapByKind(cardState);
         int place = 1;

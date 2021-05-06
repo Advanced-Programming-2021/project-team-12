@@ -22,6 +22,7 @@ public class MonsterCard {
     private MonsterMode monsterMode;
     private boolean isRitual;
     private String name;
+    private String description;
     private int price;
     private Attribute attribute;
     private MonsterEffect monsterEffect;
@@ -44,6 +45,14 @@ public class MonsterCard {
         this.attribute = attribute;
         this.monsterEffect = monsterEffect;
         monsterCards.add(this);
+    }
+
+    public void setDesctiption(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void runEffect() {

@@ -33,29 +33,70 @@ public class Card {
     }
 
     public static String whatKind(String cardName) {
-        for (Card card : cards) 
+        for (Card card : cards)
             if (card.getCardName().equals(cardName))
                 return card.kind;
         return "there is no card with this name";
     }
 
-    public void runEffect () {
+    public void runEffect() {
         if (kind.equals("Monster")) {
             MonsterCard card = MonsterCard.getMonsterCardByName(name);
             card.runEffect();
-        }
-        else if (kind.equals("Spell")) {
+        } else if (kind.equals("Spell")) {
             SpellCard card = SpellCard.getSpellCardByName(name);
             card.runEffect();
-        }
-        else if (kind.equals("Trap")) {
+        } else if (kind.equals("Trap")) {
             TrapCard card = TrapCard.getTrapCardByName(name);
             card.runEffect();
         }
     }
 
+    public void showCard() {
+        if (kind.equals("monster")) {
+            System.out.println("Name: " + name + "\\nLevel: " + getLevel() + "\\nType: " + "\\nATK: " + getAttack()
+                    + "\\nDEF: " + getDefence(true) + "\\nDescription: " + getDescription());
+        }
+
+        if (kind.equals("monster")) {
+            System.out.println(
+                    "Name: " + name + "\\nSpell" + "\\nType: " + getType() + "\\nDescription: " + getDescription());
+        }
+
+        if (kind.equals("monster")) {
+            System.out.println(
+                    "Name: " + name + "\\nTrap" + "\\nType: " + getType() + "\\nDescription: " + getDescription());
+        }
+    }
+
+    public String getType() {
+        if (kind.equals("monster")) {
+            MonsterCard card = MonsterCard.getMonsterCardByName(name);
+            return card.getMonsterMode().toString();
+        }
+        if (kind.equals("spell")) {
+            SpellCard card = SpellCard.getSpellCardByName(name);
+            return card.getSpellMode().toString();
+        } else
+            return "Normal";
+    }
+
+    public String getDescription() {
+        if (kind.equals("monster")) {
+            MonsterCard card = MonsterCard.getMonsterCardByName(name);
+            return card.getDescription();
+        }
+        if (kind.equals("spell")) {
+            SpellCard card = SpellCard.getSpellCardByName(name);
+            return card.getDescription();
+        } else {
+            TrapCard card = TrapCard.getTrapCardByName(name);
+            return card.getDescription();
+        }
+    }
+
     public static Card getCardByName(String cardName) {
-        for (Card card : cards) 
+        for (Card card : cards)
             if (card.getCardName().equals(cardName))
                 return card;
         return null;
@@ -65,12 +106,10 @@ public class Card {
         if (kind.equals("Monster")) {
             MonsterCard card = MonsterCard.getMonsterCardByName(name);
             return card.getPrice();
-        }
-        else if (kind.equals("Spell")) {
+        } else if (kind.equals("Spell")) {
             SpellCard card = SpellCard.getSpellCardByName(name);
             return card.getPrice();
-        }
-        else if (kind.equals("Trap")) {
+        } else if (kind.equals("Trap")) {
             TrapCard card = TrapCard.getTrapCardByName(name);
             return card.getPrice();
         }
@@ -81,8 +120,7 @@ public class Card {
         if (kind.equals("Spell")) {
             SpellCard card = SpellCard.getSpellCardByName(name);
             return card.checkIsLimit();
-        }
-        else if (kind.equals("Trap")) {
+        } else if (kind.equals("Trap")) {
             TrapCard card = TrapCard.getTrapCardByName(name);
             return card.ckeckIsLimit();
         }
@@ -103,12 +141,10 @@ public class Card {
         if (kind.equals("Monster")) {
             MonsterCard card = MonsterCard.getMonsterCardByName(name);
             return card.getEffect();
-        }
-        else if (kind.equals("Spell")) {
+        } else if (kind.equals("Spell")) {
             SpellCard card = SpellCard.getSpellCardByName(name);
             return card.getEffect();
-        }
-        else if (kind.equals("Trap")) {
+        } else if (kind.equals("Trap")) {
             TrapCard card = TrapCard.getTrapCardByName(name);
             return card.getEffect();
         }
@@ -139,12 +175,5 @@ public class Card {
         MonsterCard card = MonsterCard.getMonsterCardByName(name);
         return card.getLevel();
     }
-
-
-
-
-
-
-
 
 }

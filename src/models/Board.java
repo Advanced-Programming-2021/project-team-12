@@ -131,6 +131,12 @@ public class Board {
         }
         return null;
     }
+
+    public String getKindByAddress(Address address) {
+        HashMap<Integer, Card> addressHashMap = getHashMapByAddress(address);
+        return addressHashMap.get(address.getNumber()).getKind();
+    }
+
     public static int sumOfLevelOfFacedUpMonsters(){
 
 
