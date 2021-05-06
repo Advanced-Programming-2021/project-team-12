@@ -5,6 +5,9 @@ import java.util.regex.Pattern;
 
 import models.Address;
 import models.Board;
+import models.card.monster.MonsterCard;
+import models.card.spell.SpellCard;
+import models.card.trap.TrapCard;
 import view.Game;
 import view.Main;
 
@@ -456,6 +459,30 @@ public class MainPhase1 {
 
     // be careful for duplicate
     private void showSelectedCard(Matcher matcher) {
+        if (matcher.find()) {
+            String kind = Game.whoseTurnPlayer().whatKindaCardIsInThisAddress(matcher.group(1));
+            if (kind.equals("monster")) {
+                MonsterCard monsterCardForShow = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1));
+                System.out.println("Name: "+monsterCardForShow.getName());
+                System.out.println("Level: "+monsterCardForShow.getLevel());
+                System.out.println("Type: "+monsterCardForShow.getMonsterMode());
+                System.out.println("ATK: "+monsterCardForShow.getNormalAttack());
+                System.out.println("DEF: "+monsterCardForShow.getNormalDefence());
+                System.out.println("Description: "+monsterCardForShow.getDescription());
+            } else if (kind.equals("spell")) {
+                SpellCard spellCardForShow = Game.whoseTurnPlayer().getSpellCardByStringAddress(matcher.group(1));
+                System.out.println("Name: "+spellCardForShow.getName());
+                System.out.println("Spell");
+                System.out.println("Type: "+spellCardForShow.getSpellMode());
+                System.out.println("Description: "+spellCardForShow.getDescription());
+            } else {
+                TrapCard trapCardForShow = Game.whoseTurnPlayer().getTrapCardByStringAddress(matcher.group(1));
+                System.out.println("Name: "+trapCardForShow.getName());
+                System.out.println("Trap");
+                System.out.println("Type: Normal");
+                System.out.println("Description: "+trapCardForShow.getDescription());
+            }
+        }
 
     }
 

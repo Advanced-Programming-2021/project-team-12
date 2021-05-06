@@ -5,6 +5,7 @@ import models.card.trap.trap_effect.TrapEffect;
 import java.util.ArrayList;
 
 public class TrapCard {
+    private String description;
     private String name;
     private String effect;
     private boolean isLimit;
@@ -48,5 +49,8 @@ public class TrapCard {
     }
     public static void welcomeToEffect(){
 
+    }
+    public String getDescription() {
+        return description;
     }
 }

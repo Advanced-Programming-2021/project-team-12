@@ -1,6 +1,8 @@
 package models;
 
 import models.card.monster.MonsterCard;
+import models.card.spell.SpellCard;
+import models.card.trap.TrapCard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -259,5 +261,13 @@ public class Player {
     }
 
     public boolean isThereTwoCardInMonsterZone() {
+    }
+    public static void destroyAllRivalTrapAndSpells() {
+    }
+
+    public SpellCard getSpellCardByStringAddress(String address) {
+    }
+
+    public TrapCard getTrapCardByStringAddress(String address) {
     }
 }

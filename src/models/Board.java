@@ -136,8 +136,6 @@ public class Board {
 
     }
 
-    public static void destroyAllRivalTrapAndSpells() {
-    }
 
     public static MonsterCard whatKindaMonsterIsHere(Address address) {
 
