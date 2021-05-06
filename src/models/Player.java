@@ -162,7 +162,12 @@ public class Player {
                 return false;
         return true;
     }
+    public void addCardFromHandToMonsterZone(){
 
+    }
+    public void addCardFromHandToSpellZone(){
+
+    }
     public String addCardFromUnusedToHand() {
         int count = unusedCards.size();
         if (count == 0)
