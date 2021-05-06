@@ -258,7 +258,7 @@ public class MainPhase1 {
             else if (input.matches("^[ ]*show graveyard[ ]*$"))
                 showGraveyard();
             else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                showFieldzoneCard();
+                showFieldZoneCard();
             else if (input.matches("^[ ]*surrender[ ]*$"))
                 surrender();
             else
