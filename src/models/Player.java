@@ -301,4 +301,12 @@ public class Player {
     public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse(){
         Arrays.fill(didWeChangePositionThisCardInThisTurn, false);
     }
+
+    public void showFieldZoneCard() {
+        //dear ali please print by yourself
+    }
+
+    public void showOpponentFieldZoneCard() {
+        //dear ali please print by yourself
+    }
 }

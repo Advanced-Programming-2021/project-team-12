@@ -526,19 +526,19 @@ public class MainPhase1 {
     }
 
     private void showGraveyard() {
-
+    Board.showGraveyard();
     }
 
     private void showFieldZoneCard() {
-
+    Game.whoseTurnPlayer().showFieldZoneCard();
     }
 
     private void showOpponentFieldZoneCard() {
-
+        Game.whoseTurnPlayer().showOpponentFieldZoneCard();
     }
 
     private void directAttack(Matcher matcher) {
-
+        System.out.println("you can’t do this action in this phase");
     }
 
     private void specialSummon(Matcher matcher) {

@@ -49,7 +49,7 @@ public class BattlePhase {
         else if(input.matches("^[ ]*select --monster --opponent [\\d]+[ ]*$"))
             selectOpponentMonster(getCommandMatcher(input,"(^[ ]*select --monster --opponent ([\\d]+)[ ]*$)"));
         else if(input.matches("^[ ]*select --spell [\\d]+[ ]*$"))
-            selcetSpell(getCommandMatcher(input,"(^[ ]*select --spell ([\\d]+)[ ]*$)"));
+            selectSpell(getCommandMatcher(input,"(^[ ]*select --spell ([\\d]+)[ ]*$)"));
         else if(input.matches("^[ ]*select --spell --opponent [\\d]+[ ]*$"))
             selectOpponentSpell(getCommandMatcher(input,"(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
         else if(input.matches("^[ ]*select --field[ ]*$"))
@@ -151,7 +151,7 @@ public class BattlePhase {
                 System.out.println("invalid selection");
         }
     }
-    private void selcetSpell(Matcher matcher){
+    private void selectSpell(Matcher matcher){
         if(matcher.find()){
             Board.showBoeard();
             if(Address.isAddressValid(matcher.group(1))){
@@ -270,7 +270,7 @@ public class BattlePhase {
             else if(input.matches("^[ ]*show graveyard[ ]*$"))
                 showGraveyard();
             else if(input.matches("^[ ]*card show --selected[ ]*$"))
-                showFieldzoneCard();
+                showFieldZoneCard();
             else if(input.matches("^[ ]*surrender[ ]*$"))
                 surrender();
             else
@@ -308,7 +308,7 @@ public class BattlePhase {
             else if(input.matches("^[ ]*show graveyard[ ]*$"))
                 showGraveyard();
             else if(input.matches("^[ ]*card show --selected[ ]*$"))
-                showOpponentFieldzoneCard();
+                showOpponentFieldZoneCard();
             else if(input.matches("^[ ]*surrender[ ]*$"))
                 surrender();
             else
@@ -377,10 +377,10 @@ public class BattlePhase {
     private void showGraveyard(){
         
     }
-    private void showFieldzoneCard(){
+    private void showFieldZoneCard(){
         
     }
-    private void showOpponentFieldzoneCard(){
+    private void showOpponentFieldZoneCard(){
         
     }
     private void directAttack(Matcher matcher){
