@@ -230,4 +230,8 @@ public class Player {
     public void setHeSummonedOrSet(boolean heSummonedOrSet) {
         isHeSummonedOrSet = heSummonedOrSet;
     }
+
+    public boolean isHeSummonedOrSet() {
+        return isHeSummonedOrSet;
+    }
 }
