@@ -363,14 +363,15 @@ public class MainPhase1 {
     }
     private void setTrap(Matcher matcher){
         if(Game.whoseTurnPlayer().isSpellZoneFull()){
-           if(!Game.whoseTurnPlayer().isHeSummonedOrSet()){
-
-           }
-        }
+           Game.whoseTurnPlayer().addCardFromHandToSpellZone();
+        }else System.out.println("spell card zone is full");
     }
     private void setSpell(Matcher matcher){
-        
+        if(Game.whoseTurnPlayer().isSpellZoneFull()){
+          Game.whoseTurnPlayer().addCardFromHandToSpellZone();
+        }else System.out.println("spell card zone is full");
     }
+    // be careful for duplicate 
     private void showSelectedCard(Matcher matcher){
         
     }
