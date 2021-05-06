@@ -1,5 +1,7 @@
 package models;
 
+import models.card.monster.MonsterCard;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -162,10 +164,10 @@ public class Player {
                 return false;
         return true;
     }
-    public void addCardFromHandToMonsterZone(String address){
+    public void setCardFromHandToMonsterZone(String address){
 
     }
-    public void addCardFromHandToSpellZone(String address){
+    public void setCardFromHandToSpellZone(String address){
 
     }
     public String addCardFromUnusedToHand() {
@@ -238,5 +240,24 @@ public class Player {
 
     public boolean isHeSummonedOrSet() {
         return isHeSummonedOrSet;
+    }
+
+    public void summonCardFromHandToMonsterZone(String address) {
+    }
+    public boolean isMonsterInThisMonsterZoneTypeAddress(int monsterZoneTypeAddress) {
+    }
+
+    public void removeThisMonsterZoneTypeAddressForTribute(int monsterZoneTypeAddress) {
+    }
+    public MonsterCard getMonsterCardByStringAddress(String address) {
+    }
+    public String whatKindaCardIsInThisAddress(String address){
+
+    }
+
+    public boolean isThereAnyCardInMonsterZone() {
+    }
+
+    public boolean isThereTwoCardInMonsterZone() {
     }
 }
