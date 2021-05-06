@@ -5,6 +5,7 @@ import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -297,5 +298,7 @@ public class Player {
     public int getIndexOfThisCardByAddress(String address){
 
     }
-
+    public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse(){
+        Arrays.fill(didWeChangePositionThisCardInThisTurn, false);
+    }
 }

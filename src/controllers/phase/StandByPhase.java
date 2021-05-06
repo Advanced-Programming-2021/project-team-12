@@ -22,6 +22,8 @@ public class StandByPhase {
     public void resetMoves(){
         Game.firstPlayer.setHeSummonedOrSet(false);
         Game.secondPlayer.setHeSummonedOrSet(false);
+        Game.firstPlayer.setDidWeChangePositionThisCardInThisTurnCompletelyFalse();
+        Game.secondPlayer.setDidWeChangePositionThisCardInThisTurnCompletelyFalse();
     }
     public void checkIfGameEnded(){
         if(Game.firstPlayer.getLP() < 0){
