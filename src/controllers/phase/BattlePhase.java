@@ -18,6 +18,7 @@ public class BattlePhase {
         Board.showBoeard();
         String input;
         while (true) {
+            StandByPhase.checkIfGameEnded();
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$"))
                 break;
@@ -49,6 +50,7 @@ public class BattlePhase {
     }
 
     private void whatIsSelected(String input) {
+        StandByPhase.checkIfGameEnded();
         if (input.matches("^[ ]*select --monster [\\d]+[ ]*$"))
             selectMonster(getCommandMatcher(input, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --monster --opponent [\\d]+[ ]*$"))
@@ -76,6 +78,7 @@ public class BattlePhase {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
+                    StandByPhase.checkIfGameEnded();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         goToNextPhase = true;
@@ -120,6 +123,7 @@ public class BattlePhase {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
+                    StandByPhase.checkIfGameEnded();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         goToNextPhase = true;
@@ -164,6 +168,7 @@ public class BattlePhase {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
+                    StandByPhase.checkIfGameEnded();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         goToNextPhase = true;
@@ -207,6 +212,7 @@ public class BattlePhase {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
+                    StandByPhase.checkIfGameEnded();
                     Board.showBoeard();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
@@ -248,6 +254,7 @@ public class BattlePhase {
     private void selectField() {
         String input;
         while (true) {
+            StandByPhase.checkIfGameEnded();
             Board.showBoeard();
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
@@ -286,6 +293,7 @@ public class BattlePhase {
     private void selectOpponentField() {
         String input;
         while (true) {
+            StandByPhase.checkIfGameEnded();
             Board.showBoeard();
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
@@ -328,6 +336,7 @@ public class BattlePhase {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
+                    StandByPhase.checkIfGameEnded();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         goToNextPhase = true;
@@ -375,6 +384,9 @@ public class BattlePhase {
 
     private void attack(Matcher matcher) {
 
+
+
+        StandByPhase.checkIfGameEnded();
     }
 
     private void flipSummon(Matcher matcher) {
@@ -398,6 +410,7 @@ public class BattlePhase {
     }
 
     private void directAttack(Matcher matcher) {
+        StandByPhase.checkIfGameEnded();
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
             Player rivalPlayer=Game.whoseRivalPlayer();
@@ -410,6 +423,7 @@ public class BattlePhase {
                 System.out.println("you opponent receives "+monsterCardForDirectAttack.getAttack()+" battle damage");
             } else System.out.println("this card already attacked");
         }
+        StandByPhase.checkIfGameEnded();
     }
 
     private void specialSummon(Matcher matcher) {

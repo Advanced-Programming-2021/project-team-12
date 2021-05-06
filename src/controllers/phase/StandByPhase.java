@@ -27,7 +27,7 @@ public class StandByPhase {
         Game.firstPlayer.setDidWeAttackByThisCadInThisCardInThisTurnCompletelyFalse();
         Game.secondPlayer.setDidWeAttackByThisCadInThisCardInThisTurnCompletelyFalse();
     }
-    public void checkIfGameEnded(){
+    public static void checkIfGameEnded(){
         if(Game.firstPlayer.getLP() < 0){
             //mirzaei koja beram
         } else if(Game.secondPlayer.getLP()< 0){
