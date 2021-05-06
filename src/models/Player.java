@@ -162,10 +162,10 @@ public class Player {
                 return false;
         return true;
     }
-    public void addCardFromHandToMonsterZone(){
+    public void addCardFromHandToMonsterZone(String address){
 
     }
-    public void addCardFromHandToSpellZone(){
+    public void addCardFromHandToSpellZone(String address){
 
     }
     public String addCardFromUnusedToHand() {
