@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Player {
+    private boolean isHeSummonedOrSet;
     private String name;
     private String nickName;
     private int LP;
@@ -224,5 +225,9 @@ public class Player {
             if (!cardNumbers.containsKey(i))
                 return i;
         return 0;
+    }
+
+    public void setHeSummonedOrSet(boolean heSummonedOrSet) {
+        isHeSummonedOrSet = heSummonedOrSet;
     }
 }

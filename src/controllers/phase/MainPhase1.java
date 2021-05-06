@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import models.Address;
 import models.Board;
+import view.Game;
 import view.Main;
 
 public class MainPhase1 {
@@ -348,7 +349,9 @@ public class MainPhase1 {
         
     }
     private void setTrap(Matcher matcher){
-        
+        if(Game.whoseTurnPlayer().isSpellZoneFull()){
+
+        }
     }
     private void setSpell(Matcher matcher){
         
