@@ -357,7 +357,7 @@ public class MainPhase1 {
     private void setMonster(Matcher matcher){
         if(!Game.whoseTurnPlayer().isMonsterZoneFull()){
             if(!Game.whoseTurnPlayer().isHeSummonedOrSet()){
-                Game.whoseTurnPlayer().
+                Game.whoseTurnPlayer().addCardFromHandToMonsterZone();
                 System.out.println("set successfully");
             }else {
                 System.out.println("you already summoned/set on this turn");
