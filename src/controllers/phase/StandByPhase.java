@@ -6,6 +6,7 @@ import view.Main;
 
 public class StandByPhase {
     public void run(){
+        resetMoves();
         System.out.println("phase: standby phase");
         String input;
         //mamad function here
@@ -17,6 +18,10 @@ public class StandByPhase {
             else
                 System.out.println("invalid command");
         }
+    }
+    public void resetMoves(){
+        Game.firstPlayer.
+        Game.secondPlayer.
     }
     public void checkIfGameEnded(){
         if(Game.firstPlayer.getLP() < 0){

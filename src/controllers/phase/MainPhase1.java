@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import models.Address;
 import models.Board;
+import view.Game;
 import view.Main;
 
 public class MainPhase1 {
@@ -314,7 +315,7 @@ public class MainPhase1 {
                     else if(input.matches("^[ ]*summon[ ]*$"))
                         summon(getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
                     else if(input.matches("^[ ]*set[ ]*$"))
-                        whatIsSet(selectedCard);
+                        whatIsSet(getCommandMatcher(selectedCard, "(^[ ]*select --hand ([\\d]+)[ ]*$)"));
                    else if(input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
                         System.out.println("you can’t change this card position");
                     else if(input.matches("^[ ]*flip-summon[ ]*$"))
@@ -341,11 +342,24 @@ public class MainPhase1 {
     private void summon(Matcher matcher){
         
     }
-    private void whatIsSet(String string){
-        //mirzei addressbegire card bede
+    private void whatIsSet(Matcher matcher){
+        if(matcher.find()){
+            String whatKind = Board.getCardByAddress(matcher.group(1));
+            if(whatKind.equals("monster")){
+                setMonster(getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
+            } else if(whatKind.equals("trap")){
+                setTrap(getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
+            } else if(whatKind.equals("spell")){
+                setSpell(getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
+            }
+        }
     }
     private void setMonster(Matcher matcher){
-        
+        if(!Game.whoseTurnPlayer().isMonsterZoneFull()){
+
+        } else{
+            System.out.println("monster card zone is full");
+        }
     }
     private void setTrap(Matcher matcher){
         
