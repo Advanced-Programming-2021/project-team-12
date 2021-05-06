@@ -340,7 +340,15 @@ public class MainPhase1 {
         }
     }
     private void summon(Matcher matcher){
-        
+        if(!Game.whoseTurnPlayer().isMonsterZoneFull()){
+            if(!Game.whoseTurnPlayer().isHeSummonedOrSet()){
+                Board.getCardByAddress(matcher.group(1))
+            }else {
+                System.out.println("you already summoned/set on this turn");
+            }
+        } else{
+            System.out.println("monster card zone is full");
+        }
     }
     private void whatIsSet(Matcher matcher){
         if(matcher.find()){
@@ -355,15 +363,17 @@ public class MainPhase1 {
         }
     }
     private void setMonster(Matcher matcher){
-        if(!Game.whoseTurnPlayer().isMonsterZoneFull()){
-            if(!Game.whoseTurnPlayer().isHeSummonedOrSet()){
-                Game.whoseTurnPlayer().addCardFromHandToMonsterZone();
-                System.out.println("set successfully");
-            }else {
-                System.out.println("you already summoned/set on this turn");
+        if(matcher.find()){
+            if(!Game.whoseTurnPlayer().isMonsterZoneFull()){
+                if(!Game.whoseTurnPlayer().isHeSummonedOrSet()){
+                    Game.whoseTurnPlayer().addCardFromHandToMonsterZone(matcher.group(1));
+                    System.out.println("set successfully");
+                }else {
+                    System.out.println("you already summoned/set on this turn");
+                }
+            } else{
+                System.out.println("monster card zone is full");
             }
-        } else{
-            System.out.println("monster card zone is full");
         }
     }
     private void setTrap(Matcher matcher){
