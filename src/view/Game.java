@@ -11,4 +11,8 @@ public class Game {
         if(Game.playerTurn==PlayerTurn.FIRSTPLAYER) return Game.firstPlayer;
         else return Game.secondPlayer;
     }
+    public static Player whoseRivalPlayer(){
+        if(Game.playerTurn==PlayerTurn.FIRSTPLAYER) return Game.secondPlayer;
+        else return Game.firstPlayer;
+    }
 }

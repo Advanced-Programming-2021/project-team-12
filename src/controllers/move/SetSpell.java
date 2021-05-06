@@ -9,9 +9,11 @@ public class SetSpell {
     public static boolean doAnyOneHaveForest;
 
     public static boolean doIHaveMessengerOfPeace() {
+
     }
 
     public static void destroyMessengerOfPeace() {
+
     }
 
     public static boolean doIHaveClosedForest() {
@@ -19,6 +21,7 @@ public class SetSpell {
     }
 
     public static boolean doAnyOneHaveUmiruka() {
+        
     }
 
     public void run(Address address){

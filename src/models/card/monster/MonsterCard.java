@@ -15,6 +15,7 @@ import view.Game;
 import java.util.ArrayList;
 
 public class MonsterCard {
+    private String description;
     private int level;
     private int attack;
     private int defence;
@@ -177,5 +178,9 @@ public class MonsterCard {
 
     public int getNormalDefence() {
         return defence;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

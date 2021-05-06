@@ -6,6 +6,7 @@ import models.card.spell.spell_effect.SpellEffect;
 import java.util.ArrayList;
 
 public class SpellCard {
+    private String description;
     private String effect;
     private String description;
     private int price;
@@ -69,5 +70,8 @@ public class SpellCard {
     }
     public static void welcomeToEffect(){
 
+    }
+    public String getDescription() {
+        return description;
     }
 }

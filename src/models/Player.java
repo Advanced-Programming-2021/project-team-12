@@ -1,25 +1,35 @@
 package models;
 
+import models.card.monster.MonsterCard;
+import models.card.spell.SpellCard;
+import models.card.trap.TrapCard;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
 public class Player {
+    private boolean[] didWeAttackByThisCadInThisCard;
+    private boolean isHeSummonedOrSet;
+    private boolean[] didWeChangePositionThisCardInThisTurn;
     private String name;
     private String nickName;
     private int LP;
-    private ArrayList<Card> unusedCards = new ArrayList<>();
+    private ArrayList<Card> unusedCards = new ArrayList<>();//might be wrong
     private HashMap<Integer, Card> handCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> graveyardCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> fieldCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> monsterZoneCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> spellZoneCardNumbers = new HashMap<>();
-    private ArrayList<Card> allCardsOfPlayer = new ArrayList<>();
+    private ArrayList<Card> allCardsOfPlayer = new ArrayList<>();//might be wrong
     private HashMap<Integer, Boolean> isMonsterFaceUp = new HashMap<>();
     private HashMap<Integer, Boolean> isSpellFaceUp = new HashMap<>();
     private ArrayList<Integer> indexOfCardUsedSuijin;
     {
         indexOfCardUsedSuijin = new ArrayList<>();
+        didWeChangePositionThisCardInThisTurn=new boolean[100];
+        didWeAttackByThisCadInThisCard=new boolean[100];
     }
 
     public Player(User user) {
@@ -173,7 +183,12 @@ public class Player {
                 return false;
         return true;
     }
+    public void setCardFromHandToMonsterZone(String address){
 
+    }
+    public void setCardFromHandToSpellZone(String address){
+
+    }
     public String addCardFromUnusedToHand() {
         int count = unusedCards.size();
         if (count == 0)
@@ -236,5 +251,86 @@ public class Player {
             if (!cardNumbers.containsKey(i))
                 return i;
         return 0;
+    }
+
+    public void setHeSummonedOrSet(boolean heSummonedOrSet) {
+        isHeSummonedOrSet = heSummonedOrSet;
+    }
+
+    public boolean isHeSummonedOrSet() {
+        return isHeSummonedOrSet;
+    }
+
+    public void summonCardFromHandToMonsterZone(String address) {
+    }
+    public boolean isMonsterInThisMonsterZoneTypeAddress(int monsterZoneTypeAddress) {
+    }
+
+    public void removeThisMonsterZoneTypeAddressForTribute(int monsterZoneTypeAddress) {
+    }
+    public MonsterCard getMonsterCardByStringAddress(String address) {
+    }
+    public String whatKindaCardIsInThisAddress(String address){
+
+    }
+
+    public boolean isThereAnyCardInMonsterZone() {
+    }
+
+    public boolean isThereTwoCardInMonsterZone() {
+    }
+    public static void destroyAllRivalTrapAndSpells() {
+    }
+
+    public SpellCard getSpellCardByStringAddress(String address) {
+    }
+
+    public TrapCard getTrapCardByStringAddress(String address) {
+    }
+    public boolean isThisMonsterOnDHPosition(String address){
+
+    }
+    public void convertThisMonsterFromDHToOO(String address){
+
+    }
+    public void convertThisMonsterFromAttackToDefence(String address){
+
+    }
+    public void convertThisMonsterFromDefenceToAttack(String address){
+
+    }
+    public boolean isThisMonsterOnAttackPosition(String address){
+
+    }
+    public void setDidWeChangePositionThisCardInThisTurn(int index){
+        didWeChangePositionThisCardInThisTurn[index]=true;
+    }
+
+    public boolean didWeChangePositionThisCardInThisTurn(int index) {
+        return didWeChangePositionThisCardInThisTurn[index];
+    }
+    public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse(){
+        Arrays.fill(didWeChangePositionThisCardInThisTurn, false);
+    }
+    public void setDidWeAttackByThisCadInThisCardInThisTurn(int index){
+        didWeAttackByThisCadInThisCard[index]=true;
+    }
+
+    public boolean didWeAttackByThisCadInThisCardInThisTurn(int index) {
+        return didWeAttackByThisCadInThisCard[index];
+    }
+    public void setDidWeAttackByThisCadInThisCardInThisTurnCompletelyFalse(){
+        Arrays.fill(didWeAttackByThisCadInThisCard, false);
+    }
+    public int getIndexOfThisCardByAddress(String address){
+
+    }
+
+    public void showFieldZoneCard() {
+        //dear ali please print by yourself
+    }
+
+    public void showOpponentFieldZoneCard() {
+        //dear ali please print by yourself
     }
 }
