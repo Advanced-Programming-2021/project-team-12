@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import models.Address;
 import models.Board;
+import models.Player;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
@@ -55,7 +56,7 @@ public class MainPhase1 {
         else if (input.matches("^[ ]*select --monster --opponent [\\d]+[ ]*$"))
             selectOpponentMonster(getCommandMatcher(input, "(^[ ]*select --monster --opponent ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --spell [\\d]+[ ]*$"))
-            selcetSpell(getCommandMatcher(input, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
+            selectSpell(getCommandMatcher(input, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --spell --opponent [\\d]+[ ]*$"))
             selectOpponentSpell(getCommandMatcher(input, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --field[ ]*$"))
@@ -88,7 +89,7 @@ public class MainPhase1 {
                     else if (input.matches("^[ ]*set[ ]*$"))
                         System.out.println("you can’t set this card");
                     else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                        setPosition(getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+                        setPosition(input, getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*flip-summon[ ]*$"))
                         flipSummon(getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
@@ -152,7 +153,7 @@ public class MainPhase1 {
         }
     }
 
-    private void selcetSpell(Matcher matcher) {
+    private void selectSpell(Matcher matcher) {
         if (matcher.find()) {
             Board.showBoeard();
             if (Address.isAddressValid(matcher.group(1))) {
@@ -463,24 +464,24 @@ public class MainPhase1 {
             String kind = Game.whoseTurnPlayer().whatKindaCardIsInThisAddress(matcher.group(1));
             if (kind.equals("monster")) {
                 MonsterCard monsterCardForShow = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1));
-                System.out.println("Name: "+monsterCardForShow.getName());
-                System.out.println("Level: "+monsterCardForShow.getLevel());
-                System.out.println("Type: "+monsterCardForShow.getMonsterMode());
-                System.out.println("ATK: "+monsterCardForShow.getNormalAttack());
-                System.out.println("DEF: "+monsterCardForShow.getNormalDefence());
-                System.out.println("Description: "+monsterCardForShow.getDescription());
+                System.out.println("Name: " + monsterCardForShow.getName());
+                System.out.println("Level: " + monsterCardForShow.getLevel());
+                System.out.println("Type: " + monsterCardForShow.getMonsterMode());
+                System.out.println("ATK: " + monsterCardForShow.getNormalAttack());
+                System.out.println("DEF: " + monsterCardForShow.getNormalDefence());
+                System.out.println("Description: " + monsterCardForShow.getDescription());
             } else if (kind.equals("spell")) {
                 SpellCard spellCardForShow = Game.whoseTurnPlayer().getSpellCardByStringAddress(matcher.group(1));
-                System.out.println("Name: "+spellCardForShow.getName());
+                System.out.println("Name: " + spellCardForShow.getName());
                 System.out.println("Spell");
-                System.out.println("Type: "+spellCardForShow.getSpellMode());
-                System.out.println("Description: "+spellCardForShow.getDescription());
+                System.out.println("Type: " + spellCardForShow.getSpellMode());
+                System.out.println("Description: " + spellCardForShow.getDescription());
             } else {
                 TrapCard trapCardForShow = Game.whoseTurnPlayer().getTrapCardByStringAddress(matcher.group(1));
-                System.out.println("Name: "+trapCardForShow.getName());
+                System.out.println("Name: " + trapCardForShow.getName());
                 System.out.println("Trap");
                 System.out.println("Type: Normal");
-                System.out.println("Description: "+trapCardForShow.getDescription());
+                System.out.println("Description: " + trapCardForShow.getDescription());
             }
         }
 
@@ -491,11 +492,37 @@ public class MainPhase1 {
     }
 
     private void flipSummon(Matcher matcher) {
-
+        if (matcher.find()) {
+            if (Game.whoseTurnPlayer().isThisMonsterOnDHPosition(matcher.group(1))) {
+                Game.whoseTurnPlayer().convertThisMonsterFromDHToOO(matcher.group(1));
+                System.out.println("flip summoned successfully");
+            } else System.out.println("you can’t do this action in this phase");
+        }
     }
 
-    private void setPosition(Matcher matcher) {
-
+    private void setPosition(String input, Matcher matcher) {
+        Player currentPlayer=Game.whoseTurnPlayer();
+        if (matcher.find()) {
+            int index = currentPlayer.getIndexOfThisCardByAddress(matcher.group(1));
+            Matcher matcher1 = getCommandMatcher(input, "^[ ]*set -- position (attack|defense)[ ]*$");
+            if (matcher1.find()) {
+                if (matcher1.group(1).equals("attack")) {
+                    if (currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
+                        if(currentPlayer.didWeChangePositionThisCardInThisTurn(index)){
+                            currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
+                            currentPlayer.convertThisMonsterFromAttackToDefence(matcher.group(1));
+                        }
+                    } else System.out.println("this card is already in the wanted position");
+                } else {
+                    if (!currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
+                        if(currentPlayer.didWeChangePositionThisCardInThisTurn(index)){
+                            currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
+                            currentPlayer.convertThisMonsterFromDefenceToAttack(matcher.group(1));
+                        }
+                    } else System.out.println("this card is already in the wanted position");
+                }
+            }
+        }
     }
 
     private void showGraveyard() {

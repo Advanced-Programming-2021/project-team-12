@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class Player {
     private boolean isHeSummonedOrSet;
+    private boolean[] didWeChangePositionThisCardInThisTurn;
     private String name;
     private String nickName;
     private int LP;
@@ -25,6 +26,7 @@ public class Player {
     private ArrayList<Integer> indexOfCardUsedSuijin;
     {
         indexOfCardUsedSuijin = new ArrayList<>();
+        didWeChangePositionThisCardInThisTurn=new boolean[100];
     }
 
     public Player(User user) {
@@ -270,4 +272,30 @@ public class Player {
 
     public TrapCard getTrapCardByStringAddress(String address) {
     }
+    public boolean isThisMonsterOnDHPosition(String address){
+
+    }
+    public void convertThisMonsterFromDHToOO(String address){
+
+    }
+    public void convertThisMonsterFromAttackToDefence(String address){
+
+    }
+    public void convertThisMonsterFromDefenceToAttack(String address){
+
+    }
+    public boolean isThisMonsterOnAttackPosition(String address){
+
+    }
+    public void setDidWeChangePositionThisCardInThisTurn(int index){
+        didWeChangePositionThisCardInThisTurn[index]=true;
+    }
+
+    public boolean didWeChangePositionThisCardInThisTurn(int index) {
+        return didWeChangePositionThisCardInThisTurn[index];
+    }
+    public int getIndexOfThisCardByAddress(String address){
+
+    }
+
 }
