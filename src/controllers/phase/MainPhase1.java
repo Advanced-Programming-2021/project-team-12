@@ -77,9 +77,6 @@ public class MainPhase1 {
                     }
                     else if(input.matches("^[ ]*select -d[ ]*$"))
                         break;
-                    else if(input.matches("^[ ]*select [.*][ ]*$"))
-                        System.out.println("");
-                        //here
                     else if(input.matches("^[ ]*summon[ ]*$"))
                         System.out.println("you can’t summon this card");
                     else if(input.matches("^[ ]*set[ ]*$"))
@@ -121,9 +118,6 @@ public class MainPhase1 {
                     }
                     else if(input.matches("^[ ]*select -d[ ]*$"))
                         break;
-                    else if(input.matches("^[ ]*select [.*][ ]*$"))
-                        System.out.println("");
-                        //here
                     else if(input.matches("^[ ]*summon[ ]*$"))
                         System.out.println("you can’t summon this card");
                     else if(input.matches("^[ ]*set[ ]*$"))
@@ -165,9 +159,6 @@ public class MainPhase1 {
                     }
                     else if(input.matches("^[ ]*select -d[ ]*$"))
                         break;
-                    else if(input.matches("^[ ]*select [.*][ ]*$"))
-                        System.out.println("");
-                        //here
                     else if(input.matches("^[ ]*summon[ ]*$"))
                         System.out.println("you can’t summon this card");
                     else if(input.matches("^[ ]*set[ ]*$"))
@@ -209,9 +200,6 @@ public class MainPhase1 {
                     }
                     else if(input.matches("^[ ]*select -d[ ]*$"))
                         break;
-                    else if(input.matches("^[ ]*select [.*][ ]*$"))
-                        System.out.println("");
-                        //here
                     else if(input.matches("^[ ]*summon[ ]*$"))
                         System.out.println("you can’t summon this card");
                     else if(input.matches("^[ ]*set[ ]*$"))
@@ -250,9 +238,6 @@ public class MainPhase1 {
             }
             else if(input.matches("^[ ]*select -d[ ]*$"))
                 break;
-            else if(input.matches("^[ ]*select [.*][ ]*$"))
-                System.out.println("");
-                //here
             else if(input.matches("^[ ]*summon[ ]*$"))
                 System.out.println("you can’t summon this card");
             else if(input.matches("^[ ]*set[ ]*$"))
@@ -288,9 +273,6 @@ public class MainPhase1 {
             }
             else if(input.matches("^[ ]*select -d[ ]*$"))
                 break;
-            else if(input.matches("^[ ]*select [.*][ ]*$"))
-                System.out.println("");
-                //here
             else if(input.matches("^[ ]*summon[ ]*$"))
                 System.out.println("you can’t summon this card");
             else if(input.matches("^[ ]*set[ ]*$"))
@@ -329,9 +311,6 @@ public class MainPhase1 {
                     }
                     else if(input.matches("^[ ]*select -d[ ]*$"))
                         break;
-                    else if(input.matches("^[ ]*select [.*][ ]*$"))
-                        System.out.println("");
-                        //here
                     else if(input.matches("^[ ]*summon[ ]*$"))
                         summon(getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
                     else if(input.matches("^[ ]*set[ ]*$"))
