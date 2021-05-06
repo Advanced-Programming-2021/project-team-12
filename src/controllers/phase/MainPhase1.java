@@ -362,7 +362,9 @@ public class MainPhase1 {
         }
     }
     private void setTrap(Matcher matcher){
-        
+        if(Game.whoseTurnPlayer().isSpellZoneFull()){
+
+        }
     }
     private void setSpell(Matcher matcher){
         
