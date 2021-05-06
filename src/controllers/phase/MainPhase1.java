@@ -364,30 +364,50 @@ public class MainPhase1 {
     }
 
     private void summonAHighLevelMonster(String address) {
-     if(Game.whoseTurnPlayer().isThereTwoCardInMonsterZone()){
-         System.out.println("Please select two monster for tribute!(type monster address)");
-         String tributeCard1=Main.scanner.nextLine();
-         String tributeCard2=Main.scanner.nextLine();
-         if(Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard1))
-         &&Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))){
-             System.out.println("summoned successfully");
-             Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard1));
-             Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard2));
-             Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(address);
-         }else System.out.println("there no monsters on one of this addresses");
-     }else System.out.println("there are not enough cards for tribute");
+        if (Game.whoseTurnPlayer().isThereTwoCardInMonsterZone()) {
+            System.out.println("Please select two monster for tribute!(type monster address or cancel)");
+            String tributeCard1 = Main.scanner.nextLine();
+            while (!(tributeCard1.matches("[\\d+]") || tributeCard1.matches("cancel"))) {
+                System.out.println("invalid command!");
+                tributeCard1 = Main.scanner.nextLine();
+            }
+            if (tributeCard1.equals("cancel")) {
+                System.out.println("canceled successfully");
+            } else {
+                String tributeCard2 = Main.scanner.nextLine();
+                while (!(tributeCard1.matches("[\\d+]"))) {
+                    System.out.println("invalid command!");
+                    tributeCard1 = Main.scanner.nextLine();
+                }
+                if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard1))
+                        && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))) {
+                    System.out.println("summoned successfully");
+                    Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard1));
+                    Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard2));
+                    Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(address);
+                } else System.out.println("there no monsters on one of this addresses");
+            }
+        } else System.out.println("there are not enough cards for tribute");
     }
 
     private void summonAMediumLevelMonster(String address) {
-        if(Game.whoseTurnPlayer().isThereAnyCardInMonsterZone()){
-            System.out.println("Please select two monster for tribute!(type monster address)");
-            String tributeCard=Main.scanner.nextLine();
-            if(Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard))){
-                System.out.println("summoned successfully");
-                Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard));
-                Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(address);
-            }else System.out.println("there no monsters one this address");
-        }else System.out.println("there are not enough cards for tribute");
+        if (Game.whoseTurnPlayer().isThereAnyCardInMonsterZone()) {
+            System.out.println("Please select two monster for tribute!(type monster address or cancel)");
+            String tributeCard = Main.scanner.nextLine();
+            while (!(tributeCard.matches("[\\d+]") || tributeCard.matches("cancel"))) {
+                System.out.println("invalid command!");
+                tributeCard = Main.scanner.nextLine();
+            }
+            if (tributeCard.equals("cancel")) {
+                System.out.println("canceled successfully");
+            } else {
+                if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard))) {
+                    System.out.println("summoned successfully");
+                    Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard));
+                    Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(address);
+                } else System.out.println("there no monsters one this address");
+            }
+        } else System.out.println("there are not enough cards for tribute");
     }
 
     private void whatIsSet(Matcher matcher) {
