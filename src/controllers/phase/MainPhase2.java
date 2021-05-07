@@ -7,7 +7,7 @@ import models.Board;
 import view.Main;
 
 public class MainPhase2 {
-    Boolean goToNextPhase = false;
+    private Boolean goToNextPhase = false;
 
     public void run(){
         System.out.println("phase: draw phase");

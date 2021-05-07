@@ -14,7 +14,7 @@ import view.Game;
 import view.Main;
 
 public class MainPhase1 {
-    Boolean goToNextPhase = false;
+    private Boolean goToNextPhase = false;
 
     public void run() {
         System.out.println("phase: draw phase");
@@ -580,7 +580,9 @@ public class MainPhase1 {
     }
 
     private void surrender() {
-
+    Game.setIsSurrender(true);
+    Game.setWinner(Game.whoseRivalPlayer());
+    goToNextPhase=true;
     }
 
     private static Matcher getCommandMatcher(String input, String regex) {
