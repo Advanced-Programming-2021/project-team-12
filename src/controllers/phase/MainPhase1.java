@@ -572,7 +572,7 @@ public class MainPhase1 {
     }
 
     private void activeTrap(Matcher matcher) {
-    
+
     }
 
     private void ritualSummon(Matcher matcher) {
