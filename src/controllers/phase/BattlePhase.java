@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import models.Address;
 import models.Board;
 import models.Player;
+import models.PositionOfCardInBoard;
 import models.card.monster.MonsterCard;
 import view.Game;
 import view.Main;
@@ -97,7 +98,7 @@ public class BattlePhase {
                     else if (input.matches("^[ ]*flip-summon[ ]*$"))
                         flipSummon(getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        attack(getCommandMatcher(input, "(^[ ]*attack ([\\d]+)[ ]*$)"));
+                        attack(getCommandMatcher(input, "(^[ ]*attack ([\\d]+)[ ]*$)"), selectedCard);
                     else if (input.matches("^[ ]*attack direct[ ]*$"))
                         directAttack(getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
@@ -382,11 +383,38 @@ public class BattlePhase {
 
     }
 
-    private void attack(Matcher matcher) {
-
-
-
+    private void attack(Matcher matcher, String myAddress) {
+        if (matcher.find()) {
+            Player currentPlayer = Game.whoseTurnPlayer();
+            Address address = new Address(Integer.parseInt(matcher.group(2)), "monster", false);
+            int index = currentPlayer.getIndexOfThisCardByAddress(myAddress);
+            if (currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
+                if (currentPlayer.getCardByAddress(address) != null) {
+                    MonsterCard myMonsterCard = currentPlayer.getMonsterCardByStringAddress(myAddress);
+                    MonsterCard rivalMonsterCard = currentPlayer.getMonsterCardByAddress(address);
+                    if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.OO) {
+                        attackOO(myAddress, address, index, currentPlayer,myMonsterCard,rivalMonsterCard);
+                    } else if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.DO) {
+                        attackDO(myAddress, address, index, currentPlayer,myMonsterCard,rivalMonsterCard);
+                    } else {
+                        attackDH(myAddress, address, index, currentPlayer,myMonsterCard,rivalMonsterCard);
+                    }
+                } else System.out.println("there is no card to attack here");
+            } else System.out.println("this card already attacked");
+        }
         StandByPhase.checkIfGameEnded();
+    }
+
+    private void attackOO(String myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard) {
+
+    }
+
+    private void attackDO(String myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard) {
+
+    }
+
+    private void attackDH(String myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard) {
+
     }
 
     private void flipSummon(Matcher matcher) {
@@ -413,14 +441,14 @@ public class BattlePhase {
         StandByPhase.checkIfGameEnded();
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
-            Player rivalPlayer=Game.whoseRivalPlayer();
+            Player rivalPlayer = Game.whoseRivalPlayer();
             int index = currentPlayer.getIndexOfThisCardByAddress(matcher.group(1));
             if (currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
                 currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
                 //doubt should regard an error for being empty of board?
                 MonsterCard monsterCardForDirectAttack = currentPlayer.getMonsterCardByStringAddress(matcher.group(1));
                 rivalPlayer.decreaseLP(monsterCardForDirectAttack.getAttack());
-                System.out.println("you opponent receives "+monsterCardForDirectAttack.getAttack()+" battle damage");
+                System.out.println("you opponent receives " + monsterCardForDirectAttack.getAttack() + " battle damage");
             } else System.out.println("this card already attacked");
         }
         StandByPhase.checkIfGameEnded();

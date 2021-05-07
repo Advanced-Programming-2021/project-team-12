@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Player {
+    private HashMap<Address, PositionOfCardInBoard> positionOfCardInBoardByAddress;
     private boolean[] didWeActivateThisSpell;
     private boolean[] didWeAttackByThisCardInThisCard;
     private boolean isHeSummonedOrSet;
@@ -29,6 +30,7 @@ public class Player {
     private ArrayList<Integer> indexOfCardUsedSuijin;
 
     {
+        positionOfCardInBoardByAddress=new HashMap<>();
         indexOfCardUsedSuijin = new ArrayList<>();
         didWeChangePositionThisCardInThisTurn = new boolean[100];
         didWeAttackByThisCardInThisCard = new boolean[100];
@@ -73,16 +75,14 @@ public class Player {
             graveyardCardNumbers.put(stateHashMap.size() + 1, fieldCardNumbers.get(1));
             fieldCardNumbers.remove(1);
             fieldCardNumbers.put(1, card);
-        }
-        else if (cardState.equals("graveyard")) {
+        } else if (cardState.equals("graveyard")) {
             graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, card);
             place = graveyardCardNumbers.size();
-        }
-        else {
+        } else {
             int max = 5;
             if (cardState.equals("hand"))
                 max = 6;
-            place = getFirstEmptyPlace(stateHashMap, max);   
+            place = getFirstEmptyPlace(stateHashMap, max);
             stateHashMap.put(place, card);
         }
         if (getFaceHashMapByKind(cardState) != null)
@@ -184,11 +184,11 @@ public class Player {
         return true;
     }
 
-    public void setCardFromHandToMonsterZone(String address){
+    public void setCardFromHandToMonsterZone(String address) {
 
     }
 
-    public void setCardFromHandToSpellZone(String address){
+    public void setCardFromHandToSpellZone(String address) {
 
     }
 
@@ -280,7 +280,7 @@ public class Player {
 
     }
 
-    public String whatKindaCardIsInThisAddress(String address){
+    public String whatKindaCardIsInThisAddress(String address) {
 
     }
 
@@ -303,40 +303,42 @@ public class Player {
     public TrapCard getTrapCardByStringAddress(String address) {
     }
 
-    public boolean isThisMonsterOnDHPosition(String address){
+    public boolean isThisMonsterOnDHPosition(String address) {
 
     }
 
-    public void convertThisMonsterFromDHToOO(String address){
+    public void convertThisMonsterFromDHToOO(String address) {
 
     }
 
-    public void convertThisMonsterFromAttackToDefence(String address){
+    public void convertThisMonsterFromAttackToDefence(String address) {
 
     }
 
-    public void convertThisMonsterFromDefenceToAttack(String address){
+    public void convertThisMonsterFromDefenceToAttack(String address) {
 
     }
 
-    public boolean isThisMonsterOnAttackPosition(String address){
+    public boolean isThisMonsterOnAttackPosition(String address) {
 
     }
 
-    public void setDidWeChangePositionThisCardInThisTurn(int index){
-        didWeChangePositionThisCardInThisTurn[index]=true;
+    public void setDidWeChangePositionThisCardInThisTurn(int index) {
+        didWeChangePositionThisCardInThisTurn[index] = true;
     }
 
     public boolean didWeChangePositionThisCardInThisTurn(int index) {
         return didWeChangePositionThisCardInThisTurn[index];
     }
 
-    public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse(){
+    public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse() {
         Arrays.fill(didWeChangePositionThisCardInThisTurn, false);
     }
-    public boolean didWeAttackByThisCardInThisCardInThisTurn(int index){
+
+    public boolean didWeAttackByThisCardInThisCardInThisTurn(int index) {
         return didWeAttackByThisCardInThisCard[index];
     }
+
     public void setDidWeAttackByThisCardInThisCardInThisTurn(int index) {
         didWeAttackByThisCardInThisCard[index] = true;
     }
@@ -346,11 +348,13 @@ public class Player {
     }
 
     public void setDidWeActivateThisSpell(int index) {
-        didWeActivateThisSpell[index]=true;
+        didWeActivateThisSpell[index] = true;
     }
-    public boolean didWeActivateThisSpell(int index){
+
+    public boolean didWeActivateThisSpell(int index) {
         return didWeActivateThisSpell[index];
     }
+
     public void setDidWeActivateThisSpellCompletelyFalse() {
         Arrays.fill(didWeAttackByThisCardInThisCard, false);
     }
@@ -358,5 +362,13 @@ public class Player {
     public int getIndexOfThisCardByAddress(String address) {
 
     }
+    public void setPositionOfCardInBoardByAddress(Address address, PositionOfCardInBoard positionOfCardInBoard){
+        positionOfCardInBoardByAddress.put(address,positionOfCardInBoard);
+    }
+    public PositionOfCardInBoard positionOfCardInBoardByAddress(Address address){
+        positionOfCardInBoardByAddress.get(address);
+    }
+    public MonsterCard getMonsterCardByAddress(Address address){
 
+    }
 }

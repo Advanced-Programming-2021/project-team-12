@@ -489,7 +489,7 @@ public class MainPhase1 {
     }
 
     private void attack(Matcher matcher) {
-
+        System.out.println("you can’t do this action in this phase");
     }
 
     private void flipSummon(Matcher matcher) {
