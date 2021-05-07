@@ -62,30 +62,29 @@ public class Player {
         return null;
     }
 
-    public String setCard(Card card, String cardState) {
+    public Address setCard(Card card, String cardState) {
         HashMap<Integer, Card> stateHashMap = getHashMapByKind(cardState);
+        Address address;
         int place = 1;
         if (cardState.equals("field")) {
             graveyardCardNumbers.put(stateHashMap.size() + 1, fieldCardNumbers.get(1));
             fieldCardNumbers.remove(1);
             fieldCardNumbers.put(1, card);
         }
-        else if (cardState.equals("graveyard"))
+        else if (cardState.equals("graveyard")) {
             graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, card);
+            place = graveyardCardNumbers.size();
+        }
         else {
             int max = 5;
             if (cardState.equals("hand")) 
                 max = 6;
-            place = getFirstEmptyPlace(stateHashMap, max);
-            if (place == 0)
-                return "it is full";
-            else     
-                stateHashMap.put(place, card);
+            place = getFirstEmptyPlace(stateHashMap, max);   
+            stateHashMap.put(place, card);
         }
-        if (getFaceHashMapByKind(cardState) != null) {
+        if (getFaceHashMapByKind(cardState) != null)
             getFaceHashMapByKind(cardState).put(place, false);
-        }
-        return "set successfully";
+        return new Address(place, cardState, true);
     }
 
     public void setCardFaceUp(Address address) {
@@ -183,12 +182,15 @@ public class Player {
                 return false;
         return true;
     }
+
     public void setCardFromHandToMonsterZone(String address){
 
     }
+
     public void setCardFromHandToSpellZone(String address){
 
     }
+
     public String addCardFromUnusedToHand() {
         int count = unusedCards.size();
         if (count == 0)
@@ -262,46 +264,66 @@ public class Player {
     }
 
     public void summonCardFromHandToMonsterZone(String address) {
+        //face up
+        //attack
     }
+
     public boolean isMonsterInThisMonsterZoneTypeAddress(int monsterZoneTypeAddress) {
+
     }
 
     public void removeThisMonsterZoneTypeAddressForTribute(int monsterZoneTypeAddress) {
+
     }
+
     public MonsterCard getMonsterCardByStringAddress(String address) {
+
     }
+
     public String whatKindaCardIsInThisAddress(String address){
 
     }
 
     public boolean isThereAnyCardInMonsterZone() {
+
     }
 
     public boolean isThereTwoCardInMonsterZone() {
+
     }
+
+
     public static void destroyAllRivalTrapAndSpells() {
+
     }
 
     public SpellCard getSpellCardByStringAddress(String address) {
+
     }
 
     public TrapCard getTrapCardByStringAddress(String address) {
     }
+
     public boolean isThisMonsterOnDHPosition(String address){
 
     }
+
     public void convertThisMonsterFromDHToOO(String address){
 
     }
+
     public void convertThisMonsterFromAttackToDefence(String address){
 
     }
+
     public void convertThisMonsterFromDefenceToAttack(String address){
 
     }
+
     public boolean isThisMonsterOnAttackPosition(String address){
 
     }
+
     public void setDidWeChangePositionThisCardInThisTurn(int index){
         didWeChangePositionThisCardInThisTurn[index]=true;
     }
@@ -309,9 +331,11 @@ public class Player {
     public boolean didWeChangePositionThisCardInThisTurn(int index) {
         return didWeChangePositionThisCardInThisTurn[index];
     }
+
     public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse(){
         Arrays.fill(didWeChangePositionThisCardInThisTurn, false);
     }
+
     public void setDidWeAttackByThisCadInThisCardInThisTurn(int index){
         didWeAttackByThisCadInThisCard[index]=true;
     }
@@ -319,9 +343,11 @@ public class Player {
     public boolean didWeAttackByThisCadInThisCardInThisTurn(int index) {
         return didWeAttackByThisCadInThisCard[index];
     }
+
     public void setDidWeAttackByThisCadInThisCardInThisTurnCompletelyFalse(){
         Arrays.fill(didWeAttackByThisCadInThisCard, false);
     }
+
     public int getIndexOfThisCardByAddress(String address){
 
     }

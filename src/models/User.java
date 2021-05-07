@@ -1,6 +1,8 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class User {
     private String userName;
@@ -28,7 +30,16 @@ public class User {
         this.score += score;
     }
 
+    public Boolean checkIfHasCard(Card card) {
+        return allCards.contains(card);
+    }
+
     public ArrayList<Card> getAllCards() {
+        Collections.sort(allCards, new Comparator<Card>() {
+            public int compare(Card c1, Card c2) {
+                    return c1.getCardName().compareTo(c2.getCardName());
+            }
+        });   
         return allCards;
     }
 
@@ -84,8 +95,24 @@ public class User {
         return null;
     }
 
+    public void setActiveCards(ArrayList<Card> cards) {
+        activeCards = cards;
+    }
+
+    public void setSideCards(ArrayList<Card> sideCards) {
+        secondaryDeck = sideCards;
+    }
+
+    public void addCardToAllCard(Card card) {
+        allCards.add(card);
+    }
+
     public static ArrayList<User> getUsers() {
         return users;
+    }
+
+    public void removeCardFromAllCard (Card card) {
+        allCards.remove(card);
     }
 
     public int getScore() {

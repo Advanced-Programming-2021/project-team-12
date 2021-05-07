@@ -27,6 +27,12 @@ public class Address {
         }
     }
 
+    public Address(int number, String kind, boolean isMine) {
+        this.number = number;
+        this.kind = kind;
+        this.isMine = isMine;  
+    } 
+
     public String getKind() {
         return kind;
     }
