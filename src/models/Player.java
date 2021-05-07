@@ -220,8 +220,6 @@ public class Player {
             return "unused is empty";
         if (isHandFull())
             return "Hand is full";
-        Random random = new Random();   
-        int i = random.nextInt(count - 1);  
         Random random = new Random();
         int i = random.nextInt(count - 1);
         int place = getFirstEmptyPlace(handCardNumbers, 5);
@@ -273,7 +271,6 @@ public class Player {
     }
 
     public int getFirstEmptyPlace(HashMap<Integer, Card> cardNumbers, int max) {
-        for(int i = 1; i <= max; i++) 
         for (int i = 1; i <= max; i++)
             if (!cardNumbers.containsKey(i))
                 return i;
