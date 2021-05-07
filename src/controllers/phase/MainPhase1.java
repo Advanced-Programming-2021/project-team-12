@@ -532,11 +532,11 @@ public class MainPhase1 {
     }
 
     private void showFieldZoneCard() {
-        Game.whoseTurnPlayer().showFieldZoneCard();
+        Board.showFieldZoneCard(true);
     }
 
     private void showOpponentFieldZoneCard() {
-        Game.whoseTurnPlayer().showOpponentFieldZoneCard();
+        Board.showFieldZoneCard(false);
     }
 
     private void directAttack(Matcher matcher) {

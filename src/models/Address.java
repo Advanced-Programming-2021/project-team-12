@@ -35,7 +35,7 @@ public class Address {
         return number;
     }
 
-    public Boolean ckeckIsMine() {
+    public Boolean checkIsMine() {
         return isMine;
     }
 

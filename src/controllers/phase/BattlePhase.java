@@ -415,8 +415,8 @@ public class BattlePhase {
             Player currentPlayer = Game.whoseTurnPlayer();
             Player rivalPlayer=Game.whoseRivalPlayer();
             int index = currentPlayer.getIndexOfThisCardByAddress(matcher.group(1));
-            if (currentPlayer.didWeAttackByThisCadInThisCardInThisTurn(index)) {
-                currentPlayer.setDidWeAttackByThisCadInThisCardInThisTurn(index);
+            if (currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
+                currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
                 //doubt should regard an error for being empty of board?
                 MonsterCard monsterCardForDirectAttack = currentPlayer.getMonsterCardByStringAddress(matcher.group(1));
                 rivalPlayer.decreaseLP(monsterCardForDirectAttack.getAttack());

@@ -157,7 +157,9 @@ public class Board {
     public static void showGraveyard() {
     //dear ali please print by yourself
     }
-
+    public static void showFieldZoneCard(boolean isMine) {
+        //dear ali please print by yourself
+    }
 
 
 }

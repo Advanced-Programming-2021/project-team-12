@@ -24,8 +24,8 @@ public class StandByPhase {
         Game.secondPlayer.setHeSummonedOrSet(false);
         Game.firstPlayer.setDidWeChangePositionThisCardInThisTurnCompletelyFalse();
         Game.secondPlayer.setDidWeChangePositionThisCardInThisTurnCompletelyFalse();
-        Game.firstPlayer.setDidWeAttackByThisCadInThisCardInThisTurnCompletelyFalse();
-        Game.secondPlayer.setDidWeAttackByThisCadInThisCardInThisTurnCompletelyFalse();
+        Game.firstPlayer.setDidWeAttackByThisCardInThisCardInThisTurnCompletelyFalse();
+        Game.secondPlayer.setDidWeAttackByThisCardInThisCardInThisTurnCompletelyFalse();
     }
     public static void checkIfGameEnded(){
         if(Game.firstPlayer.getLP() < 0){
@@ -40,7 +40,6 @@ public class StandByPhase {
                     "(type \"yes\" or \"not\"");
             if(Main.scanner.nextLine().equals("yes")) SetSpell.destroyMessengerOfPeace();
             else Game.whoseTurnPlayer().decreaseLP(100);
-
         }
     }
 }
