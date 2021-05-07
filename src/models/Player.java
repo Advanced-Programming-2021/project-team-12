@@ -114,10 +114,8 @@ public class Player {
         return null;
     }
 
-    public String moveCardWithAddress(Address beginningAddress, Address destinationAddress) {
+    public Address moveCardWithAddress(Address beginningAddress, Address destinationAddress) {
         HashMap<Integer, Card> beginningHashMap = getHashMapByAddress(beginningAddress);
-        if (!beginningHashMap.containsKey(beginningAddress.getNumber()))
-            return "there is no card in beginningAddress";
         return setCard(beginningHashMap.get(beginningAddress.getNumber()), destinationAddress.getKind());
     }
 
