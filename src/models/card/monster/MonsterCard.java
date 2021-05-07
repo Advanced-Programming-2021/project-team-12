@@ -23,7 +23,6 @@ public class MonsterCard {
     private MonsterMode monsterMode;
     private boolean isRitual;
     private String name;
-    private String description;
     private int price;
     private Attribute attribute;
     private MonsterEffect monsterEffect;
@@ -48,13 +47,7 @@ public class MonsterCard {
         monsterCards.add(this);
     }
 
-    public void setDesctiption(String description) {
-        this.description = description;
-    }
 
-    public String getDescription() {
-        return description;
-    }
 
     public void runEffect() {
         this.monsterEffect.run();
@@ -182,5 +175,49 @@ public class MonsterCard {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public void setAttribute(Attribute attribute) {
+        this.attribute = attribute;
+    }
+
+    public void setDefence(int defence) {
+        this.defence = defence;
+    }
+
+    public void setEffect(String effect) {
+        this.effect = effect;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRitual(boolean ritual) {
+        isRitual = ritual;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setMonsterMode(MonsterMode monsterMode) {
+        this.monsterMode = monsterMode;
+    }
+
+    public void setMonsterEffect(MonsterEffect monsterEffect) {
+        this.monsterEffect = monsterEffect;
     }
 }

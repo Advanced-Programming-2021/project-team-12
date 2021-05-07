@@ -116,13 +116,13 @@ public class Card {
         return 0;
     }
 
-    public Boolean ckeckIsLimit() {
+    public Boolean checkIsLimit() {
         if (kind.equals("Spell")) {
             SpellCard card = SpellCard.getSpellCardByName(name);
             return card.checkIsLimit();
         } else if (kind.equals("Trap")) {
             TrapCard card = TrapCard.getTrapCardByName(name);
-            return card.ckeckIsLimit();
+            return card.checkIsLimit();
         }
         return false;
     }
