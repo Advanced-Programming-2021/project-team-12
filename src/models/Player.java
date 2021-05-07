@@ -73,12 +73,8 @@ public class Player {
             graveyardCardNumbers.put(stateHashMap.size() + 1, fieldCardNumbers.get(1));
             fieldCardNumbers.remove(1);
             fieldCardNumbers.put(1, card);
-<<<<<<< HEAD
         }
         else if (cardState.equals("graveyard")) {
-=======
-        } else if (cardState.equals("graveyard"))
->>>>>>> 729abbdc69c1c2982c83b425ffc4a13946c6af08
             graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, card);
             place = graveyardCardNumbers.size();
         }
@@ -86,16 +82,8 @@ public class Player {
             int max = 5;
             if (cardState.equals("hand"))
                 max = 6;
-<<<<<<< HEAD
             place = getFirstEmptyPlace(stateHashMap, max);   
             stateHashMap.put(place, card);
-=======
-            place = getFirstEmptyPlace(stateHashMap, max);
-            if (place == 0)
-                return "it is full";
-            else
-                stateHashMap.put(place, card);
->>>>>>> 729abbdc69c1c2982c83b425ffc4a13946c6af08
         }
         if (getFaceHashMapByKind(cardState) != null)
             getFaceHashMapByKind(cardState).put(place, false);
@@ -198,19 +186,11 @@ public class Player {
         return true;
     }
 
-<<<<<<< HEAD
     public void setCardFromHandToMonsterZone(String address){
 
     }
 
     public void setCardFromHandToSpellZone(String address){
-=======
-    public void setCardFromHandToMonsterZone(String address) {
-
-    }
-
-    public void setCardFromHandToSpellZone(String address) {
->>>>>>> 729abbdc69c1c2982c83b425ffc4a13946c6af08
 
     }
 
@@ -302,11 +282,7 @@ public class Player {
 
     }
 
-<<<<<<< HEAD
     public String whatKindaCardIsInThisAddress(String address){
-=======
-    public String whatKindaCardIsInThisAddress(String address) {
->>>>>>> 729abbdc69c1c2982c83b425ffc4a13946c6af08
 
     }
 
@@ -318,10 +294,6 @@ public class Player {
 
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 729abbdc69c1c2982c83b425ffc4a13946c6af08
     public static void destroyAllRivalTrapAndSpells() {
 
     }
@@ -333,7 +305,6 @@ public class Player {
     public TrapCard getTrapCardByStringAddress(String address) {
     }
 
-<<<<<<< HEAD
     public boolean isThisMonsterOnDHPosition(String address){
 
     }
@@ -356,65 +327,19 @@ public class Player {
 
     public void setDidWeChangePositionThisCardInThisTurn(int index){
         didWeChangePositionThisCardInThisTurn[index]=true;
-=======
-    public boolean isThisMonsterOnDHPosition(String address) {
-
-    }
-
-    public void convertThisMonsterFromDHToOO(String address) {
-
-    }
-
-    public void convertThisMonsterFromAttackToDefence(String address) {
-
-    }
-
-    public void convertThisMonsterFromDefenceToAttack(String address) {
-
-    }
-
-    public boolean isThisMonsterOnAttackPosition(String address) {
-
-    }
-
-    public void setDidWeChangePositionThisCardInThisTurn(int index) {
-        didWeChangePositionThisCardInThisTurn[index] = true;
->>>>>>> 729abbdc69c1c2982c83b425ffc4a13946c6af08
     }
 
     public boolean didWeChangePositionThisCardInThisTurn(int index) {
         return didWeChangePositionThisCardInThisTurn[index];
     }
 
-<<<<<<< HEAD
     public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse(){
         Arrays.fill(didWeChangePositionThisCardInThisTurn, false);
     }
 
-    public void setDidWeAttackByThisCadInThisCardInThisTurn(int index){
-        didWeAttackByThisCadInThisCard[index]=true;
-    }
-=======
-    public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse() {
-        Arrays.fill(didWeChangePositionThisCardInThisTurn, false);
-    }
->>>>>>> 729abbdc69c1c2982c83b425ffc4a13946c6af08
-
     public void setDidWeAttackByThisCardInThisCardInThisTurn(int index) {
         didWeAttackByThisCardInThisCard[index] = true;
     }
-
-<<<<<<< HEAD
-    public void setDidWeAttackByThisCadInThisCardInThisTurnCompletelyFalse(){
-        Arrays.fill(didWeAttackByThisCadInThisCard, false);
-    }
-
-    public int getIndexOfThisCardByAddress(String address){
-=======
-    public boolean didWeAttackByThisCardInThisCardInThisTurn(int index) {
-        return didWeAttackByThisCardInThisCard[index];
-    }
->>>>>>> 729abbdc69c1c2982c83b425ffc4a13946c6af08
 
     public void setDidWeAttackByThisCardInThisCardInThisTurnCompletelyFalse() {
         Arrays.fill(didWeAttackByThisCardInThisCard, false);
