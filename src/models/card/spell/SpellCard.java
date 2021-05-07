@@ -1,5 +1,6 @@
 package models.card.spell;
 
+import models.Address;
 import models.card.spell.spell_effect.SpellEffect;
 //import card.trap.TrapCard;
 
@@ -29,6 +30,14 @@ public class SpellCard {
 
     public static ArrayList<SpellCard> getSpellCards() {
         return spellCards;
+    }
+
+    public static boolean canWeActivateThisSpell(Address address) {
+
+    }
+
+    public static void doEffect(Address address) {
+
     }
 
     public SpellMode getSpellMode() {

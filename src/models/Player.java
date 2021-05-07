@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Player {
+    private boolean[] didWeActivateThisSpell;
     private boolean[] didWeAttackByThisCardInThisCard;
     private boolean isHeSummonedOrSet;
     private boolean[] didWeChangePositionThisCardInThisTurn;
@@ -64,7 +65,7 @@ public class Player {
         return null;
     }
 
-    public String setCard(Card card, String cardState) {
+    public Address setCard(Card card, String cardState) {
         HashMap<Integer, Card> stateHashMap = getHashMapByKind(cardState);
         int place = 1;
         if (cardState.equals("field")) {
@@ -339,7 +340,18 @@ public class Player {
         Arrays.fill(didWeAttackByThisCardInThisCard, false);
     }
 
+    public void setDidWeActivateThisSpell(int index) {
+        didWeActivateThisSpell[index]=true;
+    }
+    public boolean didWeActivateThisSpell(int index){
+        return didWeActivateThisSpell[index];
+    }
+    public void setDidWeActivateThisSpellCompletelyFalse() {
+        Arrays.fill(didWeAttackByThisCardInThisCard, false);
+    }
+
     public int getIndexOfThisCardByAddress(String address) {
 
     }
+
 }
