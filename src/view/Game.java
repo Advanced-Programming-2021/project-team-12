@@ -24,7 +24,11 @@ public class Game {
     public static boolean isSurrender(){
         return isSurrender;
     }
-    public static void setIsSurrender(){
-        isSurrender=true;
+    public static void setIsSurrender(boolean isSurrender1){
+        isSurrender=isSurrender1;
+    }
+
+    public static void setWinner(Player winner) {
+        Winner = winner;
     }
 }

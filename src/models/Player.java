@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Player {
+    private HashMap<Address, PositionOfCardInBoard> positionOfCardInBoardByAddress;
     private boolean[] didWeActivateThisSpell;
     private boolean[] didWeAttackByThisCardInThisCard;
     private boolean isHeSummonedOrSet;
@@ -29,6 +30,7 @@ public class Player {
     private ArrayList<Integer> indexOfCardUsedSuijin;
 
     {
+        positionOfCardInBoardByAddress=new HashMap<>();
         indexOfCardUsedSuijin = new ArrayList<>();
         didWeChangePositionThisCardInThisTurn = new boolean[100];
         didWeAttackByThisCardInThisCard = new boolean[100];
@@ -71,16 +73,14 @@ public class Player {
             if (fieldCardNumbers.containsKey(1)) 
                 moveCardWithKind(new Address(1, "field", true), "graveyard");
             fieldCardNumbers.put(1, card);
-        }
-        else if (cardState.equals("graveyard")) {
+        } else if (cardState.equals("graveyard")) {
             graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, card);
             place = graveyardCardNumbers.size();
-        }
-        else {
+        } else {
             int max = 5;
             if (cardState.equals("hand"))
                 max = 6;
-            place = getFirstEmptyPlace(stateHashMap, max);   
+            place = getFirstEmptyPlace(stateHashMap, max);
             stateHashMap.put(place, card);
         }
         indexOfCard.put(new Address(place, cardState, true), index);
@@ -328,40 +328,42 @@ public class Player {
         return TrapCard.getTrapCardByName(getCardByAddress(cardAddress).getCardName());
     }
 
-    public boolean isThisMonsterOnDHPosition(String address){
+    public boolean isThisMonsterOnDHPosition(String address) {
 
     }
 
-    public void convertThisMonsterFromDHToOO(String address){
+    public void convertThisMonsterFromDHToOO(String address) {
 
     }
 
-    public void convertThisMonsterFromAttackToDefence(String address){
+    public void convertThisMonsterFromAttackToDefence(String address) {
 
     }
 
-    public void convertThisMonsterFromDefenceToAttack(String address){
+    public void convertThisMonsterFromDefenceToAttack(String address) {
 
     }
 
-    public boolean isThisMonsterOnAttackPosition(String address){
+    public boolean isThisMonsterOnAttackPosition(String address) {
 
     }
 
-    public void setDidWeChangePositionThisCardInThisTurn(int index){
-        didWeChangePositionThisCardInThisTurn[index]=true;
+    public void setDidWeChangePositionThisCardInThisTurn(int index) {
+        didWeChangePositionThisCardInThisTurn[index] = true;
     }
 
     public boolean didWeChangePositionThisCardInThisTurn(int index) {
         return didWeChangePositionThisCardInThisTurn[index];
     }
 
-    public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse(){
+    public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse() {
         Arrays.fill(didWeChangePositionThisCardInThisTurn, false);
     }
-    public boolean didWeAttackByThisCardInThisCardInThisTurn(int index){
+
+    public boolean didWeAttackByThisCardInThisCardInThisTurn(int index) {
         return didWeAttackByThisCardInThisCard[index];
     }
+
     public void setDidWeAttackByThisCardInThisCardInThisTurn(int index) {
         didWeAttackByThisCardInThisCard[index] = true;
     }
@@ -371,11 +373,13 @@ public class Player {
     }
 
     public void setDidWeActivateThisSpell(int index) {
-        didWeActivateThisSpell[index]=true;
+        didWeActivateThisSpell[index] = true;
     }
-    public boolean didWeActivateThisSpell(int index){
+
+    public boolean didWeActivateThisSpell(int index) {
         return didWeActivateThisSpell[index];
     }
+
     public void setDidWeActivateThisSpellCompletelyFalse() {
         Arrays.fill(didWeAttackByThisCardInThisCard, false);
     }
@@ -384,5 +388,13 @@ public class Player {
         Address cardAddress = new Address (address);
         return indexOfCard.get(cardAddress);
     }
+    public void setPositionOfCardInBoardByAddress(Address address, PositionOfCardInBoard positionOfCardInBoard){
+        positionOfCardInBoardByAddress.put(address,positionOfCardInBoard);
+    }
+    public PositionOfCardInBoard positionOfCardInBoardByAddress(Address address){
+        positionOfCardInBoardByAddress.get(address);
+    }
+    public MonsterCard getMonsterCardByAddress(Address address){
 
+    }
 }
