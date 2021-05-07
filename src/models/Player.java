@@ -336,7 +336,9 @@ public class Player {
     public void setDidWeChangePositionThisCardInThisTurnCompletelyFalse(){
         Arrays.fill(didWeChangePositionThisCardInThisTurn, false);
     }
-
+    public boolean didWeAttackByThisCardInThisCardInThisTurn(int index){
+        return didWeAttackByThisCardInThisCard[index];
+    }
     public void setDidWeAttackByThisCardInThisCardInThisTurn(int index) {
         didWeAttackByThisCardInThisCard[index] = true;
     }

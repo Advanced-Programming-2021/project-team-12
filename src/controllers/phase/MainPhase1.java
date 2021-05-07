@@ -558,7 +558,7 @@ public class MainPhase1 {
                     if(SpellCard.canWeActivateThisSpell(address)){
                         currentPlayer.setDidWeActivateThisSpell(index);
                         System.out.println("spell activated");
-                        SpellCard.doEffect(currentPlayer.setCard(Board.getCardByAddress(address),"field"););
+                        SpellCard.doEffect(currentPlayer.setCard(Board.getCardByAddress(address),"field"));
                     }else System.out.println("preparations of this spell are not done yet");
                 }else if (!(currentPlayer.isSpellZoneFull()) ) {
                   if(SpellCard.canWeActivateThisSpell(address)){
