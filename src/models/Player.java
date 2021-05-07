@@ -67,7 +67,6 @@ public class Player {
 
     public Address addCardToAddress(Card card, String cardState, int index) {
         HashMap<Integer, Card> stateHashMap = getHashMapByKind(cardState);
-        Address address;
         int place = 1;
         if (cardState.equals("field")) {
             if (fieldCardNumbers.containsKey(1)) 
