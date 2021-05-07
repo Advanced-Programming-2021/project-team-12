@@ -23,8 +23,8 @@ public class Player {
     private HashMap<Integer, Card> fieldCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> monsterZoneCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> spellZoneCardNumbers = new HashMap<>();
-    private ArrayList<Card> allCardsOfPlayer = new ArrayList<>();//might be wrong
     private HashMap<Integer, Boolean> isMonsterFaceUp = new HashMap<>();
+    private HashMap<Address, Integer> indexOfCard = new HashMap<>();
     private HashMap<Integer, Boolean> isSpellFaceUp = new HashMap<>();
     private ArrayList<Integer> indexOfCardUsedSuijin;
 
@@ -36,11 +36,9 @@ public class Player {
 
     public Player(User user) {
         this.name = user.getName();
-        ;
         LP = 8000;
         this.nickName = user.getNickName();
         unusedCards = (ArrayList<Card>) user.getActiveCards().clone();
-        allCardsOfPlayer = (ArrayList<Card>) user.getActiveCards().clone();
         for (int i = 0; i < 6; i++)
             addCardFromUnusedToHand();
     }
@@ -65,13 +63,13 @@ public class Player {
         return null;
     }
 
-    public Address setCard(Card card, String cardState) {
+    public Address addCardToAddress(Card card, String cardState, int index) {
         HashMap<Integer, Card> stateHashMap = getHashMapByKind(cardState);
         Address address;
         int place = 1;
         if (cardState.equals("field")) {
-            graveyardCardNumbers.put(stateHashMap.size() + 1, fieldCardNumbers.get(1));
-            fieldCardNumbers.remove(1);
+            if (fieldCardNumbers.containsKey(1)) 
+                moveCardWithKind(new Address(1, "field", true), "graveyard");
             fieldCardNumbers.put(1, card);
         }
         else if (cardState.equals("graveyard")) {
@@ -85,6 +83,7 @@ public class Player {
             place = getFirstEmptyPlace(stateHashMap, max);   
             stateHashMap.put(place, card);
         }
+        indexOfCard.put(new Address(place, cardState, true), index);
         if (getFaceHashMapByKind(cardState) != null)
             getFaceHashMapByKind(cardState).put(place, false);
         return new Address(place, cardState, true);
@@ -114,9 +113,20 @@ public class Player {
         return null;
     }
 
-    public Address moveCardWithAddress(Address beginningAddress, Address destinationAddress) {
+    public Address moveCardWithKind(Address beginningAddress, String kind) {
         HashMap<Integer, Card> beginningHashMap = getHashMapByAddress(beginningAddress);
-        return setCard(beginningHashMap.get(beginningAddress.getNumber()), destinationAddress.getKind());
+        int index = indexOfCard.get(beginningAddress);
+        return addCardToAddress(beginningHashMap.get(beginningAddress.getNumber()), kind, index);
+    }
+
+    public void moveCardWithAddress(Address beginningAddress, Address destinationAddress) {
+        HashMap<Integer, Card> beginningHashMap = getHashMapByAddress(beginningAddress);
+        HashMap<Integer, Card> destinationHashMap = getHashMapByAddress(destinationAddress);
+        int index = indexOfCard.get(beginningAddress);
+        destinationHashMap.put(destinationAddress.getNumber(), beginningHashMap.get(beginningAddress.getNumber()));
+        beginningHashMap.remove(beginningAddress.getNumber());
+        indexOfCard.remove(beginningAddress);
+        indexOfCard.put(destinationAddress, index);
     }
 
     public void setName(String name) {
@@ -184,12 +194,16 @@ public class Player {
         return true;
     }
 
-    public void setCardFromHandToMonsterZone(String address){
-
+    public void setCardFromHandToMonsterZone (String address) {
+        Address beginningAddress = new Address(address);
+        int place = getFirstEmptyPlace(monsterZoneCardNumbers, 5);
+        moveCardWithKind(beginningAddress, "monster");
     }
 
-    public void setCardFromHandToSpellZone(String address){
-
+    public void setCardFromHandToSpellZone (String address) {
+        Address beginningAddress = new Address(address);
+        int place = getFirstEmptyPlace(spellZoneCardNumbers, 5);
+        moveCardWithKind(beginningAddress, "spell");
     }
 
     public String addCardFromUnusedToHand() {
@@ -203,6 +217,8 @@ public class Player {
         int place = getFirstEmptyPlace(handCardNumbers, 5);
         handCardNumbers.put(place, unusedCards.get(i));
         unusedCards.remove(i);
+        Address address = new Address(place, "hand", true);
+        indexOfCard.put(address, indexOfCard.size() + 1);
         return handCardNumbers.get(place).getCardName();
     }
 
@@ -223,6 +239,7 @@ public class Player {
             fieldCardNumbers.remove(1);
         if (getFaceHashMapByKind(address.getKind()) != null)
             getFaceHashMapByKind(address.getKind()).remove(address.getNumber());
+        indexOfCard.remove(address);
     }
 
     public Card getCardByAddress(Address address) {
@@ -269,38 +286,46 @@ public class Player {
     }
 
     public boolean isMonsterInThisMonsterZoneTypeAddress(int monsterZoneTypeAddress) {
-
+        return monsterZoneCardNumbers.containsKey(monsterZoneTypeAddress);
     }
 
     public void removeThisMonsterZoneTypeAddressForTribute(int monsterZoneTypeAddress) {
-
+        monsterZoneCardNumbers.remove(monsterZoneTypeAddress);
     }
 
     public MonsterCard getMonsterCardByStringAddress(String address) {
-
+        Address cardAddress = new Address(address);
+        return MonsterCard.getMonsterCardByName(getCardByAddress(cardAddress).getCardName());
     }
 
     public String whatKindaCardIsInThisAddress(String address){
-
+        Address cardAddress = new Address(address);
+        return getCardByAddress(cardAddress).getKind();
     }
 
     public boolean isThereAnyCardInMonsterZone() {
-
+        return !monsterZoneCardNumbers.isEmpty();
     }
 
     public boolean isThereTwoCardInMonsterZone() {
-
+        int count = monsterZoneCardNumbers.size();
+        if (count >= 2)
+            return true;
+        return false;
     }
 
     public static void destroyAllRivalTrapAndSpells() {
-
+        
     }
 
     public SpellCard getSpellCardByStringAddress(String address) {
-
+        Address cardAddress = new Address(address);
+        return SpellCard.getSpellCardByName(getCardByAddress(cardAddress).getCardName());
     }
 
     public TrapCard getTrapCardByStringAddress(String address) {
+        Address cardAddress = new Address(address);
+        return TrapCard.getTrapCardByName(getCardByAddress(cardAddress).getCardName());
     }
 
     public boolean isThisMonsterOnDHPosition(String address){
@@ -356,7 +381,8 @@ public class Player {
     }
 
     public int getIndexOfThisCardByAddress(String address) {
-
+        Address cardAddress = new Address (address);
+        return indexOfCard.get(cardAddress);
     }
 
 }
