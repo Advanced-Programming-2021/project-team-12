@@ -8,6 +8,7 @@ import models.Board;
 import models.Player;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
+import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
 import view.Game;
 import view.Main;
@@ -532,11 +533,11 @@ public class MainPhase1 {
     }
 
     private void showFieldZoneCard() {
-        Game.whoseTurnPlayer().showFieldZoneCard();
+        Board.showFieldZoneCard(true);
     }
 
     private void showOpponentFieldZoneCard() {
-        Game.whoseTurnPlayer().showOpponentFieldZoneCard();
+        Board.showFieldZoneCard(false);
     }
 
     private void directAttack(Matcher matcher) {
@@ -548,11 +549,30 @@ public class MainPhase1 {
     }
 
     private void activeSpell(Matcher matcher) {
-
+        if (matcher.find()) {
+            Address address=new Address(matcher.group(1));
+            Player currentPlayer = Game.whoseTurnPlayer();
+            int index = currentPlayer.getIndexOfThisCardByAddress(matcher.group(1));
+            if (currentPlayer.didWeActivateThisSpell(index)) {
+                if (currentPlayer.getSpellCardByStringAddress(matcher.group(1)).getSpellMode() == SpellMode.FIELD){
+                    if(SpellCard.canWeActivateThisSpell(address)){
+                        currentPlayer.setDidWeActivateThisSpell(index);
+                        System.out.println("spell activated");
+                        SpellCard.doEffect(currentPlayer.setCard(Board.getCardByAddress(address),"field"););
+                    }else System.out.println("preparations of this spell are not done yet");
+                }else if (!(currentPlayer.isSpellZoneFull()) ) {
+                  if(SpellCard.canWeActivateThisSpell(address)){
+                      currentPlayer.setDidWeActivateThisSpell(index);
+                      System.out.println("spell activated");
+                      SpellCard.doEffect(currentPlayer.setCard(Board.getCardByAddress(address),"spell"));
+                  }else System.out.println("preparations of this spell are not done yet");
+                }else System.out.println("spell card zone is full");
+            } else System.out.println("you have already activated this card");
+        }
     }
 
     private void activeTrap(Matcher matcher) {
-
+    
     }
 
     private void ritualSummon(Matcher matcher) {

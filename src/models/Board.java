@@ -100,31 +100,31 @@ public class Board {
     public static HashMap<Integer, Card> getHashMapByAddress(Address address) {
         loadData();
         if (address.getKind().equals("monster")) {
-            if (address.ckeckIsMine())
+            if (address.checkIsMine())
                 return currentPlayerMonsterZoneCard;
             else
                 return opponentPlayerMonsterZoneCard;
         }
         if (address.getKind().equals("spell")) {
-            if (address.ckeckIsMine())
+            if (address.checkIsMine())
                 return currentPlayerSpellZoneCard;
             else
                 return opponentPlayerSpellZoneCard;
         }
         if (address.getKind().equals("field")) {
-            if (address.ckeckIsMine())
+            if (address.checkIsMine())
                 return currentPlayerFieldCard;
             else
                 return opponentPlayerFieldCard;
         }
         if (address.getKind().equals("hand")) {
-            if (address.ckeckIsMine())
+            if (address.checkIsMine())
                 return currentPlayerHandCard;
             else
                 return opponentPlayerHandCard;
         }
         if (address.getKind().equals("graveyard")) {
-            if (address.ckeckIsMine())
+            if (address.checkIsMine())
                 return currentPlayerGraveyardCard;
             else
                 return opponentPlayerGraveyardCard;
@@ -158,7 +158,8 @@ public class Board {
     public static void showGraveyard() {
     //dear ali please print by yourself
     }
-
-
+    public static void showFieldZoneCard(boolean isMine) {
+        //dear ali please print by yourself
+    }
 
 }

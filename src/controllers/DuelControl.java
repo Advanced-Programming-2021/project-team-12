@@ -1,4 +1,4 @@
 package controllers;
-public class DuelControll {
+public class DuelControl {
     
 }

@@ -1,6 +1,6 @@
 package controllers;
 
-public class ShopControll {
+public class ShopControl {
     public void Bye(String cardName) {
 
     }

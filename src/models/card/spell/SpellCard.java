@@ -1,5 +1,6 @@
 package models.card.spell;
 
+import models.Address;
 import models.card.spell.spell_effect.SpellEffect;
 //import card.trap.TrapCard;
 
@@ -8,7 +9,6 @@ import java.util.ArrayList;
 public class SpellCard {
     private String description;
     private String effect;
-    private String description;
     private int price;
     private SpellMode spellMode;
     private boolean isLimit;
@@ -28,16 +28,16 @@ public class SpellCard {
         spellCards.add(this);
     }
 
-    public void setDesctiption(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public static ArrayList<SpellCard> getSpellCards() {
         return spellCards;
+    }
+
+    public static boolean canWeActivateThisSpell(Address address) {
+
+    }
+
+    public static void doEffect(Address address) {
+
     }
 
     public SpellMode getSpellMode() {
@@ -74,4 +74,33 @@ public class SpellCard {
     public String getDescription() {
         return description;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEffect(String effect) {
+        this.effect = effect;
+    }
+
+    public void setLimit(boolean limit) {
+        isLimit = limit;
+    }
+
+    public void setSpellEffect(SpellEffect spellEffect) {
+        this.spellEffect = spellEffect;
+    }
+
+    public void setSpellMode(SpellMode spellMode) {
+        this.spellMode = spellMode;
+    }
+
 }
