@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Player {
-    private HashMap<Address, PositionOfCardInBoard> positionOfCardInBoardByAddress;
+    private HashMap<Address, PositionOfCardInBoard> positionOfCardInBoardByAddress;// Dear Ali you should make board based on this HashMap
     private boolean[] didWeActivateThisSpell;
     private boolean[] didWeAttackByThisCardInThisCard;
     private boolean isHeSummonedOrSet;

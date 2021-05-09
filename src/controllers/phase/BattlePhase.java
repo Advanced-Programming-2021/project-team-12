@@ -40,7 +40,7 @@ public class BattlePhase {
             else if (input.matches("^[ ]*activate effect[ ]*$"))
                 System.out.println("no card is selected yet");
             else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                showGraveyard();
+                Game.getMainPhase1().showGraveyard();
             else if (input.matches("^[ ]*card show --selected[ ]*$"))
                 System.out.println("no card is selected yet");
             else if (input.matches("^[ ]*surrender[ ]*$"))
@@ -104,9 +104,9 @@ public class BattlePhase {
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         System.out.println("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        showGraveyard();
+                        Game.getMainPhase1().showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+                        Game.getMainPhase1().showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         surrender();
                     else
@@ -149,9 +149,9 @@ public class BattlePhase {
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         System.out.println("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        showGraveyard();
+                        Game.getMainPhase1().showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --monster --opponent [\\d]+[ ]*$)"));
+                        Game.getMainPhase1().showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --monster --opponent [\\d]+[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         surrender();
                     else
@@ -194,9 +194,9 @@ public class BattlePhase {
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         activeSpell(getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        showGraveyard();
+                        Game.getMainPhase1().showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
+                        Game.getMainPhase1().showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         surrender();
                     else
@@ -239,9 +239,9 @@ public class BattlePhase {
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         System.out.println("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        showGraveyard();
+                        Game.getMainPhase1().showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
+                        Game.getMainPhase1().showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         surrender();
                     else
@@ -281,7 +281,7 @@ public class BattlePhase {
             else if (input.matches("^[ ]*activate effect[ ]*$"))
                 System.out.println("activate effect is only for spell cards.");
             else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                showGraveyard();
+                Game.getMainPhase1().showGraveyard();
             else if (input.matches("^[ ]*card show --selected[ ]*$"))
                 showFieldZoneCard();
             else if (input.matches("^[ ]*surrender[ ]*$"))
@@ -320,7 +320,7 @@ public class BattlePhase {
             else if (input.matches("^[ ]*activate effect[ ]*$"))
                 System.out.println("activate effect is only for spell cards.");
             else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                showGraveyard();
+                Game.getMainPhase1().showGraveyard();
             else if (input.matches("^[ ]*card show --selected[ ]*$"))
                 showOpponentFieldZoneCard();
             else if (input.matches("^[ ]*surrender[ ]*$"))
@@ -362,9 +362,9 @@ public class BattlePhase {
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         System.out.println("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        showGraveyard();
+                        Game.getMainPhase1().showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
+                        Game.getMainPhase1().showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         surrender();
                     else
@@ -376,12 +376,9 @@ public class BattlePhase {
     }
 
     private void summon(Matcher matcher) {
-
+        System.out.println("action not allowed in this phase");
     }
 
-    private void showSelectedCard(Matcher matcher) {
-
-    }
 
     private void attack(Matcher matcher, String myAddress) {
         if (matcher.find()) {
@@ -392,12 +389,17 @@ public class BattlePhase {
                 if (currentPlayer.getCardByAddress(address) != null) {
                     MonsterCard myMonsterCard = currentPlayer.getMonsterCardByStringAddress(myAddress);
                     MonsterCard rivalMonsterCard = currentPlayer.getMonsterCardByAddress(address);
+                    Address myAddressType = new Address(myAddress);
+                    currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
                     if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.OO) {
-                        attackOO(myAddress, address, index, currentPlayer,myMonsterCard,rivalMonsterCard);
+                        int damage = myMonsterCard.getAttack() - rivalMonsterCard.getAttack();
+                        attackOO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                     } else if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.DO) {
-                        attackDO(myAddress, address, index, currentPlayer,myMonsterCard,rivalMonsterCard);
+                        int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(true);
+                        attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                     } else {
-                        attackDH(myAddress, address, index, currentPlayer,myMonsterCard,rivalMonsterCard);
+                        int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(false);
+                        attackDH(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                     }
                 } else System.out.println("there is no card to attack here");
             } else System.out.println("this card already attacked");
@@ -405,16 +407,46 @@ public class BattlePhase {
         StandByPhase.checkIfGameEnded();
     }
 
-    private void attackOO(String myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard) {
-
+    private void attackOO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
+        if (damage == 0) {
+            currentPlayer.removeCard(address);
+            currentPlayer.removeCard(myAddress);
+            System.out.println("both you and your opponent monster cards are destroyed and no one receives damage");
+        } else if (damage > 0) {
+            currentPlayer.removeCard(address);
+            Game.whoseRivalPlayer().decreaseLP(damage);
+            System.out.println("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
+        } else {
+            damage = (-1) * damage;
+            currentPlayer.decreaseLP(damage);
+            currentPlayer.removeCard(myAddress);
+            System.out.println("Your monster card is destroyed and you received " + damage + " battle damage");
+        }
     }
 
-    private void attackDO(String myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard) {
-
+    private void attackDO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
+        if (damage == 0) System.out.println("no card is destroyed");
+        else if (damage > 0) {
+            currentPlayer.removeCard(address);
+            System.out.println("the defense position monster is destroyed");
+        } else {
+            damage = (-1) * damage;
+            currentPlayer.decreaseLP(damage);
+            System.out.println("no card is destroyed and you received "+damage+" battle damage");
+        }
     }
 
-    private void attackDH(String myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard) {
-
+    private void attackDH(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
+        if (damage == 0) System.out.println("opponent’s monster card was "+rivalMonsterCard.getName()+" and no card is destroyed");
+        else if (damage > 0) {
+            currentPlayer.removeCard(address);
+            System.out.println("opponent’s monster card was "+rivalMonsterCard.getName()+" and "+"the defense position monster is destroyed");
+        } else {
+            damage = (-1) * damage;
+            currentPlayer.decreaseLP(damage);
+            System.out.println("opponent’s monster card was "+rivalMonsterCard.getName()+" and "+"no card is destroyed and you received "+damage+" battle damage");
+        }
+        currentPlayer.setPositionOfCardInBoardByAddress(address,PositionOfCardInBoard.DO);
     }
 
     private void flipSummon(Matcher matcher) {
@@ -422,10 +454,6 @@ public class BattlePhase {
     }
 
     private void setPosition(Matcher matcher) {
-
-    }
-
-    private void showGraveyard() {
 
     }
 

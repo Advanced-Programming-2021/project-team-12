@@ -460,7 +460,7 @@ public class MainPhase1 {
     }
 
     // be careful for duplicate
-    private void showSelectedCard(Matcher matcher) {
+    public void showSelectedCard(Matcher matcher) {
         if (matcher.find()) {
             String kind = Game.whoseTurnPlayer().whatKindaCardIsInThisAddress(matcher.group(1));
             if (kind.equals("monster")) {
@@ -485,7 +485,6 @@ public class MainPhase1 {
                 System.out.println("Description: " + trapCardForShow.getDescription());
             }
         }
-
     }
 
     private void attack(Matcher matcher) {
@@ -528,7 +527,7 @@ public class MainPhase1 {
         }
     }
 
-    private void showGraveyard() {
+    public void showGraveyard() {
         Board.showGraveyard();
     }
 
@@ -550,23 +549,23 @@ public class MainPhase1 {
 
     private void activeSpell(Matcher matcher) {
         if (matcher.find()) {
-            Address address=new Address(matcher.group(1));
+            Address address = new Address(matcher.group(1));
             Player currentPlayer = Game.whoseTurnPlayer();
             int index = currentPlayer.getIndexOfThisCardByAddress(matcher.group(1));
             if (currentPlayer.didWeActivateThisSpell(index)) {
-                if (currentPlayer.getSpellCardByStringAddress(matcher.group(1)).getSpellMode() == SpellMode.FIELD){
-                    if(SpellCard.canWeActivateThisSpell(address)){
+                if (currentPlayer.getSpellCardByStringAddress(matcher.group(1)).getSpellMode() == SpellMode.FIELD) {
+                    if (SpellCard.canWeActivateThisSpell(address)) {
                         currentPlayer.setDidWeActivateThisSpell(index);
                         System.out.println("spell activated");
-                        SpellCard.doEffect(currentPlayer.setCard(Board.getCardByAddress(address),"field"));
-                    }else System.out.println("preparations of this spell are not done yet");
-                }else if (!(currentPlayer.isSpellZoneFull()) ) {
-                  if(SpellCard.canWeActivateThisSpell(address)){
-                      currentPlayer.setDidWeActivateThisSpell(index);
-                      System.out.println("spell activated");
-                      SpellCard.doEffect(currentPlayer.setCard(Board.getCardByAddress(address),"spell"));
-                  }else System.out.println("preparations of this spell are not done yet");
-                }else System.out.println("spell card zone is full");
+                        SpellCard.doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "field", index));
+                    } else System.out.println("preparations of this spell are not done yet");
+                } else if (!(currentPlayer.isSpellZoneFull())) {
+                    if (SpellCard.canWeActivateThisSpell(address)) {
+                        currentPlayer.setDidWeActivateThisSpell(index);
+                        System.out.println("spell activated");
+                        SpellCard.doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "spell", index));
+                    } else System.out.println("preparations of this spell are not done yet");
+                } else System.out.println("spell card zone is full");
             } else System.out.println("you have already activated this card");
         }
     }
@@ -580,9 +579,9 @@ public class MainPhase1 {
     }
 
     private void surrender() {
-    Game.setIsSurrender(true);
-    Game.setWinner(Game.whoseRivalPlayer());
-    goToNextPhase=true;
+        Game.setIsSurrender(true);
+        Game.setWinner(Game.whoseRivalPlayer());
+        goToNextPhase = true;
     }
 
     private static Matcher getCommandMatcher(String input, String regex) {
