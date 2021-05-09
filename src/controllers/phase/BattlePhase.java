@@ -44,7 +44,7 @@ public class BattlePhase {
             else if (input.matches("^[ ]*card show --selected[ ]*$"))
                 System.out.println("no card is selected yet");
             else if (input.matches("^[ ]*surrender[ ]*$"))
-                surrender();
+                Game.getMainPhase1().surrender();
             else
                 System.out.println("invalid command");
         }
@@ -108,7 +108,7 @@ public class BattlePhase {
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
                         Game.getMainPhase1().showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
-                        surrender();
+                        Game.getMainPhase1().surrender();
                     else
                         System.out.println("invalid command");
                 }
@@ -153,7 +153,7 @@ public class BattlePhase {
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
                         Game.getMainPhase1().showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --monster --opponent [\\d]+[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
-                        surrender();
+                        Game.getMainPhase1().surrender();
                     else
                         System.out.println("invalid command");
                 }
@@ -198,7 +198,7 @@ public class BattlePhase {
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
                         Game.getMainPhase1().showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
-                        surrender();
+                        Game.getMainPhase1().surrender();
                     else
                         System.out.println("invalid command");
                 }
@@ -243,7 +243,7 @@ public class BattlePhase {
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
                         Game.getMainPhase1().showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
-                        surrender();
+                        Game.getMainPhase1().surrender();
                     else
                         System.out.println("invalid command");
                 }
@@ -283,9 +283,9 @@ public class BattlePhase {
             else if (input.matches("^[ ]*show graveyard[ ]*$"))
                 Game.getMainPhase1().showGraveyard();
             else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                showFieldZoneCard();
+                Game.getMainPhase1().showFieldZoneCard();
             else if (input.matches("^[ ]*surrender[ ]*$"))
-                surrender();
+                Game.getMainPhase1().surrender();
             else
                 System.out.println("invalid command");
         }
@@ -322,9 +322,9 @@ public class BattlePhase {
             else if (input.matches("^[ ]*show graveyard[ ]*$"))
                 Game.getMainPhase1().showGraveyard();
             else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                showOpponentFieldZoneCard();
+                Game.getMainPhase1().showOpponentFieldZoneCard();
             else if (input.matches("^[ ]*surrender[ ]*$"))
-                surrender();
+                Game.getMainPhase1().surrender();
             else
                 System.out.println("invalid command");
         }
@@ -366,7 +366,7 @@ public class BattlePhase {
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
                         Game.getMainPhase1().showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
-                        surrender();
+                        Game.getMainPhase1().surrender();
                     else
                         System.out.println("invalid command");
                 }
@@ -432,37 +432,30 @@ public class BattlePhase {
         } else {
             damage = (-1) * damage;
             currentPlayer.decreaseLP(damage);
-            System.out.println("no card is destroyed and you received "+damage+" battle damage");
+            System.out.println("no card is destroyed and you received " + damage + " battle damage");
         }
     }
 
     private void attackDH(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
-        if (damage == 0) System.out.println("opponent’s monster card was "+rivalMonsterCard.getName()+" and no card is destroyed");
+        if (damage == 0)
+            System.out.println("opponent’s monster card was " + rivalMonsterCard.getName() + " and no card is destroyed");
         else if (damage > 0) {
             currentPlayer.removeCard(address);
-            System.out.println("opponent’s monster card was "+rivalMonsterCard.getName()+" and "+"the defense position monster is destroyed");
+            System.out.println("opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "the defense position monster is destroyed");
         } else {
             damage = (-1) * damage;
             currentPlayer.decreaseLP(damage);
-            System.out.println("opponent’s monster card was "+rivalMonsterCard.getName()+" and "+"no card is destroyed and you received "+damage+" battle damage");
+            System.out.println("opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "no card is destroyed and you received " + damage + " battle damage");
         }
-        currentPlayer.setPositionOfCardInBoardByAddress(address,PositionOfCardInBoard.DO);
+        currentPlayer.setPositionOfCardInBoardByAddress(address, PositionOfCardInBoard.DO);
     }
 
     private void flipSummon(Matcher matcher) {
-
+        System.out.println("you can’t do this action in this phase");
     }
 
     private void setPosition(Matcher matcher) {
-
-    }
-
-    private void showFieldZoneCard() {
-
-    }
-
-    private void showOpponentFieldZoneCard() {
-
+        System.out.println("you can’t do this action in this phase");
     }
 
     private void directAttack(Matcher matcher) {
@@ -487,7 +480,7 @@ public class BattlePhase {
     }
 
     private void activeSpell(Matcher matcher) {
-
+        System.out.println("you can’t do this action in this phase");
     }
 
     private void activeTrap(Matcher matcher) {
@@ -495,10 +488,6 @@ public class BattlePhase {
     }
 
     private void ritualSummon(Matcher matcher) {
-
-    }
-
-    private void surrender() {
 
     }
 

@@ -531,11 +531,11 @@ public class MainPhase1 {
         Board.showGraveyard();
     }
 
-    private void showFieldZoneCard() {
+    public void showFieldZoneCard() {
         Board.showFieldZoneCard(true);
     }
 
-    private void showOpponentFieldZoneCard() {
+    public void showOpponentFieldZoneCard() {
         Board.showFieldZoneCard(false);
     }
 
@@ -578,7 +578,7 @@ public class MainPhase1 {
 
     }
 
-    private void surrender() {
+    public void surrender() {
         Game.setIsSurrender(true);
         Game.setWinner(Game.whoseRivalPlayer());
         goToNextPhase = true;

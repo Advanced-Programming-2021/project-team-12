@@ -1,4 +1,5 @@
 package models;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,14 +15,13 @@ public class Address {
         if (matcher.find()) {
             this.kind = matcher.group(2);
             this.number = Integer.parseInt(matcher.group(4));
-            if (!matcher.group(3).isEmpty()) 
+            if (!matcher.group(3).isEmpty())
                 this.isMine = false;
             else this.isMine = true;
-        }
-        else {
+        } else {
             matcher = getCommandMatcher(address, "(select )*--(field|graveyard)( --opponent)*");
             this.kind = matcher.group(2);
-            if (!matcher.group(3).isEmpty()) 
+            if (!matcher.group(3).isEmpty())
                 this.isMine = false;
             else this.isMine = true;
         }
@@ -30,8 +30,8 @@ public class Address {
     public Address(int number, String kind, boolean isMine) {
         this.number = number;
         this.kind = kind;
-        this.isMine = isMine;  
-    } 
+        this.isMine = isMine;
+    }
 
     public String getKind() {
         return kind;
@@ -47,10 +47,10 @@ public class Address {
 
     public static Boolean isAddressValid(String address) {
         if (address.matches("(select )*--monster( --opponent)* [12345]")
-           || address.matches("(select )*--spell( --opponent)* [12345]")
-           || address.matches("(select )*--field( --opponent)*")
-           || address.matches("(select )*--graveyard( --opponent)*( [\\d]+)*")
-           || address.matches("(select )*--hand( --opponent)* [123456]"))
+                || address.matches("(select )*--spell( --opponent)* [12345]")
+                || address.matches("(select )*--field( --opponent)*")
+                || address.matches("(select )*--graveyard( --opponent)*( [\\d]+)*")
+                || address.matches("(select )*--hand( --opponent)* [123456]"))
             return true;
         else return false;
     }
