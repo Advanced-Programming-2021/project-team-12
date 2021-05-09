@@ -351,17 +351,23 @@ public class MainPhase1 {
         if (matcher.find()) {
             if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
                 if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
-                    int level = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1)).getLevel();
-                    if (level <= 4) {
-                        Game.whoseTurnPlayer().setHeSummonedOrSet(true);
-                        Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(matcher.group(1));
-                        System.out.println("summoned successfully");
-                    } else if (level <= 6) {
-                        summonAMediumLevelMonster(matcher.group(1));
-                    }else summonAHighLevelMonster(matcher.group(1));
+                    if(!Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1)).isRitual()) {
+                        int level = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1)).getLevel();
+                        if (level <= 4) {
+                            Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+                            Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(matcher.group(1));
+                            System.out.println("summoned successfully");
+                        } else if (level <= 6) {
+                            summonAMediumLevelMonster(matcher.group(1));
+                        } else summonAHighLevelMonster(matcher.group(1));
+                    }else ritualSummon(matcher);
                 } else System.out.println("you already summoned/set on this turn");
             } else System.out.println("monster card zone is full");
         }
+    }
+
+    private void ritualSummon(Matcher matcher) {
+
     }
 
     private void summonAHighLevelMonster(String address) {
@@ -574,10 +580,6 @@ public class MainPhase1 {
     }
 
     private void activeTrap(Matcher matcher) {
-
-    }
-
-    private void ritualSummon(Matcher matcher) {
 
     }
 

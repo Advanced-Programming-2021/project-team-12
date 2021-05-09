@@ -396,4 +396,7 @@ public class Player {
     public MonsterCard getMonsterCardByAddress(Address address){
 
     }
+    public boolean isThereAnyRitualTypeSpellInOurHand(){
+        
+    }
 }
