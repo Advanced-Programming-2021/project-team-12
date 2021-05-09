@@ -139,7 +139,7 @@ public class MonsterCard {
         return attribute;
     }
 
-    public boolean checkIsRitual() {
+    public boolean isRitual() {
         return isRitual;
     }
 

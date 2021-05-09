@@ -353,18 +353,14 @@ public class MainPhase1 {
                 if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
                     int level = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1)).getLevel();
                     if (level <= 4) {
+                        Game.whoseTurnPlayer().setHeSummonedOrSet(true);
                         Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(matcher.group(1));
+                        System.out.println("summoned successfully");
                     } else if (level <= 6) {
                         summonAMediumLevelMonster(matcher.group(1));
-                    } else {
-                        summonAHighLevelMonster(matcher.group(1));
-                    }
-                } else {
-                    System.out.println("you already summoned/set on this turn");
-                }
-            } else {
-                System.out.println("monster card zone is full");
-            }
+                    }else summonAHighLevelMonster(matcher.group(1));
+                } else System.out.println("you already summoned/set on this turn");
+            } else System.out.println("monster card zone is full");
         }
     }
 
@@ -387,6 +383,7 @@ public class MainPhase1 {
                 if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard1))
                         && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))) {
                     System.out.println("summoned successfully");
+                    Game.whoseTurnPlayer().setHeSummonedOrSet(true);
                     Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard1));
                     Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard2));
                     Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(address);
@@ -408,6 +405,7 @@ public class MainPhase1 {
             } else {
                 if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard))) {
                     System.out.println("summoned successfully");
+                    Game.whoseTurnPlayer().setHeSummonedOrSet(true);
                     Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard));
                     Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(address);
                 } else System.out.println("there no monsters one this address");
@@ -433,6 +431,7 @@ public class MainPhase1 {
             if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
                 if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
                     Game.whoseTurnPlayer().setCardFromHandToMonsterZone(matcher.group(1));
+                    Game.whoseTurnPlayer().setHeSummonedOrSet(true);
                     System.out.println("set successfully");
                 } else {
                     System.out.println("you already summoned/set on this turn");
@@ -447,6 +446,8 @@ public class MainPhase1 {
         if (matcher.find()) {
             if (Game.whoseTurnPlayer().isSpellZoneFull()) {
                 Game.whoseTurnPlayer().setCardFromHandToSpellZone(matcher.group(1));
+                Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+                System.out.println("set successfully");
             } else System.out.println("spell card zone is full");
         }
     }
@@ -455,6 +456,8 @@ public class MainPhase1 {
         if (matcher.find()) {
             if (Game.whoseTurnPlayer().isSpellZoneFull()) {
                 Game.whoseTurnPlayer().setCardFromHandToSpellZone(matcher.group(1));
+                Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+                System.out.println("set successfully");
             } else System.out.println("spell card zone is full");
         }
     }
