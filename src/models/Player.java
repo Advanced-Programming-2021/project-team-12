@@ -413,4 +413,7 @@ public class Player {
                 if(sumOfLevelOfAllSubsetsOfMonsterZone().get(i).equals(levelOfRitualMonstersOnOurHand().get(j))) return true;
         return false; //don't bother I've already written it.
     }
+    public int howManyCardIsInTheHandCard(){
+
+    }
 }
