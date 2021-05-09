@@ -351,7 +351,7 @@ public class MainPhase1 {
         if (matcher.find()) {
             if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
                 if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
-                    if(!Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1)).isRitual()) {
+                    if (!Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1)).isRitual()) {
                         int level = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1)).getLevel();
                         if (level <= 4) {
                             Game.whoseTurnPlayer().setHeSummonedOrSet(true);
@@ -360,7 +360,7 @@ public class MainPhase1 {
                         } else if (level <= 6) {
                             summonAMediumLevelMonster(matcher.group(1));
                         } else summonAHighLevelMonster(matcher.group(1));
-                    }else ritualSummon(matcher);
+                    } else ritualSummon(matcher);
                 } else System.out.println("you already summoned/set on this turn");
             } else System.out.println("monster card zone is full");
         }
@@ -460,12 +460,30 @@ public class MainPhase1 {
 
     private void setSpell(Matcher matcher) {
         if (matcher.find()) {
-            if (Game.whoseTurnPlayer().isSpellZoneFull()) {
-                Game.whoseTurnPlayer().setCardFromHandToSpellZone(matcher.group(1));
-                Game.whoseTurnPlayer().setHeSummonedOrSet(true);
-                System.out.println("set successfully");
+            Player currentPlayer=Game.whoseTurnPlayer();
+            if (currentPlayer.isSpellZoneFull()) {
+                if (currentPlayer.getSpellCardByStringAddress(matcher.group(1)).getSpellMode() != SpellMode.RITUAL) {
+                    currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
+                    currentPlayer.setHeSummonedOrSet(true);
+                    System.out.println("set successfully");
+                } else {
+                    if(currentPlayer.isThereAnyRitualTypeMonsterInOurHand()
+                    &&currentPlayer.isOneOfLevelOfRitualMonstersInTheHandIsEqualToSumOfLevelOfSubsetOfMonsterZone()){
+                        System.out.println("Choose a ritual card from hand which has the condition!");
+                        String input=Main.scanner.nextLine();
+                        while(!(input.matches("^[ ]*select --hand [\\d]+[ ]*$"))){
+                            System.out.println("invalid command!");
+                            input=Main.scanner.nextLine();
+                        }
+                        setTheRitualSpell(input, matcher.group(1));
+                    }else System.out.println("there is no way you could ritual summon a monster");
+                }
             } else System.out.println("spell card zone is full");
         }
+    }
+
+    private void setTheRitualSpell(String input,String address) {
+
     }
 
     // be careful for duplicate

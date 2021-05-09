@@ -8,8 +8,8 @@ public class EndPhase {
     public void run(){
         System.out.println("phase: end phase");
         checkIfGameEnded();
-        swithPlayerTurn();
-        printWhosTurnIsIt();
+        switchPlayerTurn();
+        printWhoseTurnIsIt();
     }
     public void checkIfGameEnded(){
         if(Game.firstPlayer.getLP() < 0){
@@ -18,14 +18,14 @@ public class EndPhase {
             //mirzaei koja beram
         }
     }
-    public void swithPlayerTurn(){
+    public void switchPlayerTurn(){
         if(Game.playerTurn == PlayerTurn.FIRSTPLAYER){
             Game.playerTurn = PlayerTurn.SECONDPLAYER;
         } else {
             Game.playerTurn = PlayerTurn.FIRSTPLAYER;
         }
     }
-    public void printWhosTurnIsIt(){
+    public void printWhoseTurnIsIt(){
         if(Game.playerTurn == PlayerTurn.FIRSTPLAYER){
             System.out.println("its " + Game.firstPlayer.getNickName() + "’s turn");
         } else {

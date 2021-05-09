@@ -396,7 +396,21 @@ public class Player {
     public MonsterCard getMonsterCardByAddress(Address address){
 
     }
-    public boolean isThereAnyRitualTypeSpellInOurHand(){
-        
+    public boolean isThereAnyRitualModeSpellInOurHand(){
+
+    }
+    public boolean isThereAnyRitualTypeMonsterInOurHand(){
+
+    }
+    public ArrayList<Integer> sumOfLevelOfAllSubsetsOfMonsterZone(){
+
+    }
+    public ArrayList<Integer> levelOfRitualMonstersOnOurHand(){
+
+    }
+    public boolean isOneOfLevelOfRitualMonstersInTheHandIsEqualToSumOfLevelOfSubsetOfMonsterZone(){
+        for (int i = 0; i < sumOfLevelOfAllSubsetsOfMonsterZone().size(); i++) for (int j = 0; j <levelOfRitualMonstersOnOurHand().size() ; j++)
+                if(sumOfLevelOfAllSubsetsOfMonsterZone().get(i).equals(levelOfRitualMonstersOnOurHand().get(j))) return true;
+        return false; //don't bother I've already written it.
     }
 }
