@@ -395,8 +395,10 @@ public class BattlePhase {
                         int damage = myMonsterCard.getAttack() - rivalMonsterCard.getAttack();
                         attackOO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                     } else if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.DO) {
-                        int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(true);
-                        attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
+                        if(rivalMonsterCard.getDefence(true)!=-1) {
+                            int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(true);
+                            attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
+                        } else System.out.println("Attack has been cancelled for effect of a card");
                     } else {
                         int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(false);
                         attackDH(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);

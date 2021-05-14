@@ -31,13 +31,13 @@ public class Attack {
         TrapCard.welcomeToEffect();
         SpellCard.welcomeToEffect();
     }
-    public static void destroyThisAddress(String address){
+    public static void destroyThisAddress(Address address){
         //written by mohamad
     }
-    public static String whatAddressDestroyedNow(){
+    public static Address whatAddressHasDestroyedNow(){
         //written by mohamad
     }
-    public static String whatKindaCardGetDestroyedNow(){
+    public static String whatKindaCardGotDestroyedNow(){
         //written by mohamad
     }
     public static int whatIndexOfDefender(){

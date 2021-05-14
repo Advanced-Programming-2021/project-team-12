@@ -417,11 +417,15 @@ public class Player {
 
     }
     public boolean isOneOfLevelOfRitualMonstersInTheHandIsEqualToSumOfLevelOfSubsetOfMonsterZone(){
-        for (int i = 0; i < sumOfLevelOfAllSubsetsOfMonsterZone().size(); i++) for (int j = 0; j <levelOfRitualMonstersOnOurHand().size() ; j++)
+        for (int i = 0; i < sumOfLevelOfAllSubsetsOfMonsterZone().size(); i++)
+            for (int j = 0; j <levelOfRitualMonstersOnOurHand().size() ; j++)
                 if(sumOfLevelOfAllSubsetsOfMonsterZone().get(i).equals(levelOfRitualMonstersOnOurHand().get(j))) return true;
         return false; //don't bother I've already written it.
     }
     public int howManyCardIsInTheHandCard(){
 
+    }
+
+    public boolean doWeHaveThisCardInBoard(String card) {
     }
 }

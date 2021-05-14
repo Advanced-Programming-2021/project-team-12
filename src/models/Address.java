@@ -7,6 +7,7 @@ public class Address {
     private String kind;
     private int number;
     private Boolean isMine;
+    private Boolean isScanner;
 
     public Address(String address) {
         Matcher matcher;
@@ -55,6 +56,14 @@ public class Address {
 
     public Boolean checkIsMine() {
         return isMine;
+    }
+
+    public void setIsScanner(Boolean isScanner) {
+        this.isScanner = isScanner;
+    }
+
+    public Boolean getScanner() {
+        return isScanner;
     }
 
     public static Boolean isAddressValid(String address) {

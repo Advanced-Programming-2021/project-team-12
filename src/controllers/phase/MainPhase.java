@@ -3,20 +3,25 @@ package controllers.phase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import controllers.move.Attack;
 import models.Address;
 import models.Board;
 import models.Player;
 import models.card.monster.MonsterCard;
+import models.card.monster.monster_effect.DestroyOneMonsterWhenBecameFacedUp;
 import models.card.spell.SpellCard;
 import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
+import view.Effect;
 import view.Game;
 import view.Main;
 
-public class MainPhase1 {
+public class MainPhase {
     private Boolean goToNextPhase = false;
+    private int whatMainIsPhase;
 
     public void run() {
+        if(whatMainIsPhase==1) doEffect();
         System.out.println("phase: draw phase");
         Board.showBoeard();
         String input;
@@ -522,8 +527,21 @@ public class MainPhase1 {
         if (matcher.find()) {
             if (Game.whoseTurnPlayer().isThisMonsterOnDHPosition(matcher.group(1))) {
                 Game.whoseTurnPlayer().convertThisMonsterFromDHToOO(matcher.group(1));
+                Address address=new Address(matcher.group(1));
+                if(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("ManEaterBug")){
+                    doManEaterBugEffect();
+                }
                 System.out.println("flip summoned successfully");
             } else System.out.println("you can’t do this action in this phase");
+        }
+    }
+    private void doManEaterBugEffect(){
+        int monsterZoneNumber=Integer.parseInt(Effect.run("ManEaterBug"));
+        if(monsterZoneNumber<=5&&monsterZoneNumber>=1) {
+            Address address1 = new Address(monsterZoneNumber, "monster", false);
+            if(!Board.isAddressEmpty(address1)) {
+                Attack.destroyThisAddress(address1);
+            }
         }
     }
 
@@ -606,10 +624,26 @@ public class MainPhase1 {
         Game.setWinner(Game.whoseRivalPlayer());
         goToNextPhase = true;
     }
+    private void doEffect(){
+        if(Game.whoseTurnPlayer().doWeHaveThisCardInBoard("Scanner")) {
+            Address address =new Address(Integer.parseInt(Effect.run("Scanner")),"graveyard",false);
+            if(Board.getCardByAddress(address).getKind().equals("monster")){
+                MonsterCard monsterCard=Game.whoseTurnPlayer().getMonsterCardByAddress(address);
 
+            }
+        }
+    }
     private static Matcher getCommandMatcher(String input, String regex) {
-        input.trim();
+        input=input.trim();
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input);
+    }
+
+    public int getWhatMainIsPhase() {
+        return whatMainIsPhase;
+    }
+
+    public void setWhatMainIsPhase(int whatMainIsPhase) {
+        this.whatMainIsPhase = whatMainIsPhase;
     }
 }
