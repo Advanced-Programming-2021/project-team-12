@@ -2,6 +2,7 @@ package models.card.monster;
 
 import controllers.move.Attack;
 import controllers.move.SetSpell;
+import models.Address;
 import models.Board;
 import models.Player;
 import models.PlayerTurn;
@@ -48,7 +49,6 @@ public class MonsterCard {
     }
 
 
-
     public void runEffect() {
         this.monsterEffect.run();
     }
@@ -59,18 +59,23 @@ public class MonsterCard {
 
     public int getAttack() {
         int attack = this.attack;
-        if(SetSpell.doAnyOneHaveUmiruka()){
-            if(monsterMode==MonsterMode.AQUA){
-                attack +=500;
+        if (Attack.whatKindOfCardIsDefenderNow().equals("Suijin")&&!Attack.isDefenderFacedDown()) {
+            if (whenSuijinIsDefending()) {
+                return 0;
             }
         }
-        if(monsterMode==MonsterMode.BEAST||monsterMode==MonsterMode.WARRIOR_BEAST){
-            if(SetSpell.doIHaveClosedForest()){
-                attack +=100*Board.numberOfAllMonstersInGraveYard();
+        if (SetSpell.doAnyOneHaveUmiruka()) {
+            if (monsterMode == MonsterMode.AQUA) {
+                attack += 500;
             }
         }
-        if(SetSpell.doAnyOneHaveForest){
-            if(monsterMode==MonsterMode.BEAST||monsterMode==MonsterMode.WARRIOR_BEAST||monsterMode==MonsterMode.INSECT)
+        if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST) {
+            if (SetSpell.doIHaveClosedForest()) {
+                attack += 100 * Board.numberOfAllMonstersInGraveYard();
+            }
+        }
+        if (SetSpell.doAnyOneHaveForest) {
+            if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST || monsterMode == MonsterMode.INSECT)
                 attack += 200;
         }
         if (SetSpell.doAnyOneHaveYami()) {
@@ -84,34 +89,31 @@ public class MonsterCard {
 
     public int getDefence(boolean isFacedUp) {
         int defence = this.defence;
-        if(SetSpell.doAnyOneHaveUmiruka()){
-            if(monsterMode==MonsterMode.AQUA){
-                defence -=400;
+        if (SetSpell.doAnyOneHaveUmiruka()) {
+            if (monsterMode == MonsterMode.AQUA) {
+                defence -= 400;
             }
         }
-        if(SetSpell.doAnyOneHaveForest){
-            if(monsterMode==MonsterMode.BEAST||monsterMode==MonsterMode.WARRIOR_BEAST||monsterMode==MonsterMode.INSECT)
+        if (SetSpell.doAnyOneHaveForest) {
+            if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST || monsterMode == MonsterMode.INSECT)
                 defence += 200;
         }
         if (SetSpell.doAnyOneHaveYami()) {
             if (monsterMode == MonsterMode.SPELLCASTER || monsterMode == MonsterMode.FIEND) defence += 200;
             if (monsterMode == MonsterMode.FAIRY) defence -= 200;
         }
-        if ((name.equals("CommandKnight")) && (Board.howManyMonsterIsOnTheBoard() > 1) && isFacedUp) return 100000000;
-        // I should regard effect on or not
-        if (isFacedUp) {
-            if (name.equals("Suijin")) if (whenSuijinIsDefending()) return 100000000;
-        }
+        if ((name.equals("CommandKnight")) && (Board.howManyMonsterIsOnTheBoard() > 1) && isFacedUp) return -1;
         return defence;
     }
 
     public boolean whenSuijinIsDefending() {
         int index = Attack.whatIndexOfDefender();
-        if (!Attack.whichPlayerIsAttacker().doIndexExistInSuijin(index))
+        if (!Attack.whichPlayerIsAttacker().doIndexExistInSuijin(index)) {
             if (Effect.run("Suijin").equals("yes")) {
                 Attack.whichPlayerIsAttacker().addIndexToSuijin(index);
                 return true;
             }
+        }
         return false;
     }
 
@@ -150,11 +152,11 @@ public class MonsterCard {
     }
 
     public static void welcomeToEffect() {
-        String addressDestroyer = Attack.whatAddressDestroyedNow();
-        String destroyer = Attack.whatKindaCardGetDestroyedNow();
+        Address addressDestroyer = Attack.whatAddressHasDestroyedNow();
+        String gotDestroyed = Attack.whatKindaCardGotDestroyedNow();
         String defender = Attack.whatKindOfCardIsDefenderNow();
-        if (destroyer.equals("YomiShip")) {
-            Attack.destroyThisAddress(destroyer);
+        if (gotDestroyed.equals("YomiShip")) {
+            Attack.destroyThisAddress(addressDestroyer);
         }
         if (defender.equals("Marshmallon")) {
             if (Attack.isDefenderFacedDown()) Attack.whichPlayerIsAttacker().decreaseLP(1000);

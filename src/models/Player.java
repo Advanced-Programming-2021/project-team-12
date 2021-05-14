@@ -417,4 +417,7 @@ public class Player {
     public int howManyCardIsInTheHandCard(){
 
     }
+
+    public boolean doWeHaveThisCardInBoard(String card) {
+    }
 }
