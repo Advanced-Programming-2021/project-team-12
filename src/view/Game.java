@@ -33,15 +33,8 @@ public class Game {
     }
 
     public static void run(User _firstUser, User _secondUser, int _round) {
-        firstUser = _firstUser;
-        secondUser = _secondUser;
-        hasWinner = false;
-        round = _round;
+        restartData(_firstUser, _secondUser, _round);
         int roundCounter = 1;
-        firstPlayerWin = 0;
-        secondPlayerWin = 0;
-        firstPlayerMaxLP = 0;
-        secondPlayerMaxLP = 0;
         while (roundCounter <= round) {
             generateRandomTurn();      
             while (true) {
@@ -55,10 +48,22 @@ public class Game {
         }
         if (round == 1) {
             if (Winner.getName().equals(firstPlayer.getName())) {
-                firstUser.increaseMoney(firstPlayerMaxLP * 3 + 3000);
+                firstUser.increaseMoney(firstPlayerMaxLP + 1000);
+                firstUser.increaseScore(1000);
             }
         }
 
+    }
+
+    private static void restartData(User _firstUser, User _secondUser, int _round) {
+        firstUser = _firstUser;
+        secondUser = _secondUser;
+        hasWinner = false;
+        round = _round;
+        firstPlayerWin = 0;
+        secondPlayerWin = 0;
+        firstPlayerMaxLP = 0;
+        secondPlayerMaxLP = 0;
     }
 
     private static boolean setWinnData() {
