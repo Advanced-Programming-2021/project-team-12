@@ -635,7 +635,7 @@ public class MainPhase {
             Address address =new Address(Integer.parseInt(Effect.run("Scanner")),"graveyard",false);
             if(Board.getCardByAddress(address).getKind().equals("monster")){
                 MonsterCard monsterCard=Game.whoseTurnPlayer().getMonsterCardByAddress(address);
-                address.setIfItIsScannerThenWhat(monsterCard);
+                //address.setIfItIsScannerThenWhat(monsterCard);
             }
         }
     }

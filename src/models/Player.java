@@ -230,24 +230,26 @@ public class Player {
     }
 
     public void removeCard(Address address) {
-        if (Board.isAddressEmpty(address))
-            return;
-        HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
-        int place = address.getNumber();
-        removeCardHashMap.remove(address.getNumber());
-        if (address.getKind().matches("graveyard")) {
-            for (int i = place; i < removeCardHashMap.size(); i++) {
-                if (removeCardHashMap.containsKey(i + 1)) {
-                    removeCardHashMap.put(i, removeCardHashMap.get(i + 1));
-                    removeCardHashMap.remove(i + 1);
+        if(!getMonsterCardByAddress(address).getName().equals("Marshmallon")) {
+            if (Board.isAddressEmpty(address))
+                return;
+            HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
+            int place = address.getNumber();
+            removeCardHashMap.remove(address.getNumber());
+            if (address.getKind().matches("graveyard")) {
+                for (int i = place; i < removeCardHashMap.size(); i++) {
+                    if (removeCardHashMap.containsKey(i + 1)) {
+                        removeCardHashMap.put(i, removeCardHashMap.get(i + 1));
+                        removeCardHashMap.remove(i + 1);
+                    }
                 }
-            }
-        } else if (address.getKind().matches("(field)"))
-            fieldCardNumbers.remove(1);
-        if (getFaceHashMapByKind(address.getKind()) != null)
-            getFaceHashMapByKind(address.getKind()).remove(address.getNumber());
-        indexOfCard.remove(address);
-        address.setIsScanner(false);
+            } else if (address.getKind().matches("(field)"))
+                fieldCardNumbers.remove(1);
+            if (getFaceHashMapByKind(address.getKind()) != null)
+                getFaceHashMapByKind(address.getKind()).remove(address.getNumber());
+            indexOfCard.remove(address);
+            address.setIsScanner(false);
+        }
     }
 
     public Card getCardByAddress(Address address) {

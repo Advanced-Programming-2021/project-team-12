@@ -26,7 +26,7 @@ public class Attack {
     public static String whatKindOfCardIsDefenderNow() {
         
     }
-    public void timeToEffect(){
+    public static void timeToEffectAfterAttack(){
         MonsterCard.welcomeToEffect();
         TrapCard.welcomeToEffect();
         SpellCard.welcomeToEffect();
