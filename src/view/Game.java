@@ -2,12 +2,8 @@ package view;
 
 import java.util.Random;
 
-import controllers.phase.BattlePhase;
-import controllers.phase.DrawPhase;
-import controllers.phase.EndPhase;
-import controllers.phase.MainPhase1;
-import controllers.phase.MainPhase2;
-import controllers.phase.StandByPhase;
+import controllers.phase.*;
+import controllers.phase.MainPhase;
 import models.Player;
 import models.PlayerTurn;
 import models.User;
@@ -27,9 +23,13 @@ public class Game {
     private static int firstPlayerMaxLP = 0;
     private static int secondPlayerMaxLP = 0;
 
-    private static MainPhase1 mainPhase1;// Dear Ali please do the things with this
-    {
-        mainPhase1 = new MainPhase1();
+    private static MainPhase mainPhase1;// Dear Ali please do the things with this
+    private static MainPhase mainPhase2;
+    static {
+        mainPhase1 = new MainPhase();
+        mainPhase2 = new MainPhase();
+        mainPhase1.setWhatMainIsPhase(1);
+        mainPhase2.setWhatMainIsPhase(2);
     }
 
     public static void run(User _firstUser, User _secondUser, int _round) {
@@ -102,7 +102,7 @@ public class Game {
         if (hasWinner) return;
         new StandByPhase().run();
         if (hasWinner) return;
-        new MainPhase1().run();
+        mainPhase1.run();
         if (hasWinner) return;
         new BattlePhase().run();
         if (hasWinner) return;
@@ -149,7 +149,7 @@ public class Game {
         hasWinner = true;
     }
 
-    public static MainPhase1 getMainPhase1() {
+    public static MainPhase getMainPhase1() {
         return mainPhase1;
     }
 
