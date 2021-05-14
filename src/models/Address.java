@@ -1,5 +1,7 @@
 package models;
 
+import models.card.monster.MonsterCard;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,7 +10,7 @@ public class Address {
     private int number;
     private Boolean isMine;
     private Boolean isScanner;
-
+    private MonsterCard ifItIsScannerThenWhat;
     public Address(String address) {
         Matcher matcher;
         this.number = 1;
@@ -82,5 +84,13 @@ public class Address {
         pattern = Pattern.compile(regex);
         matcher = pattern.matcher(input);
         return matcher;
+    }
+
+    public MonsterCard getIfItIsScannerThenWhat() {
+        return ifItIsScannerThenWhat;
+    }
+
+    public void setIfItIsScannerThenWhat(MonsterCard ifItIsScannerThenWhat) {
+        this.ifItIsScannerThenWhat = ifItIsScannerThenWhat;
     }
 }

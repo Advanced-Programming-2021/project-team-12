@@ -201,10 +201,10 @@ public class Player {
         return true;
     }
 
-    public void setCardFromHandToMonsterZone (String address) {
+    public Address setCardFromHandToMonsterZone (String address) {
         Address beginningAddress = new Address(address);
         int place = getFirstEmptyPlace(monsterZoneCardNumbers, 5);
-        moveCardWithKind(beginningAddress, "monster");
+        return moveCardWithKind(beginningAddress, "monster");
     }
 
     public void setCardFromHandToSpellZone (String address) {
@@ -247,6 +247,7 @@ public class Player {
         if (getFaceHashMapByKind(address.getKind()) != null)
             getFaceHashMapByKind(address.getKind()).remove(address.getNumber());
         indexOfCard.remove(address);
+        address.setIsScanner(false);
     }
 
     public Card getCardByAddress(Address address) {
@@ -287,7 +288,7 @@ public class Player {
         return isHeSummonedOrSet;
     }
 
-    public void summonCardFromHandToMonsterZone(String address) {
+    public Address summonCardFromHandToMonsterZone(String address) {
         //face up
         //attack
     }

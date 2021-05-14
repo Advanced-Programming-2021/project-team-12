@@ -360,7 +360,10 @@ public class MainPhase {
                         int level = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1)).getLevel();
                         if (level <= 4) {
                             Game.whoseTurnPlayer().setHeSummonedOrSet(true);
-                            Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(matcher.group(1));
+                            Address address=new Address(matcher.group(1));
+                            if(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Scanner")){
+                                Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(matcher.group(1)).setIsScanner(true);
+                            }else Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(matcher.group(1));
                             System.out.println("summoned successfully");
                         } else if (level <= 6) {
                             summonAMediumLevelMonster(matcher.group(1));
@@ -441,7 +444,10 @@ public class MainPhase {
         if (matcher.find()) {
             if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
                 if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
-                    Game.whoseTurnPlayer().setCardFromHandToMonsterZone(matcher.group(1));
+                    Address address=new Address(matcher.group(1));
+                    if(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Scanner")){
+                        Game.whoseTurnPlayer().setCardFromHandToMonsterZone(matcher.group(1)).setIsScanner(true);
+                    }else Game.whoseTurnPlayer().setCardFromHandToMonsterZone(matcher.group(1));
                     Game.whoseTurnPlayer().setHeSummonedOrSet(true);
                     System.out.println("set successfully");
                 } else {
@@ -629,7 +635,7 @@ public class MainPhase {
             Address address =new Address(Integer.parseInt(Effect.run("Scanner")),"graveyard",false);
             if(Board.getCardByAddress(address).getKind().equals("monster")){
                 MonsterCard monsterCard=Game.whoseTurnPlayer().getMonsterCardByAddress(address);
-
+                address.setIfItIsScannerThenWhat(monsterCard);
             }
         }
     }
