@@ -126,7 +126,7 @@ public class Game {
         if (hasWinner) return;
         new BattlePhase().run();
         if (hasWinner) return;
-        new MainPhase2().run();
+        mainPhase2.run();
         if (hasWinner) return;
         new EndPhase().run();
     }
