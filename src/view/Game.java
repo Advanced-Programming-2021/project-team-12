@@ -23,7 +23,7 @@ public class Game {
     private static int firstPlayerMaxLP = 0;
     private static int secondPlayerMaxLP = 0;
 
-    private static MainPhase mainPhase1;// Dear Ali please do the things with this
+    private static MainPhase mainPhase1;
     private static MainPhase mainPhase2;
     static {
         mainPhase1 = new MainPhase();
