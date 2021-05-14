@@ -23,7 +23,7 @@ public class Game {
     private static int firstPlayerMaxLP = 0;
     private static int secondPlayerMaxLP = 0;
 
-    private static MainPhase mainPhase1;// Dear Ali please do the things with this
+    private static MainPhase mainPhase1;
     private static MainPhase mainPhase2;
     static {
         mainPhase1 = new MainPhase();
@@ -45,14 +45,37 @@ public class Game {
                 }
                 switchPlayer();
             }
+            if (firstPlayerWin > round / 2 || secondPlayerWin > round / 2)
+                break;
         }
+        setScoreAndMoneyOfPlayers();
+    }
+
+    private static void setScoreAndMoneyOfPlayers() {
         if (round == 1) {
             if (Winner.getName().equals(firstPlayer.getName())) {
                 firstUser.increaseMoney(firstPlayerMaxLP + 1000);
                 firstUser.increaseScore(1000);
+                secondUser.increaseMoney(100);
+            }
+            else {
+                secondUser.increaseMoney(secondPlayerMaxLP + 1000);
+                secondUser.increaseScore(1000);
+                firstUser.increaseMoney(100);
             }
         }
-
+        if (round == 3) {
+            if (Winner.getName().equals(firstPlayer.getName())) {
+                firstUser.increaseMoney(firstPlayerMaxLP * 3 + 3000);
+                firstUser.increaseScore(3000);
+                secondUser.increaseMoney(300);
+            }
+            else {
+                secondUser.increaseMoney(secondPlayerMaxLP * 3 + 3000);
+                secondUser.increaseScore(3000);
+                firstUser.increaseMoney(300);
+            }
+        }
     }
 
     private static void restartData(User _firstUser, User _secondUser, int _round) {
@@ -66,20 +89,17 @@ public class Game {
         secondPlayerMaxLP = 0;
     }
 
-    private static boolean setWinnData() {
+    private static void setWinnData() {
         if (Winner.getName().equals(firstPlayer.getName())) {
             if (firstPlayer.getLP() > firstPlayerMaxLP)
                 firstPlayerMaxLP = firstPlayer.getLP();
             firstPlayerWin++;
-            if (firstPlayerWin > round / 2) return true;
         }
         else {
             if (secondPlayer.getLP() > secondPlayerMaxLP)
                 firstPlayerMaxLP = secondPlayer.getLP();
             secondPlayerWin++;
-            if (secondPlayerWin > round / 2) return true;
         }
-        return false;
     }
 
     private static void generateRandomTurn() {
@@ -106,7 +126,7 @@ public class Game {
         if (hasWinner) return;
         new BattlePhase().run();
         if (hasWinner) return;
-        new MainPhase2().run();
+        mainPhase2.run();
         if (hasWinner) return;
         new EndPhase().run();
     }
