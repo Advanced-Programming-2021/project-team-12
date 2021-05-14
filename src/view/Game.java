@@ -1,6 +1,6 @@
 package view;
 
-import controllers.phase.MainPhase1;
+import controllers.phase.MainPhase;
 import models.Player;
 import models.PlayerTurn;
 
@@ -10,9 +10,9 @@ public class Game {
     public static Player secondPlayer;
     private static Player Winner;
     private static boolean isSurrender;
-    private static MainPhase1 mainPhase1;//Dear Ali please do the things with this
+    private static MainPhase mainPhase1;//Dear Ali please do the things with this
     {
-        mainPhase1=new MainPhase1();
+        mainPhase1=new MainPhase();
     }
     public static Player whoseTurnPlayer(){
         if(Game.playerTurn==PlayerTurn.FIRSTPLAYER) return Game.firstPlayer;
@@ -36,7 +36,7 @@ public class Game {
     public static void setWinner(Player winner) {
         Winner = winner;
     }
-    public static MainPhase1 getMainPhase1(){
+    public static MainPhase getMainPhase1(){
         return mainPhase1;
     }
 }

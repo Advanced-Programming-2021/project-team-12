@@ -16,11 +16,12 @@ import view.Effect;
 import view.Game;
 import view.Main;
 
-public class MainPhase1 {
+public class MainPhase {
     private Boolean goToNextPhase = false;
+    private int whatMainIsPhase;
 
     public void run() {
-        doEffect();
+        if(whatMainIsPhase==1) doEffect();
         System.out.println("phase: draw phase");
         Board.showBoeard();
         String input;
@@ -628,7 +629,7 @@ public class MainPhase1 {
             Address address =new Address(Integer.parseInt(Effect.run("Scanner")),"graveyard",false);
             if(Board.getCardByAddress(address).getKind().equals("monster")){
                 MonsterCard monsterCard=Game.whoseTurnPlayer().getMonsterCardByAddress(address);
-                
+
             }
         }
     }
@@ -636,5 +637,13 @@ public class MainPhase1 {
         input=input.trim();
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input);
+    }
+
+    public int getWhatMainIsPhase() {
+        return whatMainIsPhase;
+    }
+
+    public void setWhatMainIsPhase(int whatMainIsPhase) {
+        this.whatMainIsPhase = whatMainIsPhase;
     }
 }
