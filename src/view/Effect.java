@@ -20,5 +20,10 @@ public class Effect {
             Main.scanner=new Scanner(System.in);
             return (Main.scanner.nextLine());
         }
+        if(string.equals("BeastKingBarbaros")){
+            System.out.println("Which card do you want to be scanned from rival's graveyard?(Please just type graveyard number!)");
+            Main.scanner=new Scanner(System.in);
+            return (Main.scanner.nextLine());
+        }
     }
 }

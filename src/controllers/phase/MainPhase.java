@@ -380,6 +380,10 @@ public class MainPhase {
 
     private void summonAHighLevelMonster(String address) {
         if (Game.whoseTurnPlayer().isThereTwoCardInMonsterZone()) {
+            Address address1=new Address(address);
+            if(Game.whoseTurnPlayer().getMonsterCardByAddress(address1).getName().equals("BeastKingBarbaros")){
+
+            }
             System.out.println("Please select two monster for tribute!(type monster address or cancel)");
             String tributeCard1 = Main.scanner.nextLine();
             while (!(tributeCard1.matches("[\\d+]") || tributeCard1.matches("cancel"))) {
