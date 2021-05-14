@@ -37,12 +37,17 @@ public class Player {
     }
 
     public Player(User user) {
+        this.nickName = user.getNickName();
         this.name = user.getName();
         LP = 8000;
         this.nickName = user.getNickName();
         unusedCards = (ArrayList<Card>) user.getActiveCards().clone();
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 5; i++)
             addCardFromUnusedToHand();
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getNickName() {
@@ -141,7 +146,10 @@ public class Player {
     }
 
     public void decreaseLP(int LP) {
-        this.LP -= LP;
+        if (this.LP < LP)
+            this.LP = 0;
+        else 
+            this.LP -= LP;
     }
 
     public HashMap<Integer, Card> getHandCard() {

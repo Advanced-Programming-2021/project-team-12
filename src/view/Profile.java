@@ -11,8 +11,8 @@ public class Profile {
                 return;
             else if (input.matches("profile change (--nickname|-n) [\\w-]+"))
                 changeNickName(input);
-            else if (input.matches("profile change (--password|-p) --current [\\w]+ --new [\\w]+")
-                    || input.matches("profile change (--password|-p) --new [\\w]+ --current [\\w]+"))
+            else if (input.matches("profile change (--password|-p) (--current|-c) [\\w]+ (--new|-n) [\\w]+")
+                    || input.matches("profile change (--password|-p) (--new|-n) [\\w]+ (--current|-c) [\\w]+"))
                 changePassword(input);
             else if (input.matches("menu show-current"))
                 System.out.println("Profile");
@@ -27,6 +27,7 @@ public class Profile {
         Matcher matcher;
         String nickName;
         matcher = getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
+        matcher.find();
         nickName = matcher.group(2);
         if (User.getUserByNickName(nickName) == null)
             System.out.println("user with nickname " + nickName + " already exists");
@@ -40,9 +41,11 @@ public class Profile {
         Matcher matcher;
         String currentPassword;
         String newPassword;
-        matcher = getCommandMatcher(input, "--current ([\\w]+)");
+        matcher = getCommandMatcher(input, "(--current|-c) ([\\w]+)");
+        matcher.find();
         currentPassword = matcher.group(2);
-        matcher = getCommandMatcher(input, "--new ([\\w]+)");
+        matcher = getCommandMatcher(input, "(--new|-n) ([\\w]+)");
+        matcher.find();
         newPassword = matcher.group(2);
         if (!MainMenu.user.checkPassword(currentPassword))
             System.out.println("current password is invalid");

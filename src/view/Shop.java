@@ -15,10 +15,8 @@ public class Shop {
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();
-            if (input.compareTo("user logout") == 0) {
-                System.out.println("user logged out successfully!");
+            if (input.compareTo("menu exit") == 0) 
                 return;
-            }
             else if (input.matches("shop buy [\\w]+"))
                 buyCard(input);
             else if (input.matches("shop show (--all|-a)"))
@@ -41,7 +39,7 @@ public class Shop {
         else if (user.getMoney() < card.getPrice())
             System.out.println("not enough money");
         else {
-            user.increaseMoney(card.getPrice());
+            user.decreaseMoney(card.getPrice());
             user.addCardToAllCard(card);
         }
 

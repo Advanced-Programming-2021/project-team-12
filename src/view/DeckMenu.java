@@ -27,13 +27,15 @@ public class DeckMenu {
                 deleteDeck(input);
             else if (input.matches("deck set-activate [\\w]+"))
                 setDeckActive(input);
-            else if (input.matches("deck add-card (--cards|-c) [\\w]+ (--deck|-d) [\\w]+( --side|-s)*"))
+            else if (input.matches("deck add-card (--cards|-c) [\\w]+ (--deck|-d) [\\w]+( --side| -s)*")
+                    || input.matches("deck add-card (--deck|-d) [\\w]+ (--cards|-c) [\\w]+( --side| -s)*"))
                 addCardToDeck(input);
-            else if (input.matches("deck rm-card (--cards|-c) <card name> (--deck|-d) <deck name>( --side|-s)*"))
+            else if (input.matches("deck rm-card (--cards|-c) [\\w]+ (--deck|-d) [\\w]+( --side| -s)*")
+                    || input.matches("deck rm-card (--deck|-d) [\\w]+ (--cards|-c) [\\w]+( --side| -s)*"))
                 removeCardFromDeck(input);
             else if (input.matches("deck show (--all|-a)"))
                 showAllDecks();
-            else if (input.matches("deck show --deck-name [\\w]+( --side|-s)*"))
+            else if (input.matches("deck show --deck-name [\\w]+( --side| -s)*"))
                 showDeckByName(input);
             else if (input.matches("deck show (--cards|-c)"))
                 showCards();
@@ -88,17 +90,25 @@ public class DeckMenu {
     }
 
     public void addCardToDeck(String input) {
-        Matcher matcher = getCommandMatcher(input, "deck add-card (--card|-c) (<card name>) (--deck|-d) (<deck name>)( --side|-s)*");
+        Boolean isSide = false;
+        String cardName;
+        String deckName;
+        Matcher matcher = getCommandMatcher(input, "(--card|-c) ([\\w]+)");
         matcher.find();
-        String deckName = matcher.group(4);
-        String cardName = matcher.group(2);
+        cardName = matcher.group(2);
+        matcher = getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
+        matcher.find();
+        deckName = matcher.group(2);
+        matcher = getCommandMatcher(input, "( --side| -s)");
+        if (matcher.find())
+            isSide = true;
         if (!user.checkIfHasCard(Card.getCardByName(cardName)))
             System.out.println("card with name " + cardName + " does not exists");
         else if (Deck.getDeckByName(deckName) == null)
             System.out.println("deck with name " + deckName + " does not exists");
         else {
             Deck deck = Deck.getDeckByName(deckName);
-            if (matcher.group(5).isEmpty()) {
+            if (!isSide) {
                 if (deck.isMainCardsFull())
                     System.out.println("main deck is full");
                 else if (deck.checkIfThereIsThree(cardName))
@@ -122,15 +132,23 @@ public class DeckMenu {
     }
 
     public void removeCardFromDeck(String input) {
-        Matcher matcher = getCommandMatcher(input, "deck rm-card (--card|-c) (<card name>) (--deck|-d) (<deck name>)( --side|-s)*");
+        Boolean isSide = false;
+        String cardName;
+        String deckName;
+        Matcher matcher = getCommandMatcher(input, "(--card|-c) ([\\w]+)");
         matcher.find();
-        String deckName = matcher.group(4);
-        String cardName = matcher.group(2);
+        cardName = matcher.group(2);
+        matcher = getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
+        matcher.find();
+        deckName = matcher.group(2);
+        matcher = getCommandMatcher(input, "( --side| -s)");
+        if (matcher.find())
+            isSide = true;
         if (Deck.getDeckByName(deckName) == null)
             System.out.println("deck with name " + deckName + " does not exists");
         else {
             Deck deck = Deck.getDeckByName(deckName);
-            if (matcher.group(5).isEmpty()) {
+            if (!isSide) {
                 if (!deck.containsCardInMain(cardName))
                     System.out.println("card with name " + cardName + " does not exist in main deck");
                 else  {   
