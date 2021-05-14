@@ -45,14 +45,37 @@ public class Game {
                 }
                 switchPlayer();
             }
+            if (firstPlayerWin > round / 2 || secondPlayerWin > round / 2)
+                break;
         }
+        setScoreAndMoneyOfPlayers();
+    }
+
+    private static void setScoreAndMoneyOfPlayers() {
         if (round == 1) {
             if (Winner.getName().equals(firstPlayer.getName())) {
                 firstUser.increaseMoney(firstPlayerMaxLP + 1000);
                 firstUser.increaseScore(1000);
+                secondUser.increaseMoney(100);
+            }
+            else {
+                secondUser.increaseMoney(secondPlayerMaxLP + 1000);
+                secondUser.increaseScore(1000);
+                firstUser.increaseMoney(100);
             }
         }
-
+        if (round == 3) {
+            if (Winner.getName().equals(firstPlayer.getName())) {
+                firstUser.increaseMoney(firstPlayerMaxLP * 3 + 3000);
+                firstUser.increaseScore(3000);
+                secondUser.increaseMoney(300);
+            }
+            else {
+                secondUser.increaseMoney(secondPlayerMaxLP * 3 + 3000);
+                secondUser.increaseScore(3000);
+                firstUser.increaseMoney(300);
+            }
+        }
     }
 
     private static void restartData(User _firstUser, User _secondUser, int _round) {
@@ -66,20 +89,17 @@ public class Game {
         secondPlayerMaxLP = 0;
     }
 
-    private static boolean setWinnData() {
+    private static void setWinnData() {
         if (Winner.getName().equals(firstPlayer.getName())) {
             if (firstPlayer.getLP() > firstPlayerMaxLP)
                 firstPlayerMaxLP = firstPlayer.getLP();
             firstPlayerWin++;
-            if (firstPlayerWin > round / 2) return true;
         }
         else {
             if (secondPlayer.getLP() > secondPlayerMaxLP)
                 firstPlayerMaxLP = secondPlayer.getLP();
             secondPlayerWin++;
-            if (secondPlayerWin > round / 2) return true;
         }
-        return false;
     }
 
     private static void generateRandomTurn() {
