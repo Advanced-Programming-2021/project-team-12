@@ -115,6 +115,10 @@ public class User {
         allCards.remove(card);
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public int getScore() {
         return score;
     }

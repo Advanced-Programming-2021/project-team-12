@@ -10,12 +10,13 @@ import models.User;
 
 public class Shop {
     private User user;
+
     public Shop() {
         this.user = MainMenu.user;
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();
-            if (input.compareTo("menu exit") == 0) 
+            if (input.compareTo("menu exit") == 0)
                 return;
             else if (input.matches("shop buy [\\w]+"))
                 buyCard(input);
@@ -23,7 +24,7 @@ public class Shop {
                 showCards();
             else if (input.matches("menu show-current"))
                 System.out.println("Shop");
-            else 
+            else
                 System.out.println("invalid command!");
         }
     }
@@ -47,8 +48,8 @@ public class Shop {
 
     public void showCards() {
         ArrayList<Card> allCards;
-        allCards = Card.getAllCards(); 
-        for (Card card : allCards) 
+        allCards = Card.getAllCards();
+        for (Card card : allCards)
             System.out.println(card.getCardName() + ":" + " " + card.getDescription());
     }
 
