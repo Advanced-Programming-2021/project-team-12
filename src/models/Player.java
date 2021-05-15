@@ -27,10 +27,12 @@ public class Player {
     private HashMap<Integer, Boolean> isMonsterFaceUp = new HashMap<>();
     private HashMap<Address, Integer> indexOfCard = new HashMap<>();
     private HashMap<Integer, Boolean> isSpellFaceUp = new HashMap<>();
+    private boolean[] didBeastKingBarbarosSummonedSuperHighLevel;
     private ArrayList<Integer> indexOfCardUsedSuijin;
 
     {
-        positionOfCardInBoardByAddress=new HashMap<>();
+        didBeastKingBarbarosSummonedSuperHighLevel = new boolean[100];
+        positionOfCardInBoardByAddress = new HashMap<>();
         indexOfCardUsedSuijin = new ArrayList<>();
         didWeChangePositionThisCardInThisTurn = new boolean[100];
         didWeAttackByThisCardInThisCard = new boolean[100];
@@ -74,7 +76,7 @@ public class Player {
         HashMap<Integer, Card> stateHashMap = getHashMapByKind(cardState);
         int place = 1;
         if (cardState.equals("field")) {
-            if (fieldCardNumbers.containsKey(1)) 
+            if (fieldCardNumbers.containsKey(1))
                 moveCardWithKind(new Address(1, "field", true), "graveyard");
             fieldCardNumbers.put(1, card);
         } else if (cardState.equals("graveyard")) {
@@ -148,7 +150,7 @@ public class Player {
     public void decreaseLP(int LP) {
         if (this.LP < LP)
             this.LP = 0;
-        else 
+        else
             this.LP -= LP;
     }
 
@@ -201,13 +203,12 @@ public class Player {
         return true;
     }
 
-    public Address setCardFromHandToMonsterZone (String address) {
-        Address beginningAddress = new Address(address);
+    public Address setCardFromHandToMonsterZone(Address address) {
         int place = getFirstEmptyPlace(monsterZoneCardNumbers, 5);
-        return moveCardWithKind(beginningAddress, "monster");
+        return moveCardWithKind(address, "monster");
     }
 
-    public void setCardFromHandToSpellZone (String address) {
+    public void setCardFromHandToSpellZone(String address) {
         Address beginningAddress = new Address(address);
         int place = getFirstEmptyPlace(spellZoneCardNumbers, 5);
         moveCardWithKind(beginningAddress, "spell");
@@ -230,27 +231,26 @@ public class Player {
     }
 
     public void removeCard(Address address) {
-        if(!getMonsterCardByAddress(address).getName().equals("Marshmallon")) {
-            if (Board.isAddressEmpty(address))
-                return;
-            HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
-            int place = address.getNumber();
-            removeCardHashMap.remove(address.getNumber());
-            if (address.getKind().matches("graveyard")) {
-                for (int i = place; i < removeCardHashMap.size(); i++) {
-                    if (removeCardHashMap.containsKey(i + 1)) {
-                        removeCardHashMap.put(i, removeCardHashMap.get(i + 1));
-                        removeCardHashMap.remove(i + 1);
-                    }
+        if (Board.isAddressEmpty(address))
+            return;
+        HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
+        int place = address.getNumber();
+        removeCardHashMap.remove(address.getNumber());
+        if (address.getKind().matches("graveyard")) {
+            for (int i = place; i < removeCardHashMap.size(); i++) {
+                if (removeCardHashMap.containsKey(i + 1)) {
+                    removeCardHashMap.put(i, removeCardHashMap.get(i + 1));
+                    removeCardHashMap.remove(i + 1);
                 }
-            } else if (address.getKind().matches("(field)"))
-                fieldCardNumbers.remove(1);
-            if (getFaceHashMapByKind(address.getKind()) != null)
-                getFaceHashMapByKind(address.getKind()).remove(address.getNumber());
-            indexOfCard.remove(address);
-            address.setIsScanner(false);
-        }
+            }
+        } else if (address.getKind().matches("(field)"))
+            fieldCardNumbers.remove(1);
+        if (getFaceHashMapByKind(address.getKind()) != null)
+            getFaceHashMapByKind(address.getKind()).remove(address.getNumber());
+        indexOfCard.remove(address);
+        address.setIsScanner(false);
     }
+
 
     public Card getCardByAddress(Address address) {
         HashMap<Integer, Card> getCardHashMap = getHashMapByAddress(address);
@@ -308,7 +308,7 @@ public class Player {
         return MonsterCard.getMonsterCardByName(getCardByAddress(cardAddress).getCardName());
     }
 
-    public String whatKindaCardIsInThisAddress(String address){
+    public String whatKindaCardIsInThisAddress(String address) {
         Address cardAddress = new Address(address);
         return getCardByAddress(cardAddress).getKind();
     }
@@ -325,7 +325,7 @@ public class Player {
     }
 
     public static void destroyAllRivalTrapAndSpells() {
-        
+
     }
 
     public SpellCard getSpellCardByStringAddress(String address) {
@@ -394,41 +394,71 @@ public class Player {
         Arrays.fill(didWeAttackByThisCardInThisCard, false);
     }
 
-    public int getIndexOfThisCardByAddress(String address) {
-        Address cardAddress = new Address (address);
-        return indexOfCard.get(cardAddress);
+    public int getIndexOfThisCardByAddress(Address address) {
+        return indexOfCard.get(address);
     }
-    public void setPositionOfCardInBoardByAddress(Address address, PositionOfCardInBoard positionOfCardInBoard){
-        positionOfCardInBoardByAddress.put(address,positionOfCardInBoard);
+
+    public void setPositionOfCardInBoardByAddress(Address address, PositionOfCardInBoard positionOfCardInBoard) {
+        positionOfCardInBoardByAddress.put(address, positionOfCardInBoard);
     }
-    public PositionOfCardInBoard positionOfCardInBoardByAddress(Address address){
+
+    public PositionOfCardInBoard positionOfCardInBoardByAddress(Address address) {
         positionOfCardInBoardByAddress.get(address);
     }
-    public MonsterCard getMonsterCardByAddress(Address address){
+
+    public MonsterCard getMonsterCardByAddress(Address address) {
 
     }
-    public boolean isThereAnyRitualModeSpellInOurHand(){
+
+    public boolean isThereAnyRitualModeSpellInOurHand() {
 
     }
-    public boolean isThereAnyRitualTypeMonsterInOurHand(){
+
+    public boolean isThereAnyRitualTypeMonsterInOurHand() {
 
     }
-    public ArrayList<Integer> sumOfLevelOfAllSubsetsOfMonsterZone(){
+
+    public ArrayList<Integer> sumOfLevelOfAllSubsetsOfMonsterZone() {
 
     }
-    public ArrayList<Integer> levelOfRitualMonstersOnOurHand(){
+
+    public ArrayList<Integer> levelOfRitualMonstersOnOurHand() {
 
     }
-    public boolean isOneOfLevelOfRitualMonstersInTheHandIsEqualToSumOfLevelOfSubsetOfMonsterZone(){
+
+    public boolean isOneOfLevelOfRitualMonstersInTheHandIsEqualToSumOfLevelOfSubsetOfMonsterZone() {
         for (int i = 0; i < sumOfLevelOfAllSubsetsOfMonsterZone().size(); i++)
-            for (int j = 0; j <levelOfRitualMonstersOnOurHand().size() ; j++)
-                if(sumOfLevelOfAllSubsetsOfMonsterZone().get(i).equals(levelOfRitualMonstersOnOurHand().get(j))) return true;
+            for (int j = 0; j < levelOfRitualMonstersOnOurHand().size(); j++)
+                if (sumOfLevelOfAllSubsetsOfMonsterZone().get(i).equals(levelOfRitualMonstersOnOurHand().get(j)))
+                    return true;
         return false; //don't bother I've already written it.
     }
-    public int howManyCardIsInTheHandCard(){
+
+    public int howManyCardIsInTheHandCard() {
+
+    }
+
+    public Address addressOfAttackerCard() {
 
     }
 
     public boolean doWeHaveThisCardInBoard(String card) {
+    }
+
+    public boolean didBeastKingBarbarosSummonedSuperHighLevel(int index) {
+        return didBeastKingBarbarosSummonedSuperHighLevel[index];
+    }
+
+    public void setDidBeastKingBarbarosSummonedSuperHighLevel(boolean didBeastKingBarbarosSummonedSuperHighLevel, int index) {
+        this.didBeastKingBarbarosSummonedSuperHighLevel[index] = didBeastKingBarbarosSummonedSuperHighLevel;
+    }
+
+    public boolean isThereThreeCardInMonsterZone() {
+    }
+
+    public int howManyHeraldOfCreationDoWeHave(String cardName) {
+    }
+
+    public Address setCardFromGraveyardToMonsterZone(Address comeBackFromGraveyard) {
     }
 }

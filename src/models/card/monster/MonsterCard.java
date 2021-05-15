@@ -58,8 +58,12 @@ public class MonsterCard {
     }
 
     public int getAttack() {
+        Player currentPlayer = Game.whoseTurnPlayer();
         int attack = this.attack;
-        if (Attack.whatKindOfCardIsDefenderNow().equals("Suijin")&&!Attack.isDefenderFacedDown()) {
+        Address addressOfAttacker = currentPlayer.addressOfAttackerCard();
+        int indexOfAttacker = currentPlayer.getIndexOfThisCardByAddress(addressOfAttacker);
+        if (!currentPlayer.didBeastKingBarbarosSummonedSuperHighLevel(indexOfAttacker)) attack -= 1900;
+        if (Attack.whatKindOfCardIsDefenderNow().equals("Suijin") && !Attack.isDefenderFacedDown()) {
             if (whenSuijinIsDefending()) {
                 return 0;
             }

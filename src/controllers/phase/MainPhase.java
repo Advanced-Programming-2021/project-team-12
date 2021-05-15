@@ -18,10 +18,14 @@ import view.Main;
 
 public class MainPhase {
     private Boolean goToNextPhase = false;
+    private int howManyHeraldOfCreationDidWeUseEffect = 0;
     private int whatMainIsPhase;
 
     public void run() {
-        if(whatMainIsPhase==1) doEffect();
+        if (whatMainIsPhase == 1) {
+            Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
+            doEffect();
+        }
         System.out.println("phase: draw phase");
         Board.showBoeard();
         String input;
@@ -354,20 +358,37 @@ public class MainPhase {
 
     private void summon(Matcher matcher) {
         if (matcher.find()) {
-            if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
-                if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
-                    if (!Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1)).isRitual()) {
+            Player currentPlayer = Game.whoseTurnPlayer();
+            if (!currentPlayer.isMonsterZoneFull()) {
+                if (!currentPlayer.isHeSummonedOrSet()) {
+                    if (!currentPlayer.getMonsterCardByStringAddress(matcher.group(1)).isRitual()) {
+                        Address address = new Address(matcher.group(1));
                         int level = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1)).getLevel();
                         if (level <= 4) {
-                            Game.whoseTurnPlayer().setHeSummonedOrSet(true);
-                            Address address=new Address(matcher.group(1));
-                            if(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Scanner")){
-                                Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(matcher.group(1)).setIsScanner(true);
-                            }else Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(matcher.group(1));
+                            currentPlayer.setHeSummonedOrSet(true);
+                            if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
+                                currentPlayer.summonCardFromHandToMonsterZone(matcher.group(1)).setIsScanner(true);
+                            } else currentPlayer.summonCardFromHandToMonsterZone(matcher.group(1));
+                            if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger")) {
+                                if (Integer.parseInt(Effect.run("Terratiger")) != 0) {
+                                    Address address1 = new Address(Integer.parseInt(Effect.run("Terratiger")), "hand", true);
+                                    if ((currentPlayer.getMonsterCardByAddress(address1) != null)
+                                            && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
+                                            && (!currentPlayer.isMonsterZoneFull()))
+                                            currentPlayer.setCardFromHandToMonsterZone(address1);
+                                }
+                            }
                             System.out.println("summoned successfully");
                         } else if (level <= 6) {
                             summonAMediumLevelMonster(matcher.group(1));
-                        } else summonAHighLevelMonster(matcher.group(1));
+                        } else {
+                            int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+                            if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("BeastKingBarbaros")
+                                    && (Integer.parseInt(Effect.run("BeastKingBarbaros")) == 3)) {
+                                Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
+                                summonASuperHighLevelMonster(matcher.group(1));
+                            } else summonAHighLevelMonster(matcher.group(1));
+                        }
                     } else ritualSummon(matcher);
                 } else System.out.println("you already summoned/set on this turn");
             } else System.out.println("monster card zone is full");
@@ -380,24 +401,12 @@ public class MainPhase {
 
     private void summonAHighLevelMonster(String address) {
         if (Game.whoseTurnPlayer().isThereTwoCardInMonsterZone()) {
-            Address address1=new Address(address);
-            if(Game.whoseTurnPlayer().getMonsterCardByAddress(address1).getName().equals("BeastKingBarbaros")){
-
-            }
-            System.out.println("Please select two monster for tribute!(type monster address or cancel)");
-            String tributeCard1 = Main.scanner.nextLine();
-            while (!(tributeCard1.matches("[\\d+]") || tributeCard1.matches("cancel"))) {
-                System.out.println("invalid command!");
-                tributeCard1 = Main.scanner.nextLine();
-            }
+            System.out.println("Please select two monsters for tribute!(type monster address or cancel and type monsters in different lines)");
+            String tributeCard1 = scanForTribute();
             if (tributeCard1.equals("cancel")) {
                 System.out.println("canceled successfully");
             } else {
-                String tributeCard2 = Main.scanner.nextLine();
-                while (!(tributeCard1.matches("[\\d+]"))) {
-                    System.out.println("invalid command!");
-                    tributeCard1 = Main.scanner.nextLine();
-                }
+                String tributeCard2 = scanForTribute();
                 if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard1))
                         && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))) {
                     System.out.println("summoned successfully");
@@ -408,6 +417,46 @@ public class MainPhase {
                 } else System.out.println("there no monsters on one of this addresses");
             }
         } else System.out.println("there are not enough cards for tribute");
+    }
+
+    private void summonASuperHighLevelMonster(String address) {
+        if (Game.whoseTurnPlayer().isThereThreeCardInMonsterZone()) {
+            System.out.println("Please select three monsters for tribute!(type monster address or cancel and type monsters in different lines)");
+            String tributeCard1 = scanForTribute();
+            if (isCancelled(tributeCard1)) {
+                System.out.println("canceled successfully");
+            } else {
+                String tributeCard2 = scanForTribute();
+                if (isCancelled(tributeCard2)) {
+                    System.out.println("canceled successfully");
+                } else {
+                    String tributeCard3 = scanForTribute();
+                    if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard1))
+                            && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))
+                            && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard3))) {
+                        System.out.println("summoned successfully");
+                        Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+                        Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard1));
+                        Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard2));
+                        Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard3));
+                        Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(address);
+                    } else System.out.println("there no monsters on one of this addresses");
+                }
+            }
+        } else System.out.println("there are not enough cards for tribute");
+    }
+
+    private String scanForTribute() {
+        String tributeCard = Main.scanner.nextLine();
+        while (!(tributeCard.matches("[12345]{1}"))) {
+            System.out.println("invalid command!");
+            tributeCard = Main.scanner.nextLine();
+        }
+        return tributeCard;
+    }
+
+    private boolean isCancelled(String input) {
+        return input.equals("cancel");
     }
 
     private void summonAMediumLevelMonster(String address) {
@@ -448,10 +497,10 @@ public class MainPhase {
         if (matcher.find()) {
             if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
                 if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
-                    Address address=new Address(matcher.group(1));
-                    if(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Scanner")){
-                        Game.whoseTurnPlayer().setCardFromHandToMonsterZone(matcher.group(1)).setIsScanner(true);
-                    }else Game.whoseTurnPlayer().setCardFromHandToMonsterZone(matcher.group(1));
+                    Address address = new Address(matcher.group(1));
+                    if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Scanner")) {
+                        Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address).setIsScanner(true);
+                    } else Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address);
                     Game.whoseTurnPlayer().setHeSummonedOrSet(true);
                     System.out.println("set successfully");
                 } else {
@@ -475,29 +524,29 @@ public class MainPhase {
 
     private void setSpell(Matcher matcher) {
         if (matcher.find()) {
-            Player currentPlayer=Game.whoseTurnPlayer();
+            Player currentPlayer = Game.whoseTurnPlayer();
             if (currentPlayer.isSpellZoneFull()) {
                 if (currentPlayer.getSpellCardByStringAddress(matcher.group(1)).getSpellMode() != SpellMode.RITUAL) {
                     currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
                     currentPlayer.setHeSummonedOrSet(true);
                     System.out.println("set successfully");
                 } else {
-                    if(currentPlayer.isThereAnyRitualTypeMonsterInOurHand()
-                    &&currentPlayer.isOneOfLevelOfRitualMonstersInTheHandIsEqualToSumOfLevelOfSubsetOfMonsterZone()){
+                    if (currentPlayer.isThereAnyRitualTypeMonsterInOurHand()
+                            && currentPlayer.isOneOfLevelOfRitualMonstersInTheHandIsEqualToSumOfLevelOfSubsetOfMonsterZone()) {
                         System.out.println("Choose a ritual card from hand which has the condition!");
-                        String input=Main.scanner.nextLine();
-                        while(!(input.matches("^[ ]*select --hand [\\d]+[ ]*$"))){
+                        String input = Main.scanner.nextLine();
+                        while (!(input.matches("^[ ]*select --hand [\\d]+[ ]*$"))) {
                             System.out.println("invalid command!");
-                            input=Main.scanner.nextLine();
+                            input = Main.scanner.nextLine();
                         }
                         setTheRitualSpell(input, matcher.group(1));
-                    }else System.out.println("there is no way you could ritual summon a monster");
+                    } else System.out.println("there is no way you could ritual summon a monster");
                 }
             } else System.out.println("spell card zone is full");
         }
     }
 
-    private void setTheRitualSpell(String input,String address) {
+    private void setTheRitualSpell(String input, String address) {
 
     }
 
@@ -537,19 +586,20 @@ public class MainPhase {
         if (matcher.find()) {
             if (Game.whoseTurnPlayer().isThisMonsterOnDHPosition(matcher.group(1))) {
                 Game.whoseTurnPlayer().convertThisMonsterFromDHToOO(matcher.group(1));
-                Address address=new Address(matcher.group(1));
-                if(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("ManEaterBug")){
+                Address address = new Address(matcher.group(1));
+                if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("ManEaterBug")) {
                     doManEaterBugEffect();
                 }
                 System.out.println("flip summoned successfully");
             } else System.out.println("you can’t do this action in this phase");
         }
     }
-    private void doManEaterBugEffect(){
-        int monsterZoneNumber=Integer.parseInt(Effect.run("ManEaterBug"));
-        if(monsterZoneNumber<=5&&monsterZoneNumber>=1) {
+
+    private void doManEaterBugEffect() {
+        int monsterZoneNumber = Integer.parseInt(Effect.run("ManEaterBug"));
+        if (monsterZoneNumber <= 5 && monsterZoneNumber >= 1) {
             Address address1 = new Address(monsterZoneNumber, "monster", false);
-            if(!Board.isAddressEmpty(address1)) {
+            if (!Board.isAddressEmpty(address1)) {
                 Attack.destroyThisAddress(address1);
             }
         }
@@ -558,7 +608,7 @@ public class MainPhase {
     private void setPosition(String input, Matcher matcher) {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (matcher.find()) {
-            int index = currentPlayer.getIndexOfThisCardByAddress(matcher.group(1));
+            int index = currentPlayer.getIndexOfThisCardByAddress(new Address(matcher.group(1)));
             Matcher matcher1 = getCommandMatcher(input, "^[ ]*set -- position (attack|defense)[ ]*$");
             if (matcher1.find()) {
                 if (matcher1.group(1).equals("attack")) {
@@ -606,7 +656,7 @@ public class MainPhase {
         if (matcher.find()) {
             Address address = new Address(matcher.group(1));
             Player currentPlayer = Game.whoseTurnPlayer();
-            int index = currentPlayer.getIndexOfThisCardByAddress(matcher.group(1));
+            int index = currentPlayer.getIndexOfThisCardByAddress(new Address(matcher.group(1)));
             if (currentPlayer.didWeActivateThisSpell(index)) {
                 if (currentPlayer.getSpellCardByStringAddress(matcher.group(1)).getSpellMode() == SpellMode.FIELD) {
                     if (SpellCard.canWeActivateThisSpell(address)) {
@@ -634,19 +684,55 @@ public class MainPhase {
         Game.setWinner(Game.whoseRivalPlayer());
         goToNextPhase = true;
     }
-    private void doEffect(){
-        if(Game.whoseTurnPlayer().doWeHaveThisCardInBoard("Scanner")) {
-            Address address =new Address(Integer.parseInt(Effect.run("Scanner")),"graveyard",false);
-            if(Board.getCardByAddress(address).getKind().equals("monster")){
-                MonsterCard monsterCard=Game.whoseTurnPlayer().getMonsterCardByAddress(address);
+
+    private void doEffect() {
+        Player currentPlayer = Game.whoseTurnPlayer();
+        if (currentPlayer.doWeHaveThisCardInBoard("Scanner")) {
+            Address address = new Address(Integer.parseInt(Effect.run("Scanner")), "graveyard", false);
+            if (Board.getCardByAddress(address).getKind().equals("monster")) {
+                MonsterCard monsterCard = Game.whoseTurnPlayer().getMonsterCardByAddress(address);
                 //address.setIfItIsScannerThenWhat(monsterCard);
             }
         }
+        int count = Integer.parseInt(Effect.run("HeraldOfCreation1"));
+        int numberOfHeraldOfCreation = Game.whoseTurnPlayer().howManyHeraldOfCreationDoWeHave("HeraldOfCreation2");
+        for (int i = 0; i < minOfTwoNumber(numberOfHeraldOfCreation, count) - howManyHeraldOfCreationDidWeUseEffect; i++) {
+            Address shouldBeRemoved = new Address(Integer.parseInt(Effect.run("HeraldOfCreation2")), "monster", true);
+            if (!Board.isAddressEmpty(shouldBeRemoved)) {
+                Address comeBackFromGraveyard = new Address(Integer.parseInt(Effect.run("HeraldOfCreation3")), "graveyard", true);
+                MonsterCard monsterCardForHeraldOfCreation = Board.whatKindaMonsterIsHere(comeBackFromGraveyard);
+                if (monsterCardForHeraldOfCreation != null) {
+                    if (monsterCardForHeraldOfCreation.getLevel() >= 7) {
+                        currentPlayer.removeCard(shouldBeRemoved);
+                        currentPlayer.setCardFromGraveyardToMonsterZone(comeBackFromGraveyard);
+                        if (whatMainIsPhase == 1) Game.getMainPhase2().increaseHowManyHeraldOfCreationDidWeUseEffect();
+                    }
+                }
+            }
+        }
     }
+
+    private int minOfTwoNumber(int num1, int num2) {
+        if (num1 <= num2) return num1;
+        return num2;
+    }
+
     private static Matcher getCommandMatcher(String input, String regex) {
-        input=input.trim();
+        input = input.trim();
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input);
+    }
+
+    public int getHowManyHeraldOfCreationDidWeUseEffect() {
+        return howManyHeraldOfCreationDidWeUseEffect;
+    }
+
+    public void setHowManyHeraldOfCreationDidWeUseEffect(int howManyHeraldOfCreationDidWeUseEffect) {
+        this.howManyHeraldOfCreationDidWeUseEffect = howManyHeraldOfCreationDidWeUseEffect;
+    }
+
+    public void increaseHowManyHeraldOfCreationDidWeUseEffect() {
+        howManyHeraldOfCreationDidWeUseEffect++;
     }
 
     public int getWhatMainIsPhase() {
@@ -656,4 +742,5 @@ public class MainPhase {
     public void setWhatMainIsPhase(int whatMainIsPhase) {
         this.whatMainIsPhase = whatMainIsPhase;
     }
+
 }
