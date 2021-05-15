@@ -158,7 +158,7 @@ public class Card {
 
     public Boolean checkIsRitual() {
         MonsterCard card = MonsterCard.getMonsterCardByName(name);
-        return card.checkIsRitual();
+        return card.isRitual();
     }
 
     public int getAttack() {

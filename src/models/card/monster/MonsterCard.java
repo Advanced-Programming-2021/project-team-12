@@ -87,6 +87,10 @@ public class MonsterCard {
         return attack;
     }
 
+    public int getDefenceNumber() {
+        return defence;
+    }
+
     public int getDefence(boolean isFacedUp) {
         int defence = this.defence;
         if (SetSpell.doAnyOneHaveUmiruka()) {
