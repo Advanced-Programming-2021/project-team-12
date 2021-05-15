@@ -3,6 +3,7 @@ package controllers.phase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import controllers.move.Attack;
 import models.Address;
 import models.Board;
 import models.Player;
@@ -394,14 +395,17 @@ public class BattlePhase {
                     if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.OO) {
                         int damage = myMonsterCard.getAttack() - rivalMonsterCard.getAttack();
                         attackOO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
+                        Attack.timeToEffectAfterAttack();
                     } else if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.DO) {
                         if(rivalMonsterCard.getDefence(true)!=-1) {
                             int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(true);
                             attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
+                            Attack.timeToEffectAfterAttack();
                         } else System.out.println("Attack has been cancelled for effect of a card");
                     } else {
                         int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(false);
                         attackDH(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
+                        Attack.timeToEffectAfterAttack();
                     }
                 } else System.out.println("there is no card to attack here");
             } else System.out.println("this card already attacked");

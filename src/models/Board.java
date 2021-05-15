@@ -162,4 +162,7 @@ public class Board {
         //dear ali please print by yourself
     }
 
+    public static void putThisCardInThisAddress(Address address,String MonsterCard){
+
+    }
 }
