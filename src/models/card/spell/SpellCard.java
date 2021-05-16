@@ -82,6 +82,20 @@ public class SpellCard {
             Attack.destroyAllMonstersInTheBoard();
             currentPlayer.removeCard(address);
         }
+        if(name.equals("TwinTwisters")){
+            String[] input=Effect.run("TwinTwisters").split(",");
+            Address address1=new Address(Integer.parseInt(input[0]),"hand",true);
+            Address address2=new Address(Integer.parseInt(input[1]),"spell",false);
+            Address address3=new Address(Integer.parseInt(input[2]),"spell",false);
+            currentPlayer.removeCard(address1);
+            currentPlayer.removeCard(address2);
+            currentPlayer.removeCard(address3);
+        }
+        if(name.equals("MysticalSpaceTyphoon")){
+            String input = Effect.run("MysticalSpaceTyphoon");
+            Address address1=new Address(Integer.parseInt(input),"spell",false);
+            currentPlayer.removeCard(address1);
+        }
 
 
     }
