@@ -6,6 +6,7 @@ import view.Main;
 
 public class StandByPhase {
     public void run(){
+        payMessengerOfPeaceSpellCardHarm();
         resetMoves();
         System.out.println("phase: standby phase");
         String input;
