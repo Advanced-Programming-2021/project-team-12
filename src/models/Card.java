@@ -39,6 +39,7 @@ public class Card {
         return "there is no card with this name";
     }
 
+    //Please don't call this method without my permission.
     public void runEffect() {
         if (kind.equals("Monster")) {
             MonsterCard card = MonsterCard.getMonsterCardByName(name);

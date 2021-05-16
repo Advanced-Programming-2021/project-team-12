@@ -1,7 +1,11 @@
 package models.card.spell;
 
+import controllers.move.Attack;
 import models.Address;
+import models.Player;
 import models.card.spell.spell_effect.SpellEffect;
+import view.Effect;
+import view.Game;
 //import card.trap.TrapCard;
 
 import java.util.ArrayList;
@@ -15,16 +19,18 @@ public class SpellCard {
     private String name;
     private SpellEffect spellEffect;
     private static ArrayList<SpellCard> spellCards;
+
     static {
-        spellCards=new ArrayList<>();
+        spellCards = new ArrayList<>();
     }
-    public SpellCard(String name, SpellMode spellMode, boolean isLimit, String effect, int price, SpellEffect spellEffect){
-        this.name=name;
-        this.spellMode=spellMode;
-        this.isLimit=isLimit;
-        this.effect=effect;
-        this.price=price;
-        this.spellEffect=spellEffect;
+
+    public SpellCard(String name, SpellMode spellMode, boolean isLimit, String effect, int price, SpellEffect spellEffect) {
+        this.name = name;
+        this.spellMode = spellMode;
+        this.isLimit = isLimit;
+        this.effect = effect;
+        this.price = price;
+        this.spellEffect = spellEffect;
         spellCards.add(this);
     }
 
@@ -36,7 +42,40 @@ public class SpellCard {
 
     }
 
-    public static void doEffect(Address address) {
+    public void doEffect(Address address) {
+        Player currentPlayer = Game.whoseTurnPlayer();
+        if (name.equals("Terraforming")) {
+            if ((currentPlayer.isThereAnyFieldSpellInDeck()) && (!currentPlayer.isHandFull())) {
+                String fieldSpellName = Effect.run("Terraforming");
+                SpellCard spellCard = SpellCard.getSpellCardByName(fieldSpellName);
+                if ((spellCard != null) && (spellCard.spellMode == SpellMode.FIELD) && (currentPlayer.isThisCardInDeck("Terraforming"))) {
+                    currentPlayer.bringCardFromDeckToHand("Terraforming");
+                } else System.out.println("you chose the wrong card.");
+            } else System.out.println("This effect can't be done.");
+            currentPlayer.removeCard(address);
+        }
+        if (name.equals("PotOfGreed")) {
+            if (!currentPlayer.isHandFull()) {
+                currentPlayer.addCardFromUnusedToHand();
+                if (!currentPlayer.isHandFull()) {
+                    currentPlayer.addCardFromUnusedToHand();
+                } else System.out.println("This effect can't be done completely.");
+            } else System.out.println("This effect can't be done.");
+            currentPlayer.removeCard(address);
+        }
+        if(name.equals("Raigeki")){
+            Attack.destroyAllRivalMonstersInTheBoard();
+            currentPlayer.removeCard(address);
+        }
+        if(name.equals("HarpieFeatherDuster")){
+            Attack.destroyAllRivalMonstersAndTrapInTheBoard();
+            currentPlayer.removeCard(address);
+        }
+        if(name.equals("DarkHole")){
+            Attack.destroyAllMonstersInTheBoard();
+            currentPlayer.removeCard(address);
+        }
+
 
     }
 
@@ -63,14 +102,17 @@ public class SpellCard {
     public void runEffect() {
         this.spellEffect.run();
     }
-    public static SpellCard getSpellCardByName(String name){
+
+    public static SpellCard getSpellCardByName(String name) {
         for (SpellCard spellCard : spellCards)
             if (spellCard.name.equals(name)) return spellCard;
         return null;
     }
-    public static void welcomeToEffect(){
+
+    public static void welcomeToEffect() {
 
     }
+
     public String getDescription() {
         return description;
     }

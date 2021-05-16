@@ -3,6 +3,7 @@ package models;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
+import view.Game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +11,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Player {
+    private boolean[] isThisSpellActivated;
+    private boolean isOneHisMonstersDestroyedInThisRound;
     private HashMap<Address, PositionOfCardInBoard> positionOfCardInBoardByAddress;// Dear Ali you should make board based on this HashMap
     private boolean[] didWeActivateThisSpell;
     private boolean[] didWeAttackByThisCardInThisCard;
@@ -231,6 +234,10 @@ public class Player {
     }
 
     public void removeCard(Address address) {
+        if (getMonsterCardByAddress(address) != null) {
+            if (address.checkIsMine()) Game.whoseTurnPlayer().setOneHisMonstersDestroyedInThisRound(true);
+            else Game.whoseRivalPlayer().setOneHisMonstersDestroyedInThisRound(true);
+        }
         if (Board.isAddressEmpty(address))
             return;
         HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
@@ -460,5 +467,31 @@ public class Player {
     }
 
     public Address setCardFromGraveyardToMonsterZone(Address comeBackFromGraveyard) {
+    }
+
+    public boolean isThereAnyFieldSpellInDeck() {
+    }
+
+    public boolean isThisCardInDeck(String cardName) {
+    }
+
+    public void bringCardFromDeckToHand(String cardName) {
+        //dear Ali you should bring this card from deck to hand thanks!
+    }
+
+    public boolean isOneHisMonstersDestroyedInThisRound() {
+        return isOneHisMonstersDestroyedInThisRound;
+    }
+
+    public void setOneHisMonstersDestroyedInThisRound(boolean oneHisMonstersDestroyedInThisRound) {
+        isOneHisMonstersDestroyedInThisRound = oneHisMonstersDestroyedInThisRound;
+    }
+
+    public boolean isThisSpellActivated(int index) {
+        return isThisSpellActivated[index];
+    }
+
+    public void setIsThisSpellActivated(boolean isSpellActivated, int index) {
+        isThisSpellActivated[index] = isSpellActivated;
     }
 }

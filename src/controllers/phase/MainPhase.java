@@ -375,7 +375,7 @@ public class MainPhase {
                                     if ((currentPlayer.getMonsterCardByAddress(address1) != null)
                                             && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
                                             && (!currentPlayer.isMonsterZoneFull()))
-                                            currentPlayer.setCardFromHandToMonsterZone(address1);
+                                        currentPlayer.setCardFromHandToMonsterZone(address1);
                                 }
                             }
                             System.out.println("summoned successfully");
@@ -662,13 +662,13 @@ public class MainPhase {
                     if (SpellCard.canWeActivateThisSpell(address)) {
                         currentPlayer.setDidWeActivateThisSpell(index);
                         System.out.println("spell activated");
-                        SpellCard.doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "field", index));
+                        currentPlayer.getSpellCardByStringAddress(matcher.group(1)).doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "field", index));
                     } else System.out.println("preparations of this spell are not done yet");
                 } else if (!(currentPlayer.isSpellZoneFull())) {
                     if (SpellCard.canWeActivateThisSpell(address)) {
                         currentPlayer.setDidWeActivateThisSpell(index);
                         System.out.println("spell activated");
-                        SpellCard.doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "spell", index));
+                        currentPlayer.getSpellCardByStringAddress(matcher.group(1)).doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "spell", index));
                     } else System.out.println("preparations of this spell are not done yet");
                 } else System.out.println("spell card zone is full");
             } else System.out.println("you have already activated this card");

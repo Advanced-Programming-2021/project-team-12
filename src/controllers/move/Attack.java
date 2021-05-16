@@ -10,7 +10,8 @@ import models.card.trap.TrapCard;
 public class Attack {
 
 
-
+    public static void destroyAllRivalMonstersAndTrapInTheBoard() {
+    }
 
     //Dear Alireza you have to call "timeToEffect" method after every attack(when attack get over)
     public void run(Address address){
@@ -52,8 +53,8 @@ public class Attack {
     public static Player whichPlayerIsDefender(){
 
     }
-    public static void destroyAllRivalMonsters() {
+    public static void destroyAllRivalMonstersInTheBoard() {
     }
-    public static void destroyAllMonsters() {
+    public static void destroyAllMonstersInTheBoard() {
     }
 }

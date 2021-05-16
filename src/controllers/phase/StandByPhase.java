@@ -26,6 +26,8 @@ public class StandByPhase {
         Game.secondPlayer.setDidWeChangePositionThisCardInThisTurnCompletelyFalse();
         Game.firstPlayer.setDidWeAttackByThisCardInThisCardInThisTurnCompletelyFalse();
         Game.secondPlayer.setDidWeAttackByThisCardInThisCardInThisTurnCompletelyFalse();
+        Game.firstPlayer.setOneHisMonstersDestroyedInThisRound(false);
+        Game.secondPlayer.setOneHisMonstersDestroyedInThisRound(false);
     }
     public static void checkIfGameEnded(){
         if(Game.firstPlayer.getLP() < 0){

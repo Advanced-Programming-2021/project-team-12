@@ -45,6 +45,11 @@ public class Effect {
             Main.scanner=new Scanner(System.in);
             return (Main.scanner.nextLine());
         }
+        if(string.equals("Terraforming")){
+            System.out.println("Type a name of field spell card from your deck to come to your hand.(Please type in CamelCase!)");
+            Main.scanner=new Scanner(System.in);
+            return (Main.scanner.nextLine());
+        }
 
 
     }
