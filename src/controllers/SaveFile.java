@@ -2,10 +2,14 @@ package controllers;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import models.Card;
+import models.Deck;
 import models.User;
 import models.card.monster.MonsterCard;
+import models.card.spell.SpellCard;
+import models.card.trap.TrapCard;
 import org.json.simple.JSONObject;
 
 public class SaveFile {
@@ -22,9 +26,9 @@ public class SaveFile {
         }
     }
 
-    private void saveUser(User user) {
+    public static void saveUser(User user) {
         JSONObject obj = new JSONObject();
-        obj.put("name", user.getName());
+        obj.put("userName", user.getName());
         obj.put("nikName", user.getNickName());
         obj.put("password", user.getPassword());
         obj.put("score", user.getScore());
@@ -35,6 +39,32 @@ public class SaveFile {
             while (new File("data//User//" + number + ".txt").exists())
                 number++;
             FileWriter writer = new FileWriter("data//User//" + number + ".txt");
+            writer.write(obj.toJSONString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        saveUserDecks(user);
+    }
+
+    private static void saveUserDecks(User user) {
+        ArrayList<String> mainCardNames = new ArrayList<>();
+        ArrayList<String> sideCardNames = new ArrayList<>();
+        JSONObject obj = new JSONObject();
+        ArrayList<Deck> userDecks = Deck.getDecksOfUser(user);
+        int deckNumber = 0;
+        for (Deck deck: userDecks) {
+            deckNumber++;
+            for (Card card : deck.getMainCards())
+                mainCardNames.add(card.getCardName());
+            for (Card card : deck.getSideCards())
+                sideCardNames.add(card.getCardName());
+            obj.put("mainCards" + deckNumber, mainCardNames);
+            obj.put("sideCards" + deckNumber, sideCardNames);
+            obj.put("deckName" + deckNumber, deck.getName());
+        }
+        try {
+            FileWriter writer = new FileWriter("data//Decks//" + user.getName() + ".txt");
             writer.write(obj.toJSONString());
             writer.close();
         } catch (IOException e) {
@@ -54,11 +84,53 @@ public class SaveFile {
         obj.put("effect", monster.getEffect());
         obj.put("level", monster.getLevel());
         obj.put("price", monster.getPrice());
+        obj.put("isRitual", monster.isRitual());
         try {
             int number = 0;
             while (new File("data//monsterCards//" + number + ".txt").exists())
                 number++;
             FileWriter writer = new FileWriter("data//monsterCards//" + number + ".txt");
+            writer.write(obj.toJSONString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveSpell(Card card) {
+        SpellCard spell = SpellCard.getSpellCardByName(card.getCardName());
+        JSONObject obj = new JSONObject();
+        obj.put("desctiption", spell.getDescription());
+        obj.put("effect", spell.getEffect());
+        obj.put("price", spell.getPrice());
+        obj.put("spellMode", spell.getSpellMode());
+        obj.put("isLimit", spell.checkIsLimit());
+        obj.put("name", spell.getName());
+        try {
+            int number = 0;
+            while (new File("data//spellCards//" + number + ".txt").exists())
+                number++;
+            FileWriter writer = new FileWriter("data//spellCards//" + number + ".txt");
+            writer.write(obj.toJSONString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveTrap(Card card) {
+        TrapCard trap = TrapCard.getTrapCardByName(card.getCardName());
+        JSONObject obj = new JSONObject();
+        obj.put("description", trap.getDescription());
+        obj.put("name", trap.getName());
+        obj.put("effect", trap.getEffect());
+        obj.put("isLimit", trap.checkIsLimit());
+        obj.put("price", trap.getPrice());
+        try {
+            int number = 0;
+            while (new File("data//trapCards//" + number + ".txt").exists())
+                number++;
+            FileWriter writer = new FileWriter("data//trapCards//" + number + ".txt");
             writer.write(obj.toJSONString());
             writer.close();
         } catch (IOException e) {

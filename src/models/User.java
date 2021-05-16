@@ -10,8 +10,6 @@ public class User {
     private String password;
     private int score;
     private ArrayList<Card> allCards;
-    private ArrayList<Card> secondaryDeck;
-    private ArrayList<Card> activeCards;
     private int money;
     private static ArrayList<User> users = new ArrayList<>();
 
@@ -20,10 +18,6 @@ public class User {
         this.nickName = nickName;
         this.password = password;
         users.add(this);
-    }
-
-    public ArrayList<Card> getActiveCards() {
-        return activeCards;
     }
 
     public void increaseScore(int score) {
@@ -93,14 +87,6 @@ public class User {
             if (user.getNickName().equals(nickName))
                 return user;
         return null;
-    }
-
-    public void setActiveCards(ArrayList<Card> cards) {
-        activeCards = cards;
-    }
-
-    public void setSideCards(ArrayList<Card> sideCards) {
-        secondaryDeck = sideCards;
     }
 
     public void addCardToAllCard(Card card) {

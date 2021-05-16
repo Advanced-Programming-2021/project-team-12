@@ -21,7 +21,8 @@ public class Player {
     private String name;
     private String nickName;
     private int LP;
-    private ArrayList<Card> unusedCards = new ArrayList<>();//might be wrong
+    private ArrayList<Card> unusedCards = new ArrayList<>();
+    private ArrayList<Card> secondaryCard = new ArrayList<>();
     private HashMap<Integer, Card> handCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> graveyardCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> fieldCardNumbers = new HashMap<>();
@@ -49,7 +50,8 @@ public class Player {
         this.name = user.getName();
         LP = 8000;
         this.nickName = user.getNickName();
-        unusedCards = (ArrayList<Card>) user.getActiveCards().clone();
+        unusedCards = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getMainCards().clone();
+        secondaryCard = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getSideCards().clone();
         for (int i = 0; i < 5; i++)
             addCardFromUnusedToHand();
     }

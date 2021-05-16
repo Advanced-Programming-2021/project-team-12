@@ -100,8 +100,6 @@ public class Deck {
         Deck deck = Deck.getActiveDeckOfUser(user.getName());
         deck.changeIsActive(false);
         this.isActive = true;
-        user.setActiveCards(mainCards);
-        user.setSideCards(sideCards);
     }
 
     public int getNumberOfCard(String flag) {
@@ -153,7 +151,7 @@ public class Deck {
         return false;
     }
 
-    public ArrayList<Deck> getDecksOfUser(User user) {
+    public static ArrayList<Deck> getDecksOfUser(User user) {
         ArrayList<Deck> deckOfUser = new ArrayList<>();
         for (Deck deck : decks) 
             if (deck.getUser().equals(user))
