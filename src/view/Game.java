@@ -172,5 +172,7 @@ public class Game {
     public static MainPhase getMainPhase1() {
         return mainPhase1;
     }
-
+    public static MainPhase getMainPhase2() {
+        return mainPhase2;
+    }
 }

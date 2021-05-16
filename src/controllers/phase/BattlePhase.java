@@ -385,7 +385,7 @@ public class BattlePhase {
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
             Address address = new Address(Integer.parseInt(matcher.group(2)), "monster", false);
-            int index = currentPlayer.getIndexOfThisCardByAddress(myAddress);
+            int index = currentPlayer.getIndexOfThisCardByAddress(new Address(myAddress));
             if (currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
                 if (currentPlayer.getCardByAddress(address) != null) {
                     MonsterCard myMonsterCard = currentPlayer.getMonsterCardByStringAddress(myAddress);
@@ -397,7 +397,7 @@ public class BattlePhase {
                         attackOO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                         Attack.timeToEffectAfterAttack();
                     } else if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.DO) {
-                        if(rivalMonsterCard.getDefence(true)!=-1) {
+                        if (rivalMonsterCard.getDefence(true) != -1) {
                             int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(true);
                             attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                             Attack.timeToEffectAfterAttack();
@@ -415,17 +415,17 @@ public class BattlePhase {
 
     private void attackOO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
         if (damage == 0) {
-            currentPlayer.removeCard(address);
-            currentPlayer.removeCard(myAddress);
+            removeForAttack(address,myAddress);
+            removeForAttack(myAddress,address);
             System.out.println("both you and your opponent monster cards are destroyed and no one receives damage");
         } else if (damage > 0) {
-            currentPlayer.removeCard(address);
-            Game.whoseRivalPlayer().decreaseLP(damage);
+            removeForAttack(address,myAddress);
+            decreaseLP(myAddress, address, index, Game.whoseRivalPlayer(), myMonsterCard, rivalMonsterCard, damage);
             System.out.println("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
         } else {
             damage = (-1) * damage;
             currentPlayer.decreaseLP(damage);
-            currentPlayer.removeCard(myAddress);
+            removeForAttack(myAddress,address);
             System.out.println("Your monster card is destroyed and you received " + damage + " battle damage");
         }
     }
@@ -433,11 +433,11 @@ public class BattlePhase {
     private void attackDO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
         if (damage == 0) System.out.println("no card is destroyed");
         else if (damage > 0) {
-            currentPlayer.removeCard(address);
+            removeForAttack(address,myAddress);
             System.out.println("the defense position monster is destroyed");
         } else {
             damage = (-1) * damage;
-            currentPlayer.decreaseLP(damage);
+            decreaseLP(myAddress, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
             System.out.println("no card is destroyed and you received " + damage + " battle damage");
         }
     }
@@ -446,14 +446,27 @@ public class BattlePhase {
         if (damage == 0)
             System.out.println("opponent’s monster card was " + rivalMonsterCard.getName() + " and no card is destroyed");
         else if (damage > 0) {
-            currentPlayer.removeCard(address);
+            removeForAttack(address,myAddress);
             System.out.println("opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "the defense position monster is destroyed");
         } else {
             damage = (-1) * damage;
-            currentPlayer.decreaseLP(damage);
+            decreaseLP(myAddress, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
             System.out.println("opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "no card is destroyed and you received " + damage + " battle damage");
         }
         currentPlayer.setPositionOfCardInBoardByAddress(address, PositionOfCardInBoard.DO);
+    }
+    private void decreaseLP(Address myAddress, Address address, int index, Player player, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage){
+        if(!(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("ExploderDragon"))){
+            player.decreaseLP(damage);
+        }
+    }
+
+    private void removeForAttack(Address address,Address theOtherAddress) {
+        Player currentPlayer = Game.whoseTurnPlayer();
+        if(currentPlayer.getMonsterCardByAddress(address).getName().equals("ExploderDragon"))
+            currentPlayer.removeCard(theOtherAddress);
+        if (!currentPlayer.getMonsterCardByAddress(address).getName().equals("Marshmallon"))
+            currentPlayer.removeCard(address);
     }
 
     private void flipSummon(Matcher matcher) {
@@ -469,7 +482,7 @@ public class BattlePhase {
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
             Player rivalPlayer = Game.whoseRivalPlayer();
-            int index = currentPlayer.getIndexOfThisCardByAddress(matcher.group(1));
+            int index = currentPlayer.getIndexOfThisCardByAddress(new Address(matcher.group(1)));
             if (currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
                 currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
                 //doubt should regard an error for being empty of board?

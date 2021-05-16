@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 public class EndPhase {
     public void run() {
+        doEffect();
         String input;
         System.out.println("phase: end phase");
         if (Game.whoseTurnPlayer().howManyCardIsInTheHandCard() == 6) {
@@ -19,15 +20,24 @@ public class EndPhase {
                 input = Main.scanner.nextLine();
                 System.out.println("invalid command!");
             }
-            Matcher matcher=getCommandMatcher(input,"(^[ ]*select --hand [123456]{1}[ ]*$)");
-            if(matcher.find()){
-                Address address=new Address(matcher.group(1));
+            Matcher matcher = getCommandMatcher(input, "(^[ ]*select --hand [123456]{1}[ ]*$)");
+            if (matcher.find()) {
+                Address address = new Address(matcher.group(1));
                 Game.whoseTurnPlayer().removeCard(address);
             }
         }
         checkIfGameEnded();
         switchPlayerTurn();
         printWhoseTurnIsIt();
+    }
+
+    private void doEffect() {
+        if(Game.firstPlayer.)
+        if (Game.firstPlayer.isOneHisMonstersDestroyedInThisRound())
+            if (!Game.firstPlayer.isHandFull()) Game.firstPlayer.addCardFromUnusedToHand();
+        if (Game.secondPlayer.isOneHisMonstersDestroyedInThisRound())
+            if (!Game.secondPlayer.isHandFull()) Game.secondPlayer.addCardFromUnusedToHand();
+
     }
 
     public void checkIfGameEnded() {
@@ -53,6 +63,7 @@ public class EndPhase {
             System.out.println("its " + Game.secondPlayer.getNickName() + "’s turn");
         }
     }
+
     private static Matcher getCommandMatcher(String input, String regex) {
         input.trim();
         Pattern pattern = Pattern.compile(regex);
