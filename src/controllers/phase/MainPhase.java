@@ -661,12 +661,16 @@ public class MainPhase {
                 if (currentPlayer.getSpellCardByStringAddress(matcher.group(1)).getSpellMode() == SpellMode.FIELD) {
                     if (SpellCard.canWeActivateThisSpell(address)) {
                         currentPlayer.setDidWeActivateThisSpell(index);
+                        currentPlayer.setIsThisSpellActivated(true,index);
+                        SpellCard.doSpellAbsorptionEffect();
                         System.out.println("spell activated");
                         currentPlayer.getSpellCardByStringAddress(matcher.group(1)).doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "field", index));
                     } else System.out.println("preparations of this spell are not done yet");
                 } else if (!(currentPlayer.isSpellZoneFull())) {
                     if (SpellCard.canWeActivateThisSpell(address)) {
                         currentPlayer.setDidWeActivateThisSpell(index);
+                        currentPlayer.setIsThisSpellActivated(true,index);
+                        SpellCard.doSpellAbsorptionEffect();
                         System.out.println("spell activated");
                         currentPlayer.getSpellCardByStringAddress(matcher.group(1)).doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "spell", index));
                     } else System.out.println("preparations of this spell are not done yet");

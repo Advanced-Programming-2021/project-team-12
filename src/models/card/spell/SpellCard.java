@@ -42,6 +42,13 @@ public class SpellCard {
 
     }
 
+    public static void doSpellAbsorptionEffect() {
+        if (Game.firstPlayer.isOneHisSpellAbsorptionActivated())
+            Game.firstPlayer.increaseLP(500);
+        if (Game.secondPlayer.isOneHisSpellAbsorptionActivated())
+            Game.secondPlayer.increaseLP(500);
+    }
+
     public void doEffect(Address address) {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (name.equals("Terraforming")) {
@@ -63,15 +70,15 @@ public class SpellCard {
             } else System.out.println("This effect can't be done.");
             currentPlayer.removeCard(address);
         }
-        if(name.equals("Raigeki")){
+        if (name.equals("Raigeki")) {
             Attack.destroyAllRivalMonstersInTheBoard();
             currentPlayer.removeCard(address);
         }
-        if(name.equals("HarpieFeatherDuster")){
+        if (name.equals("HarpieFeatherDuster")) {
             Attack.destroyAllRivalMonstersAndTrapInTheBoard();
             currentPlayer.removeCard(address);
         }
-        if(name.equals("DarkHole")){
+        if (name.equals("DarkHole")) {
             Attack.destroyAllMonstersInTheBoard();
             currentPlayer.removeCard(address);
         }
