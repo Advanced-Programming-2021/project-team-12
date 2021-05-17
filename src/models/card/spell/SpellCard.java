@@ -24,13 +24,14 @@ public class SpellCard {
         spellCards = new ArrayList<>();
     }
 
-    public SpellCard(String name, SpellMode spellMode, boolean isLimit, String effect, int price, SpellEffect spellEffect) {
+    public SpellCard(String name, SpellMode spellMode, boolean isLimit, int price, String description) {
         this.name = name;
         this.spellMode = spellMode;
         this.isLimit = isLimit;
         this.effect = effect;
         this.price = price;
         this.spellEffect = spellEffect;
+        this.description = description;
         spellCards.add(this);
     }
 
