@@ -33,8 +33,8 @@ public class MonsterCard {
         monsterCards = new ArrayList<>();
     }
 
-    public MonsterCard(int level, int attack, int defence, String effect, MonsterMode monsterMode,
-                       boolean isRitual, String name, int price, Attribute attribute, MonsterEffect monsterEffect) {
+    public MonsterCard(int level, int attack, int defenceis, MonsterMode monsterMode,
+                       boolean isRitual, String name, int price, Attribute attribute, String description) {
         this.level = level;
         this.attack = attack;
         this.defence = defence;
@@ -44,7 +44,7 @@ public class MonsterCard {
         this.name = name;
         this.price = price;
         this.attribute = attribute;
-        this.monsterEffect = monsterEffect;
+        this.description = description;
         monsterCards.add(this);
     }
 

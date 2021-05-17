@@ -17,12 +17,13 @@ public class TrapCard {
         trapCards = new ArrayList<>();
     }
 
-    public TrapCard(String name, String effect, boolean isLimit, int price, TrapEffect trapEffect) {
+    public TrapCard(String name, boolean isLimit, int price, String description) {
         this.effect = effect;
         this.isLimit = isLimit;
         this.price = price;
         this.trapEffect = trapEffect;
         this.name = name;
+        this.description = description;
         trapCards.add(this);
     }
 
