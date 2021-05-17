@@ -28,7 +28,7 @@ public class Effect {
             return Main.scanner.nextLine()+","+Main.scanner.nextLine()+","+Main.scanner.nextLine();
         }
         if(cardName.equals("MysticalSpaceTyphoon"))
-            System.out.println("Choose two of rival's trap or trap to be destroyed!(type a number)");
+            System.out.println("Choose one of rival's trap or trap to be destroyed!(type a number)");
         return (Main.scanner.nextLine());
     }
 }

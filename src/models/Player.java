@@ -511,4 +511,29 @@ public class Player {
         return false;
     }
 
+    public boolean doIHaveActivatedTrapNamedMagicCylinder() {
+    }
+
+    public boolean doIHaveActivatedTrapNamedMirrorForce() {
+
+    }
+
+    public void destroyAllRivalMonstersWhichInAttackMode() {
+
+    }
+
+    public void removeOneOfMyTrapHoleTrapOnTheBoard() {
+    }
+
+    public boolean doIHaveTrapHoleTrapOnTheBoard() {
+    }
+
+    public boolean doIHaveTorrentialTributeTrapOnTheBoard() {
+    }
+
+    public void removeOneOfMyTorrentialTributeTrapOnTheBoard() {
+    }
+
+    public boolean doIHaveActivatedTrapNamedNegateAttack() {
+    }
 }
