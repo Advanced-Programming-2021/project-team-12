@@ -32,9 +32,12 @@ public class Player {
     private HashMap<Address, Integer> indexOfCard = new HashMap<>();
     private HashMap<Integer, Boolean> isSpellFaceUp = new HashMap<>();
     private boolean[] didBeastKingBarbarosSummonedSuperHighLevel;
+    private Card[] cardByIndex;//dear Ali do the thing
     private ArrayList<Integer> indexOfCardUsedSuijin;
 
     {
+        cardByIndex = new Card[100];
+        isThisSpellActivated = new boolean[100];
         didBeastKingBarbarosSummonedSuperHighLevel = new boolean[100];
         positionOfCardInBoardByAddress = new HashMap<>();
         indexOfCardUsedSuijin = new ArrayList<>();
@@ -496,4 +499,16 @@ public class Player {
     public void setIsThisSpellActivated(boolean isSpellActivated, int index) {
         isThisSpellActivated[index] = isSpellActivated;
     }
+
+    public boolean isOneHisSupplySquadActivated() {
+        for (int i = 0; i < isThisSpellActivated.length; i++)
+            if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("SupplySquad"))) return true;
+        return false;
+    }
+    public boolean isOneHisSpellAbsorptionActivated() {
+        for (int i = 0; i < isThisSpellActivated.length; i++)
+            if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("SpellAbsorption"))) return true;
+        return false;
+    }
+
 }

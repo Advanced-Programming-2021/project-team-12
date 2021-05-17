@@ -18,8 +18,8 @@ public class Attack {
         if(Board.whatKindaMonsterIsHere(address)!=null){
             if(Board.whatKindaMonsterIsHere(address).getNormalAttack()>=1500)
                 if(SetSpell.doAnyOneHaveMessengerOfPeace())
-                    System.out.println("You can't attack by monster with attach equal or more than 1500 " +
-                            "cause MessengerOfPeace.");
+                    System.out.println("You can't attack by monster with attack equal or more than 1500 " +
+                            "because of MessengerOfPeace.");
                 //to be continued
         }
 

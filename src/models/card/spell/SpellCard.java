@@ -43,6 +43,13 @@ public class SpellCard {
 
     }
 
+    public static void doSpellAbsorptionEffect() {
+        if (Game.firstPlayer.isOneHisSpellAbsorptionActivated())
+            Game.firstPlayer.increaseLP(500);
+        if (Game.secondPlayer.isOneHisSpellAbsorptionActivated())
+            Game.secondPlayer.increaseLP(500);
+    }
+
     public void doEffect(Address address) {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (name.equals("Terraforming")) {
@@ -64,17 +71,31 @@ public class SpellCard {
             } else System.out.println("This effect can't be done.");
             currentPlayer.removeCard(address);
         }
-        if(name.equals("Raigeki")){
+        if (name.equals("Raigeki")) {
             Attack.destroyAllRivalMonstersInTheBoard();
             currentPlayer.removeCard(address);
         }
-        if(name.equals("HarpieFeatherDuster")){
+        if (name.equals("HarpieFeatherDuster")) {
             Attack.destroyAllRivalMonstersAndTrapInTheBoard();
             currentPlayer.removeCard(address);
         }
-        if(name.equals("DarkHole")){
+        if (name.equals("DarkHole")) {
             Attack.destroyAllMonstersInTheBoard();
             currentPlayer.removeCard(address);
+        }
+        if(name.equals("TwinTwisters")){
+            String[] input=Effect.run("TwinTwisters").split(",");
+            Address address1=new Address(Integer.parseInt(input[0]),"hand",true);
+            Address address2=new Address(Integer.parseInt(input[1]),"spell",false);
+            Address address3=new Address(Integer.parseInt(input[2]),"spell",false);
+            currentPlayer.removeCard(address1);
+            currentPlayer.removeCard(address2);
+            currentPlayer.removeCard(address3);
+        }
+        if(name.equals("MysticalSpaceTyphoon")){
+            String input = Effect.run("MysticalSpaceTyphoon");
+            Address address1=new Address(Integer.parseInt(input),"spell",false);
+            currentPlayer.removeCard(address1);
         }
 
 

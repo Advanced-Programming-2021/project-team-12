@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import controllers.move.Attack;
+import controllers.move.SetSpell;
 import models.Address;
 import models.Board;
 import models.Player;
@@ -392,20 +393,26 @@ public class BattlePhase {
                     MonsterCard rivalMonsterCard = currentPlayer.getMonsterCardByAddress(address);
                     Address myAddressType = new Address(myAddress);
                     currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
-                    if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.OO) {
-                        int damage = myMonsterCard.getAttack() - rivalMonsterCard.getAttack();
-                        attackOO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
-                        Attack.timeToEffectAfterAttack();
-                    } else if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.DO) {
-                        if (rivalMonsterCard.getDefence(true) != -1) {
-                            int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(true);
-                            attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
-                            Attack.timeToEffectAfterAttack();
-                        } else System.out.println("Attack has been cancelled for effect of a card");
+                    if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
+                            && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
+                        System.out.println("You can't attack by monster with attack equal or more than 1500 " +
+                                "because of MessengerOfPeace.");
                     } else {
-                        int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(false);
-                        attackDH(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
-                        Attack.timeToEffectAfterAttack();
+                        if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.OO) {
+                            int damage = myMonsterCard.getAttack() - rivalMonsterCard.getAttack();
+                            attackOO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
+                            Attack.timeToEffectAfterAttack();
+                        } else if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.DO) {
+                            if (rivalMonsterCard.getDefence(true) != -1) {
+                                int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(true);
+                                attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
+                                Attack.timeToEffectAfterAttack();
+                            } else System.out.println("Attack has been cancelled for effect of a card");
+                        } else {
+                            int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(false);
+                            attackDH(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
+                            Attack.timeToEffectAfterAttack();
+                        }
                     }
                 } else System.out.println("there is no card to attack here");
             } else System.out.println("this card already attacked");
@@ -415,17 +422,17 @@ public class BattlePhase {
 
     private void attackOO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
         if (damage == 0) {
-            removeForAttack(address,myAddress);
-            removeForAttack(myAddress,address);
+            removeForAttack(address, myAddress);
+            removeForAttack(myAddress, address);
             System.out.println("both you and your opponent monster cards are destroyed and no one receives damage");
         } else if (damage > 0) {
-            removeForAttack(address,myAddress);
+            removeForAttack(address, myAddress);
             decreaseLP(myAddress, address, index, Game.whoseRivalPlayer(), myMonsterCard, rivalMonsterCard, damage);
             System.out.println("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
         } else {
             damage = (-1) * damage;
             currentPlayer.decreaseLP(damage);
-            removeForAttack(myAddress,address);
+            removeForAttack(myAddress, address);
             System.out.println("Your monster card is destroyed and you received " + damage + " battle damage");
         }
     }
@@ -433,7 +440,7 @@ public class BattlePhase {
     private void attackDO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
         if (damage == 0) System.out.println("no card is destroyed");
         else if (damage > 0) {
-            removeForAttack(address,myAddress);
+            removeForAttack(address, myAddress);
             System.out.println("the defense position monster is destroyed");
         } else {
             damage = (-1) * damage;
@@ -446,7 +453,7 @@ public class BattlePhase {
         if (damage == 0)
             System.out.println("opponent’s monster card was " + rivalMonsterCard.getName() + " and no card is destroyed");
         else if (damage > 0) {
-            removeForAttack(address,myAddress);
+            removeForAttack(address, myAddress);
             System.out.println("opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "the defense position monster is destroyed");
         } else {
             damage = (-1) * damage;
@@ -455,15 +462,16 @@ public class BattlePhase {
         }
         currentPlayer.setPositionOfCardInBoardByAddress(address, PositionOfCardInBoard.DO);
     }
-    private void decreaseLP(Address myAddress, Address address, int index, Player player, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage){
-        if(!(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("ExploderDragon"))){
+
+    private void decreaseLP(Address myAddress, Address address, int index, Player player, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
+        if (!(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("ExploderDragon"))) {
             player.decreaseLP(damage);
         }
     }
 
-    private void removeForAttack(Address address,Address theOtherAddress) {
+    private void removeForAttack(Address address, Address theOtherAddress) {
         Player currentPlayer = Game.whoseTurnPlayer();
-        if(currentPlayer.getMonsterCardByAddress(address).getName().equals("ExploderDragon"))
+        if (currentPlayer.getMonsterCardByAddress(address).getName().equals("ExploderDragon"))
             currentPlayer.removeCard(theOtherAddress);
         if (!currentPlayer.getMonsterCardByAddress(address).getName().equals("Marshmallon"))
             currentPlayer.removeCard(address);

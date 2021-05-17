@@ -32,12 +32,14 @@ public class EndPhase {
     }
 
     private void doEffect() {
-        if(Game.firstPlayer.)
-        if (Game.firstPlayer.isOneHisMonstersDestroyedInThisRound())
-            if (!Game.firstPlayer.isHandFull()) Game.firstPlayer.addCardFromUnusedToHand();
-        if (Game.secondPlayer.isOneHisMonstersDestroyedInThisRound())
-            if (!Game.secondPlayer.isHandFull()) Game.secondPlayer.addCardFromUnusedToHand();
-
+        if (Game.firstPlayer.isOneHisSupplySquadActivated()) {
+            if (Game.firstPlayer.isOneHisMonstersDestroyedInThisRound())
+                if (!Game.firstPlayer.isHandFull()) Game.firstPlayer.addCardFromUnusedToHand();
+        }
+        if (Game.secondPlayer.isOneHisSupplySquadActivated()) {
+            if (Game.secondPlayer.isOneHisMonstersDestroyedInThisRound())
+                if (!Game.secondPlayer.isHandFull()) Game.secondPlayer.addCardFromUnusedToHand();
+        }
     }
 
     public void checkIfGameEnded() {
