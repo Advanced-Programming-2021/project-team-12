@@ -1,6 +1,8 @@
 package view;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import controllers.SaveFile;
 import models.User;
 public class Profile {
     public static void run() {
@@ -33,6 +35,7 @@ public class Profile {
             System.out.println("user with nickname " + nickName + " already exists");
         else {
             MainMenu.user.setNickName(nickName);
+            SaveFile.saveUser(MainMenu.user);
             System.out.println("nickname changed successfully!");
         }
     }
@@ -53,6 +56,7 @@ public class Profile {
             System.out.println("please enter a new password");
         else {
             MainMenu.user.setPassword(newPassword);
+            SaveFile.saveUser(MainMenu.user);
             System.out.println("password changed successfully!");
         }
     }

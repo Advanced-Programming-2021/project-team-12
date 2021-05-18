@@ -1,4 +1,5 @@
 package view;
+import controllers.SaveFile;
 import controllers.SaveUser;
 import models.User;
 import java.util.regex.Matcher;
@@ -58,6 +59,7 @@ public class RegistrationMenu {
             User user = new User(nickName, userName, password);
             System.out.println("user created successfully!");
             SaveUser.run(user);
+            SaveFile.saveUser(user);
         }
     }
 

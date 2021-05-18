@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import controllers.SaveFile;
+import controllers.SaveUser;
 import models.Card;
 import models.User;
 
@@ -42,8 +45,8 @@ public class Shop {
         else {
             user.decreaseMoney(card.getPrice());
             user.addCardToAllCard(card);
+            SaveFile.saveUser(user);
         }
-
     }
 
     public void showCards() {
