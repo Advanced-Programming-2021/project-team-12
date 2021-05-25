@@ -2,7 +2,7 @@ package controllers.phase;
 
 import models.Address;
 import models.PlayerTurn;
-import view.Game;
+import controllers.Game;
 import view.Main;
 
 import java.util.regex.Matcher;

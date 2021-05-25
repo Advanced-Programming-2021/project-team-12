@@ -138,8 +138,8 @@ public class LoadFile {
         int score = json.getInt("score");
         int money = json.getInt("money");
         Gson gson = new Gson();
-        Type StringListType = new TypeToken<ArrayList<String>>(){}.getType();
-        ArrayList<String> userCardsName = gson.fromJson(json.get("allCards").toString(), StringListType);
+        Type stringListType = new TypeToken<ArrayList<String>>(){}.getType();
+        ArrayList<String> userCardsName = gson.fromJson(json.get("allCards").toString(), stringListType);
         User user = new User(nickName, userName, password);
         user.setMoney(money);
         user.setScore(score);

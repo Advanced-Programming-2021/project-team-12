@@ -3,7 +3,7 @@ package models;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
-import view.Game;
+import controllers.Game;
 
 import java.util.ArrayList;
 import java.util.Arrays;

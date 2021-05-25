@@ -5,7 +5,7 @@ import models.Address;
 import models.Player;
 import models.card.spell.spell_effect.SpellEffect;
 import view.Effect;
-import view.Game;
+import controllers.Game;
 //import card.trap.TrapCard;
 
 import java.util.ArrayList;

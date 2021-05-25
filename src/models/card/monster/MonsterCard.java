@@ -10,7 +10,7 @@ import models.card.monster.monster_effect.MonsterEffect;
 import models.card.monster.monster_effect.MonsterEffect;
 import models.Board.*;
 import view.Effect;
-import view.Game;
+import controllers.Game;
 //import card.spell.SpellCard;
 
 import java.util.ArrayList;

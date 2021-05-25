@@ -13,7 +13,7 @@ import models.card.spell.SpellCard;
 import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
 import view.Effect;
-import view.Game;
+import controllers.Game;
 import view.Main;
 
 public class MainPhase {

@@ -10,7 +10,7 @@ import models.Board;
 import models.Player;
 import models.PositionOfCardInBoard;
 import models.card.monster.MonsterCard;
-import view.Game;
+import controllers.Game;
 import view.Main;
 
 public class BattlePhase {
