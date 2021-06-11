@@ -57,6 +57,24 @@ public class LoadFile {
                 , isRitual, name, price, Attribute.valueOf(attribute), description);
     }
 
+    public void importCard(File file, String flag) {
+        String jsonData = null;
+        try {
+            Scanner scanner = new Scanner(file);
+            if (scanner.hasNextLine())
+                jsonData = scanner.nextLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JSONObject json = new JSONObject(jsonData);
+        if (flag.equals("m"))
+            loadMonsterFromJson(json);
+        else if (flag.equals("s"))
+            loadSpellFromJson(json);
+        else if (flag.equals("t"))
+            loadTrapFromJson(json);
+    }
+
     private void loadSpellCards() {
         int number = 0;
         String spellJsonData = null;

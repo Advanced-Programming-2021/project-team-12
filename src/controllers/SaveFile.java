@@ -50,6 +50,10 @@ public class SaveFile {
         saveUserDecks(user);
     }
 
+    public static void exportCard(File file, String cardName) {
+
+    }
+
     private static void saveUserDecks(User user) {
         ArrayList<String> mainCardNames = new ArrayList<>();
         ArrayList<String> sideCardNames = new ArrayList<>();
