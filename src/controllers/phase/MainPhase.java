@@ -3,6 +3,7 @@ package controllers.phase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import controllers.PhaseControl;
 import controllers.move.Attack;
 import models.Address;
 import models.Board;
@@ -14,349 +15,305 @@ import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
 import view.Effect;
 import controllers.Game;
+import Exceptions.*;
 import view.Main;
 
 public class MainPhase {
-    private Boolean goToNextPhase = false;
+    public Boolean goToNextPhase = false;
     private int howManyHeraldOfCreationDidWeUseEffect = 0;
     private int whatMainIsPhase;
 
     public void run() {
-        if (whatMainIsPhase == 1) {
-            Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
-            doEffect();
+        if (!goToNextPhase) {
+            if (whatMainIsPhase == 1) {
+                Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
+                doEffect();
+            }
+            System.out.println("phase: draw phase");
+            Board.showBoeard();
+            getSelectedCard();
         }
-        System.out.println("phase: draw phase");
-        Board.showBoeard();
+    }
+
+    public void getSelectedCard() {
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();
-            if (input.matches("^[ ]*next phase[ ]*$"))
-                break;
-            else if (input.matches("^[ ]*select [.*][ ]*$"))
-                whatIsSelected(input);
-            else if (input.matches("^[ ]*summon[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*set[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*attack direct[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*activate effect[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                showGraveyard();
-            else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*surrender[ ]*$"))
-                surrender();
-            else
-                System.out.println("invalid command");
+            try {
+                try {
+                    try {
+                        try {
+                            PhaseControl.getInstance().checkInputNonCardSelected(input);
+                        } catch (InvalidCardSelection e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } catch (BreakException e) {
+                        break;
+                    }
+                } catch (NoSelectedCardException e) {
+                    System.out.println(e.getMessage());
+                }
+            } catch (InvalidCommandException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
-    private void whatIsSelected(String input) {
-        if (input.matches("^[ ]*select --monster [\\d]+[ ]*$"))
-            selectMonster(getCommandMatcher(input, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
-        else if (input.matches("^[ ]*select --monster --opponent [\\d]+[ ]*$"))
-            selectOpponentMonster(getCommandMatcher(input, "(^[ ]*select --monster --opponent ([\\d]+)[ ]*$)"));
-        else if (input.matches("^[ ]*select --spell [\\d]+[ ]*$"))
-            selectSpell(getCommandMatcher(input, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
-        else if (input.matches("^[ ]*select --spell --opponent [\\d]+[ ]*$"))
-            selectOpponentSpell(getCommandMatcher(input, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
-        else if (input.matches("^[ ]*select --field[ ]*$"))
-            selectField();
-        else if (input.matches("^[ ]*select --field --opponent[ ]*$"))
-            selectOpponentField();
-        else if (input.matches("^[ ]*select --hand [\\d]+[ ]*$"))
-            selectHand(getCommandMatcher(input, "(^[ ]*select --hand ([\\d]+)[ ]*$)"));
-        else if (input.matches("^[ ]*select -d[ ]*$"))
-            System.out.println("no card is selected yet");
-        else
-            System.out.println("invalid selection");
-    }
-
-    private void selectMonster(Matcher matcher) {
+    public void selectMonster(Matcher matcher) {
         if (matcher.find()) {
             Board.showBoeard();
-            if (Address.isAddressValid(matcher.group(1))) {
-                String selectedCard = matcher.group(1);
-                String input;
-                while (true) {
-                    input = Main.scanner.nextLine().trim();
-                    if (input.matches("^[ ]*next phase[ ]*$")) {
-                        goToNextPhase = true;
+            String selectedCard = matcher.group(1);
+            String input;
+            while (true) {
+                input = Main.scanner.nextLine().trim();
+                try {
+                    try {
+                        try {
+                            try {
+                                try {
+                                    PhaseControl.getInstance().monsterCardSelected(input, selectedCard);
+                                } catch (CantActivateEffect e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            } catch (CantSetThisCard e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } catch (CantSummonThisCard e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } catch (BreakException e) {
                         break;
-                    } else if (input.matches("^[ ]*select -d[ ]*$"))
-                        break;
-                    else if (input.matches("^[ ]*summon[ ]*$"))
-                        System.out.println("you can’t summon this card");
-                    else if (input.matches("^[ ]*set[ ]*$"))
-                        System.out.println("you can’t set this card");
-                    else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                        setPosition(input, getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
-                    else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                        flipSummon(getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
-                    else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        attack(getCommandMatcher(input, "(^[ ]*attack ([\\d]+)[ ]*$)"));
-                    else if (input.matches("^[ ]*attack direct[ ]*$"))
-                        directAttack(getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
-                    else if (input.matches("^[ ]*activate effect[ ]*$"))
-                        System.out.println("activate effect is only for spell cards.");
-                    else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        showGraveyard();
-                    else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
-                    else if (input.matches("^[ ]*surrender[ ]*$"))
-                        surrender();
-                    else
-                        System.out.println("invalid command");
+                    }
+                } catch (InvalidCommandException e) {
+                    System.out.println(e.getMessage());
                 }
-            } else
-                System.out.println("invalid selection");
+            }
         }
     }
 
-    private void selectOpponentMonster(Matcher matcher) {
+    public void selectOpponentMonster(Matcher matcher) {
         if (matcher.find()) {
             Board.showBoeard();
-            if (Address.isAddressValid(matcher.group(1))) {
-                String selectedCard = matcher.group(1);
-                String input;
-                while (true) {
-                    input = Main.scanner.nextLine().trim();
-                    if (input.matches("^[ ]*next phase[ ]*$")) {
-                        goToNextPhase = true;
+            String selectedCard = matcher.group(1);
+            String input;
+            while (true) {
+                input = Main.scanner.nextLine().trim();
+                try {
+                    try {
+                        try {
+                            try {
+                                try {
+                                    try {
+                                        try {
+                                            PhaseControl.getInstance().OpponentMonstercardSelected(input, selectedCard);
+                                        } catch (CantChangeCardPosition e) {
+                                            System.out.println(e.getMessage());
+                                        }
+                                    } catch (CantAttack e) {
+                                        System.out.println(e.getMessage());
+                                    }
+                                } catch (CantActivateEffect e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            } catch (CantSetThisCard e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } catch (CantSummonThisCard e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } catch (BreakException e) {
                         break;
-                    } else if (input.matches("^[ ]*select -d[ ]*$"))
-                        break;
-                    else if (input.matches("^[ ]*summon[ ]*$"))
-                        System.out.println("you can’t summon this card");
-                    else if (input.matches("^[ ]*set[ ]*$"))
-                        System.out.println("you can’t set this card");
-                    else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                        System.out.println("you can’t change this card position");
-                    else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                        System.out.println("you can’t change this card position");
-                    else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        System.out.println("you can’t attack with this card");
-                    else if (input.matches("^[ ]*attack direct[ ]*$"))
-                        System.out.println("you can’t attack with this card");
-                    else if (input.matches("^[ ]*activate effect[ ]*$"))
-                        System.out.println("activate effect is only for spell cards.");
-                    else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        showGraveyard();
-                    else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --monster --opponent [\\d]+[ ]*$)"));
-                    else if (input.matches("^[ ]*surrender[ ]*$"))
-                        surrender();
-                    else
-                        System.out.println("invalid command");
+                    }
+                } catch (InvalidCommandException e) {
+                    System.out.println(e.getMessage());
                 }
-            } else
-                System.out.println("invalid selection");
+            }
         }
     }
 
-    private void selectSpell(Matcher matcher) {
+    public void selectSpell(Matcher matcher) {
         if (matcher.find()) {
             Board.showBoeard();
-            if (Address.isAddressValid(matcher.group(1))) {
-                String selectedCard = matcher.group(1);
-                String input;
-                while (true) {
-                    input = Main.scanner.nextLine().trim();
-                    if (input.matches("^[ ]*next phase[ ]*$")) {
-                        goToNextPhase = true;
+            String selectedCard = matcher.group(1);
+            String input;
+            while (true) {
+                input = Main.scanner.nextLine().trim();
+                try {
+                    try {
+                        try {
+                            try {
+                                try {
+                                    try {
+                                        PhaseControl.getInstance().spellSelected(input, selectedCard);
+                                    } catch (CantChangeCardPosition e) {
+                                        System.out.println(e.getMessage());
+                                    }
+                                } catch (CantAttack e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            } catch (CantSetThisCard e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } catch (CantSummonThisCard e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } catch (BreakException e) {
                         break;
-                    } else if (input.matches("^[ ]*select -d[ ]*$"))
-                        break;
-                    else if (input.matches("^[ ]*summon[ ]*$"))
-                        System.out.println("you can’t summon this card");
-                    else if (input.matches("^[ ]*set[ ]*$"))
-                        System.out.println("you can’t set this card");
-                    else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                        System.out.println("you can’t change this card position");
-                    else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                        System.out.println("you can’t change this card position");
-                    else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        System.out.println("you can’t attack with this card");
-                    else if (input.matches("^[ ]*attack direct[ ]*$"))
-                        System.out.println("you can’t attack with this card");
-                    else if (input.matches("^[ ]*activate effect[ ]*$"))
-                        activeSpell(getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
-                    else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        showGraveyard();
-                    else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
-                    else if (input.matches("^[ ]*surrender[ ]*$"))
-                        surrender();
-                    else
-                        System.out.println("invalid command");
+                    }
+                } catch (InvalidCommandException e) {
+                    System.out.println(e.getMessage());
                 }
-            } else
-                System.out.println("invalid selection");
+            }
         }
     }
 
-    private void selectOpponentSpell(Matcher matcher) {
+    public void selectOpponentSpell(Matcher matcher) {
         if (matcher.find()) {
-            if (Address.isAddressValid(matcher.group(1))) {
-                String selectedCard = matcher.group(1);
-                String input;
-                while (true) {
-                    Board.showBoeard();
-                    input = Main.scanner.nextLine().trim();
-                    if (input.matches("^[ ]*next phase[ ]*$")) {
-                        goToNextPhase = true;
+            String selectedCard = matcher.group(1);
+            String input;
+            while (true) {
+                Board.showBoeard();
+                input = Main.scanner.nextLine().trim();
+                try {
+                    try {
+                        try {
+                            try {
+                                try {
+                                    try {
+                                        try {
+                                            PhaseControl.getInstance().OpponentSpellCardSelected(input, selectedCard);
+                                        } catch (CantChangeCardPosition e) {
+                                            System.out.println(e.getMessage());
+                                        }
+                                    } catch (CantAttack e) {
+                                        System.out.println(e.getMessage());
+                                    }
+                                } catch (CantActivateEffect e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            } catch (CantSetThisCard e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } catch (CantSummonThisCard e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } catch (BreakException e) {
                         break;
-                    } else if (input.matches("^[ ]*select -d[ ]*$"))
-                        break;
-                    else if (input.matches("^[ ]*summon[ ]*$"))
-                        System.out.println("you can’t summon this card");
-                    else if (input.matches("^[ ]*set[ ]*$"))
-                        System.out.println("you can’t set this card");
-                    else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                        System.out.println("you can’t change this card position");
-                    else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                        System.out.println("you can’t change this card position");
-                    else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        System.out.println("you can’t attack with this card");
-                    else if (input.matches("^[ ]*attack direct[ ]*$"))
-                        System.out.println("you can’t attack with this card");
-                    else if (input.matches("^[ ]*activate effect[ ]*$"))
-                        System.out.println("activate effect is only for spell cards.");
-                    else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        showGraveyard();
-                    else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
-                    else if (input.matches("^[ ]*surrender[ ]*$"))
-                        surrender();
-                    else
-                        System.out.println("invalid command");
+                    }
+                } catch (InvalidCommandException e) {
+                    System.out.println(e.getMessage());
                 }
-            } else
-                System.out.println("invalid selection");
+            }
         }
     }
 
-    private void selectField() {
+    public void selectField() {
         String input;
         while (true) {
             Board.showBoeard();
             input = Main.scanner.nextLine().trim();
-            if (input.matches("^[ ]*next phase[ ]*$")) {
-                goToNextPhase = true;
-                break;
-            } else if (input.matches("^[ ]*select -d[ ]*$"))
-                break;
-            else if (input.matches("^[ ]*summon[ ]*$"))
-                System.out.println("you can’t summon this card");
-            else if (input.matches("^[ ]*set[ ]*$"))
-                System.out.println("you can’t set this card");
-            else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                System.out.println("you can’t change this card position");
-            else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                System.out.println("you can’t change this card position");
-            else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                System.out.println("you can’t attack with this card");
-            else if (input.matches("^[ ]*attack direct[ ]*$"))
-                System.out.println("you can’t attack with this card");
-            else if (input.matches("^[ ]*activate effect[ ]*$"))
-                System.out.println("activate effect is only for spell cards.");
-            else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                showGraveyard();
-            else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                showFieldZoneCard();
-            else if (input.matches("^[ ]*surrender[ ]*$"))
-                surrender();
-            else
-                System.out.println("invalid command");
+            try {
+                try {
+                    try {
+                        try {
+                            try {
+                                try {
+                                    try {
+                                        PhaseControl.getInstance().fieldCardSelected(input);
+                                    } catch (CantChangeCardPosition e) {
+                                        System.out.println(e.getMessage());
+                                    }
+                                } catch (CantAttack e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            } catch (CantActivateEffect e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } catch (CantSetThisCard e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } catch (CantSummonThisCard e) {
+                        System.out.println(e.getMessage());
+                    }
+                } catch (BreakException e) {
+                    break;
+                }
+            } catch (InvalidCommandException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
-    private void selectOpponentField() {
+    public void selectOpponentField() {
         String input;
         while (true) {
             Board.showBoeard();
             input = Main.scanner.nextLine().trim();
-            if (input.matches("^[ ]*next phase[ ]*$")) {
-                goToNextPhase = true;
-                break;
-            } else if (input.matches("^[ ]*select -d[ ]*$"))
-                break;
-            else if (input.matches("^[ ]*summon[ ]*$"))
-                System.out.println("you can’t summon this card");
-            else if (input.matches("^[ ]*set[ ]*$"))
-                System.out.println("you can’t set this card");
-            else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                System.out.println("you can’t change this card position");
-            else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                System.out.println("you can’t change this card position");
-            else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                System.out.println("you can’t attack with this card");
-            else if (input.matches("^[ ]*attack direct[ ]*$"))
-                System.out.println("you can’t attack with this card");
-            else if (input.matches("^[ ]*activate effect[ ]*$"))
-                System.out.println("activate effect is only for spell cards.");
-            else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                showGraveyard();
-            else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                showOpponentFieldZoneCard();
-            else if (input.matches("^[ ]*surrender[ ]*$"))
-                surrender();
-            else
-                System.out.println("invalid command");
+            try {
+                try {
+                    try {
+                        try {
+                            try {
+                                try {
+                                    try {
+                                        PhaseControl.getInstance().opponentFieldCardSelected(input);
+                                    } catch (CantChangeCardPosition e) {
+                                        System.out.println(e.getMessage());
+                                    }
+                                } catch (CantAttack e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            } catch (CantActivateEffect e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } catch (CantSetThisCard e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } catch (CantSummonThisCard e) {
+                        System.out.println(e.getMessage());
+                    }
+                } catch (BreakException e) {
+                    break;
+                }
+            } catch (InvalidCommandException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
-    private void selectHand(Matcher matcher) {
+    public void selectHand(Matcher matcher) {
         if (matcher.find()) {
             Board.showBoeard();
-            if (Address.isAddressValid(matcher.group(1))) {
-                String selectedCard = matcher.group(1);
-                String input;
-                while (true) {
-                    input = Main.scanner.nextLine().trim();
-                    if (input.matches("^[ ]*next phase[ ]*$")) {
-                        goToNextPhase = true;
+            String selectedCard = matcher.group(1);
+            String input;
+            while (true) {
+                input = Main.scanner.nextLine().trim();
+                try {
+                    try {
+                        try {
+                            try {
+                                try {
+                                    PhaseControl.getInstance().handSelected(input, selectedCard);
+                                } catch (CantChangeCardPosition e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            } catch (CantAttack e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } catch (CantActivateEffect e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } catch (BreakException e) {
                         break;
-                    } else if (input.matches("^[ ]*select -d[ ]*$"))
-                        break;
-                    else if (input.matches("^[ ]*summon[ ]*$"))
-                        summon(getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
-                    else if (input.matches("^[ ]*set[ ]*$"))
-                        whatIsSet(getCommandMatcher(selectedCard, "(^[ ]*select --hand ([\\d]+)[ ]*$)"));
-                    else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                        System.out.println("you can’t change this card position");
-                    else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                        System.out.println("you can’t change this card position");
-                    else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        System.out.println("you can’t attack with this card");
-                    else if (input.matches("^[ ]*attack direct[ ]*$"))
-                        System.out.println("you can’t attack with this card");
-                    else if (input.matches("^[ ]*activate effect[ ]*$"))
-                        System.out.println("activate effect is only for spell cards.");
-                    else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        showGraveyard();
-                    else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        showSelectedCard(getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
-                    else if (input.matches("^[ ]*surrender[ ]*$"))
-                        surrender();
-                    else
-                        System.out.println("invalid command");
+                    }
+                } catch (InvalidCommandException e) {
+                    System.out.println(e.getMessage());
                 }
-            } else
-                System.out.println("invalid selection");
+            }
         }
     }
 
-    private void summon(Matcher matcher) {
+    public void summon(Matcher matcher) {
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
             if (!currentPlayer.isMonsterZoneFull()) {
@@ -379,12 +336,12 @@ public class MainPhase {
                                 }
                             }
                             System.out.println("summoned successfully");
-                            if(Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()){
+                            if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()) {
                                 currentPlayer.removeCard(address);
                                 Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
                                 System.out.println("The summmoned card got destroyed by effect of Trap Hole efffect.");
                             }
-                            if(Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()){
+                            if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()) {
                                 Attack.destroyAllMonstersInTheBoard();
                                 Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
                                 System.out.println("All monster card got destroyed by effect of TorrentialTribute efffect.");
@@ -405,13 +362,13 @@ public class MainPhase {
         }
     }
 
-    private void ritualSummon(Matcher matcher) {
+    public void ritualSummon(Matcher matcher) {
 
     }
 
-    private void summonAHighLevelMonster(String address) {
+    public void summonAHighLevelMonster(String address) {
         Address address1 = new Address(address);
-        Player currentPlayer=Game.whoseTurnPlayer();
+        Player currentPlayer = Game.whoseTurnPlayer();
         if (Game.whoseTurnPlayer().isThereTwoCardInMonsterZone()) {
             System.out.println("Please select two monsters for tribute!(type monster address or cancel and type monsters in different lines)");
             String tributeCard1 = scanForTribute();
@@ -426,12 +383,12 @@ public class MainPhase {
                     Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard1));
                     Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard2));
                     Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(address);
-                    if(Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()){
+                    if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()) {
                         currentPlayer.removeCard(address1);
                         Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
                         System.out.println("The summmoned card got destroyed by effect of Trap Hole efffect.");
                     }
-                    if(Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()){
+                    if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()) {
                         Attack.destroyAllMonstersInTheBoard();
                         Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
                         System.out.println("All monster card got destroyed by effect of TorrentialTribute efffect.");
@@ -441,9 +398,9 @@ public class MainPhase {
         } else System.out.println("there are not enough cards for tribute");
     }
 
-    private void summonASuperHighLevelMonster(String address) {
+    public void summonASuperHighLevelMonster(String address) {
         Address address1 = new Address(address);
-        Player currentPlayer=Game.whoseTurnPlayer();
+        Player currentPlayer = Game.whoseTurnPlayer();
         if (Game.whoseTurnPlayer().isThereThreeCardInMonsterZone()) {
             System.out.println("Please select three monsters for tribute!(type monster address or cancel and type monsters in different lines)");
             String tributeCard1 = scanForTribute();
@@ -464,12 +421,12 @@ public class MainPhase {
                         Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard2));
                         Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard3));
                         Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(address);
-                        if(Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()){
+                        if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()) {
                             currentPlayer.removeCard(address1);
                             Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
                             System.out.println("The summmoned card got destroyed by effect of Trap Hole efffect.");
                         }
-                        if(Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()){
+                        if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()) {
                             Attack.destroyAllMonstersInTheBoard();
                             Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
                             System.out.println("All monster card got destroyed by effect of TorrentialTribute efffect.");
@@ -480,7 +437,7 @@ public class MainPhase {
         } else System.out.println("there are not enough cards for tribute");
     }
 
-    private String scanForTribute() {
+    public String scanForTribute() {
         String tributeCard = Main.scanner.nextLine();
         while (!(tributeCard.matches("[12345]{1}"))) {
             System.out.println("invalid command!");
@@ -489,13 +446,13 @@ public class MainPhase {
         return tributeCard;
     }
 
-    private boolean isCancelled(String input) {
+    public boolean isCancelled(String input) {
         return input.equals("cancel");
     }
 
-    private void summonAMediumLevelMonster(String address) {
+    public void summonAMediumLevelMonster(String address) {
         Address address1 = new Address(address);
-        Player currentPlayer=Game.whoseTurnPlayer();
+        Player currentPlayer = Game.whoseTurnPlayer();
         if (currentPlayer.isThereAnyCardInMonsterZone()) {
             System.out.println("Please select two monster for tribute!(type monster address or cancel)");
             String tributeCard = Main.scanner.nextLine();
@@ -511,12 +468,12 @@ public class MainPhase {
                     currentPlayer.setHeSummonedOrSet(true);
                     currentPlayer.removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard));
                     currentPlayer.summonCardFromHandToMonsterZone(address);
-                    if(Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()){
+                    if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()) {
                         currentPlayer.removeCard(address1);
                         Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
                         System.out.println("The summmoned card got destroyed by effect of Trap Hole efffect.");
                     }
-                    if(Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()){
+                    if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()) {
                         Attack.destroyAllMonstersInTheBoard();
                         Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
                         System.out.println("All monster card got destroyed by effect of TorrentialTribute efffect.");
@@ -526,20 +483,7 @@ public class MainPhase {
         } else System.out.println("there are not enough cards for tribute");
     }
 
-    private void whatIsSet(Matcher matcher) {
-        if (matcher.find()) {
-            String whatKind = Game.whoseTurnPlayer().whatKindaCardIsInThisAddress(matcher.group(1));
-            if (whatKind.equals("monster")) {
-                setMonster(getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
-            } else if (whatKind.equals("trap")) {
-                setTrap(getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
-            } else if (whatKind.equals("spell")) {
-                setSpell(getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
-            }
-        }
-    }
-
-    private void setMonster(Matcher matcher) {
+    public void setMonster(Matcher matcher) {
         if (matcher.find()) {
             if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
                 if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
@@ -558,7 +502,7 @@ public class MainPhase {
         }
     }
 
-    private void setTrap(Matcher matcher) {
+    public void setTrap(Matcher matcher) {
         if (matcher.find()) {
             if (Game.whoseTurnPlayer().isSpellZoneFull()) {
                 Game.whoseTurnPlayer().setCardFromHandToSpellZone(matcher.group(1));
@@ -568,7 +512,7 @@ public class MainPhase {
         }
     }
 
-    private void setSpell(Matcher matcher) {
+    public void setSpell(Matcher matcher) {
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
             if (currentPlayer.isSpellZoneFull()) {
@@ -592,11 +536,10 @@ public class MainPhase {
         }
     }
 
-    private void setTheRitualSpell(String input, String address) {
+    public void setTheRitualSpell(String input, String address) {
 
     }
 
-    // be careful for duplicate
     public void showSelectedCard(Matcher matcher) {
         if (matcher.find()) {
             String kind = Game.whoseTurnPlayer().whatKindaCardIsInThisAddress(matcher.group(1));
@@ -624,13 +567,13 @@ public class MainPhase {
         }
     }
 
-    private void attack(Matcher matcher) {
+    public void attack(Matcher matcher) {
         System.out.println("you can’t do this action in this phase");
     }
 
-    private void flipSummon(Matcher matcher) {
+    public void flipSummon(Matcher matcher) {
         if (matcher.find()) {
-            Player currentPlayer=Game.whoseTurnPlayer();
+            Player currentPlayer = Game.whoseTurnPlayer();
             if (currentPlayer.isThisMonsterOnDHPosition(matcher.group(1))) {
                 currentPlayer.convertThisMonsterFromDHToOO(matcher.group(1));
                 Address address = new Address(matcher.group(1));
@@ -638,7 +581,7 @@ public class MainPhase {
                     doManEaterBugEffect();
                 }
                 System.out.println("flip summoned successfully");
-                if(Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()){
+                if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()) {
                     currentPlayer.removeCard(address);
                     Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
                     System.out.println("The summmoned card got destroyed by effect of Trap Hole efffect.");
@@ -647,7 +590,7 @@ public class MainPhase {
         }
     }
 
-    private void doManEaterBugEffect() {
+    public void doManEaterBugEffect() {
         int monsterZoneNumber = Integer.parseInt(Effect.run("ManEaterBug"));
         if (monsterZoneNumber <= 5 && monsterZoneNumber >= 1) {
             Address address1 = new Address(monsterZoneNumber, "monster", false);
@@ -657,7 +600,7 @@ public class MainPhase {
         }
     }
 
-    private void setPosition(String input, Matcher matcher) {
+    public void setPosition(String input, Matcher matcher) {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (matcher.find()) {
             int index = currentPlayer.getIndexOfThisCardByAddress(new Address(matcher.group(1)));
@@ -684,10 +627,6 @@ public class MainPhase {
         }
     }
 
-    public void showGraveyard() {
-        Board.showGraveyard();
-    }
-
     public void showFieldZoneCard() {
         Board.showFieldZoneCard(true);
     }
@@ -696,15 +635,15 @@ public class MainPhase {
         Board.showFieldZoneCard(false);
     }
 
-    private void directAttack(Matcher matcher) {
+    public void directAttack(Matcher matcher) {
         System.out.println("you can’t do this action in this phase");
     }
 
-    private void specialSummon(Matcher matcher) {
+    public void specialSummon(Matcher matcher) {
 
     }
 
-    private void activeSpell(Matcher matcher) {
+    public void activeSpell(Matcher matcher) {
         if (matcher.find()) {
             Address address = new Address(matcher.group(1));
             Player currentPlayer = Game.whoseTurnPlayer();
@@ -713,7 +652,7 @@ public class MainPhase {
                 if (currentPlayer.getSpellCardByStringAddress(matcher.group(1)).getSpellMode() == SpellMode.FIELD) {
                     if (SpellCard.canWeActivateThisSpell(address)) {
                         currentPlayer.setDidWeActivateThisSpell(index);
-                        currentPlayer.setIsThisSpellActivated(true,index);
+                        currentPlayer.setIsThisSpellActivated(true, index);
                         SpellCard.doSpellAbsorptionEffect();
                         System.out.println("spell activated");
                         currentPlayer.getSpellCardByStringAddress(matcher.group(1)).doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "field", index));
@@ -721,7 +660,7 @@ public class MainPhase {
                 } else if (!(currentPlayer.isSpellZoneFull())) {
                     if (SpellCard.canWeActivateThisSpell(address)) {
                         currentPlayer.setDidWeActivateThisSpell(index);
-                        currentPlayer.setIsThisSpellActivated(true,index);
+                        currentPlayer.setIsThisSpellActivated(true, index);
                         SpellCard.doSpellAbsorptionEffect();
                         System.out.println("spell activated");
                         currentPlayer.getSpellCardByStringAddress(matcher.group(1)).doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "spell", index));
@@ -731,17 +670,11 @@ public class MainPhase {
         }
     }
 
-    private void activeTrap(Matcher matcher) {
+    public void activeTrap(Matcher matcher) {
 
     }
 
-    public void surrender() {
-        Game.setIsSurrender(true);
-        Game.setWinner(Game.whoseRivalPlayer());
-        goToNextPhase = true;
-    }
-
-    private void doEffect() {
+    public void doEffect() {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (currentPlayer.doWeHaveThisCardInBoard("Scanner")) {
             Address address = new Address(Integer.parseInt(Effect.run("Scanner")), "graveyard", false);
@@ -768,12 +701,12 @@ public class MainPhase {
         }
     }
 
-    private int minOfTwoNumber(int num1, int num2) {
+    public int minOfTwoNumber(int num1, int num2) {
         if (num1 <= num2) return num1;
         return num2;
     }
 
-    private static Matcher getCommandMatcher(String input, String regex) {
+    public static Matcher getCommandMatcher(String input, String regex) {
         input = input.trim();
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input);
@@ -798,5 +731,4 @@ public class MainPhase {
     public void setWhatMainIsPhase(int whatMainIsPhase) {
         this.whatMainIsPhase = whatMainIsPhase;
     }
-
 }
