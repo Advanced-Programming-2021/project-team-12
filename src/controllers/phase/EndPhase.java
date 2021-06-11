@@ -1,5 +1,6 @@
 package controllers.phase;
 
+import controllers.PhaseControl;
 import models.Address;
 import models.PlayerTurn;
 import view.Game;
@@ -10,15 +11,15 @@ import java.util.regex.Pattern;
 
 public class EndPhase {
     public void run() {
-        doEffect();
+        PhaseControl.getInstance().doEffect();
         String input;
         System.out.println("phase: end phase");
         if (Game.whoseTurnPlayer().howManyCardIsInTheHandCard() == 6) {
             System.out.println("select a card to be deleted from your hand!");
             input = Main.scanner.nextLine();
             while (!input.matches("(^[ ]*select --hand [123456]{1}[ ]*$)")) {
-                input = Main.scanner.nextLine();
                 System.out.println("invalid command!");
+                input = Main.scanner.nextLine();
             }
             Matcher matcher = getCommandMatcher(input, "(^[ ]*select --hand [123456]{1}[ ]*$)");
             if (matcher.find()) {
@@ -26,44 +27,9 @@ public class EndPhase {
                 Game.whoseTurnPlayer().removeCard(address);
             }
         }
-        checkIfGameEnded();
-        switchPlayerTurn();
-        printWhoseTurnIsIt();
-    }
-
-    private void doEffect() {
-        if (Game.firstPlayer.isOneHisSupplySquadActivated()) {
-            if (Game.firstPlayer.isOneHisMonstersDestroyedInThisRound())
-                if (!Game.firstPlayer.isHandFull()) Game.firstPlayer.addCardFromUnusedToHand();
-        }
-        if (Game.secondPlayer.isOneHisSupplySquadActivated()) {
-            if (Game.secondPlayer.isOneHisMonstersDestroyedInThisRound())
-                if (!Game.secondPlayer.isHandFull()) Game.secondPlayer.addCardFromUnusedToHand();
-        }
-    }
-
-    public void checkIfGameEnded() {
-        if (Game.firstPlayer.getLP() < 0) {
-            //mirzaei koja beram
-        } else if (Game.secondPlayer.getLP() < 0) {
-            //mirzaei koja beram
-        }
-    }
-
-    public void switchPlayerTurn() {
-        if (Game.playerTurn == PlayerTurn.FIRSTPLAYER) {
-            Game.playerTurn = PlayerTurn.SECONDPLAYER;
-        } else {
-            Game.playerTurn = PlayerTurn.FIRSTPLAYER;
-        }
-    }
-
-    public void printWhoseTurnIsIt() {
-        if (Game.playerTurn == PlayerTurn.FIRSTPLAYER) {
-            System.out.println("its " + Game.firstPlayer.getNickName() + "’s turn");
-        } else {
-            System.out.println("its " + Game.secondPlayer.getNickName() + "’s turn");
-        }
+        PhaseControl.getInstance().checkIfGameEnded();
+        PhaseControl.getInstance().switchPlayerTurn();
+        System.out.println(PhaseControl.getInstance().printWhoseTurnIsIt());
     }
 
     private static Matcher getCommandMatcher(String input, String regex) {
