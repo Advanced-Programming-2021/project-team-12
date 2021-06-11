@@ -54,8 +54,6 @@ public class ImportOrExport {
             System.out.println("Card Import Successfully");
         }catch (WrongAddressException e) {
             System.out.println("Wrong Address!");
-        }catch (EmptyAddressException e) {
-            System.out.println("Empty Address!");
         }catch (CardNotExistException e) {
             System.out.println("card with this name does not exist");
         }

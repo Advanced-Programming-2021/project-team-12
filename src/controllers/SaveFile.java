@@ -51,7 +51,13 @@ public class SaveFile {
     }
 
     public static void exportCard(File file, String cardName) {
-
+        Card card = Card.getCardByName(cardName);
+        if (card.getKind().equals("monster"))
+            saveMonster(card, file);
+        if (card.getKind().equals("spell"))
+            saveSpell(card);
+        else
+            saveTrap(card);
     }
 
     private static void saveUserDecks(User user) {

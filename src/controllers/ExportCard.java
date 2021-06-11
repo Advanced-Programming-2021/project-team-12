@@ -8,7 +8,7 @@ import models.Card;
 import java.io.File;
 
 public class ExportCard {
-    public void run(String cardAddress, String cardName) throws WrongAddressException, EmptyAddressException, CardNotExistException {
+    public void run(String cardAddress, String cardName) throws WrongAddressException, CardNotExistException {
         if (Card.getCardByName(cardName) == null)
             throw new CardNotExistException();
         File file = new File(cardAddress);
