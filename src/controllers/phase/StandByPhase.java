@@ -1,48 +1,26 @@
 package controllers.phase;
 
+import controllers.PhaseControl;
 import controllers.move.SetSpell;
 import controllers.Game;
 import view.Main;
 
 public class StandByPhase {
     public void run(){
-        payMessengerOfPeaceSpellCardHarm();
-        resetMoves();
+        System.out.println("Do you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?" +
+                "(type \"yes\" or \"not\"");
+        PhaseControl.getInstance().payMessengerOfPeaceSpellCardHarm(Main.scanner.nextLine().trim());
+        PhaseControl.getInstance().resetMoves();
         System.out.println("phase: standby phase");
         String input;
         //mamad function here
-        checkIfGameEnded();
+        PhaseControl.getInstance().checkIfGameEnded();
         while (true) {
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$"))
                 break;
             else
                 System.out.println("invalid command");
-        }
-    }
-    public void resetMoves(){
-        Game.firstPlayer.setHeSummonedOrSet(false);
-        Game.secondPlayer.setHeSummonedOrSet(false);
-        Game.firstPlayer.setDidWeChangePositionThisCardInThisTurnCompletelyFalse();
-        Game.secondPlayer.setDidWeChangePositionThisCardInThisTurnCompletelyFalse();
-        Game.firstPlayer.setDidWeAttackByThisCardInThisCardInThisTurnCompletelyFalse();
-        Game.secondPlayer.setDidWeAttackByThisCardInThisCardInThisTurnCompletelyFalse();
-        Game.firstPlayer.setOneHisMonstersDestroyedInThisRound(false);
-        Game.secondPlayer.setOneHisMonstersDestroyedInThisRound(false);
-    }
-    public static void checkIfGameEnded(){
-        if(Game.firstPlayer.getLP() < 0){
-            //mirzaei koja beram
-        } else if(Game.secondPlayer.getLP()< 0){
-            //mirzaei koja beram
-        }
-    }
-    public static void payMessengerOfPeaceSpellCardHarm(){
-        if(SetSpell.doIHaveMessengerOfPeace()){
-            System.out.println("Do you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?" +
-                    "(type \"yes\" or \"not\"");
-            if(Main.scanner.nextLine().equals("yes")) SetSpell.destroyMessengerOfPeace();
-            else Game.whoseTurnPlayer().decreaseLP(100);
         }
     }
 }
