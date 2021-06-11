@@ -5,7 +5,7 @@ import models.Address;
 import models.Player;
 import models.card.spell.spell_effect.SpellEffect;
 import view.Effect;
-import view.Game;
+import controllers.Game;
 //import card.trap.TrapCard;
 
 import java.util.ArrayList;
@@ -24,13 +24,14 @@ public class SpellCard {
         spellCards = new ArrayList<>();
     }
 
-    public SpellCard(String name, SpellMode spellMode, boolean isLimit, String effect, int price, SpellEffect spellEffect) {
+    public SpellCard(String name, SpellMode spellMode, boolean isLimit, int price, String description) {
         this.name = name;
         this.spellMode = spellMode;
         this.isLimit = isLimit;
         this.effect = effect;
         this.price = price;
         this.spellEffect = spellEffect;
+        this.description = description;
         spellCards.add(this);
     }
 
@@ -81,6 +82,20 @@ public class SpellCard {
         if (name.equals("DarkHole")) {
             Attack.destroyAllMonstersInTheBoard();
             currentPlayer.removeCard(address);
+        }
+        if(name.equals("TwinTwisters")){
+            String[] input=Effect.run("TwinTwisters").split(",");
+            Address address1=new Address(Integer.parseInt(input[0]),"hand",true);
+            Address address2=new Address(Integer.parseInt(input[1]),"spell",false);
+            Address address3=new Address(Integer.parseInt(input[2]),"spell",false);
+            currentPlayer.removeCard(address1);
+            currentPlayer.removeCard(address2);
+            currentPlayer.removeCard(address3);
+        }
+        if(name.equals("MysticalSpaceTyphoon")){
+            String input = Effect.run("MysticalSpaceTyphoon");
+            Address address1=new Address(Integer.parseInt(input),"spell",false);
+            currentPlayer.removeCard(address1);
         }
 
 

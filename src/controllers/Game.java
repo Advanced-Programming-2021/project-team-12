@@ -1,7 +1,8 @@
-package view;
+package controllers;
 
 import java.util.Random;
 
+import controllers.SaveFile;
 import controllers.phase.*;
 import controllers.phase.MainPhase;
 import models.Player;
@@ -76,6 +77,8 @@ public class Game {
                 firstUser.increaseMoney(300);
             }
         }
+        SaveFile.saveUser(firstUser);
+        SaveFile.saveUser(secondUser);
     }
 
     private static void restartData(User _firstUser, User _secondUser, int _round) {
@@ -115,6 +118,7 @@ public class Game {
 
     public static void run(User firstPlayer, int round) {
 
+        SaveFile.saveUser(firstUser);
     }
 
     private static void playTurn() {

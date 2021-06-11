@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import controllers.SaveFile;
 import models.Card;
 import models.Deck;
 import models.User;
@@ -56,6 +57,7 @@ public class DeckMenu {
             System.out.println("deck with name " + deckName + " already exists");
         else {
             new Deck(deckName);
+            SaveFile.saveUser(user);
             System.out.println("deck created successfully!");
         }
     }
@@ -70,6 +72,7 @@ public class DeckMenu {
             System.out.println("deck with name " + deckName + " does not exists");
         else {
             Deck.deleteDeck(deckName);
+            SaveFile.saveUser(user);
             System.out.println("deck deleted successfully!");
         }
     }
@@ -85,6 +88,7 @@ public class DeckMenu {
         else {
             Deck deck = Deck.getDeckByName(deckName);
             deck.setAcctive();
+            SaveFile.saveUser(user);
             System.out.println("deck activated successfully!");
         }
     }
@@ -115,6 +119,7 @@ public class DeckMenu {
                     System.out.println("there are already three cards with name " + cardName + " in deck " + deckName);
                 else  {   
                     deck.addCard(cardName, "m");
+                    SaveFile.saveUser(user);
                     System.out.println("card added to deck successfully");
                 }
             }
@@ -125,6 +130,7 @@ public class DeckMenu {
                     System.out.println("there are already three cards with name " + cardName + " in deck " + deckName);
                 else  {   
                     deck.addCard(cardName, "s");
+                    SaveFile.saveUser(user);
                     System.out.println("card added to deck successfully");
                 }
             }
@@ -153,6 +159,7 @@ public class DeckMenu {
                     System.out.println("card with name " + cardName + " does not exist in main deck");
                 else  {   
                     deck.removeCard(cardName, "m");
+                    SaveFile.saveUser(user);
                     System.out.println("card removed form deck successfully");
                 }
             }
@@ -161,6 +168,7 @@ public class DeckMenu {
                     System.out.println("card with name " + cardName + " does not exist in side deck");
                 else  {   
                     deck.removeCard(cardName, "s");
+                    SaveFile.saveUser(user);
                     System.out.println("card removed form deck successfully");
                 }
             }

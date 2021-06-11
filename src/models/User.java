@@ -24,6 +24,10 @@ public class User {
         this.score += score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public Boolean checkIfHasCard(Card card) {
         return allCards.contains(card);
     }

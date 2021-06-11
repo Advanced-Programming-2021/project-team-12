@@ -3,7 +3,7 @@ package models;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
-import view.Game;
+import controllers.Game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -511,4 +511,29 @@ public class Player {
         return false;
     }
 
+    public boolean doIHaveActivatedTrapNamedMagicCylinder() {
+    }
+
+    public boolean doIHaveActivatedTrapNamedMirrorForce() {
+
+    }
+
+    public void destroyAllRivalMonstersWhichInAttackMode() {
+
+    }
+
+    public void removeOneOfMyTrapHoleTrapOnTheBoard() {
+    }
+
+    public boolean doIHaveTrapHoleTrapOnTheBoard() {
+    }
+
+    public boolean doIHaveTorrentialTributeTrapOnTheBoard() {
+    }
+
+    public void removeOneOfMyTorrentialTributeTrapOnTheBoard() {
+    }
+
+    public boolean doIHaveActivatedTrapNamedNegateAttack() {
+    }
 }

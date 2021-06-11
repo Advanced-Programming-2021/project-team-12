@@ -2,7 +2,7 @@ package controllers.phase;
 
 import controllers.PhaseControl;
 import controllers.move.SetSpell;
-import view.Game;
+import controllers.Game;
 import view.Main;
 
 public class StandByPhase {

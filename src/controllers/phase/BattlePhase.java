@@ -11,7 +11,7 @@ import models.Board;
 import models.Player;
 import models.PositionOfCardInBoard;
 import models.card.monster.MonsterCard;
-import view.Game;
+import controllers.Game;
 import view.Main;
 
 public class BattlePhase {
@@ -394,10 +394,17 @@ public class BattlePhase {
                     MonsterCard rivalMonsterCard = currentPlayer.getMonsterCardByAddress(address);
                     Address myAddressType = new Address(myAddress);
                     currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
-                    if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
+                    if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedNegateAttack()) {
+                        goToNextPhase = true;
+                    } else if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedMirrorForce()) {
+                        Game.whoseRivalPlayer().destroyAllRivalMonstersWhichInAttackMode();
+                    } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                             && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                         System.out.println("You can't attack by monster with attack equal or more than 1500 " +
                                 "because of MessengerOfPeace.");
+                    } else if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedMagicCylinder()) {
+                        currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
+                        System.out.println("Rival has trap named MagicCylinder so its effect get done.");
                     } else {
                         if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.OO) {
                             int damage = myMonsterCard.getAttack() - rivalMonsterCard.getAttack();
