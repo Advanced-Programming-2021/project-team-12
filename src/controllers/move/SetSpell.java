@@ -6,7 +6,9 @@ import models.PlayerTurn;
 import view.Game;
 
 public class SetSpell {
-    public static boolean doAnyOneHaveForest;
+    public static boolean doAnyOneHaveForest(){
+
+    }
 
     public static boolean doIHaveMessengerOfPeace() {
 

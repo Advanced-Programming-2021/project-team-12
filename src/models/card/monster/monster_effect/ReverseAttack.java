@@ -6,4 +6,14 @@ public class ReverseAttack implements MonsterEffect {
     public void run(){
 
     }
+
+    @Override
+    public int attackEffect(int attack) {
+        return 0;
+    }
+
+    @Override
+    public int defenceEffect(int defence) {
+        return 0;
+    }
 }

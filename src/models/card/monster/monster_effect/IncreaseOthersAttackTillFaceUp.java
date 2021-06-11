@@ -6,4 +6,9 @@ public class IncreaseOthersAttackTillFaceUp implements MonsterEffect {
     public void run(){
 
     }
+
+    @Override
+    public int attackEffect(int attack) {
+        return 0;
+    }
 }
