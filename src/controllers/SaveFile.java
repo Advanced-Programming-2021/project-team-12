@@ -50,15 +50,70 @@ public class SaveFile {
         saveUserDecks(user);
     }
 
-    public static void exportCard(File file, String cardName) {
+    public static void exportCard(String address, String cardName) {
         Card card = Card.getCardByName(cardName);
         if (card.getKind().equals("monster"))
-            saveMonster(card, file);
+            exportMonster(card, address);
         if (card.getKind().equals("spell"))
-            saveSpell(card);
+            exportSpell(card, address);
         else
-            saveTrap(card);
+            exportTrap(card, address);
     }
+
+    private static void exportTrap(Card card, String address) {
+        TrapCard trap = TrapCard.getTrapCardByName(card.getCardName());
+        JSONObject obj = new JSONObject();
+        obj.put("description", trap.getDescription());
+        obj.put("name", trap.getName());
+        obj.put("isLimit", trap.checkIsLimit());
+        obj.put("price", trap.getPrice());
+        try {
+            FileWriter writer = new FileWriter(address);
+            writer.write(obj.toJSONString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void exportSpell(Card card, String address) {
+        SpellCard spell = SpellCard.getSpellCardByName(card.getCardName());
+        JSONObject obj = new JSONObject();
+        obj.put("desctiption", spell.getDescription());
+        obj.put("price", spell.getPrice());
+        obj.put("spellMode", spell.getSpellMode());
+        obj.put("isLimit", spell.checkIsLimit());
+        obj.put("name", spell.getName());
+        try {
+            FileWriter writer = new FileWriter(address);
+            writer.write(obj.toJSONString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void exportMonster(Card card, String address) {
+        MonsterCard monster = MonsterCard.getMonsterCardByName(card.getCardName());
+        JSONObject obj = new JSONObject();
+        obj.put("name", monster.getName());
+        obj.put("monsterMode", monster.getMonsterMode().toString());
+        obj.put("attack", monster.getAttack());
+        obj.put("defence", monster.getDefenceNumber());
+        obj.put("attribute", monster.getAttribute().toString());
+        obj.put("description", monster.getDescription());
+        obj.put("level", monster.getLevel());
+        obj.put("price", monster.getPrice());
+        obj.put("isRitual", monster.isRitual());
+        try {
+            FileWriter writer = new FileWriter(address);
+            writer.write(obj.toJSONString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private static void saveUserDecks(User user) {
         ArrayList<String> mainCardNames = new ArrayList<>();

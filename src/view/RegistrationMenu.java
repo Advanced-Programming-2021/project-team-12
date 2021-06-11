@@ -1,9 +1,12 @@
 package view;
-import controllers.SaveFile;
-import controllers.SaveUser;
+import Exceptions.NickNameException;
+import Exceptions.UserNameException;
+import Exceptions.WrongUserOrPassException;
+import Utility.CommandMatcher;
+import controllers.LogInControler;
+import controllers.SignInControler;
 import models.User;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RegistrationMenu {
     public RegistrationMenu() {
@@ -36,12 +39,13 @@ public class RegistrationMenu {
         String password;
         userName = getUserNameFromInput(input);
         password = getPasswordFromInput(input);
-        if(User.getUserByName(userName) != null && User.getUserByName(userName).checkPassword(password)) {
+        try {
+            new LogInControler().checkData(userName, password);
             System.out.println("user logged in successfully!");
             new MainMenu(User.getUserByName(userName));
-        }
-        else 
+        } catch (WrongUserOrPassException e) {
             System.out.println("Username and password didn’t match!");
+        }
     }
 
     public static void signin(String input){
@@ -51,44 +55,36 @@ public class RegistrationMenu {
         userName = getUserNameFromInput(input);
         password = getPasswordFromInput(input);
         nickName = getNickNameFromInput(input);
-        if(User.getUserByName(userName) != null) 
-            System.out.println("user with username " + userName + " already exists");
-        else if (User.getUserByNickName(nickName) != null)
-            System.out.println("user with nickname " + nickName + " already exists");
-        else {
-            User user = new User(nickName, userName, password);
+        try {
+            new SignInControler().checkData(userName, nickName, password);
             System.out.println("user created successfully!");
-            SaveUser.run(user);
-            SaveFile.saveUser(user);
+        } catch (UserNameException e) {
+            System.out.println("user with username \" + userName + \" already exists");
+        } catch (NickNameException e) {
+            System.out.println("user with nickname " + nickName + " already exists");
         }
     }
 
     private static String getUserNameFromInput(String input){
         Matcher matcher;
-        matcher = getCommandMatcher(input, "(--username|-u) ([\\w-]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--username|-u) ([\\w-]+)");
         matcher.find();
         return  matcher.group(2);
     }
 
     private static String getPasswordFromInput(String input){
         Matcher matcher;
-        matcher = getCommandMatcher(input, "(--password|-p) ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--password|-p) ([\\w]+)");
         matcher.find();
         return matcher.group(2);
     }
 
     private static String getNickNameFromInput(String input){
         Matcher matcher;
-        matcher = getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
         matcher.find();
         return matcher.group(2);
     }
 
-    public static Matcher getCommandMatcher(String input, String regex) {
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(input);
-        return matcher;
-    }
+
 }
