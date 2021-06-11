@@ -8,11 +8,13 @@ import view.MainMenu;
 
 public class ChangePass {
     public void change(String currentPass, String newPas) throws WrongPassException, NewPassException {
-        User user = User.getUserByNickName(nickName);
-        if (user != null)
-            throw new NickNameException();
+        User user = MainMenu.user;
+        if (!user.checkPassword(currentPass))
+            throw new WrongPassException();
+        else if (user.getPassword().equals(newPas))
+            throw new NewPassException();
         else {
-            MainMenu.user.setNickName(nickName);
+            user.setPassword(newPas);
             SaveFile.saveUser(MainMenu.user);
         }
     }

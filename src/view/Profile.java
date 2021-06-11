@@ -63,21 +63,6 @@ public class Profile {
         } catch (NewPassException e) {
             System.out.println("please enter a new password");
         }
-        if (!MainMenu.user.checkPassword(currentPassword))
-
-        else if (MainMenu.user.checkPassword(newPassword)) 
-
-        else {
-            MainMenu.user.setPassword(newPassword);
-            SaveFile.saveUser(MainMenu.user);
-        }
     }
 
-    public static Matcher getCommandMatcher(String input, String regex) {
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(input);
-        return matcher;
-    }
 }

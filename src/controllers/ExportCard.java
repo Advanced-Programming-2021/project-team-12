@@ -15,6 +15,6 @@ public class ExportCard {
         if (!file.isDirectory())
             throw new WrongAddressException();
         else
-            new SaveFile().exportCard(cardAddress, cardName);
+            SaveFile.exportCard(cardAddress, cardName);
     }
 }
