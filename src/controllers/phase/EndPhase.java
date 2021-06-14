@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class EndPhase {
     public void run() {
-        PhaseControl.getInstance().doEffect();
+        PhaseControl.getInstance().doEffectEndPhase();
         String input;
         System.out.println("phase: end phase");
         if (Game.whoseTurnPlayer().howManyCardIsInTheHandCard() == 6) {
