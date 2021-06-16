@@ -2,9 +2,9 @@ package view;
 import Exceptions.NickNameException;
 import Exceptions.UserNameException;
 import Exceptions.WrongUserOrPassException;
-import utility.Utility;
-import controllers.LogInControler;
-import controllers.SignInControler;
+import Utility.CommandMatcher;
+import controllers.LogInController;
+import controllers.SignInController;
 import models.User;
 import java.util.regex.Matcher;
 
@@ -40,7 +40,7 @@ public class RegistrationMenu {
         userName = getUserNameFromInput(input);
         password = getPasswordFromInput(input);
         try {
-            new LogInControler().checkData(userName, password);
+            new LogInController().checkData(userName, password);
             System.out.println("user logged in successfully!");
             new MainMenu(User.getUserByName(userName));
         } catch (WrongUserOrPassException e) {
@@ -56,7 +56,7 @@ public class RegistrationMenu {
         password = getPasswordFromInput(input);
         nickName = getNickNameFromInput(input);
         try {
-            new SignInControler().checkData(userName, nickName, password);
+            new SignInController().checkData(userName, nickName, password);
             System.out.println("user created successfully!");
         } catch (UserNameException e) {
             System.out.println("user with username \" + userName + \" already exists");

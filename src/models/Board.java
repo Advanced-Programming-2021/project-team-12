@@ -2,6 +2,8 @@ package models;
 
 import models.card.monster.MonsterCard;
 import controllers.Game;
+import view.ShowBoard;
+
 import java.util.HashMap;
 
 public class Board {
@@ -30,6 +32,7 @@ public class Board {
 
     public static void showBoard() {
         loadData();
+        new ShowBoard(currentPlayer, opponentPlayer);
     }
 
     public static void loadData() {
@@ -138,21 +141,36 @@ public class Board {
     }
 
     public static int sumOfLevelOfFacedUpMonsters(){
-
-
+        loadData();
+        int number = 0;
+        for (int i = 1; i <= opponentPlayerGraveyardCard.size(); i++)
+            if (opponentPlayerGraveyardCard.get(i).getKind().equals("Monster")
+                    && !opponentPlayer.getMonsterPosition(i).equals(PositionOfCardInBoard.DH))
+                number += opponentPlayerGraveyardCard.get(i).getLevel();
+        for (int i = 1; i <= currentPlayerGraveyardCard.size(); i++)
+            if (currentPlayerGraveyardCard.get(i).getKind().equals("Monster")
+                    && !currentPlayer.getMonsterPosition(i).equals(PositionOfCardInBoard.DH))
+                number += currentPlayerGraveyardCard.get(i).getLevel();
+        return number;
     }
 
 
     public static MonsterCard whatKindaMonsterIsHere(Address address) {
-
-
-
-
-        return null;
+        loadData();
+        Card card = getCardByAddress(address);
+        return MonsterCard.getMonsterCardByName(card.getCardName());
     }
 
     public static int numberOfAllMonstersInGraveYard() {
-        
+        loadData();
+        int number = 0;
+        for (int i = 1; i <= opponentPlayerGraveyardCard.size(); i++)
+            if (opponentPlayerGraveyardCard.get(i).getKind().equals("Monster"))
+                number++;
+        for (int i = 1; i <= currentPlayerGraveyardCard.size(); i++)
+            if (currentPlayerGraveyardCard.get(i).getKind().equals("Monster"))
+                number++;
+        return number;
     }
 
     public static void showGraveyard() {

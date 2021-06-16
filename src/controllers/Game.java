@@ -135,7 +135,7 @@ public class Game {
         } else if (phase.equals("EndGame")) {
 
         }
-
+        else if (phase.equals("EndGame"))
     }
 
     private static void goToBattlePhase() {

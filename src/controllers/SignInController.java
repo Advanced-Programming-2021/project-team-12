@@ -5,7 +5,7 @@ import Exceptions.UserNameException;
 import Exceptions.WrongUserOrPassException;
 import models.User;
 
-public class SignInControler {
+public class SignInController {
     public void checkData(String userName, String nickName, String password) throws NickNameException, UserNameException {
         if (User.getUserByName(userName) != null)
             throw new UserNameException();
