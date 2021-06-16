@@ -55,6 +55,7 @@ public class LoadFile {
         Boolean isRitual = json.getBoolean("isRitual");
         new MonsterCard(level, attack, defence, MonsterMode.valueOf(monsterMode)
                 , isRitual, name, price, Attribute.valueOf(attribute), description);
+        new Card(name, "Monster");
     }
 
     public void importCard(File file, String flag) {
@@ -101,6 +102,7 @@ public class LoadFile {
         String spellMode = json.getString("spellMode");
         Boolean isLimit = json.getBoolean("isLimit");
         new SpellCard(name, SpellMode.valueOf(spellMode), isLimit, price, desctiption);
+        new Card(name, "Spell");
     }
 
     private void loadTrapCards() {
@@ -128,6 +130,7 @@ public class LoadFile {
         Boolean isLimit = json.getBoolean("isLimit");
         int price = json.getInt("price");
         new TrapCard(name, isLimit, price, description);
+        new Card(name, "Trap");
     }
 
     private void loadUsers() {

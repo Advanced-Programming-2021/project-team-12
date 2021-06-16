@@ -1,7 +1,9 @@
 package models;
 
+import Utility.CommandMatcher;
 import models.card.monster.MonsterCard;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +16,7 @@ public class Address {
     public Address(String address) {
         Matcher matcher;
         this.number = 1;
-        matcher = getCommandMatcher(address, "(select )*(--[\\w]+|-[\\w])( --opponent| -o)* ([\\d])");
+        matcher = CommandMatcher.getCommandMatcher(address, "(select )*(--[\\w]+|-[\\w])( --opponent| -o)* ([\\d])");
         if (matcher.find()) {
             if (matcher.group(2).equals("-m"))
                 this.kind = "monster";
@@ -29,7 +31,7 @@ public class Address {
                 this.isMine = false;
             else this.isMine = true;
         } else {
-            matcher = getCommandMatcher(address, "(select )*(--field|--graveyard|-f|-g)( --opponent| -o)*");
+            matcher = CommandMatcher.getCommandMatcher(address, "(select )*(--field|--graveyard|-f|-g)( --opponent| -o)*");
             if (matcher.group(2).equals("-f"))
                 this.kind = "field";
             if (matcher.group(2).equals("-g"))
@@ -46,6 +48,26 @@ public class Address {
         this.number = number;
         this.kind = kind;
         this.isMine = isMine;
+    }
+
+    @Override
+    public boolean equals(Object ob)
+    {
+        if (ob == this) {
+            return true;
+        }
+
+        if (ob == null || ob.getClass() != getClass()) {
+            return false;
+        }
+
+        Address a = (Address) ob;
+        return kind.equals(a.getKind()) && number == a.getNumber();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, kind, isMine);
     }
 
     public String getKind() {
@@ -76,14 +98,6 @@ public class Address {
                 || address.matches("(select )*(--hand|-h)( --opponent| -o)* [123456]"))
             return true;
         else return false;
-    }
-
-    public static Matcher getCommandMatcher(String input, String regex) {
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(input);
-        return matcher;
     }
 
     public MonsterCard getIfItIsScannerThenWhat() {

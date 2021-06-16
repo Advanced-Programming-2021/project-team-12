@@ -1,15 +1,12 @@
 package view;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import Exceptions.NewPassException;
 import Exceptions.NickNameException;
 import Exceptions.WrongPassException;
 import Utility.CommandMatcher;
-import controllers.ChangeNickName;
-import controllers.ChangePass;
-import controllers.SaveFile;
-import models.User;
+import controllers.ProfileControl;
+
 public class Profile {
     public static void run() {
         String input;
@@ -38,7 +35,7 @@ public class Profile {
         matcher.find();
         nickName = matcher.group(2);
         try {
-            new ChangeNickName().change(nickName);
+            new ProfileControl().changeNickName(nickName);
             System.out.println("nickname changed successfully!");
         } catch (NickNameException e) {
             System.out.println("\"user with nickname \" + nickName + \" already exists\"");
@@ -56,7 +53,7 @@ public class Profile {
         matcher.find();
         newPassword = matcher.group(2);
         try {
-            new ChangePass().change(currentPassword, newPassword);
+            new ProfileControl().changePass(currentPassword, newPassword);
             System.out.println("password changed successfully!");
         } catch (WrongPassException e) {
             System.out.println("current password is invalid");

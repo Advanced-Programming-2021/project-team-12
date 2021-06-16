@@ -136,7 +136,6 @@ public class Game {
             switchPlayer();
         }
         else if (phase.equals("EndGame"))
-
     }
 
     private static void switchPlayer() {

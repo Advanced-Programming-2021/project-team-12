@@ -535,4 +535,25 @@ public class Player {
 
     public boolean doIHaveActivatedTrapNamedNegateAttack() {
     }
+
+    public int getNumberOFHandCard() {
+        return handCardNumbers.size();
+    }
+
+    public int getNUmberOfUnusedCard() {
+        return unusedCards.size();
+    }
+
+    public boolean getSpellPosition(int i) {
+        return isSpellFaceUp.get(i);
+    }
+
+    public PositionOfCardInBoard getMonsterPosition(int i) {
+        Address address = new Address(i, "monster", true);
+        return positionOfCardInBoardByAddress.get(address);
+    }
+
+    public int getNumberOfGraveyardCard() {
+        return graveyardCardNumbers.size();
+    }
 }
