@@ -31,7 +31,7 @@ public class Profile {
     private static void changeNickName(String input) {
         Matcher matcher;
         String nickName;
-        matcher = CommandMatcher.getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
+        matcher = Utility.getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
         matcher.find();
         nickName = matcher.group(2);
         try {
@@ -46,10 +46,10 @@ public class Profile {
         Matcher matcher;
         String currentPassword;
         String newPassword;
-        matcher = CommandMatcher.getCommandMatcher(input, "(--current|-c) ([\\w]+)");
+        matcher = Utility.getCommandMatcher(input, "(--current|-c) ([\\w]+)");
         matcher.find();
         currentPassword = matcher.group(2);
-        matcher = CommandMatcher.getCommandMatcher(input, "(--new|-n) ([\\w]+)");
+        matcher = Utility.getCommandMatcher(input, "(--new|-n) ([\\w]+)");
         matcher.find();
         newPassword = matcher.group(2);
         try {

@@ -1,19 +1,12 @@
 package controllers.phase;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import controllers.PhaseControl;
-import controllers.move.Attack;
-import models.Address;
 import models.Board;
-import models.Player;
 import models.card.monster.MonsterCard;
-import models.card.monster.monster_effect.DestroyOneMonsterWhenBecameFacedUp;
 import models.card.spell.SpellCard;
-import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
-import view.Effect;
 import controllers.Game;
 import Exceptions.*;
 import view.Main;
@@ -75,7 +68,7 @@ public class MainPhase {
             while (true) {
                 input = Main.scanner.nextLine().trim();
                 try {
-                    PhaseControl.getInstance().OpponentMonstercardSelected(input, selectedCard);
+                    PhaseControl.getInstance().OpponentMonsterCardSelected(input, selectedCard);
                 } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | CantActivateEffect | InvalidCommandException | CantSetThisCard e) {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
@@ -335,5 +328,9 @@ public class MainPhase {
 
     private void setHowManyHeraldOfCreationDidWeUseEffect(int i) {
         howManyHeraldOfCreationDidWeUseEffect = i;
+    }
+
+    public void setWhatMainIsPhase(int i) {
+        whatMainIsPhase = i;
     }
 }

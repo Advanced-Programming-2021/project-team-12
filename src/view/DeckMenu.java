@@ -1,14 +1,11 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.regex.Matcher;
 
 import Exceptions.*;
-import Utility.CommandMatcher;
+import utility.Utility;
 import controllers.DeckControllers;
-import controllers.SaveFile;
 import models.Card;
 import models.Deck;
 import models.User;
@@ -52,7 +49,7 @@ public class DeckMenu {
     public void createDeck(String input) {
         Matcher matcher;
         String deckName;
-        matcher = CommandMatcher.getCommandMatcher(input, "deck create ([\\w]+)");
+        matcher = Utility.getCommandMatcher(input, "deck create ([\\w]+)");
         matcher.find();
         deckName = matcher.group(1);
         try {
@@ -66,7 +63,7 @@ public class DeckMenu {
     public void deleteDeck(String input) {
         Matcher matcher;
         String deckName;
-        matcher = CommandMatcher.getCommandMatcher(input, "deck delete ([\\w]+)");
+        matcher = Utility.getCommandMatcher(input, "deck delete ([\\w]+)");
         matcher.find();
         deckName = matcher.group(1);
         try {
@@ -80,7 +77,7 @@ public class DeckMenu {
     public void setDeckActive(String input) {
         Matcher matcher;
         String deckName;
-        matcher = CommandMatcher.getCommandMatcher(input, "deck set-activate ([\\w]+)");
+        matcher = Utility.getCommandMatcher(input, "deck set-activate ([\\w]+)");
         matcher.find();
         deckName = matcher.group(1);
         try {
@@ -95,13 +92,13 @@ public class DeckMenu {
         Boolean isSide = false;
         String cardName;
         String deckName;
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
+        Matcher matcher = Utility.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
         matcher.find();
         cardName = matcher.group(2);
-        matcher = CommandMatcher.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
+        matcher = Utility.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
         matcher.find();
         deckName = matcher.group(2);
-        matcher = CommandMatcher.getCommandMatcher(input, "( --side| -s)");
+        matcher = Utility.getCommandMatcher(input, "( --side| -s)");
         if (matcher.find())
             isSide = true;
         try {
@@ -122,13 +119,13 @@ public class DeckMenu {
         Boolean isSide = false;
         String cardName;
         String deckName;
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
+        Matcher matcher = Utility.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
         matcher.find();
         cardName = matcher.group(2);
-        matcher = CommandMatcher.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
+        matcher = Utility.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
         matcher.find();
         deckName = matcher.group(2);
-        matcher = CommandMatcher.getCommandMatcher(input, "( --side| -s)");
+        matcher = Utility.getCommandMatcher(input, "( --side| -s)");
         if (matcher.find())
             isSide = true;
         try {
@@ -166,7 +163,7 @@ public class DeckMenu {
     }
 
     public void showDeckByName(String input) {
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "deck show --deck-name ([\\w]+)( --side|-s)*");
+        Matcher matcher = Utility.getCommandMatcher(input, "deck show --deck-name ([\\w]+)( --side|-s)*");
         matcher.find();
         String deckName = matcher.group(1);
         Deck deck = Deck.getDeckByName(deckName);

@@ -2,17 +2,15 @@ package controllers;
 
 import controllers.move.Attack;
 import controllers.move.SetSpell;
-import controllers.phase.MainPhase;
 import models.*;
 import Exceptions.*;
-import Utility.*;
+import utility.*;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
 import view.Effect;
 import view.Game;
-import view.Main;
 
 import java.util.regex.Matcher;
 
@@ -131,19 +129,19 @@ public class PhaseControl {
 
     public void whatIsSelected(String input) throws NoSelectedCardException, InvalidCardSelection {
         if (input.matches("^[ ]*select --monster [\\d]+[ ]*$"))
-            Game.getMainPhase1().selectMonster(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().selectMonster(Utility.getCommandMatcher(input, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --monster --opponent [\\d]+[ ]*$"))
-            Game.getMainPhase1().selectOpponentMonster(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --monster --opponent ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().selectOpponentMonster(Utility.getCommandMatcher(input, "(^[ ]*select --monster --opponent ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --spell [\\d]+[ ]*$"))
-            Game.getMainPhase1().selectSpell(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().selectSpell(Utility.getCommandMatcher(input, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --spell --opponent [\\d]+[ ]*$"))
-            Game.getMainPhase1().selectOpponentSpell(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().selectOpponentSpell(Utility.getCommandMatcher(input, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --field[ ]*$"))
             Game.getMainPhase1().selectField();
         else if (input.matches("^[ ]*select --field --opponent[ ]*$"))
             Game.getMainPhase1().selectOpponentField();
         else if (input.matches("^[ ]*select --hand [\\d]+[ ]*$"))
-            Game.getMainPhase1().selectHand(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --hand ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().selectHand(Utility.getCommandMatcher(input, "(^[ ]*select --hand ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select -d[ ]*$"))
             throw new NoSelectedCardException("no card is selected!");
         else if (Address.isAddressValid(input))
@@ -162,26 +160,26 @@ public class PhaseControl {
         else if (input.matches("^[ ]*set[ ]*$"))
             throw new CantSetThisCard("You can't set this card!");
         else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-            Game.getMainPhase1().setPosition(input, CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().setPosition(input, Utility.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*flip-summon[ ]*$"))
-            Game.getMainPhase1().flipSummon(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().flipSummon(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-            Game.getMainPhase1().attack(CommandMatcher.getCommandMatcher(input, "(^[ ]*attack ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().attack(Utility.getCommandMatcher(input, "(^[ ]*attack ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*attack direct[ ]*$"))
-            Game.getMainPhase1().directAttack(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().directAttack(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*activate effect[ ]*$"))
             throw new CantActivateEffect("You can only activate spell card!");
         else if (input.matches("^[ ]*show graveyard[ ]*$"))
             Board.showGraveyard();
         else if (input.matches("^[ ]*card show --selected[ ]*$"))
-            Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().showSelectedCard(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*surrender[ ]*$"))
             surrender();
         else
             throw new InvalidCommandException("invalid command!");
     }
 
-    public void OpponentMonstercardSelected(String input, String selectedCard) throws InvalidCommandException, BreakException, CantSummonThisCard, CantSetThisCard, CantActivateEffect, CantChangeCardPosition, CantAttack {
+    public void OpponentMonsterCardSelected(String input, String selectedCard) throws InvalidCommandException, BreakException, CantSummonThisCard, CantSetThisCard, CantActivateEffect, CantChangeCardPosition, CantAttack {
         if (input.matches("^[ ]*next phase[ ]*$")) {
             throw new BreakException("next phase!");
         } else if (input.matches("^[ ]*select -d[ ]*$"))
@@ -203,7 +201,7 @@ public class PhaseControl {
         else if (input.matches("^[ ]*show graveyard[ ]*$"))
             Board.showGraveyard();
         else if (input.matches("^[ ]*card show --selected[ ]*$"))
-            Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster --opponent [\\d]+[ ]*$)"));
+            Game.getMainPhase1().showSelectedCard(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --monster --opponent [\\d]+[ ]*$)"));
         else if (input.matches("^[ ]*surrender[ ]*$"))
             surrender();
         else
@@ -228,11 +226,11 @@ public class PhaseControl {
         else if (input.matches("^[ ]*attack direct[ ]*$"))
             throw new CantAttack("you can’t attack with this card");
         else if (input.matches("^[ ]*activate effect[ ]*$"))
-            Game.getMainPhase1().activeSpell(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().activeSpell(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*show graveyard[ ]*$"))
             Board.showGraveyard();
         else if (input.matches("^[ ]*card show --selected[ ]*$"))
-            Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().showSelectedCard(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*surrender[ ]*$"))
             surrender();
         else
@@ -261,7 +259,7 @@ public class PhaseControl {
         else if (input.matches("^[ ]*show graveyard[ ]*$"))
             Board.showGraveyard();
         else if (input.matches("^[ ]*card show --selected[ ]*$"))
-            Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
+            Game.getMainPhase1().showSelectedCard(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*surrender[ ]*$"))
             surrender();
         else
@@ -332,9 +330,9 @@ public class PhaseControl {
         } else if (input.matches("^[ ]*select -d[ ]*$"))
             Game.getMainPhase1().getSelectedCard();
         else if (input.matches("^[ ]*summon[ ]*$"))
-            Game.getMainPhase1().summon(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
+            Game.getMainPhase1().summon(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
         else if (input.matches("^[ ]*set[ ]*$"))
-            whatIsSet(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --hand ([\\d]+)[ ]*$)"));
+            whatIsSet(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --hand ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
             throw new CantChangeCardPosition("you can’t change this card position!");
         else if (input.matches("^[ ]*flip-summon[ ]*$"))
@@ -348,7 +346,7 @@ public class PhaseControl {
         else if (input.matches("^[ ]*show graveyard[ ]*$"))
             Board.showGraveyard();
         else if (input.matches("^[ ]*card show --selected[ ]*$"))
-            Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
+            Game.getMainPhase1().showSelectedCard(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
         else if (input.matches("^[ ]*surrender[ ]*$"))
             surrender();
         else
@@ -359,11 +357,11 @@ public class PhaseControl {
         if (matcher.find()) {
             String whatKind = Game.whoseTurnPlayer().whatKindaCardIsInThisAddress(matcher.group(1));
             if (whatKind.equals("monster")) {
-                Game.getMainPhase1().setMonster(CommandMatcher.getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
+                Game.getMainPhase1().setMonster(Utility.getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
             } else if (whatKind.equals("trap")) {
-                Game.getMainPhase1().setTrap(CommandMatcher.getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
+                Game.getMainPhase1().setTrap(Utility.getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
             } else if (whatKind.equals("spell")) {
-                Game.getMainPhase1().setSpell(CommandMatcher.getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
+                Game.getMainPhase1().setSpell(Utility.getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
             }
         }
     }
@@ -578,7 +576,7 @@ public class PhaseControl {
         }
     }
 
-    public void flipSummon(Matcher matcher) throws CantDoInThisPhase{
+    public void flipSummon(Matcher matcher) throws CantDoInThisPhase {
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
             if (currentPlayer.isThisMonsterOnDHPosition(matcher.group(1))) {
@@ -600,21 +598,23 @@ public class PhaseControl {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (matcher.find()) {
             int index = currentPlayer.getIndexOfThisCardByAddress(new Address(matcher.group(1)));
-            Matcher matcher1 = CommandMatcher.getCommandMatcher(input, "^[ ]*set -- position (attack|defense)[ ]*$");
+            Matcher matcher1 = Utility.getCommandMatcher(input, "^[ ]*set -- position (attack|defense)[ ]*$");
             if (matcher1.find()) {
                 if (matcher1.group(1).equals("attack")) {
                     if (currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
                         if (currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
                             currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
                             currentPlayer.convertThisMonsterFromAttackToDefence(matcher.group(1));
-                        } else throw new YouAlreadyChangedThisCardPosition("you already changed this card position in this turn");
+                        } else
+                            throw new YouAlreadyChangedThisCardPosition("you already changed this card position in this turn");
                     } else throw new ThisCardIsInWantedPosition("This card is already in the wanted position!");
                 } else {
                     if (!currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
                         if (currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
                             currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
                             currentPlayer.convertThisMonsterFromDefenceToAttack(matcher.group(1));
-                        } else throw new YouAlreadyChangedThisCardPosition("you already changed this card position in this turn");
+                        } else
+                            throw new YouAlreadyChangedThisCardPosition("you already changed this card position in this turn");
                     } else throw new ThisCardIsInWantedPosition("This card is already in the wanted position!");
                 }
             }
@@ -666,7 +666,8 @@ public class PhaseControl {
                     if (monsterCardForHeraldOfCreation.getLevel() >= 7) {
                         currentPlayer.removeCard(shouldBeRemoved);
                         currentPlayer.setCardFromGraveyardToMonsterZone(comeBackFromGraveyard);
-                        if (Game.getMainPhase1().whatMainIsPhase == 1) Game.getMainPhase2().increaseHowManyHeraldOfCreationDidWeUseEffect();
+                        if (Game.getMainPhase1().whatMainIsPhase == 1)
+                            Game.getMainPhase2().increaseHowManyHeraldOfCreationDidWeUseEffect();
                     }
                 }
             }
@@ -694,5 +695,6 @@ public class PhaseControl {
         Game.getMainPhase1().goToNextPhase = true;
     }
 
+//battle phase:
 
 }
