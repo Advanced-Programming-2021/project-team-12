@@ -28,7 +28,6 @@ public class Player {
     private HashMap<Integer, Card> fieldCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> monsterZoneCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> spellZoneCardNumbers = new HashMap<>();
-    private HashMap<Integer, Boolean> isMonsterFaceUp = new HashMap<>();
     private HashMap<Address, Integer> indexOfCard = new HashMap<>();
     private HashMap<Integer, Boolean> isSpellFaceUp = new HashMap<>();
     private boolean[] didBeastKingBarbarosSummonedSuperHighLevel;
