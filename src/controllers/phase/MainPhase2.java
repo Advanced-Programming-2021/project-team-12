@@ -11,7 +11,7 @@ public class MainPhase2 {
 
     public void run(){
         System.out.println("phase: draw phase");
-        Board.showBoeard();
+        Board.showBoard();
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();
@@ -65,7 +65,7 @@ public class MainPhase2 {
     }
     private void selectMonster(Matcher matcher){
         if(matcher.find()){
-            Board.showBoeard();
+            Board.showBoard();
             if(Address.isAddressValid(matcher.group(1))){
                 String selectedCard = matcher.group(1);
                 String input;
@@ -109,7 +109,7 @@ public class MainPhase2 {
     }
     private void selectOpponentMonster(Matcher matcher){
         if(matcher.find()){
-            Board.showBoeard();
+            Board.showBoard();
             if(Address.isAddressValid(matcher.group(1))){
                 String selectedCard = matcher.group(1);
                 String input;
@@ -153,7 +153,7 @@ public class MainPhase2 {
     }
     private void selcetSpell(Matcher matcher){
         if(matcher.find()){
-            Board.showBoeard();
+            Board.showBoard();
             if(Address.isAddressValid(matcher.group(1))){
                 String selectedCard = matcher.group(1);
                 String input;
@@ -201,7 +201,7 @@ public class MainPhase2 {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
-                    Board.showBoeard();
+                    Board.showBoard();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")){
                         goToNextPhase = true;
@@ -242,7 +242,7 @@ public class MainPhase2 {
     private void selectField(){
         String input;
         while (true) {
-            Board.showBoeard();
+            Board.showBoard();
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")){
                 goToNextPhase = true;
@@ -280,7 +280,7 @@ public class MainPhase2 {
     private void selectOpponentField(){
         String input;
         while (true) {
-            Board.showBoeard();
+            Board.showBoard();
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")){
                 goToNextPhase = true;
@@ -317,7 +317,7 @@ public class MainPhase2 {
     }
     private void selectHand(Matcher matcher){
         if(matcher.find()){
-            Board.showBoeard();
+            Board.showBoard();
             if(Address.isAddressValid(matcher.group(1))){
                 String selectedCard = matcher.group(1);
                 String input;
