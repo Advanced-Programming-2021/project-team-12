@@ -3,6 +3,7 @@ package controllers.phase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import controllers.PhaseControl;
 import controllers.move.Attack;
 import controllers.move.SetSpell;
 import models.Address;
@@ -10,50 +11,34 @@ import models.Board;
 import models.Player;
 import models.PositionOfCardInBoard;
 import models.card.monster.MonsterCard;
-import view.Game;
+import controllers.Game;
 import view.Main;
 
 public class BattlePhase {
     Boolean goToNextPhase = false;
+
+    private static BattlePhase instance;
+
+    public static BattlePhase getInstance() {
+        if (instance == null) {
+            instance = new BattlePhase();
+        }
+        return instance;
+    }
 
     public void run() {
         System.out.println("phase: draw phase");
         Board.showBoeard();
         String input;
         while (true) {
-            StandByPhase.checkIfGameEnded();
+            PhaseControl.getInstance().checkIfGameEnded();
             input = Main.scanner.nextLine().trim();
-            if (input.matches("^[ ]*next phase[ ]*$"))
-                break;
-            else if (input.matches("^[ ]*select [.*][ ]*$"))
-                whatIsSelected(input);
-            else if (input.matches("^[ ]*summon[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*set[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*attack direct[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*activate effect[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                Game.getMainPhase1().showGraveyard();
-            else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                System.out.println("no card is selected yet");
-            else if (input.matches("^[ ]*surrender[ ]*$"))
-                Game.getMainPhase1().surrender();
-            else
-                System.out.println("invalid command");
+            if (PhaseControl.getInstance().battlePhaseRun(input)) break;
         }
     }
 
     private void whatIsSelected(String input) {
-        StandByPhase.checkIfGameEnded();
+        PhaseControl.getInstance().checkIfGameEnded();
         if (input.matches("^[ ]*select --monster [\\d]+[ ]*$"))
             selectMonster(getCommandMatcher(input, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --monster --opponent [\\d]+[ ]*$"))
@@ -81,7 +66,7 @@ public class BattlePhase {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
-                    StandByPhase.checkIfGameEnded();
+                    PhaseControl.getInstance().checkIfGameEnded();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         goToNextPhase = true;
@@ -126,7 +111,7 @@ public class BattlePhase {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
-                    StandByPhase.checkIfGameEnded();
+                    PhaseControl.getInstance().checkIfGameEnded();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         goToNextPhase = true;
@@ -171,7 +156,7 @@ public class BattlePhase {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
-                    StandByPhase.checkIfGameEnded();
+                    PhaseControl.getInstance().checkIfGameEnded();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         goToNextPhase = true;
@@ -215,7 +200,7 @@ public class BattlePhase {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
-                    StandByPhase.checkIfGameEnded();
+                    PhaseControl.getInstance().checkIfGameEnded();
                     Board.showBoeard();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
@@ -257,7 +242,7 @@ public class BattlePhase {
     private void selectField() {
         String input;
         while (true) {
-            StandByPhase.checkIfGameEnded();
+            PhaseControl.getInstance().checkIfGameEnded();
             Board.showBoeard();
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
@@ -296,7 +281,7 @@ public class BattlePhase {
     private void selectOpponentField() {
         String input;
         while (true) {
-            StandByPhase.checkIfGameEnded();
+            PhaseControl.getInstance().checkIfGameEnded();
             Board.showBoeard();
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
@@ -339,7 +324,7 @@ public class BattlePhase {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
-                    StandByPhase.checkIfGameEnded();
+                    PhaseControl.getInstance().checkIfGameEnded();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         goToNextPhase = true;
@@ -424,7 +409,7 @@ public class BattlePhase {
                 } else System.out.println("there is no card to attack here");
             } else System.out.println("this card already attacked");
         }
-        StandByPhase.checkIfGameEnded();
+        PhaseControl.getInstance().checkIfGameEnded();
     }
 
     private void attackOO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
@@ -493,7 +478,7 @@ public class BattlePhase {
     }
 
     private void directAttack(Matcher matcher) {
-        StandByPhase.checkIfGameEnded();
+        PhaseControl.getInstance().checkIfGameEnded();
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
             Player rivalPlayer = Game.whoseRivalPlayer();
@@ -506,7 +491,7 @@ public class BattlePhase {
                 System.out.println("you opponent receives " + monsterCardForDirectAttack.getAttack() + " battle damage");
             } else System.out.println("this card already attacked");
         }
-        StandByPhase.checkIfGameEnded();
+        PhaseControl.getInstance().checkIfGameEnded();
     }
 
     private void specialSummon(Matcher matcher) {
@@ -526,7 +511,7 @@ public class BattlePhase {
     }
 
     private static Matcher getCommandMatcher(String input, String regex) {
-        input.trim();
+        input = input.trim();
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input);
     }

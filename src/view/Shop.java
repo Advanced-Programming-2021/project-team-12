@@ -1,13 +1,12 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import controllers.SaveFile;
-import controllers.SaveUser;
+import Exceptions.CardNotExistException;
+import Exceptions.NotEnoughMoneyException;
+import Utility.CommandMatcher;
+import controllers.ShopControl;
 import models.Card;
 import models.User;
 
@@ -34,18 +33,16 @@ public class Shop {
 
     public void buyCard(String input) {
         String cardName;
-        Matcher matcher = getCommandMatcher(input, "shop buy ([\\w]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "shop buy ([\\w]+)");
         matcher.find();
         cardName = matcher.group(1);
-        Card card = Card.getCardByName(cardName);
-        if (card == null)
+        try {
+            new ShopControl().buyCard(cardName, user);
+            System.out.println("you bought card successfully");
+        } catch (CardNotExistException e) {
             System.out.println("there is no card with this name");
-        else if (user.getMoney() < card.getPrice())
+        } catch (NotEnoughMoneyException e) {
             System.out.println("not enough money");
-        else {
-            user.decreaseMoney(card.getPrice());
-            user.addCardToAllCard(card);
-            SaveFile.saveUser(user);
         }
     }
 
@@ -56,11 +53,4 @@ public class Shop {
             System.out.println(card.getCardName() + ":" + " " + card.getDescription());
     }
 
-    public static Matcher getCommandMatcher(String input, String regex) {
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(input);
-        return matcher;
-    }
 }

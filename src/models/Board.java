@@ -1,7 +1,7 @@
 package models;
 
 import models.card.monster.MonsterCard;
-import view.Game;
+import controllers.Game;
 import java.util.HashMap;
 
 public class Board {

@@ -1,9 +1,13 @@
 package view;
 
-import java.nio.file.FileStore;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import Exceptions.AcctiveDeck;
+import Exceptions.UserNameException;
+import Exceptions.ValidDeck;
+import Exceptions.WrongRoundNumber;
+import Utility.CommandMatcher;
+import controllers.DuelControl;
 import controllers.Game;
 import models.Deck;
 import models.User;
@@ -31,56 +35,36 @@ public class Duel {
     }
 
     private static void duelWithAnotherPlayer(String input) {
-        User secondPlayer;
-        User firstPlayer = MainMenu.user;
-        int round;
-        Matcher matcher = getCommandMatcher(input, "--second-player ([\\w-]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "--second-player ([\\w-]+)");
         matcher.find();
-        secondPlayer = User.getUserByName(matcher.group(1));
-        matcher = getCommandMatcher(input, "(--rounds|-r) ([\\d])");
+        String secondPlayer = matcher.group(1);
+        matcher = CommandMatcher.getCommandMatcher(input, "(--rounds|-r) ([\\d])");
         matcher.find();
-        round = Integer.parseInt(matcher.group(2));
-        Deck firstPlayerActiveDeck = Deck.getActiveDeckOfUser(firstPlayer.getName());
-        Deck secondPlayerActiveDeck = Deck.getActiveDeckOfUser(secondPlayer.getName());
-        if (secondPlayer == null)
+        int round = Integer.parseInt(matcher.group(2));
+        try {
+            new DuelControl(secondPlayer, round);
+        } catch (UserNameException e) {
             System.out.println("there is no player with this username");
-        else if (firstPlayerActiveDeck == null)
-            System.out.println(firstPlayer.getName() + " has no active deck");
-        else if (secondPlayerActiveDeck == null) 
-            System.out.println(secondPlayer.getName() + " has no active deck");
-        else if (!firstPlayerActiveDeck.isValid())
-            System.out.println(firstPlayer.getName() + "’s deck is invalid");
-        else if (!secondPlayerActiveDeck.isValid())
-            System.out.println(secondPlayer.getName() + "’s deck is invalid");
-        else if (round != 1 && round != 3)
+        } catch (AcctiveDeck e) {
+            e.printStackTrace();
+        } catch (ValidDeck e) {
+            e.printStackTrace();
+        } catch (WrongRoundNumber e) {
             System.out.println("number of rounds is not supported");
-        else 
-            Game.run(firstPlayer, secondPlayer, round);
+        }
     }
 
     private static void duelWithAi(String input) {
-        User firstPlayer = MainMenu.user;
-        int round;
-        Matcher matcher;
-        matcher = getCommandMatcher(input, "(--rounds|-r) ([\\d])");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--rounds|-r) ([\\d])");
         matcher.find();
-        round = Integer.parseInt(matcher.group(2));
-        Deck firstPlayerActiveDeck = Deck.getActiveDeckOfUser(firstPlayer.getName());
-        if (firstPlayerActiveDeck == null)
-            System.out.println(firstPlayer.getName() + " has no active deck");
-        else if (!firstPlayerActiveDeck.isValid())
-            System.out.println(firstPlayer.getName() + "’s deck is invalid");
-        else if (round != 1 && round != 3)
+        int round = Integer.parseInt(matcher.group(2));
+        try {
+            new DuelControl(round);
+        } catch (AcctiveDeck | ValidDeck e) {
+            e.printStackTrace();
+        } catch (WrongRoundNumber e) {
             System.out.println("number of rounds is not supported");
-        else 
-            Game.run(firstPlayer, round);
+        }
     }
 
-    private static Matcher getCommandMatcher(String input, String regex) {
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(input);
-        return matcher;
-    }
 }

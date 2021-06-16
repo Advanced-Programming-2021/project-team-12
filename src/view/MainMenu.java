@@ -21,7 +21,7 @@ public class MainMenu {
             else if (input.matches("menu enter deck"))
                 new DeckMenu();
             else if (input.matches("menu enter import or export"))
-                ImportOrExport.run();
+                new ImportOrExport().run();
             else if (input.matches("menu enter duel"))
                 Duel.run();
             else if (input.matches("menu show-current"))

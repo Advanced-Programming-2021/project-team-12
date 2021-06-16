@@ -3,12 +3,10 @@ package controllers.move;
 import models.Address;
 import models.Board;
 import models.PlayerTurn;
-import view.Game;
+import controllers.Game;
 
 public class SetSpell {
-    public static boolean doAnyOneHaveForest(){
-
-    }
+    public static boolean doAnyOneHaveForest;
 
     public static boolean doIHaveMessengerOfPeace() {
 

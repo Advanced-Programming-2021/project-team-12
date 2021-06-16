@@ -2,6 +2,12 @@ package view;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Exceptions.NewPassException;
+import Exceptions.NickNameException;
+import Exceptions.WrongPassException;
+import Utility.CommandMatcher;
+import controllers.ChangeNickName;
+import controllers.ChangePass;
 import controllers.SaveFile;
 import models.User;
 public class Profile {
@@ -28,15 +34,14 @@ public class Profile {
     private static void changeNickName(String input) {
         Matcher matcher;
         String nickName;
-        matcher = getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
         matcher.find();
         nickName = matcher.group(2);
-        if (User.getUserByNickName(nickName) == null)
-            System.out.println("user with nickname " + nickName + " already exists");
-        else {
-            MainMenu.user.setNickName(nickName);
-            SaveFile.saveUser(MainMenu.user);
+        try {
+            new ChangeNickName().change(nickName);
             System.out.println("nickname changed successfully!");
+        } catch (NickNameException e) {
+            System.out.println("\"user with nickname \" + nickName + \" already exists\"");
         }
     }
 
@@ -44,28 +49,20 @@ public class Profile {
         Matcher matcher;
         String currentPassword;
         String newPassword;
-        matcher = getCommandMatcher(input, "(--current|-c) ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--current|-c) ([\\w]+)");
         matcher.find();
         currentPassword = matcher.group(2);
-        matcher = getCommandMatcher(input, "(--new|-n) ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--new|-n) ([\\w]+)");
         matcher.find();
         newPassword = matcher.group(2);
-        if (!MainMenu.user.checkPassword(currentPassword))
-            System.out.println("current password is invalid");
-        else if (MainMenu.user.checkPassword(newPassword)) 
-            System.out.println("please enter a new password");
-        else {
-            MainMenu.user.setPassword(newPassword);
-            SaveFile.saveUser(MainMenu.user);
+        try {
+            new ChangePass().change(currentPassword, newPassword);
             System.out.println("password changed successfully!");
+        } catch (WrongPassException e) {
+            System.out.println("current password is invalid");
+        } catch (NewPassException e) {
+            System.out.println("please enter a new password");
         }
     }
 
-    public static Matcher getCommandMatcher(String input, String regex) {
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(input);
-        return matcher;
-    }
 }

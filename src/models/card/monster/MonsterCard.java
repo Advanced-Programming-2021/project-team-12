@@ -10,7 +10,7 @@ import models.card.monster.monster_effect.MonsterEffect;
 import models.card.monster.monster_effect.MonsterEffect;
 import models.Board.*;
 import view.Effect;
-
+import controllers.Game;
 //import card.spell.SpellCard;
 
 import java.util.ArrayList;
@@ -33,11 +33,12 @@ public class MonsterCard {
         monsterCards = new ArrayList<>();
     }
 
-    public MonsterCard(int level, int attack, int defence, MonsterMode monsterMode,
+    public MonsterCard(int level, int attack, int defenceis, MonsterMode monsterMode,
                        boolean isRitual, String name, int price, Attribute attribute, String description) {
         this.level = level;
         this.attack = attack;
         this.defence = defence;
+        this.effect = effect;
         this.monsterMode = monsterMode;
         this.isRitual = isRitual;
         this.name = name;
@@ -77,7 +78,7 @@ public class MonsterCard {
                 attack += 100 * Board.numberOfAllMonstersInGraveYard();
             }
         }
-        if (SetSpell.doAnyOneHaveForest()) {
+        if (SetSpell.doAnyOneHaveForest) {
             if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST || monsterMode == MonsterMode.INSECT)
                 attack += 200;
         }
@@ -101,7 +102,7 @@ public class MonsterCard {
                 defence -= 400;
             }
         }
-        if (SetSpell.doAnyOneHaveForest()) {
+        if (SetSpell.doAnyOneHaveForest) {
             if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST || monsterMode == MonsterMode.INSECT)
                 defence += 200;
         }

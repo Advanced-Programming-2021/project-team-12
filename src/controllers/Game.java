@@ -10,6 +10,7 @@ import models.PlayerTurn;
 import models.User;
 
 public class Game {
+    private static int roundCounter;
     public static PlayerTurn playerTurn;
     public static Player firstPlayer;
     public static Player secondPlayer;
@@ -35,21 +36,18 @@ public class Game {
 
     public static void run(User _firstUser, User _secondUser, int _round) {
         restartData(_firstUser, _secondUser, _round);
-        int roundCounter = 1;
-        while (roundCounter <= round) {
-            generateRandomTurn();      
-            while (true) {
-                playTurn();
-                if (hasWinner) {
-                    setWinnData();
-                    break; 
-                }
-                switchPlayer();
-            }
-            if (firstPlayerWin > round / 2 || secondPlayerWin > round / 2)
-                break;
+    }
+
+    private void EndGame() {
+        setWinnData();
+        if (firstPlayerWin > round / 2 || secondPlayerWin > round / 2) {
+            setScoreAndMoneyOfPlayers();
+            break;
         }
-        setScoreAndMoneyOfPlayers();
+        else {
+            generateRandomTurn();
+            playTurn("DrawPhase");
+        }
     }
 
     private static void setScoreAndMoneyOfPlayers() {
@@ -90,6 +88,7 @@ public class Game {
         secondPlayerWin = 0;
         firstPlayerMaxLP = 0;
         secondPlayerMaxLP = 0;
+        roundCounter = 1;
     }
 
     private static void setWinnData() {
@@ -121,18 +120,23 @@ public class Game {
         SaveFile.saveUser(firstUser);
     }
 
-    private static void playTurn() {
-        new DrawPhase().run();
-        if (hasWinner) return;
-        new StandByPhase().run();
-        if (hasWinner) return;
-        mainPhase1.run();
-        if (hasWinner) return;
-        new BattlePhase().run();
-        if (hasWinner) return;
-        mainPhase2.run();
-        if (hasWinner) return;
-        new EndPhase().run();
+    private static void playTurn(String phase) {
+        if (phase.equals("DrawPhase"))
+            new DrawPhase().run();
+        else if (phase.equals("StandByPhase"))
+            new StandByPhase().run();
+        else if (phase.equals("MainPhase1"))
+            mainPhase1.run();
+        else if (phase.equals("BattlePhase"))
+            new BattlePhase().run();
+        else if (phase.equals("MainPhase2"))
+            mainPhase2.run();
+        else if (phase.equals("EndPhase")) {
+            new EndPhase().run();
+            switchPlayer();
+        }
+        else if (phase.equals("EndGame"))
+
     }
 
     private static void switchPlayer() {

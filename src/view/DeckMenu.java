@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import Exceptions.*;
+import Utility.CommandMatcher;
+import controllers.DeckControllers;
 import controllers.SaveFile;
 import models.Card;
 import models.Deck;
@@ -50,46 +52,42 @@ public class DeckMenu {
     public void createDeck(String input) {
         Matcher matcher;
         String deckName;
-        matcher = getCommandMatcher(input, "deck create ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "deck create ([\\w]+)");
         matcher.find();
         deckName = matcher.group(1);
-        if (Deck.getDeckByName(deckName) != null)
-            System.out.println("deck with name " + deckName + " already exists");
-        else {
-            new Deck(deckName);
-            SaveFile.saveUser(user);
+        try {
+            new DeckControllers().createDeck(deckName);
             System.out.println("deck created successfully!");
+        } catch (DeckName e) {
+            System.out.println("deck with name " + deckName + " already exists");
         }
     }
 
     public void deleteDeck(String input) {
         Matcher matcher;
         String deckName;
-        matcher = getCommandMatcher(input, "deck delete ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "deck delete ([\\w]+)");
         matcher.find();
         deckName = matcher.group(1);
-        if (Deck.getDeckByName(deckName) == null)
-            System.out.println("deck with name " + deckName + " does not exists");
-        else {
-            Deck.deleteDeck(deckName);
-            SaveFile.saveUser(user);
+        try {
+            new DeckControllers().deleteDeck(deckName);
             System.out.println("deck deleted successfully!");
+        } catch (DeckName e) {
+            System.out.println("deck with name " + deckName + " does not exists");
         }
     }
 
     public void setDeckActive(String input) {
         Matcher matcher;
         String deckName;
-        matcher = getCommandMatcher(input, "deck set-activate ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "deck set-activate ([\\w]+)");
         matcher.find();
         deckName = matcher.group(1);
-        if (Deck.getDeckByName(deckName) == null)
-            System.out.println("deck with name " + deckName + " does not exists");
-        else {
-            Deck deck = Deck.getDeckByName(deckName);
-            deck.setAcctive();
-            SaveFile.saveUser(user);
+        try {
+            new DeckControllers().setActive(deckName);
             System.out.println("deck activated successfully!");
+        } catch (DeckName e) {
+            System.out.println("deck with name " + deckName + " does not exists");
         }
     }
 
@@ -97,43 +95,26 @@ public class DeckMenu {
         Boolean isSide = false;
         String cardName;
         String deckName;
-        Matcher matcher = getCommandMatcher(input, "(--card|-c) ([\\w]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
         matcher.find();
         cardName = matcher.group(2);
-        matcher = getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
         matcher.find();
         deckName = matcher.group(2);
-        matcher = getCommandMatcher(input, "( --side| -s)");
+        matcher = CommandMatcher.getCommandMatcher(input, "( --side| -s)");
         if (matcher.find())
             isSide = true;
-        if (!user.checkIfHasCard(Card.getCardByName(cardName)))
+        try {
+            new DeckControllers().addCard(cardName, deckName, isSide);
+            System.out.println("card added to deck successfully");
+        } catch (CardName e) {
             System.out.println("card with name " + cardName + " does not exists");
-        else if (Deck.getDeckByName(deckName) == null)
+        } catch (DeckName e) {
             System.out.println("deck with name " + deckName + " does not exists");
-        else {
-            Deck deck = Deck.getDeckByName(deckName);
-            if (!isSide) {
-                if (deck.isMainCardsFull())
-                    System.out.println("main deck is full");
-                else if (deck.checkIfThereIsThree(cardName))
-                    System.out.println("there are already three cards with name " + cardName + " in deck " + deckName);
-                else  {   
-                    deck.addCard(cardName, "m");
-                    SaveFile.saveUser(user);
-                    System.out.println("card added to deck successfully");
-                }
-            }
-            else {
-                if (deck.isSideCardsFull())
-                    System.out.println("side deck is full");
-                else if (deck.checkIfThereIsThree(cardName))
-                    System.out.println("there are already three cards with name " + cardName + " in deck " + deckName);
-                else  {   
-                    deck.addCard(cardName, "s");
-                    SaveFile.saveUser(user);
-                    System.out.println("card added to deck successfully");
-                }
-            }
+        } catch (FullDeck e) {
+            System.out.println("main deck is full");
+        } catch (ThreeCardDeck e) {
+            System.out.println("there are already three cards with name " + cardName + " in deck " + deckName);
         }
     }
 
@@ -141,37 +122,24 @@ public class DeckMenu {
         Boolean isSide = false;
         String cardName;
         String deckName;
-        Matcher matcher = getCommandMatcher(input, "(--card|-c) ([\\w]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
         matcher.find();
         cardName = matcher.group(2);
-        matcher = getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
         matcher.find();
         deckName = matcher.group(2);
-        matcher = getCommandMatcher(input, "( --side| -s)");
+        matcher = CommandMatcher.getCommandMatcher(input, "( --side| -s)");
         if (matcher.find())
             isSide = true;
-        if (Deck.getDeckByName(deckName) == null)
+        try {
+            new DeckControllers().removeCard(cardName, deckName, isSide);
+            System.out.println("card removed form deck successfully");
+        } catch (DeckName e) {
             System.out.println("deck with name " + deckName + " does not exists");
-        else {
-            Deck deck = Deck.getDeckByName(deckName);
-            if (!isSide) {
-                if (!deck.containsCardInMain(cardName))
-                    System.out.println("card with name " + cardName + " does not exist in main deck");
-                else  {   
-                    deck.removeCard(cardName, "m");
-                    SaveFile.saveUser(user);
-                    System.out.println("card removed form deck successfully");
-                }
-            }
-            else {
-                if (!deck.containsCardInSide(cardName))
-                    System.out.println("card with name " + cardName + " does not exist in side deck");
-                else  {   
-                    deck.removeCard(cardName, "s");
-                    SaveFile.saveUser(user);
-                    System.out.println("card removed form deck successfully");
-                }
-            }
+        } catch (MainCard e) {
+            System.out.println("card with name " + cardName + " does not exist in main deck");
+        } catch (SideCard e) {
+            System.out.println("card with name " + cardName + " does not exist in side deck");
         }
     }
 
@@ -198,7 +166,7 @@ public class DeckMenu {
     }
 
     public void showDeckByName(String input) {
-        Matcher matcher = getCommandMatcher(input, "deck show --deck-name ([\\w]+)( --side|-s)*");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "deck show --deck-name ([\\w]+)( --side|-s)*");
         matcher.find();
         String deckName = matcher.group(1);
         Deck deck = Deck.getDeckByName(deckName);
@@ -216,11 +184,6 @@ public class DeckMenu {
             cards = deck.getSideCards();
             System.out.println("Side deck:");
         }
-        Collections.sort(cards, new Comparator<Card>() {
-            public int compare(Card c1, Card c2) {
-                    return c1.getCardName().compareTo(c2.getCardName());
-            }
-        }); 
         System.out.println("Monsters:");
         for (Card card : cards) 
             if (card.getKind().equals("monster"))
@@ -229,36 +192,12 @@ public class DeckMenu {
         for (Card card : cards) 
             if (!card.getKind().equals("monster"))
                 System.out.println(card.getCardName() + ": " + card.getDescription());
-        
     }
 
     public void showCards() {
-        ArrayList<Deck> decks;
-        ArrayList<Card> allCards = new ArrayList<>();
-        decks = Deck.getDecksOfUser(user.getName());
-        for (Deck deck : decks) {
-            ArrayList<Card> deckCards;
-            deckCards = deck.getMainCards();
-            for (Card card : deckCards) 
-                allCards.add(card);
-            deckCards = deck.getSideCards();
-            for (Card card : deckCards) 
-                allCards.add(card);
-        }   
-        Collections.sort(allCards, new Comparator<Card>() {
-            public int compare(Card c1, Card c2) {
-                    return c1.getCardName().compareTo(c2.getCardName());
-            }
-        });  
+        ArrayList<Card> allCards = Deck.getCardOfUser(MainMenu.user);
         for (Card card : allCards) 
             System.out.println(card.getCardName() + ": " + card.getDescription());
     }
 
-    public static Matcher getCommandMatcher(String input, String regex) {
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(input);
-        return matcher;
-    }
 }

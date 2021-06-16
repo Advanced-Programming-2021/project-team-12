@@ -3,7 +3,7 @@ package models;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
-import view.Game;
+import controllers.Game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +28,6 @@ public class Player {
     private HashMap<Integer, Card> fieldCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> monsterZoneCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> spellZoneCardNumbers = new HashMap<>();
-    private HashMap<Integer, Boolean> isMonsterFaceUp = new HashMap<>();
     private HashMap<Address, Integer> indexOfCard = new HashMap<>();
     private HashMap<Integer, Boolean> isSpellFaceUp = new HashMap<>();
     private boolean[] didBeastKingBarbarosSummonedSuperHighLevel;

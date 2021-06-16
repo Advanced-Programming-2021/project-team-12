@@ -98,6 +98,14 @@ public class User {
     }
 
     public static ArrayList<User> getUsers() {
+        Collections.sort(users, new Comparator<User>() {
+            public int compare(User u1, User u2) {
+                if (u1.getScore() != u2.getScore())
+                    return (u1.getScore() > u2.getScore()) ? 1 : -1;
+                else
+                    return u1.getNickName().compareTo(u2.getNickName());
+            }
+        });
         return users;
     }
 
