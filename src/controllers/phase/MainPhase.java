@@ -23,7 +23,7 @@ public class MainPhase {
                 PhaseControl.getInstance().doEffectMainPhase();
             }
             System.out.println("phase: draw phase");
-            Board.showBoeard();
+            Board.showBoard();
             getSelectedCard();
         }
     }
@@ -44,7 +44,7 @@ public class MainPhase {
 
     public void selectMonster(Matcher matcher) {
         if (matcher.find()) {
-            Board.showBoeard();
+            Board.showBoard();
             String selectedCard = matcher.group(1);
             String input;
             while (true) {
@@ -62,7 +62,7 @@ public class MainPhase {
 
     public void selectOpponentMonster(Matcher matcher) {
         if (matcher.find()) {
-            Board.showBoeard();
+            Board.showBoard();
             String selectedCard = matcher.group(1);
             String input;
             while (true) {
@@ -80,7 +80,7 @@ public class MainPhase {
 
     public void selectSpell(Matcher matcher) {
         if (matcher.find()) {
-            Board.showBoeard();
+            Board.showBoard();
             String selectedCard = matcher.group(1);
             String input;
             while (true) {
@@ -101,7 +101,7 @@ public class MainPhase {
             String selectedCard = matcher.group(1);
             String input;
             while (true) {
-                Board.showBoeard();
+                Board.showBoard();
                 input = Main.scanner.nextLine().trim();
                 try {
                     PhaseControl.getInstance().OpponentSpellCardSelected(input, selectedCard);
@@ -117,7 +117,7 @@ public class MainPhase {
     public void selectField() {
         String input;
         while (true) {
-            Board.showBoeard();
+            Board.showBoard();
             input = Main.scanner.nextLine().trim();
             try {
                 PhaseControl.getInstance().fieldCardSelected(input);
@@ -132,7 +132,7 @@ public class MainPhase {
     public void selectOpponentField() {
         String input;
         while (true) {
-            Board.showBoeard();
+            Board.showBoard();
             input = Main.scanner.nextLine().trim();
             try {
                 PhaseControl.getInstance().opponentFieldCardSelected(input);
@@ -146,7 +146,7 @@ public class MainPhase {
 
     public void selectHand(Matcher matcher) {
         if (matcher.find()) {
-            Board.showBoeard();
+            Board.showBoard();
             String selectedCard = matcher.group(1);
             String input;
             while (true) {

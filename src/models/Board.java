@@ -28,7 +28,7 @@ public class Board {
 
     }
 
-    public static void showBoeard() {
+    public static void showBoard() {
         loadData();
     }
 

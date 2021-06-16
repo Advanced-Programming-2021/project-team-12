@@ -28,7 +28,7 @@ public class BattlePhaseController {
         return instance;
     }
 
-    public boolean battlePhaseRun(String input) throws NoSelectedCardException, InvalidCommandException, CantAttack, CantSetThisCard, CantActivateEffect, InvalidCardSelection, CantSummonThisCard, CantChangeCardPosition {
+    public boolean battlePhaseRun(String input) throws Exception {
         if (input.matches("^[ ]*next phase[ ]*$"))
             return true;
         else if (input.matches("^[ ]*select [.*][ ]*$"))
@@ -58,7 +58,7 @@ public class BattlePhaseController {
         return false;
     }
 
-    public void whatIsSelected(String input) throws NoSelectedCardException, InvalidCommandException, InvalidCardSelection, CantAttack, CantSetThisCard, CantActivateEffect, CantSummonThisCard, CantChangeCardPosition {
+    public void whatIsSelected(String input) throws Exception {
         PhaseControl.getInstance().checkIfGameEnded();
         if (input.matches("^[ ]*select --monster [\\d]+[ ]*$"))
             selectMonster(Utility.getCommandMatcher(input, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
@@ -80,9 +80,9 @@ public class BattlePhaseController {
             throw new InvalidCommandException("invalid command");
     }
 
-    private void selectMonster(Matcher matcher) throws InvalidCommandException, InvalidCardSelection {
+    private void selectMonster(Matcher matcher) throws Exception {
         if (matcher.find()) {
-            Board.showBoeard();
+            Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
                 String selectedCard = matcher.group(1);
                 String input;
@@ -127,7 +127,7 @@ public class BattlePhaseController {
 
     private void selectOpponentMonster(Matcher matcher) throws InvalidCommandException, InvalidCardSelection, CantSummonThisCard, CantSetThisCard, CantChangeCardPosition, CantAttack, CantActivateEffect {
         if (matcher.find()) {
-            Board.showBoeard();
+            Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
                 String selectedCard = matcher.group(1);
                 String input;
@@ -171,9 +171,9 @@ public class BattlePhaseController {
         }
     }
 
-    private void selectSpell(Matcher matcher) throws InvalidCommandException, InvalidCardSelection, CantAttack, CantChangeCardPosition, CantSetThisCard, CantSummonThisCard {
+    private void selectSpell(Matcher matcher) throws InvalidCommandException, InvalidCardSelection, CantAttack, CantChangeCardPosition, CantSetThisCard, CantSummonThisCard, CantDoInThisPhase {
         if (matcher.find()) {
-            Board.showBoeard();
+            Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
                 String selectedCard = matcher.group(1);
                 String input;
@@ -225,7 +225,7 @@ public class BattlePhaseController {
                 String input;
                 while (true) {
                     PhaseControl.getInstance().checkIfGameEnded();
-                    Board.showBoeard();
+                    Board.showBoard();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
@@ -268,7 +268,7 @@ public class BattlePhaseController {
         String input;
         while (true) {
             PhaseControl.getInstance().checkIfGameEnded();
-            Board.showBoeard();
+            Board.showBoard();
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
                 BattlePhase.getInstance().goToNextPhase = true;
@@ -308,7 +308,7 @@ public class BattlePhaseController {
         String input;
         while (true) {
             PhaseControl.getInstance().checkIfGameEnded();
-            Board.showBoeard();
+            Board.showBoard();
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
                 BattlePhase.getInstance().goToNextPhase = true;
@@ -345,7 +345,7 @@ public class BattlePhaseController {
 
     private void selectHand(Matcher matcher) throws InvalidCommandException, CantChangeCardPosition, CantAttack, CantActivateEffect, InvalidCardSelection, CantDoInThisPhase {
         if (matcher.find()) {
-            Board.showBoeard();
+            Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
                 String selectedCard = matcher.group(1);
                 String input;
@@ -388,7 +388,7 @@ public class BattlePhaseController {
         }
     }
 
-    private void attack(Matcher matcher, String myAddress) {
+    private void attack(Matcher matcher, String myAddress) throws Exception {
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
             Address address = new Address(Integer.parseInt(matcher.group(2)), "monster", false);
@@ -405,11 +405,11 @@ public class BattlePhaseController {
                         Game.whoseRivalPlayer().destroyAllRivalMonstersWhichInAttackMode();
                     } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                             && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
-                        System.out.println("You can't attack by monster with attack equal or more than 1500 " +
+                        throw new Exception("You can't attack by monster with attack equal or more than 1500 " +
                                 "because of MessengerOfPeace.");
                     } else if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedMagicCylinder()) {
                         currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
-                        System.out.println("Rival has trap named MagicCylinder so its effect get done.");
+                        throw new Exception("Rival has trap named MagicCylinder so its effect get done.");
                     } else {
                         if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.OO) {
                             int damage = myMonsterCard.getAttack() - rivalMonsterCard.getAttack();
@@ -420,60 +420,61 @@ public class BattlePhaseController {
                                 int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(true);
                                 attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                                 Attack.timeToEffectAfterAttack();
-                            } else System.out.println("Attack has been cancelled for effect of a card");
+                            } else throw new Exception("Attack has been cancelled for effect of a card");
                         } else {
                             int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(false);
                             attackDH(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                             Attack.timeToEffectAfterAttack();
                         }
                     }
-                } else System.out.println("there is no card to attack here");
-            } else System.out.println("this card already attacked");
+                } else throw new Exception("there is no card to attack here");
+            } else throw new Exception("this card already attacked");
         }
         PhaseControl.getInstance().checkIfGameEnded();
     }
 
-    private void attackOO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
+    private void attackOO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) throws Exception {
         if (damage == 0) {
             removeForAttack(address, myAddress);
             removeForAttack(myAddress, address);
-            System.out.println("both you and your opponent monster cards are destroyed and no one receives damage");
+            throw new Exception("both you and your opponent monster cards are destroyed and no one receives damage");
         } else if (damage > 0) {
             removeForAttack(address, myAddress);
             decreaseLP(myAddress, address, index, Game.whoseRivalPlayer(), myMonsterCard, rivalMonsterCard, damage);
-            System.out.println("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
+            throw new Exception("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
         } else {
             damage = (-1) * damage;
             currentPlayer.decreaseLP(damage);
             removeForAttack(myAddress, address);
-            System.out.println("Your monster card is destroyed and you received " + damage + " battle damage");
+            throw new Exception("Your monster card is destroyed and you received " + damage + " battle damage");
         }
     }
 
-    private void attackDO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
-        if (damage == 0) System.out.println("no card is destroyed");
+    private void attackDO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) throws Exception {
+        if (damage == 0) throw new Exception("no card is destroyed");
         else if (damage > 0) {
             removeForAttack(address, myAddress);
-            System.out.println("the defense position monster is destroyed");
+            throw new Exception("the defense position monster is destroyed");
         } else {
             damage = (-1) * damage;
             decreaseLP(myAddress, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
-            System.out.println("no card is destroyed and you received " + damage + " battle damage");
-        }
+            throw new Exception("no card is destroyed and you received " + damage + " battle damage"); }
     }
 
-    private void attackDH(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
+    private void attackDH(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) throws Exception {
+        String shouldBePrinted;
         if (damage == 0)
-            System.out.println("opponent’s monster card was " + rivalMonsterCard.getName() + " and no card is destroyed");
+            shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getName() + " and no card is destroyed";
         else if (damage > 0) {
             removeForAttack(address, myAddress);
-            System.out.println("opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "the defense position monster is destroyed");
+            shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "the defense position monster is destroyed";
         } else {
             damage = (-1) * damage;
             decreaseLP(myAddress, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
-            System.out.println("opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "no card is destroyed and you received " + damage + " battle damage");
+            shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "no card is destroyed and you received " + damage + " battle damage";
         }
         currentPlayer.setPositionOfCardInBoardByAddress(address, PositionOfCardInBoard.DO);
+        throw new Exception(shouldBePrinted);
     }
 
     private void decreaseLP(Address myAddress, Address address, int index, Player player, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
@@ -498,7 +499,7 @@ public class BattlePhaseController {
         throw new CantDoInThisPhase("you can’t do this action in this phase");
     }
 
-    private void directAttack(Matcher matcher) {
+    private void directAttack(Matcher matcher) throws Exception {
         PhaseControl.getInstance().checkIfGameEnded();
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
@@ -509,8 +510,8 @@ public class BattlePhaseController {
                 //doubt should regard an error for being empty of board?
                 MonsterCard monsterCardForDirectAttack = currentPlayer.getMonsterCardByStringAddress(matcher.group(1));
                 rivalPlayer.decreaseLP(monsterCardForDirectAttack.getAttack());
-                System.out.println("you opponent receives " + monsterCardForDirectAttack.getAttack() + " battle damage");
-            } else System.out.println("this card already attacked");
+                throw new Exception("you opponent receives " + monsterCardForDirectAttack.getAttack() + " battle damage");
+            } else throw new Exception("this card already attacked");
         }
         PhaseControl.getInstance().checkIfGameEnded();
     }

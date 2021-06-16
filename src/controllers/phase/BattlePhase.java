@@ -3,17 +3,9 @@ package controllers.phase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import Exceptions.*;
 import controllers.BattlePhaseController;
 import controllers.PhaseControl;
-import controllers.move.Attack;
-import controllers.move.SetSpell;
-import models.Address;
 import models.Board;
-import models.Player;
-import models.PositionOfCardInBoard;
-import models.card.monster.MonsterCard;
-import controllers.Game;
 import view.Main;
 
 public class BattlePhase {
@@ -30,7 +22,7 @@ public class BattlePhase {
 
     public void run() {
         System.out.println("phase: draw phase");
-        Board.showBoeard();
+        Board.showBoard();
         while (true) {
             PhaseControl.getInstance().checkIfGameEnded();
             try {
