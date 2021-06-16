@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.Random;
 
+import Exceptions.*;
 import controllers.SaveFile;
 import controllers.phase.*;
 import controllers.phase.MainPhase;
@@ -27,6 +28,7 @@ public class Game {
 
     private static MainPhase mainPhase1;
     private static MainPhase mainPhase2;
+
     static {
         mainPhase1 = new MainPhase();
         mainPhase2 = new MainPhase();
@@ -43,8 +45,7 @@ public class Game {
         if (firstPlayerWin > round / 2 || secondPlayerWin > round / 2) {
             setScoreAndMoneyOfPlayers();
             break;
-        }
-        else {
+        } else {
             generateRandomTurn();
             playTurn("DrawPhase");
         }
@@ -56,8 +57,7 @@ public class Game {
                 firstUser.increaseMoney(firstPlayerMaxLP + 1000);
                 firstUser.increaseScore(1000);
                 secondUser.increaseMoney(100);
-            }
-            else {
+            } else {
                 secondUser.increaseMoney(secondPlayerMaxLP + 1000);
                 secondUser.increaseScore(1000);
                 firstUser.increaseMoney(100);
@@ -68,8 +68,7 @@ public class Game {
                 firstUser.increaseMoney(firstPlayerMaxLP * 3 + 3000);
                 firstUser.increaseScore(3000);
                 secondUser.increaseMoney(300);
-            }
-            else {
+            } else {
                 secondUser.increaseMoney(secondPlayerMaxLP * 3 + 3000);
                 secondUser.increaseScore(3000);
                 firstUser.increaseMoney(300);
@@ -96,8 +95,7 @@ public class Game {
             if (firstPlayer.getLP() > firstPlayerMaxLP)
                 firstPlayerMaxLP = firstPlayer.getLP();
             firstPlayerWin++;
-        }
-        else {
+        } else {
             if (secondPlayer.getLP() > secondPlayerMaxLP)
                 firstPlayerMaxLP = secondPlayer.getLP();
             secondPlayerWin++;
@@ -105,13 +103,13 @@ public class Game {
     }
 
     private static void generateRandomTurn() {
-        Random random = new Random();  
+        Random random = new Random();
         int whoIsFirstNumber = random.nextInt(2);
         firstPlayer = new Player(firstUser);
         secondPlayer = new Player(secondUser);
-        if (whoIsFirstNumber == 0) 
+        if (whoIsFirstNumber == 0)
             playerTurn = PlayerTurn.FIRSTPLAYER;
-        else 
+        else
             playerTurn = PlayerTurn.SECONDPLAYER;
     }
 
@@ -128,15 +126,20 @@ public class Game {
         else if (phase.equals("MainPhase1"))
             mainPhase1.run();
         else if (phase.equals("BattlePhase"))
-            new BattlePhase().run();
+            goToBattlePhase();
         else if (phase.equals("MainPhase2"))
             mainPhase2.run();
         else if (phase.equals("EndPhase")) {
             new EndPhase().run();
             switchPlayer();
-        }
-        else if (phase.equals("EndGame"))
+        } else if (phase.equals("EndGame")) {
 
+        }
+
+    }
+
+    private static void goToBattlePhase() {
+        BattlePhase.getInstance().run();
     }
 
     private static void switchPlayer() {
@@ -180,6 +183,7 @@ public class Game {
     public static MainPhase getMainPhase1() {
         return mainPhase1;
     }
+
     public static MainPhase getMainPhase2() {
         return mainPhase2;
     }

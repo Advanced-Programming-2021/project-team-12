@@ -3,7 +3,7 @@ package view;
 import Exceptions.CardNotExistException;
 import Exceptions.EmptyAddressException;
 import Exceptions.WrongAddressException;
-import Utility.CommandMatcher;
+import utility.Utility;
 import controllers.ExportCard;
 import controllers.ImportCard;
 
@@ -30,7 +30,7 @@ public class ImportOrExport {
     }
 
     private void importCard(String input) {
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "import -(s|m|t) (--address|-a) ([\\S]+.json)");
+        Matcher matcher = Utility.getCommandMatcher(input, "import -(s|m|t) (--address|-a) ([\\S]+.json)");
         matcher.find();
         String address = matcher.group(3);
         String flag = matcher.group(1);
@@ -45,7 +45,7 @@ public class ImportOrExport {
     }
 
     private void exportCard(String input) {
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "export Card [\\w-]+ (--address|-a) ([\\S]+.json)");
+        Matcher matcher = Utility.getCommandMatcher(input, "export Card [\\w-]+ (--address|-a) ([\\S]+.json)");
         matcher.find();
         String address = matcher.group(3);
         String cardName = matcher.group(1);

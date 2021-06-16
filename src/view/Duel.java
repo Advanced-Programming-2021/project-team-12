@@ -6,11 +6,8 @@ import Exceptions.AcctiveDeck;
 import Exceptions.UserNameException;
 import Exceptions.ValidDeck;
 import Exceptions.WrongRoundNumber;
-import Utility.CommandMatcher;
+import utility.Utility;
 import controllers.DuelControl;
-import controllers.Game;
-import models.Deck;
-import models.User;
 
 public class Duel {
     public static void run() {
@@ -35,10 +32,10 @@ public class Duel {
     }
 
     private static void duelWithAnotherPlayer(String input) {
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "--second-player ([\\w-]+)");
+        Matcher matcher = Utility.getCommandMatcher(input, "--second-player ([\\w-]+)");
         matcher.find();
         String secondPlayer = matcher.group(1);
-        matcher = CommandMatcher.getCommandMatcher(input, "(--rounds|-r) ([\\d])");
+        matcher = Utility.getCommandMatcher(input, "(--rounds|-r) ([\\d])");
         matcher.find();
         int round = Integer.parseInt(matcher.group(2));
         try {
@@ -55,7 +52,7 @@ public class Duel {
     }
 
     private static void duelWithAi(String input) {
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--rounds|-r) ([\\d])");
+        Matcher matcher = Utility.getCommandMatcher(input, "(--rounds|-r) ([\\d])");
         matcher.find();
         int round = Integer.parseInt(matcher.group(2));
         try {

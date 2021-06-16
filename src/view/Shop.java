@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 
 import Exceptions.CardNotExistException;
 import Exceptions.NotEnoughMoneyException;
-import Utility.CommandMatcher;
+import utility.Utility;
 import controllers.ShopControl;
 import models.Card;
 import models.User;
@@ -33,7 +33,7 @@ public class Shop {
 
     public void buyCard(String input) {
         String cardName;
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "shop buy ([\\w]+)");
+        Matcher matcher = Utility.getCommandMatcher(input, "shop buy ([\\w]+)");
         matcher.find();
         cardName = matcher.group(1);
         try {

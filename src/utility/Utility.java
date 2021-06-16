@@ -1,9 +1,9 @@
-package Utility;
+package utility;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CommandMatcher {
+public class Utility {
     public static Matcher getCommandMatcher(String input, String regex) {
         Pattern pattern;
         Matcher matcher;

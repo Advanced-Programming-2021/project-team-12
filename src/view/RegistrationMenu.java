@@ -2,7 +2,7 @@ package view;
 import Exceptions.NickNameException;
 import Exceptions.UserNameException;
 import Exceptions.WrongUserOrPassException;
-import Utility.CommandMatcher;
+import utility.Utility;
 import controllers.LogInControler;
 import controllers.SignInControler;
 import models.User;
@@ -67,21 +67,21 @@ public class RegistrationMenu {
 
     private static String getUserNameFromInput(String input){
         Matcher matcher;
-        matcher = CommandMatcher.getCommandMatcher(input, "(--username|-u) ([\\w-]+)");
+        matcher = Utility.getCommandMatcher(input, "(--username|-u) ([\\w-]+)");
         matcher.find();
         return  matcher.group(2);
     }
 
     private static String getPasswordFromInput(String input){
         Matcher matcher;
-        matcher = CommandMatcher.getCommandMatcher(input, "(--password|-p) ([\\w]+)");
+        matcher = Utility.getCommandMatcher(input, "(--password|-p) ([\\w]+)");
         matcher.find();
         return matcher.group(2);
     }
 
     private static String getNickNameFromInput(String input){
         Matcher matcher;
-        matcher = CommandMatcher.getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
+        matcher = Utility.getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
         matcher.find();
         return matcher.group(2);
     }

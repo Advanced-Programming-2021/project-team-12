@@ -2,6 +2,7 @@ package models;
 
 import models.card.monster.MonsterCard;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
