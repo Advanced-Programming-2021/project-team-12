@@ -1,9 +1,9 @@
-package utility;
+package Utility;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Utility {
+public class CommandMatcher {
     public static Matcher getCommandMatcher(String input, String regex) {
         Pattern pattern;
         Matcher matcher;
@@ -11,5 +11,4 @@ public class Utility {
         matcher = pattern.matcher(input);
         return matcher;
     }
-
 }

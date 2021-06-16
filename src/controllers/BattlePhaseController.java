@@ -5,6 +5,7 @@ import Exceptions.CantSummonThisCard;
 import Exceptions.InvalidCardSelection;
 import Exceptions.InvalidCommandException;
 import Exceptions.NoSelectedCardException;
+import Utility.CommandMatcher;
 import controllers.move.Attack;
 import controllers.move.SetSpell;
 import controllers.phase.BattlePhase;
@@ -13,7 +14,6 @@ import models.Board;
 import models.Player;
 import models.PositionOfCardInBoard;
 import models.card.monster.MonsterCard;
-import utility.Utility;
 import view.Main;
 
 import java.util.regex.Matcher;
@@ -61,19 +61,19 @@ public class BattlePhaseController {
     public void whatIsSelected(String input) throws NoSelectedCardException, InvalidCommandException, InvalidCardSelection, CantAttack, CantSetThisCard, CantActivateEffect, CantSummonThisCard, CantChangeCardPosition {
         PhaseControl.getInstance().checkIfGameEnded();
         if (input.matches("^[ ]*select --monster [\\d]+[ ]*$"))
-            selectMonster(Utility.getCommandMatcher(input, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+            selectMonster(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --monster --opponent [\\d]+[ ]*$"))
-            selectOpponentMonster(Utility.getCommandMatcher(input, "(^[ ]*select --monster --opponent ([\\d]+)[ ]*$)"));
+            selectOpponentMonster(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --monster --opponent ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --spell [\\d]+[ ]*$"))
-            selectSpell(Utility.getCommandMatcher(input, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
+            selectSpell(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --spell --opponent [\\d]+[ ]*$"))
-            selectOpponentSpell(Utility.getCommandMatcher(input, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
+            selectOpponentSpell(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --field[ ]*$"))
             selectField();
         else if (input.matches("^[ ]*select --field --opponent[ ]*$"))
             selectOpponentField();
         else if (input.matches("^[ ]*select --hand [\\d]+[ ]*$"))
-            selectHand(Utility.getCommandMatcher(input, "(^[ ]*select --hand ([\\d]+)[ ]*$)"));
+            selectHand(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --hand ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select -d[ ]*$"))
             throw new NoSelectedCardException("no card is selected yet");
         else
@@ -102,19 +102,19 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*set[ ]*$"))
                         System.out.println("you can’t set this card");
                     else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                        setPosition(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+                        setPosition(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                        flipSummon(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+                        flipSummon(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        attack(Utility.getCommandMatcher(input, "(^[ ]*attack ([\\d]+)[ ]*$)"), selectedCard);
+                        attack(CommandMatcher.getCommandMatcher(input, "(^[ ]*attack ([\\d]+)[ ]*$)"), selectedCard);
                     else if (input.matches("^[ ]*attack direct[ ]*$"))
-                        directAttack(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+                        directAttack(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         System.out.println("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
                         Board.showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        Game.getMainPhase1().showSelectedCard(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+                        Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         PhaseControl.getInstance().surrender();
                     else
@@ -160,7 +160,7 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
                         Board.showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        Game.getMainPhase1().showSelectedCard(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --monster --opponent [\\d]+[ ]*$)"));
+                        Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster --opponent [\\d]+[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         PhaseControl.getInstance().surrender();
                     else
@@ -202,11 +202,11 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*attack direct[ ]*$"))
                         throw new CantAttack("you can’t attack with this card");
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
-                        activeSpell(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
+                        activeSpell(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
                         Board.showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        Game.getMainPhase1().showSelectedCard(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
+                        Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         PhaseControl.getInstance().surrender();
                     else
@@ -253,7 +253,7 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
                         Board.showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        Game.getMainPhase1().showSelectedCard(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
+                        Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         PhaseControl.getInstance().surrender();
                     else
@@ -361,7 +361,7 @@ public class BattlePhaseController {
                         System.out.println("");
                         //here
                     else if (input.matches("^[ ]*summon[ ]*$"))
-                        BattlePhase.getInstance().summon(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
+                        BattlePhase.getInstance().summon(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
                     else if (input.matches("^[ ]*set[ ]*$"))
                         throw new CantDoInThisPhase("you can’t do this action in this phase");
                     else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
@@ -377,7 +377,7 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
                         Board.showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
-                        Game.getMainPhase1().showSelectedCard(Utility.getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
+                        Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         PhaseControl.getInstance().surrender();
                     else

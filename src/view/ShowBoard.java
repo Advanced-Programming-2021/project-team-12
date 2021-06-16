@@ -10,6 +10,12 @@ public class ShowBoard {
         currentPlayerData(currentPlayer);
     }
 
+    public static void showGraveyard(Player currentPlayer, Player opponentPlayer) {
+    }
+
+    public static void showFieldZone(Player currentPlayer) {
+    }
+
     private void opponentPlayerData(Player player) {
         System.out.println(player.getNickName() + ": " + player.getLP());
         showHandCard(player, "o");

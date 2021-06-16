@@ -3,9 +3,7 @@ package view;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
-import Exceptions.CardNotExistException;
-import Exceptions.NotEnoughMoneyException;
-import utility.Utility;
+import Utility.CommandMatcher;
 import controllers.ShopControl;
 import models.Card;
 import models.User;
@@ -33,16 +31,14 @@ public class Shop {
 
     public void buyCard(String input) {
         String cardName;
-        Matcher matcher = Utility.getCommandMatcher(input, "shop buy ([\\w]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "shop buy ([\\w]+)");
         matcher.find();
         cardName = matcher.group(1);
         try {
             new ShopControl().buyCard(cardName, user);
             System.out.println("you bought card successfully");
-        } catch (CardNotExistException e) {
-            System.out.println("there is no card with this name");
-        } catch (NotEnoughMoneyException e) {
-            System.out.println("not enough money");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 

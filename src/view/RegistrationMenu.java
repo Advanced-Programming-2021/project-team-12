@@ -43,8 +43,8 @@ public class RegistrationMenu {
             new LogInController().checkData(userName, password);
             System.out.println("user logged in successfully!");
             new MainMenu(User.getUserByName(userName));
-        } catch (WrongUserOrPassException e) {
-            System.out.println("Username and password didn’t match!");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -58,30 +58,28 @@ public class RegistrationMenu {
         try {
             new SignInController().checkData(userName, nickName, password);
             System.out.println("user created successfully!");
-        } catch (UserNameException e) {
-            System.out.println("user with username \" + userName + \" already exists");
-        } catch (NickNameException e) {
-            System.out.println("user with nickname " + nickName + " already exists");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
     private static String getUserNameFromInput(String input){
         Matcher matcher;
-        matcher = Utility.getCommandMatcher(input, "(--username|-u) ([\\w-]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--username|-u) ([\\w-]+)");
         matcher.find();
         return  matcher.group(2);
     }
 
     private static String getPasswordFromInput(String input){
         Matcher matcher;
-        matcher = Utility.getCommandMatcher(input, "(--password|-p) ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--password|-p) ([\\w]+)");
         matcher.find();
         return matcher.group(2);
     }
 
     private static String getNickNameFromInput(String input){
         Matcher matcher;
-        matcher = Utility.getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
         matcher.find();
         return matcher.group(2);
     }

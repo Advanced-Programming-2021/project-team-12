@@ -174,10 +174,14 @@ public class Board {
     }
 
     public static void showGraveyard() {
-    //dear ali please print by yourself
+        ShowBoard.showGraveyard(currentPlayer, opponentPlayer);
     }
+
     public static void showFieldZoneCard(boolean isMine) {
-        //dear ali please print by yourself
+        if (isMine)
+            ShowBoard.showFieldZone(currentPlayer);
+        else
+            ShowBoard.showFieldZone(opponentPlayer);
     }
 
     public static void putThisCardInThisAddress(Address address,String MonsterCard){

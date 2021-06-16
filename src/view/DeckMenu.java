@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 import Exceptions.*;
-import utility.Utility;
+import Utility.CommandMatcher;
 import controllers.DeckControllers;
 import models.Card;
 import models.Deck;
@@ -49,42 +49,42 @@ public class DeckMenu {
     public void createDeck(String input) {
         Matcher matcher;
         String deckName;
-        matcher = Utility.getCommandMatcher(input, "deck create ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "deck create ([\\w]+)");
         matcher.find();
         deckName = matcher.group(1);
         try {
             new DeckControllers().createDeck(deckName);
             System.out.println("deck created successfully!");
-        } catch (DeckName e) {
-            System.out.println("deck with name " + deckName + " already exists");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
     public void deleteDeck(String input) {
         Matcher matcher;
         String deckName;
-        matcher = Utility.getCommandMatcher(input, "deck delete ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "deck delete ([\\w]+)");
         matcher.find();
         deckName = matcher.group(1);
         try {
             new DeckControllers().deleteDeck(deckName);
             System.out.println("deck deleted successfully!");
-        } catch (DeckName e) {
-            System.out.println("deck with name " + deckName + " does not exists");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
     public void setDeckActive(String input) {
         Matcher matcher;
         String deckName;
-        matcher = Utility.getCommandMatcher(input, "deck set-activate ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "deck set-activate ([\\w]+)");
         matcher.find();
         deckName = matcher.group(1);
         try {
             new DeckControllers().setActive(deckName);
             System.out.println("deck activated successfully!");
-        } catch (DeckName e) {
-            System.out.println("deck with name " + deckName + " does not exists");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -92,26 +92,20 @@ public class DeckMenu {
         Boolean isSide = false;
         String cardName;
         String deckName;
-        Matcher matcher = Utility.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
         matcher.find();
         cardName = matcher.group(2);
-        matcher = Utility.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
         matcher.find();
         deckName = matcher.group(2);
-        matcher = Utility.getCommandMatcher(input, "( --side| -s)");
+        matcher = CommandMatcher.getCommandMatcher(input, "( --side| -s)");
         if (matcher.find())
             isSide = true;
         try {
             new DeckControllers().addCard(cardName, deckName, isSide);
             System.out.println("card added to deck successfully");
-        } catch (CardName e) {
-            System.out.println("card with name " + cardName + " does not exists");
-        } catch (DeckName e) {
-            System.out.println("deck with name " + deckName + " does not exists");
-        } catch (FullDeck e) {
-            System.out.println("main deck is full");
-        } catch (ThreeCardDeck e) {
-            System.out.println("there are already three cards with name " + cardName + " in deck " + deckName);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -119,24 +113,20 @@ public class DeckMenu {
         Boolean isSide = false;
         String cardName;
         String deckName;
-        Matcher matcher = Utility.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
         matcher.find();
         cardName = matcher.group(2);
-        matcher = Utility.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
         matcher.find();
         deckName = matcher.group(2);
-        matcher = Utility.getCommandMatcher(input, "( --side| -s)");
+        matcher = CommandMatcher.getCommandMatcher(input, "( --side| -s)");
         if (matcher.find())
             isSide = true;
         try {
             new DeckControllers().removeCard(cardName, deckName, isSide);
             System.out.println("card removed form deck successfully");
-        } catch (DeckName e) {
-            System.out.println("deck with name " + deckName + " does not exists");
-        } catch (MainCard e) {
-            System.out.println("card with name " + cardName + " does not exist in main deck");
-        } catch (SideCard e) {
-            System.out.println("card with name " + cardName + " does not exist in side deck");
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -163,7 +153,7 @@ public class DeckMenu {
     }
 
     public void showDeckByName(String input) {
-        Matcher matcher = Utility.getCommandMatcher(input, "deck show --deck-name ([\\w]+)( --side|-s)*");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "deck show --deck-name ([\\w]+)( --side|-s)*");
         matcher.find();
         String deckName = matcher.group(1);
         Deck deck = Deck.getDeckByName(deckName);

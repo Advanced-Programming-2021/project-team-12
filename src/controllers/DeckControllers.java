@@ -7,30 +7,30 @@ import models.User;
 import view.MainMenu;
 
 public class DeckControllers {
-    public void createDeck(String deckName) throws DeckName {
+    public void createDeck(String deckName) throws Exception {
         User user = MainMenu.user;
         if (Deck.getDeckByName(deckName) != null)
-            throw new DeckName();
+            throw new Exception("deck with name " + deckName + " already exists");
         else {
             new Deck(deckName);
             SaveFile.saveUser(user);
         }
     }
 
-    public void deleteDeck(String deckName) throws DeckName {
+    public void deleteDeck(String deckName) throws Exception {
         User user = MainMenu.user;
         if (Deck.getDeckByName(deckName) == null)
-            throw new DeckName();
+            throw new Exception("deck with name " + deckName + " does not exists");
         else {
             Deck.deleteDeck(deckName);
             SaveFile.saveUser(user);
         }
     }
 
-    public void setActive(String deckName) throws DeckName{
+    public void setActive(String deckName) throws Exception{
         User user = MainMenu.user;
         if (Deck.getDeckByName(deckName) == null)
-            throw new DeckName();
+            throw new Exception("deck with name " + deckName + " does not exists");
         else {
             Deck deck = Deck.getDeckByName(deckName);
             deck.setAcctive();
@@ -38,15 +38,15 @@ public class DeckControllers {
         }
     }
 
-    public void removeCard(String cardName, String deckName, boolean isSide) throws DeckName, SideCard, MainCard {
+    public void removeCard(String cardName, String deckName, boolean isSide) throws Exception {
         User user = MainMenu.user;
         if (Deck.getDeckByName(deckName) == null)
-            throw new DeckName();
+            throw new Exception("deck with name " + deckName + " does not exists");
         else {
             Deck deck = Deck.getDeckByName(deckName);
             if (!isSide) {
                 if (!deck.containsCardInMain(cardName))
-                    throw new MainCard();
+                    throw new Exception("card with name " + cardName + " does not exist in main deck");
                 else  {
                     deck.removeCard(cardName, "m");
                     SaveFile.saveUser(user);
@@ -54,7 +54,7 @@ public class DeckControllers {
             }
             else {
                 if (!deck.containsCardInSide(cardName))
-                    throw new SideCard();
+                    throw new Exception("card with name " + cardName + " does not exist in side deck");
                 else  {
                     deck.removeCard(cardName, "s");
                     SaveFile.saveUser(user);
@@ -63,19 +63,19 @@ public class DeckControllers {
         }
     }
 
-    public void addCard(String cardName, String deckName, Boolean isSide) throws DeckName, FullDeck, ThreeCardDeck, CardName {
+    public void addCard(String cardName, String deckName, Boolean isSide) throws Exception {
         User user = MainMenu.user;
         if (!user.checkIfHasCard(Card.getCardByName(cardName)))
-            throw new CardName();
+            throw new Exception("card with name " + cardName + " does not exists");
         else if (Deck.getDeckByName(deckName) == null)
-            throw new DeckName();
+            throw new Exception("deck with name " + deckName + " does not exists");
         else {
             Deck deck = Deck.getDeckByName(deckName);
             if (!isSide) {
                 if (deck.isMainCardsFull())
-                    throw new FullDeck();
+                    throw new Exception("main deck is full");
                 else if (deck.checkIfThereIsThree(cardName))
-                    throw new ThreeCardDeck();
+                    throw new Exception("there are already three cards with name " + cardName + " in deck " + deckName);
                 else  {
                     deck.addCard(cardName, "m");
                     SaveFile.saveUser(user);
@@ -83,9 +83,9 @@ public class DeckControllers {
             }
             else {
                 if (deck.isSideCardsFull())
-                    throw new FullDeck();
+                    throw new Exception("main deck is full");
                 else if (deck.checkIfThereIsThree(cardName))
-                    throw new ThreeCardDeck();
+                    throw new Exception("there are already three cards with name " + cardName + " in deck " + deckName);
                 else  {
                     deck.addCard(cardName, "s");
                     SaveFile.saveUser(user);
