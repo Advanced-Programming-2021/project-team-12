@@ -1,7 +1,5 @@
-package controllers.phase;
+package view.phase;
 import controllers.PhaseControl;
-import models.PlayerTurn;
-import controllers.Game;
 import view.Main;
 
 public class DrawPhase {

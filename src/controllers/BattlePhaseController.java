@@ -7,7 +7,7 @@ import Exceptions.InvalidCommandException;
 import Exceptions.NoSelectedCardException;
 import controllers.move.Attack;
 import controllers.move.SetSpell;
-import controllers.phase.BattlePhase;
+import view.phase.BattlePhase;
 import models.Address;
 import models.Board;
 import models.Player;

@@ -1,4 +1,4 @@
-package controllers.phase;
+package view.phase;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
