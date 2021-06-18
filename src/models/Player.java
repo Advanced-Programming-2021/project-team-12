@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Player {
+    private User user;
     private boolean[] isThisSpellActivated;
     private boolean isOneHisMonstersDestroyedInThisRound;
     private HashMap<Address, PositionOfCardInBoard> positionOfCardInBoardByAddress;// Dear Ali you should make board based on this HashMap
@@ -45,6 +46,7 @@ public class Player {
     }
 
     public Player(User user) {
+        this.user = user;
         this.nickName = user.getNickName();
         this.name = user.getName();
         LP = 8000;
@@ -555,5 +557,47 @@ public class Player {
 
     public int getNumberOfGraveyardCard() {
         return graveyardCardNumbers.size();
+    }
+
+    public void reset() {
+        LP = 8000;
+        unusedCards = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getMainCards().clone();
+        secondaryCard = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getSideCards().clone();
+        isOneHisMonstersDestroyedInThisRound = false;
+        positionOfCardInBoardByAddress = new HashMap<>();
+        handCardNumbers = new HashMap<>();
+        graveyardCardNumbers = new HashMap<>();
+        fieldCardNumbers = new HashMap<>();
+        monsterZoneCardNumbers = new HashMap<>();
+        spellZoneCardNumbers = new HashMap<>();
+        indexOfCard = new HashMap<>();
+        isSpellFaceUp = new HashMap<>();
+        cardByIndex = new Card[100];
+        isThisSpellActivated = new boolean[100];
+        didBeastKingBarbarosSummonedSuperHighLevel = new boolean[100];
+        positionOfCardInBoardByAddress = new HashMap<>();
+        indexOfCardUsedSuijin = new ArrayList<>();
+        didWeChangePositionThisCardInThisTurn = new boolean[100];
+        didWeAttackByThisCardInThisCard = new boolean[100];
+    }
+
+    public void setHandCard() {
+        for (int i = 0; i < 5; i++)
+            addCardFromUnusedToHand();
+    }
+
+    public void setSlideToMain(int slideNumber, int mainNumber) {
+        Card tempCard = unusedCards.get(mainNumber);
+        unusedCards.set(mainNumber, secondaryCard.get(slideNumber));
+        secondaryCard.set(slideNumber, tempCard);
+    }
+
+
+    public ArrayList<Card> getMainCards() {
+        return unusedCards;
+    }
+
+    public ArrayList<Card> getSideCards() {
+        return secondaryCard;
     }
 }
