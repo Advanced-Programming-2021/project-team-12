@@ -20,6 +20,7 @@ public class Game {
     private static Player winner;
     private static boolean isSurrender;
     private static boolean hasWinner;
+    private static boolean isAIGame;
     private static int round;
     private static int firstPlayerWin = 0;
     private static int secondPlayerWin = 0;
@@ -37,9 +38,18 @@ public class Game {
     }
 
     public static void run(User _firstUser, User _secondUser, int _round) {
+        isAIGame = false;
         restartData(_firstUser, _secondUser, _round);
         generateRandomTurn();
         playTurn("DrawPhase");
+    }
+
+    public static void run(User _firstUser, int _round) {
+        isAIGame = true;
+        restartData(_firstUser, null, _round);
+        generateRandomTurn();
+        playTurn("DrawPhase");
+        SaveFile.saveUser(firstUser);
     }
 
     private static void EndGame() {
@@ -119,11 +129,6 @@ public class Game {
             playerTurn = PlayerTurn.FIRSTPLAYER;
         else
             playerTurn = PlayerTurn.SECONDPLAYER;
-    }
-
-    public static void run(User firstPlayer, int round) {
-
-        SaveFile.saveUser(firstUser);
     }
 
     private static void playTurn(String phase) {

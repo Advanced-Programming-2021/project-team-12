@@ -40,7 +40,8 @@ public class SpellCard {
     }
 
     public static boolean canWeActivateThisSpell(Address address) {
-
+        return true;
+        //sdfjhsdfkjsahdf
     }
 
     public static void doSpellAbsorptionEffect() {

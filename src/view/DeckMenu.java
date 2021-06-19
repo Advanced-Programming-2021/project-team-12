@@ -40,7 +40,7 @@ public class DeckMenu {
             else if (input.matches("deck show (--cards|-c)"))
                 showCards();
             else if (input.matches("menu show-current"))
-                System.out.println("Shop");
+                System.out.println("Deck");
             else 
                 System.out.println("invalid command!");
         }

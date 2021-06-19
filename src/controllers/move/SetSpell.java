@@ -9,7 +9,8 @@ public class SetSpell {
     public static boolean doAnyOneHaveForest;
 
     public static boolean doIHaveMessengerOfPeace() {
-
+        return true;
+        //klsdhfsalkdfhsadf
     }
 
     public static void destroyMessengerOfPeace() {
@@ -17,11 +18,13 @@ public class SetSpell {
     }
 
     public static boolean doIHaveClosedForest() {
-
+        return true;
+        //klsdhfsalkdfhsadf
     }
 
     public static boolean doAnyOneHaveUmiruka() {
-        
+        return true;
+        //klsdhfsalkdfhsadf
     }
 
     public void run(Address address){
@@ -42,12 +45,15 @@ public class SetSpell {
     }
 
     private boolean doIHaveSpellAbsorptionCard() {
-
+        return true;
+        //klsdhfsalkdfhsadf
     }
     public static boolean doAnyOneHaveMessengerOfPeace(){
-
+        return true;
+        //klsdhfsalkdfhsadf
     }
     public static boolean doAnyOneHaveYami(){
-
+        return true;
+        //klsdhfsalkdfhsadf
     }
 }

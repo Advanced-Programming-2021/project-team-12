@@ -39,11 +39,11 @@ public class SetMainCards {
         cards = player.getMainCards();
         System.out.println("Main Deck:");
         for (int i = 1; i <= cards.size(); i++)
-            System.out.println(i + ": " + cards.get(i).getCardName());
+            System.out.println(i + ": " + cards.get(i - 1).getCardName());
         cards = player.getSideCards();
         System.out.println("Side deck: ");
         for (int i = 1; i <= cards.size(); i++)
-            System.out.println(i + ": " + cards.get(i).getCardName());
+            System.out.println(i + ": " + cards.get(i - 1).getCardName());
     }
 
     private void changeCard(String input, Player player) {
