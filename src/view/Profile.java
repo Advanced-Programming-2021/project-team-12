@@ -31,14 +31,14 @@ public class Profile {
     private static void changeNickName(String input) {
         Matcher matcher;
         String nickName;
-        matcher = Utility.getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--nickname|-n) ([\\w-]+)");
         matcher.find();
         nickName = matcher.group(2);
         try {
             new ProfileControl().changeNickName(nickName);
             System.out.println("nickname changed successfully!");
-        } catch (NickNameException e) {
-            System.out.println("\"user with nickname \" + nickName + \" already exists\"");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -46,19 +46,17 @@ public class Profile {
         Matcher matcher;
         String currentPassword;
         String newPassword;
-        matcher = Utility.getCommandMatcher(input, "(--current|-c) ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--current|-c) ([\\w]+)");
         matcher.find();
         currentPassword = matcher.group(2);
-        matcher = Utility.getCommandMatcher(input, "(--new|-n) ([\\w]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--new|-n) ([\\w]+)");
         matcher.find();
         newPassword = matcher.group(2);
         try {
             new ProfileControl().changePass(currentPassword, newPassword);
             System.out.println("password changed successfully!");
-        } catch (WrongPassException e) {
-            System.out.println("current password is invalid");
-        } catch (NewPassException e) {
-            System.out.println("please enter a new password");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 

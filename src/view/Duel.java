@@ -2,11 +2,7 @@ package view;
 
 import java.util.regex.Matcher;
 
-import Exceptions.AcctiveDeck;
-import Exceptions.UserNameException;
-import Exceptions.ValidDeck;
-import Exceptions.WrongRoundNumber;
-import utility.Utility;
+import Utility.CommandMatcher;
 import controllers.DuelControl;
 
 public class Duel {
@@ -32,35 +28,27 @@ public class Duel {
     }
 
     private static void duelWithAnotherPlayer(String input) {
-        Matcher matcher = Utility.getCommandMatcher(input, "--second-player ([\\w-]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "--second-player ([\\w-]+)");
         matcher.find();
         String secondPlayer = matcher.group(1);
-        matcher = Utility.getCommandMatcher(input, "(--rounds|-r) ([\\d])");
+        matcher = CommandMatcher.getCommandMatcher(input, "(--rounds|-r) ([\\d])");
         matcher.find();
         int round = Integer.parseInt(matcher.group(2));
         try {
             new DuelControl(secondPlayer, round);
-        } catch (UserNameException e) {
-            System.out.println("there is no player with this username");
-        } catch (AcctiveDeck e) {
-            e.printStackTrace();
-        } catch (ValidDeck e) {
-            e.printStackTrace();
-        } catch (WrongRoundNumber e) {
-            System.out.println("number of rounds is not supported");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
     private static void duelWithAi(String input) {
-        Matcher matcher = Utility.getCommandMatcher(input, "(--rounds|-r) ([\\d])");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--rounds|-r) ([\\d])");
         matcher.find();
         int round = Integer.parseInt(matcher.group(2));
         try {
             new DuelControl(round);
-        } catch (AcctiveDeck | ValidDeck e) {
-            e.printStackTrace();
-        } catch (WrongRoundNumber e) {
-            System.out.println("number of rounds is not supported");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 

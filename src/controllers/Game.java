@@ -2,11 +2,14 @@ package controllers;
 
 import java.util.Random;
 
+
 import view.phase.*;
 import view.phase.MainPhase;
 import models.Player;
 import models.PlayerTurn;
 import models.User;
+import view.MainMenu;
+import view.SetMainCards;
 
 public class Game {
     private static int roundCounter;
@@ -15,9 +18,10 @@ public class Game {
     public static Player secondPlayer;
     private static User firstUser;
     private static User secondUser;
-    private static Player Winner;
+    private static Player winner;
     private static boolean isSurrender;
     private static boolean hasWinner;
+    private static boolean isAIGame;
     private static int round;
     private static int firstPlayerWin = 0;
     private static int secondPlayerWin = 0;
@@ -35,15 +39,32 @@ public class Game {
     }
 
     public static void run(User _firstUser, User _secondUser, int _round) {
+        isAIGame = false;
         restartData(_firstUser, _secondUser, _round);
+        generateRandomTurn();
+        playTurn("DrawPhase");
     }
 
-    private void EndGame() {
+    public static void run(User _firstUser, int _round) {
+        isAIGame = true;
+        restartData(_firstUser, null, _round);
+        generateRandomTurn();
+        playTurn("DrawPhase");
+        SaveFile.saveUser(firstUser);
+    }
+
+    private static void EndGame() {
+        int floorWin = 0;
+        if (round == 3)
+            floorWin = 1;
         setWinnData();
-        if (firstPlayerWin > round / 2 || secondPlayerWin > round / 2) {
+        if (firstPlayerWin > floorWin || secondPlayerWin > floorWin) {
             setScoreAndMoneyOfPlayers();
-            break;
+            new MainMenu(firstUser);
         } else {
+            firstPlayer.reset();
+            secondPlayer.reset();
+            new SetMainCards(firstPlayer, secondPlayer);
             generateRandomTurn();
             playTurn("DrawPhase");
         }
@@ -51,7 +72,7 @@ public class Game {
 
     private static void setScoreAndMoneyOfPlayers() {
         if (round == 1) {
-            if (Winner.getName().equals(firstPlayer.getName())) {
+            if (winner.getName().equals(firstPlayer.getName())) {
                 firstUser.increaseMoney(firstPlayerMaxLP + 1000);
                 firstUser.increaseScore(1000);
                 secondUser.increaseMoney(100);
@@ -62,7 +83,7 @@ public class Game {
             }
         }
         if (round == 3) {
-            if (Winner.getName().equals(firstPlayer.getName())) {
+            if (winner.getName().equals(firstPlayer.getName())) {
                 firstUser.increaseMoney(firstPlayerMaxLP * 3 + 3000);
                 firstUser.increaseScore(3000);
                 secondUser.increaseMoney(300);
@@ -89,7 +110,7 @@ public class Game {
     }
 
     private static void setWinnData() {
-        if (Winner.getName().equals(firstPlayer.getName())) {
+        if (winner.getName().equals(firstPlayer.getName())) {
             if (firstPlayer.getLP() > firstPlayerMaxLP)
                 firstPlayerMaxLP = firstPlayer.getLP();
             firstPlayerWin++;
@@ -111,29 +132,31 @@ public class Game {
             playerTurn = PlayerTurn.SECONDPLAYER;
     }
 
-    public static void run(User firstPlayer, int round) {
-
-        SaveFile.saveUser(firstUser);
-    }
-
     private static void playTurn(String phase) {
-        if (phase.equals("DrawPhase"))
-            new DrawPhase().run();
-        else if (phase.equals("StandByPhase"))
-            new StandByPhase().run();
-        else if (phase.equals("MainPhase1"))
-            mainPhase1.run();
-        else if (phase.equals("BattlePhase"))
-            goToBattlePhase();
-        else if (phase.equals("MainPhase2"))
-            mainPhase2.run();
-        else if (phase.equals("EndPhase")) {
-            new EndPhase().run();
-            switchPlayer();
-        } else if (phase.equals("EndGame")) {
-
+        switch (phase) {
+            case "DrawPhase":
+                new DrawPhase().run();
+                break;
+            case "StandByPhase":
+                new StandByPhase().run();
+                break;
+            case "MainPhase1":
+                mainPhase1.run();
+                break;
+            case "BattlePhase":
+                goToBattlePhase();
+                break;
+            case "MainPhase2":
+                mainPhase2.run();
+                break;
+            case "EndPhase":
+                switchPlayer();
+                new EndPhase().run();
+                break;
+            case "EndGame":
+                EndGame();
+                break;
         }
-        else if (phase.equals("EndGame"))
     }
 
     private static void goToBattlePhase() {
@@ -162,7 +185,7 @@ public class Game {
     }
 
     public static Player getWinner() {
-        return Winner;
+        return winner;
     }
 
     public static boolean isSurrender() {
@@ -174,7 +197,7 @@ public class Game {
     }
 
     public static void setWinner(Player winner) {
-        Winner = winner;
+        Game.winner = winner;
         hasWinner = true;
     }
 

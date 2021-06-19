@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Player {
+    private User user;
     private boolean[] isThisSpellActivated;
     private boolean isOneHisMonstersDestroyedInThisRound;
     private HashMap<Address, PositionOfCardInBoard> positionOfCardInBoardByAddress;// Dear Ali you should make board based on this HashMap
@@ -45,6 +46,7 @@ public class Player {
     }
 
     public Player(User user) {
+        this.user = user;
         this.nickName = user.getNickName();
         this.name = user.getName();
         LP = 8000;
@@ -65,18 +67,6 @@ public class Player {
 
     public Boolean isFieldEmpty() {
         return !fieldCardNumbers.containsKey(1);
-    }
-
-    public Boolean isCardFaceUp(Address address) {
-        if (address.getKind().equals("monster")) {
-            if (isMonsterFaceUp.containsKey(address.getNumber()))
-                return isMonsterFaceUp.get(address.getNumber());
-        }
-        if (address.getKind().equals("spell")) {
-            if (isSpellFaceUp.containsKey(address.getNumber()))
-                return isSpellFaceUp.get(address.getNumber());
-        }
-        return null;
     }
 
     public Address addCardToAddress(Card card, String cardState, int index) {
@@ -102,25 +92,9 @@ public class Player {
         return new Address(place, cardState, true);
     }
 
-    public void setCardFaceUp(Address address) {
-        getFaceHashMapByKind(address.getKind()).put(address.getNumber(), true);
-    }
-
-    public HashMap<Integer, Boolean> getMonsterFaceCards() {
-        return isMonsterFaceUp;
-    }
-
-    public HashMap<Integer, Boolean> getSpellFaceCards() {
-        return isSpellFaceUp;
-    }
-
-    public void setCardFaceDown(Address address) {
-        getFaceHashMapByKind(address.getKind()).put(address.getNumber(), false);
-    }
-
     public HashMap<Integer, Boolean> getFaceHashMapByKind(String kind) {
         if (kind.equals("monster"))
-            return isMonsterFaceUp;
+//            return isMonsterFaceUp;
         if (kind.equals("spell"))
             return isSpellFaceUp;
         return null;
@@ -179,6 +153,26 @@ public class Player {
 
     public HashMap<Integer, Card> getSpellZoneCard() {
         return spellZoneCardNumbers;
+    }
+
+    public Card getCardHand(int i) {
+        return handCardNumbers.get(i);
+    }
+
+    public Card getCardGraveyard(int i) {
+        return graveyardCardNumbers.get(i);
+    }
+
+    public Card getCardField(int i) {
+        return fieldCardNumbers.get(i);
+    }
+
+    public Card getCardMonster(int i) {
+        return monsterZoneCardNumbers.get(i);
+    }
+
+    public Card getCardSpell(int i) {
+        return spellZoneCardNumbers.get(i);
     }
 
     public void addIndexToSuijin(int index) {
@@ -302,6 +296,7 @@ public class Player {
     }
 
     public Address summonCardFromHandToMonsterZone(String address) {
+        return null;
         //face up
         //attack
     }
@@ -350,7 +345,8 @@ public class Player {
     }
 
     public boolean isThisMonsterOnDHPosition(String address) {
-
+        return true;
+        //sdfgsdfg
     }
 
     public void convertThisMonsterFromDHToOO(String address) {
@@ -366,7 +362,8 @@ public class Player {
     }
 
     public boolean isThisMonsterOnAttackPosition(String address) {
-
+        return true;
+        //fdhgfghfgh
     }
 
     public void setDidWeChangePositionThisCardInThisTurn(int index) {
@@ -414,27 +411,32 @@ public class Player {
     }
 
     public PositionOfCardInBoard positionOfCardInBoardByAddress(Address address) {
-        positionOfCardInBoardByAddress.get(address);
+        return positionOfCardInBoardByAddress.get(address);
     }
 
     public MonsterCard getMonsterCardByAddress(Address address) {
-
+        return null;
+        //sdfkjhsdf
     }
 
     public boolean isThereAnyRitualModeSpellInOurHand() {
-
+        return true;
+        //sdfsadfkjhaskdf
     }
 
     public boolean isThereAnyRitualTypeMonsterInOurHand() {
-
+        return true;
+        //ksdjhfskdjfh
     }
 
     public ArrayList<Integer> sumOfLevelOfAllSubsetsOfMonsterZone() {
-
+        return null;
+        //kjshdfklsjhf
     }
 
     public ArrayList<Integer> levelOfRitualMonstersOnOurHand() {
-
+        return null;
+        //dkshfksjdhfsdkljf
     }
 
     public boolean isOneOfLevelOfRitualMonstersInTheHandIsEqualToSumOfLevelOfSubsetOfMonsterZone() {
@@ -446,14 +448,18 @@ public class Player {
     }
 
     public int howManyCardIsInTheHandCard() {
-
+        return 1;
+        //sadkfjhsdklfjh
     }
 
     public Address addressOfAttackerCard() {
-
+        return null;
+        //sd;fkhskdfjh
     }
 
     public boolean doWeHaveThisCardInBoard(String card) {
+        return true;
+        //sdfkjhsdkfljh
     }
 
     public boolean didBeastKingBarbarosSummonedSuperHighLevel(int index) {
@@ -465,18 +471,28 @@ public class Player {
     }
 
     public boolean isThereThreeCardInMonsterZone() {
+        return true;
+        //sdkjfhsdklfjh
     }
 
     public int howManyHeraldOfCreationDoWeHave(String cardName) {
+        return 1;
+        //jskdfhsklhf
     }
 
     public Address setCardFromGraveyardToMonsterZone(Address comeBackFromGraveyard) {
+        return null;
+        //;sdkhfskhf
     }
 
     public boolean isThereAnyFieldSpellInDeck() {
+        return true;
+        //ksdhfskdfh
     }
 
     public boolean isThisCardInDeck(String cardName) {
+        return true;
+        //asdkfjhsdlkfjhsad
     }
 
     public void bringCardFromDeckToHand(String cardName) {
@@ -511,10 +527,13 @@ public class Player {
     }
 
     public boolean doIHaveActivatedTrapNamedMagicCylinder() {
+        return true;
+        //sd;khskdljf
     }
 
     public boolean doIHaveActivatedTrapNamedMirrorForce() {
-
+        return true;
+        //sd;khskdljf
     }
 
     public void destroyAllRivalMonstersWhichInAttackMode() {
@@ -525,15 +544,22 @@ public class Player {
     }
 
     public boolean doIHaveTrapHoleTrapOnTheBoard() {
+        return true;
+        //sd;khskdljf
     }
 
     public boolean doIHaveTorrentialTributeTrapOnTheBoard() {
+        return true;
+        //sd;khskdljf
     }
 
     public void removeOneOfMyTorrentialTributeTrapOnTheBoard() {
+
     }
 
     public boolean doIHaveActivatedTrapNamedNegateAttack() {
+        return true;
+        //sd;khskdljf
     }
 
     public int getNumberOFHandCard() {
@@ -555,5 +581,47 @@ public class Player {
 
     public int getNumberOfGraveyardCard() {
         return graveyardCardNumbers.size();
+    }
+
+    public void reset() {
+        LP = 8000;
+        unusedCards = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getMainCards().clone();
+        secondaryCard = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getSideCards().clone();
+        isOneHisMonstersDestroyedInThisRound = false;
+        positionOfCardInBoardByAddress = new HashMap<>();
+        handCardNumbers = new HashMap<>();
+        graveyardCardNumbers = new HashMap<>();
+        fieldCardNumbers = new HashMap<>();
+        monsterZoneCardNumbers = new HashMap<>();
+        spellZoneCardNumbers = new HashMap<>();
+        indexOfCard = new HashMap<>();
+        isSpellFaceUp = new HashMap<>();
+        cardByIndex = new Card[100];
+        isThisSpellActivated = new boolean[100];
+        didBeastKingBarbarosSummonedSuperHighLevel = new boolean[100];
+        positionOfCardInBoardByAddress = new HashMap<>();
+        indexOfCardUsedSuijin = new ArrayList<>();
+        didWeChangePositionThisCardInThisTurn = new boolean[100];
+        didWeAttackByThisCardInThisCard = new boolean[100];
+    }
+
+    public void setHandCard() {
+        for (int i = 0; i < 5; i++)
+            addCardFromUnusedToHand();
+    }
+
+    public void setSlideToMain(int slideNumber, int mainNumber) {
+        Card tempCard = unusedCards.get(mainNumber - 1);
+        unusedCards.set(mainNumber - 1, secondaryCard.get(slideNumber - 1));
+        secondaryCard.set(slideNumber - 1, tempCard);
+    }
+
+
+    public ArrayList<Card> getMainCards() {
+        return unusedCards;
+    }
+
+    public ArrayList<Card> getSideCards() {
+        return secondaryCard;
     }
 }

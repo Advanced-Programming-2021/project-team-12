@@ -10,6 +10,26 @@ public class ShowBoard {
         currentPlayerData(currentPlayer);
     }
 
+    public static void showGraveyard(Player currentPlayer, Player opponentPlayer) {
+        System.out.println("crrent player graveyard cards:");
+        if (currentPlayer.getGraveyardCard().size() == 0)
+            System.out.println("there is no card in current player graveyard");
+        for (int i = 1; i <= currentPlayer.getGraveyardCard().size(); i++)
+            System.out.println(i + ": " + currentPlayer.getGraveyardCard().get(i).getCardName());
+        System.out.println("_________________________________");
+        System.out.println("opponent player graveyard cards:");
+        if (opponentPlayer.getGraveyardCard().size() == 0)
+            System.out.println("there is no card in opponent player graveyard");
+        for (int i = 1; i <= opponentPlayer.getGraveyardCard().size(); i++)
+            System.out.println(i + ": " + opponentPlayer.getGraveyardCard().get(i).getCardName());
+    }
+
+    public static void showFieldZone(Player player) {
+        if (player.getFieldCard().containsKey(1))
+            System.out.println(player.getFieldCard().get(1).getCardName());
+        else System.out.println("there is no card in field zone");
+    }
+
     private void opponentPlayerData(Player player) {
         System.out.println(player.getNickName() + ": " + player.getLP());
         showHandCard(player, "o");

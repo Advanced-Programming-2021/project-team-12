@@ -17,6 +17,8 @@ public class User {
         this.userName = userName;
         this.nickName = nickName;
         this.password = password;
+        score = 0;
+        money = 0;
         users.add(this);
     }
 
@@ -33,6 +35,7 @@ public class User {
     }
 
     public ArrayList<Card> getAllCards() {
+        if (allCards == null) return  null;
         Collections.sort(allCards, new Comparator<Card>() {
             public int compare(Card c1, Card c2) {
                     return c1.getCardName().compareTo(c2.getCardName());
