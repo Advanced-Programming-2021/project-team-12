@@ -295,7 +295,7 @@ public class Player {
         return isHeSummonedOrSet;
     }
 
-    public Address summonCardFromHandToMonsterZone(String address) {
+    public Address summonCardToMonsterZone(String address) {
         return null;
         //face up
         //attack
@@ -623,5 +623,16 @@ public class Player {
 
     public ArrayList<Card> getSideCards() {
         return secondaryCard;
+    }
+
+    public void specialSummonThisKindOfCardFromHandOrDeckOrGraveyard(String monsterName) {
+    }
+
+    public boolean doIHaveMirageDragonMonster() {
+
+    }
+
+    public void summonAMonsterCardFromGraveyard() {
+
     }
 }

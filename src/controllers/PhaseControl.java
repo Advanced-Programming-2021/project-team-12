@@ -10,7 +10,6 @@ import models.card.spell.SpellCard;
 import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
 import view.Effect;
-import controllers.Game;
 
 import java.util.regex.Matcher;
 
@@ -415,46 +414,53 @@ public class PhaseControl {
             Player currentPlayer = Game.whoseTurnPlayer();
             if (!currentPlayer.isMonsterZoneFull()) {
                 if (!currentPlayer.isHeSummonedOrSet()) {
+                    Address address = new Address(matcher.group(1));
+                    MonsterCard monsterCard = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1));
+                    int level = monsterCard.getLevel();
                     if (!currentPlayer.getMonsterCardByStringAddress(matcher.group(1)).isRitual()) {
-                        Address address = new Address(matcher.group(1));
-                        int level = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1)).getLevel();
-                        if (level <= 4) {
-                            currentPlayer.setHeSummonedOrSet(true);
-                            if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
-                                currentPlayer.summonCardFromHandToMonsterZone(matcher.group(1)).setIsScanner(true);
-                            } else currentPlayer.summonCardFromHandToMonsterZone(matcher.group(1));
-                            if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger")) {
-                                if (Integer.parseInt(Effect.run("Terratiger")) != 0) {
-                                    Address address1 = new Address(Integer.parseInt(Effect.run("Terratiger")), "hand", true);
-                                    if ((currentPlayer.getMonsterCardByAddress(address1) != null)
-                                            && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
-                                            && (!currentPlayer.isMonsterZoneFull()))
-                                        currentPlayer.setCardFromHandToMonsterZone(address1);
-                                }
-                            }
-                            if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()) {
-                                currentPlayer.removeCard(address);
-                                Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
-//                                System.out.println("The summoned card got destroyed by effect of Trap Hole effect.");
-                            }
-                            if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()) {
-                                Attack.destroyAllMonstersInTheBoard();
-                                Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
-//                                System.out.println("All monster card got destroyed by effect of TorrentialTribute effect.");
-                            }
-                        } else if (level <= 6) {
-                            summonAMediumLevelMonster(matcher.group(1));
+                        if (monsterCard.getName().equals("GateGuardian")) {
+                            Game.getMainPhase1().summonForTribute(3, matcher.group(1));
                         } else {
-                            int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
-                            if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("BeastKingBarbaros")
-                                    && (Integer.parseInt(Effect.run("BeastKingBarbaros")) == 3)) {
-                                Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
-                                summonASuperHighLevelMonster(matcher.group(1));
-                            } else summonAHighLevelMonster(matcher.group(1));
+                            if (level <= 4) summonALowLevelMonster(matcher, currentPlayer, address);
+                            else if (level <= 6) Game.getMainPhase1().summonForTribute(1, matcher.group(1));
+                            else {
+                                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+                                if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("BeastKingBarbaros")
+                                        && (Integer.parseInt(Effect.run("BeastKingBarbaros")) == 3)) {
+                                    Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
+                                    Game.getMainPhase1().summonForTribute(3, matcher.group(1));
+                                } else Game.getMainPhase1().summonForTribute(2, matcher.group(1));
+                            }
                         }
-                    } else Game.getMainPhase1().ritualSummon(matcher);
+                    } else Game.getMainPhase1().ritualSummon(matcher.group(1), level);
                 } else throw new AlreadySummonedOrSet("you already summoned/set on this turn!");
             } else throw new MonsterZoneFull("monster card zone is full!");
+        }
+    }
+
+    private void summonALowLevelMonster(Matcher matcher, Player currentPlayer, Address address) {
+        currentPlayer.setHeSummonedOrSet(true);
+        if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
+            currentPlayer.summonCardToMonsterZone(matcher.group(1)).setIsScanner(true);
+        } else currentPlayer.summonCardToMonsterZone(matcher.group(1));
+        if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger")) {
+            if (Integer.parseInt(Effect.run("Terratiger")) != 0) {
+                Address address1 = new Address(Integer.parseInt(Effect.run("Terratiger")), "hand", true);
+                if ((currentPlayer.getMonsterCardByAddress(address1) != null)
+                        && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
+                        && (!currentPlayer.isMonsterZoneFull()))
+                    currentPlayer.setCardFromHandToMonsterZone(address1);
+            }
+        }
+        if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+            currentPlayer.removeCard(address);
+            Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
+//                                System.out.println("The summoned card got destroyed by effect of Trap Hole effect.");
+        }
+        if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+            Attack.destroyAllMonstersInTheBoard();
+            Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
+//                                System.out.println("All monster card got destroyed by effect of TorrentialTribute effect.");
         }
     }
 
@@ -469,16 +475,16 @@ public class PhaseControl {
                 if (currentPlayer.isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard))) {
                     currentPlayer.setHeSummonedOrSet(true);
                     currentPlayer.removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard));
-                    currentPlayer.summonCardFromHandToMonsterZone(address);
-                    if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()) {
+                    currentPlayer.summonCardToMonsterZone(address);
+                    if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                         currentPlayer.removeCard(address1);
                         Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
 //                        System.out.println("The summoned card got destroyed by effect of Trap Hole effect.");
                     }
-                    if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()) {
+                    if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                         Attack.destroyAllMonstersInTheBoard();
                         Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
-//                        System.out.println("All monster card got destroyed by effect of TorrentialTribute efffect.");
+//                        System.out.println("All monster card got destroyed by effect of TorrentialTribute effect.");
                     }
                 } else throw new NoMonsterInThisAddress("There is no monster in this address!");
             }
@@ -502,13 +508,13 @@ public class PhaseControl {
                         Game.whoseTurnPlayer().setHeSummonedOrSet(true);
                         Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard1));
                         Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard2));
-                        Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(address);
-                        if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()) {
+                        Game.whoseTurnPlayer().summonCardToMonsterZone(address);
+                        if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             currentPlayer.removeCard(address1);
                             Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
                             //System.out.println("The summmoned card got destroyed by effect of Trap Hole efffect.");
                         }
-                        if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()) {
+                        if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             Attack.destroyAllMonstersInTheBoard();
                             Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
                             //System.out.println("All monster card got destroyed by effect of TorrentialTribute efffect.");
@@ -542,16 +548,16 @@ public class PhaseControl {
                             Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard1));
                             Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard2));
                             Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard3));
-                            Game.whoseTurnPlayer().summonCardFromHandToMonsterZone(address);
-                            if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()) {
+                            Game.whoseTurnPlayer().summonCardToMonsterZone(address);
+                            if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                                 currentPlayer.removeCard(address1);
                                 Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
-                                //System.out.println("The summmoned card got destroyed by effect of Trap Hole efffect.");
+                                //System.out.println("The summoned card got destroyed by effect of Trap Hole effect.");
                             }
-                            if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard()) {
+                            if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                                 Attack.destroyAllMonstersInTheBoard();
                                 Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
-                                //System.out.println("All monster card got destroyed by effect of TorrentialTribute efffect.");
+                                //System.out.println("All monster card got destroyed by effect of TorrentialTribute effect.");
                             }
                         } else throw new NoMonsterInThisAddress("There is no monster in this address!");
                     }
@@ -695,6 +701,11 @@ public class PhaseControl {
         Game.getMainPhase1().goToNextPhase = true;
     }
 
+
+    public boolean activeTrap(Matcher matcher, Player player) {
+        if (!player.doIHaveMirageDragonMonster()) if (Game.getMainPhase1().permission()) return true;
+        return false;
+    }
 //battle phase:
 
 }

@@ -399,17 +399,19 @@ public class BattlePhaseController {
                     MonsterCard rivalMonsterCard = currentPlayer.getMonsterCardByAddress(address);
                     Address myAddressType = new Address(myAddress);
                     currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
-                    if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedNegateAttack()) {
+                    if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedNegateAttack() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                    } else if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedMirrorForce()) {
+                    } else if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedMirrorForce() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                         Game.whoseRivalPlayer().destroyAllRivalMonstersWhichInAttackMode();
                     } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                             && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                         throw new Exception("You can't attack by monster with attack equal or more than 1500 " +
                                 "because of MessengerOfPeace.");
-                    } else if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedMagicCylinder()) {
+                    } else if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedMagicCylinder() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                         currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
                         throw new Exception("Rival has trap named MagicCylinder so its effect get done.");
+                    } else if (rivalMonsterCard.getName().equals("Texchanger")) {
+                        Game.getMainPhase1().summonCyberse();
                     } else {
                         if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.OO) {
                             int damage = myMonsterCard.getAttack() - rivalMonsterCard.getAttack();
@@ -430,7 +432,6 @@ public class BattlePhaseController {
                 } else throw new Exception("there is no card to attack here");
             } else throw new Exception("this card already attacked");
         }
-        PhaseControl.getInstance().checkIfGameEnded();
     }
 
     private void attackOO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) throws Exception {
@@ -458,7 +459,8 @@ public class BattlePhaseController {
         } else {
             damage = (-1) * damage;
             decreaseLP(myAddress, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
-            throw new Exception("no card is destroyed and you received " + damage + " battle damage"); }
+            throw new Exception("no card is destroyed and you received " + damage + " battle damage");
+        }
     }
 
     private void attackDH(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) throws Exception {
@@ -481,6 +483,7 @@ public class BattlePhaseController {
         if (!(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("ExploderDragon"))) {
             player.decreaseLP(damage);
         }
+        PhaseControl.getInstance().checkIfGameEnded();
     }
 
     private void removeForAttack(Address address, Address theOtherAddress) {
