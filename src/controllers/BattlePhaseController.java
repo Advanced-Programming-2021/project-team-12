@@ -414,17 +414,17 @@ public class BattlePhaseController {
                         Game.getMainPhase1().summonCyberse();
                     } else {
                         if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.OO) {
-                            int damage = myMonsterCard.getAttack() - rivalMonsterCard.getAttack();
+                            int damage = myMonsterCard.getAttack(myAddressType) - rivalMonsterCard.getAttack(address);
                             attackOO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                             Attack.timeToEffectAfterAttack();
                         } else if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.DO) {
                             if (rivalMonsterCard.getDefence(true) != -1) {
-                                int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(true);
+                                int damage = myMonsterCard.getAttack(myAddressType) - rivalMonsterCard.getDefence(true);
                                 attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                                 Attack.timeToEffectAfterAttack();
                             } else throw new Exception("Attack has been cancelled for effect of a card");
                         } else {
-                            int damage = myMonsterCard.getAttack() - rivalMonsterCard.getDefence(false);
+                            int damage = myMonsterCard.getAttack(myAddressType) - rivalMonsterCard.getDefence(false);
                             attackDH(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                             Attack.timeToEffectAfterAttack();
                         }
@@ -512,8 +512,8 @@ public class BattlePhaseController {
                 currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
                 //doubt should regard an error for being empty of board?
                 MonsterCard monsterCardForDirectAttack = currentPlayer.getMonsterCardByStringAddress(matcher.group(1));
-                rivalPlayer.decreaseLP(monsterCardForDirectAttack.getAttack());
-                throw new Exception("you opponent receives " + monsterCardForDirectAttack.getAttack() + " battle damage");
+                rivalPlayer.decreaseLP(monsterCardForDirectAttack.getAttack(new Address(matcher.group(1))));
+                throw new Exception("you opponent receives " + monsterCardForDirectAttack.getAttack(new Address(matcher.group(1))) + " battle damage");
             } else throw new Exception("this card already attacked");
         }
         PhaseControl.getInstance().checkIfGameEnded();
