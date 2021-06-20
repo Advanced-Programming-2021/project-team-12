@@ -99,6 +99,28 @@ public class Board {
         return null;
     }
 
+    public static void destroyAllRivalAttackerMonster(Player player) {
+        Player opp;
+        if (player.getName().equals(currentPlayer.getName()))
+            opp = opponentPlayer;
+        else
+            opp = currentPlayer;
+        for (int i = 0; i < 5; i++)
+            if (opp.getMonsterZoneCard().containsKey(i) && !opp.getMonsterPosition(i).equals(PositionOfCardInBoard.DH))
+                opp.getMonsterZoneCard().remove(i);
+    }
+
+    public static void destroyRivalTrapAndSpells(Player player) {
+        Player opp;
+        if (player.getName().equals(currentPlayer.getName()))
+            opp = opponentPlayer;
+        else
+            opp = currentPlayer;
+        for (int i = 0; i < 5; i++)
+            if (opp.getSpellZoneCard().containsKey(i))
+                opp.getSpellZoneCard().remove(i);
+    }
+
     public String getKindByAddress(Address address) {
         HashMap<Integer, Card> addressHashMap = getHashMapByAddress(address);
         return addressHashMap.get(address.getNumber()).getKind();
