@@ -57,11 +57,11 @@ public class MonsterCard {
         return level;
     }
 
-    public int getAttack() {
+    //TODO
+    public int getAttack(Address address) {
         Player currentPlayer = Game.whoseTurnPlayer();
         int attack = this.attack;
-        Address addressOfAttacker = currentPlayer.addressOfAttackerCard();
-        int indexOfAttacker = currentPlayer.getIndexOfThisCardByAddress(addressOfAttacker);
+        int indexOfAttacker = currentPlayer.getIndexOfThisCardByAddress(address);
         if (!currentPlayer.didBeastKingBarbarosSummonedSuperHighLevel(indexOfAttacker)) attack -= 1900;
         if (Attack.whatKindOfCardIsDefenderNow().equals("Suijin") && !Attack.isDefenderFacedDown()) {
             if (whenSuijinIsDefending()) {
@@ -78,7 +78,7 @@ public class MonsterCard {
                 attack += 100 * Board.numberOfAllMonstersInGraveYard();
             }
         }
-        if (SetSpell.doAnyOneHaveForest) {
+        if (SetSpell.doAnyOneHaveForest()) {
             if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST || monsterMode == MonsterMode.INSECT)
                 attack += 200;
         }
@@ -102,7 +102,7 @@ public class MonsterCard {
                 defence -= 400;
             }
         }
-        if (SetSpell.doAnyOneHaveForest) {
+        if (SetSpell.doAnyOneHaveForest()) {
             if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST || monsterMode == MonsterMode.INSECT)
                 defence += 200;
         }

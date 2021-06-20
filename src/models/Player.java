@@ -300,7 +300,7 @@ public class Player {
         return isHeSummonedOrSet;
     }
 
-    public Address summonCardFromHandToMonsterZone(String address) {
+    public Address summonCardToMonsterZone(String address) {
         Address add = new Address(address);
         Address adres = setCardFromHandToMonsterZone(add);
         positionOfCardInBoardByAddress.put(adres, PositionOfCardInBoard.DH);
