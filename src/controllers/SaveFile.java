@@ -99,7 +99,7 @@ public class SaveFile {
         JSONObject obj = new JSONObject();
         obj.put("name", monster.getName());
         obj.put("monsterMode", monster.getMonsterMode().toString());
-        obj.put("attack", monster.getAttack());
+        obj.put("attack", monster.getNormalAttack());
         obj.put("defence", monster.getDefenceNumber());
         obj.put("attribute", monster.getAttribute().toString());
         obj.put("description", monster.getDescription());

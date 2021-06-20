@@ -671,7 +671,7 @@ public class PhaseControl {
                 if (monsterCardForHeraldOfCreation != null) {
                     if (monsterCardForHeraldOfCreation.getLevel() >= 7) {
                         currentPlayer.removeCard(shouldBeRemoved);
-                        currentPlayer.setCardFromGraveyardToMonsterZone(comeBackFromGraveyard);
+                        currentPlayer.setCardFromGraveyardToHand(comeBackFromGraveyard);
                         if (Game.getMainPhase1().whatMainIsPhase == 1)
                             Game.getMainPhase2().increaseHowManyHeraldOfCreationDidWeUseEffect();
                     }

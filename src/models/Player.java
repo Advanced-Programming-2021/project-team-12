@@ -300,10 +300,10 @@ public class Player {
         return isHeSummonedOrSet;
     }
 
-    public Address summonCardFromHandToMonsterZone(String address) {
+    public Address summonCardToMonsterZone(String address) {
         Address add = new Address(address);
         Address adres = setCardFromHandToMonsterZone(add);
-        positionOfCardInBoardByAddress.put(adres, PositionOfCardInBoard.DH);
+        positionOfCardInBoardByAddress.put(adres, PositionOfCardInBoard.OO);
         return adres;
     }
 
@@ -504,7 +504,7 @@ public class Player {
         //jskdfhsklhf
     }
 
-    public Address setCardFromGraveyardToMonsterZone(Address comeBackFromGraveyard) {
+    public Address setCardFromGraveyardToHand(Address comeBackFromGraveyard) {
         if (isMonsterZoneFull() || !graveyardCardNumbers.containsKey(comeBackFromGraveyard.getNumber()))
             return null;
         int place = getFirstEmptyPlace(monsterZoneCardNumbers, 5);
@@ -690,6 +690,7 @@ public class Player {
     }
 
     public void specialSummonThisKindOfCardFromHandOrDeckOrGraveyard(String monsterName) {
+
     }
 
     public boolean doIHaveMirageDragonMonster() {

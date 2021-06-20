@@ -164,7 +164,7 @@ public class Card {
 
     public int getAttack() {
         MonsterCard card = MonsterCard.getMonsterCardByName(name);
-        return card.getAttack();
+        return card.getNormalAttack();
     }
 
     public int getDefence(Boolean isFaceUp) {
