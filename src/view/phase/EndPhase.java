@@ -1,8 +1,7 @@
-package controllers.phase;
+package view.phase;
 
 import controllers.PhaseControl;
 import models.Address;
-import models.PlayerTurn;
 import controllers.Game;
 import view.Main;
 

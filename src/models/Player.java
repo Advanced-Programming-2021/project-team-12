@@ -688,4 +688,15 @@ public class Player {
     public ArrayList<Card> getSideCards() {
         return secondaryCard;
     }
+
+    public void specialSummonThisKindOfCardFromHandOrDeckOrGraveyard(String monsterName) {
+    }
+
+    public boolean doIHaveMirageDragonMonster() {
+
+    }
+
+    public void summonAMonsterCardFromGraveyard() {
+
+    }
 }

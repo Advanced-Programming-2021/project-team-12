@@ -2,8 +2,9 @@ package controllers;
 
 import java.util.Random;
 
-import controllers.phase.*;
-import controllers.phase.MainPhase;
+
+import view.phase.*;
+import view.phase.MainPhase;
 import models.Player;
 import models.PlayerTurn;
 import models.User;

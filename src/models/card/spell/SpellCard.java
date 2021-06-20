@@ -98,7 +98,10 @@ public class SpellCard {
             Address address1=new Address(Integer.parseInt(input),"spell",false);
             currentPlayer.removeCard(address1);
         }
-
+        if(name.equals("MonsterReborn")) {
+            currentPlayer.summonAMonsterCardFromGraveyard();
+            currentPlayer.removeCard(address);
+        }
 
     }
 

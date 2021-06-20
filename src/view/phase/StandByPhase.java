@@ -1,8 +1,6 @@
-package controllers.phase;
+package view.phase;
 
 import controllers.PhaseControl;
-import controllers.move.SetSpell;
-import controllers.Game;
 import view.Main;
 
 public class StandByPhase {

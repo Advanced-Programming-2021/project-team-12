@@ -1,8 +1,11 @@
-package controllers.phase;
+package view.phase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 import controllers.PhaseControl;
+import models.Address;
 import models.Board;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
@@ -171,8 +174,46 @@ public class MainPhase {
         }
     }
 
-    public void ritualSummon(Matcher matcher) {
-        //TODO inshaallah
+
+    public void summonForTribute(int numberOfTributes, String address) throws CancelException, NotEnoughTribute, NoMonsterInThisAddress {
+        System.out.println("select" + numberOfTributes + "monsters for tribute(write in different lines.)");
+        if (numberOfTributes == 1) PhaseControl.getInstance().summonAMediumLevelMonster(address);
+        else if (numberOfTributes == 2) PhaseControl.getInstance().summonAHighLevelMonster(address);
+        else if (numberOfTributes == 3) PhaseControl.getInstance().summonASuperHighLevelMonster(address);
+    }
+
+    public void ritualSummon(String monsterCardAddress, int monsterLevel) {
+        Address ritualSpellCardAddress = getOneOfRitualSpellCardAddress();
+        if (ritualSpellCardAddress != null) {
+            System.out.println("Please choose some monsters from your hand or on the board for tribute!" +
+                    "(sum of the chosen monsters' level should be equal to level the monster you want to summon ritually)" +
+                    "\nplease type them in different lines!");
+            int sumOfLevel = 0;
+            List<Address> monsterCardsAddress = new ArrayList<>();
+            while (sumOfLevel < monsterLevel && canHeContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress)) {
+                Address address = new Address(Main.scanner.nextLine());
+                MonsterCard monsterCard1 = Board.whatKindaMonsterIsHere(address);
+                monsterCardsAddress.add(address);
+                sumOfLevel += monsterCard1.getLevel();
+            }
+            if (sumOfLevel == monsterLevel) {
+                tributeThisCards(monsterCardsAddress);
+                for (Address cardsAddress : monsterCardsAddress) Game.whoseTurnPlayer().removeCard(cardsAddress);
+                Game.whoseTurnPlayer().removeCard(ritualSpellCardAddress);
+                Game.whoseTurnPlayer().summonCardToMonsterZone(monsterCardAddress);
+            } else System.out.println("You chose the wrong cards.");
+        }
+    }
+
+    private void tributeThisCards(List<Address> monsterCardsAddress) {
+
+    }
+
+    private boolean canHeContinueTribute(int i, List<Address> monsterCardsAddress) {
+
+    }
+
+    private Address getOneOfRitualSpellCardAddress() {
     }
 
     public String scanForTribute() {
@@ -229,7 +270,7 @@ public class MainPhase {
     }
 
     private void checkRitualSpell(Matcher matcher) {
-        if(matcher.find()){
+        if (matcher.find()) {
             System.out.println("Choose a ritual card from hand which has the condition!");
             String input = Main.scanner.nextLine();
             while (!(input.matches("^[ ]*select --hand [\\d]+[ ]*$"))) {
@@ -318,10 +359,6 @@ public class MainPhase {
         }
     }
 
-    public void activeTrap(Matcher matcher) {
-        //TODO inshaallah
-    }
-
     public void increaseHowManyHeraldOfCreationDidWeUseEffect() {
         howManyHeraldOfCreationDidWeUseEffect++;
     }
@@ -332,5 +369,19 @@ public class MainPhase {
 
     public void setWhatMainIsPhase(int i) {
         whatMainIsPhase = i;
+    }
+
+    public void summonCyberse() {
+        if(permission()){
+            System.out.println("Please select one Cyberse type monster from your hand or deck or graveyard to be summoned.");
+            System.out.println("which card do you want to special summon?\n1.Texchanger\n2.Leotron");
+            String monsterName = Main.scanner.nextLine();
+            Game.whoseTurnPlayer().specialSummonThisKindOfCardFromHandOrDeckOrGraveyard(monsterName);
+        }
+    }
+
+    public boolean permission(){
+        System.out.println("Do you want do the effect?(yes/no)");
+        return Main.scanner.nextLine().equals("yes");
     }
 }
