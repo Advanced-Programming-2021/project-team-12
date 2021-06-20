@@ -57,7 +57,6 @@ public class MonsterCard {
         return level;
     }
 
-    //TODO
     public int getAttack(Address address) {
         Player currentPlayer = Game.whoseTurnPlayer();
         int attack = this.attack;
