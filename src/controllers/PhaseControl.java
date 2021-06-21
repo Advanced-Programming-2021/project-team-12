@@ -24,10 +24,8 @@ public class PhaseControl {
     }
 
     public void payMessengerOfPeaceSpellCardHarm(String answer) {
-        if (SetSpell.doIHaveMessengerOfPeace()) {
-            if (answer.equals("yes")) SetSpell.destroyMessengerOfPeace();
-            else Game.whoseTurnPlayer().decreaseLP(100);
-        }
+        if (answer.equals("yes")) SetSpell.destroyMessengerOfPeace();
+        else Game.whoseTurnPlayer().decreaseLP(100);
     }
 
     public void resetMoves() {
@@ -392,19 +390,12 @@ public class PhaseControl {
         }
     }
 
-    public void spellSet(Matcher matcher) throws SpellZoneFull, RitualSummonException, CantRitualSummon {
+    public void spellSet(Matcher matcher) throws SpellZoneFull{
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
             if (!currentPlayer.isSpellZoneFull()) {
-                if (currentPlayer.getSpellCardByStringAddress(matcher.group(1)).getSpellMode() != SpellMode.RITUAL) {
-                    currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
-                    currentPlayer.setHeSummonedOrSet(true);
-                } else {
-                    if (currentPlayer.isThereAnyRitualTypeMonsterInOurHand()
-                            && currentPlayer.isOneOfLevelOfRitualMonstersInTheHandIsEqualToSumOfLevelOfSubsetOfMonsterZone()) {
-                        throw new RitualSummonException("ritual card!");
-                    } else throw new CantRitualSummon("there is no way you could ritual summon a monster");
-                }
+                currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
+                currentPlayer.setHeSummonedOrSet(true);
             } else throw new SpellZoneFull("spell card zone is full!");
         }
     }
@@ -452,6 +443,7 @@ public class PhaseControl {
                     currentPlayer.setCardFromHandToMonsterZone(address1);
             }
         }
+
         if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
             currentPlayer.removeCard(address);
             Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
@@ -495,11 +487,11 @@ public class PhaseControl {
         Address address1 = new Address(address);
         Player currentPlayer = Game.whoseTurnPlayer();
         if (Game.whoseTurnPlayer().isThereTwoCardInMonsterZone()) {
-            String tributeCard1 = Game.getMainPhase1().scanForTribute();
+            String tributeCard1 = Game.getMainPhase1().scanForTribute(1);
             if (tributeCard1.equals("cancel")) {
                 throw new CancelException("canceled successfully!");
             } else {
-                String tributeCard2 = Game.getMainPhase1().scanForTribute();
+                String tributeCard2 = Game.getMainPhase1().scanForTribute(2);
                 if (tributeCard2.equals("cancel")) {
                     throw new CancelException("canceled successfully!");
                 } else {
@@ -529,15 +521,15 @@ public class PhaseControl {
         Address address1 = new Address(address);
         Player currentPlayer = Game.whoseTurnPlayer();
         if (Game.whoseTurnPlayer().isThereThreeCardInMonsterZone()) {
-            String tributeCard1 = Game.getMainPhase1().scanForTribute();
+            String tributeCard1 = Game.getMainPhase1().scanForTribute(1);
             if (Game.getMainPhase1().isCancelled(tributeCard1)) {
                 throw new CancelException("canceled successfully!");
             } else {
-                String tributeCard2 = Game.getMainPhase1().scanForTribute();
+                String tributeCard2 = Game.getMainPhase1().scanForTribute(2);
                 if (Game.getMainPhase1().isCancelled(tributeCard2)) {
                     throw new CancelException("canceled successfully!");
                 } else {
-                    String tributeCard3 = Game.getMainPhase1().scanForTribute();
+                    String tributeCard3 = Game.getMainPhase1().scanForTribute(3);
                     if (Game.getMainPhase1().isCancelled(tributeCard3)) {
                         throw new CancelException("canceled successfully!");
                     } else {

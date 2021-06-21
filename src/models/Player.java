@@ -6,10 +6,7 @@ import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
 import controllers.Game;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class Player {
     private User user;
@@ -237,6 +234,16 @@ public class Player {
     }
 
     public void removeCard(Address address) {
+        if (address.getKind().equals("monster"))
+
+
+
+
+
+
+
+
+
         if (getMonsterCardByAddress(address) != null) {
             if (address.checkIsMine()) Game.whoseTurnPlayer().setOneHisMonstersDestroyedInThisRound(true);
             else Game.whoseRivalPlayer().setOneHisMonstersDestroyedInThisRound(true);
@@ -460,7 +467,7 @@ public class Player {
             for (int j = 0; j < levelOfRitualMonstersOnOurHand().size(); j++)
                 if (sumOfLevelOfAllSubsetsOfMonsterZone().get(i).equals(levelOfRitualMonstersOnOurHand().get(j)))
                     return true;
-        return false; //don't bother I've already written it.
+        return false;
     }
 
     public int howManyCardIsInTheHandCard() {
@@ -495,8 +502,11 @@ public class Player {
     }
 
     public boolean isThereThreeCardInMonsterZone() {
-        return true;
-        //sdkjfhsdklfjh
+        int count = 0;
+        for (int i = 1; i <= 5; i++)
+            if (monsterZoneCardNumbers.containsKey(i))
+                count++;
+        return count > 2;
     }
 
     public int howManyHeraldOfCreationDoWeHave(String cardName) {
@@ -584,8 +594,7 @@ public class Player {
     public void removeOneOfMyTrapHoleTrapOnTheBoard() {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Trap Hole")) {
-                spellZoneCardNumbers.remove(i);
-                isSpellFaceUp.remove(i);
+                removeCard(new Address(i, "spell", true));
                 break;
             }
         }
@@ -615,8 +624,7 @@ public class Player {
     public void removeOneOfMyTorrentialTributeTrapOnTheBoard() {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Torrential Tribute")) {
-                spellZoneCardNumbers.remove(i);
-                isSpellFaceUp.remove(i);
+                removeCard(new Address(i, "spell", true));
                 break;
             }
         }
@@ -699,5 +707,11 @@ public class Player {
 
     public void summonAMonsterCardFromGraveyard() {
 
+    }
+
+    public boolean canIContinueTribute(int i, List<Address> monsterCardsAddress) {
+    }
+
+    public Address getOneOfRitualSpellCardAddress() {
     }
 }
