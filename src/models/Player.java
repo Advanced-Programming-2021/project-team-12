@@ -343,7 +343,7 @@ public class Player {
         return false;
     }
 
-    public static void destroyAllRivalTrapAndSpells() {
+    public void destroyAllRivalTrapAndSpells() {
         Board.destroyRivalTrapAndSpells(this);
     }
 
@@ -451,7 +451,7 @@ public class Player {
     }
 
     public ArrayList<Integer> sumOfLevelOfAllSubsetsOfMonsterZone() {
-
+        return null;
     }
 
     public ArrayList<Integer> levelOfRitualMonstersOnOurHand() {
@@ -631,7 +631,8 @@ public class Player {
     }
 
     public boolean doIHaveActivatedTrapNamedNegateAttack() {
-
+        return true;
+        //djhgdsfighdspysfdg
     }
 
     public int getNumberOFHandCard() {
@@ -702,7 +703,8 @@ public class Player {
     }
 
     public boolean doIHaveMirageDragonMonster() {
-
+        return true;
+//        /asdf;lkjsadfs
     }
 
     public void summonAMonsterCardFromGraveyard() {
@@ -710,8 +712,12 @@ public class Player {
     }
 
     public boolean canIContinueTribute(int i, List<Address> monsterCardsAddress) {
+        return true;
+//        asdlkfjhsadkfhsadkf
     }
 
     public Address getOneOfRitualSpellCardAddress() {
+        return null;
+        //;sdhfskdjhfsidfusdiufhsadfhas
     }
 }

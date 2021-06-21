@@ -33,7 +33,7 @@ public class MainPhase {
                     Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
                     PhaseControl.getInstance().doEffectMainPhase();
                 }
-                System.out.println("phase: draw phase");
+                System.out.println("phase: main phase " + whatMainIsPhase);
                 Board.showBoard();
                 getSelectedCard();
             }
@@ -45,7 +45,7 @@ public class MainPhase {
             Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
             PhaseControl.getInstance().doEffectMainPhase();
         }
-        System.out.println("phase: draw phase");
+        System.out.println("phase: main phase " + whatMainIsPhase);
         Board.showBoard();
         getSelectedCard();
     }

@@ -1,4 +1,5 @@
 package view;
+import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.regex.Matcher;
 
 import Exceptions.NewPassException;
@@ -9,6 +10,7 @@ import controllers.ProfileControl;
 
 public class Profile {
     public static void run() {
+        System.out.println("** PROFILE MENU **");
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();
@@ -23,8 +25,11 @@ public class Profile {
                 System.out.println("Profile");
             else if (input.matches("menu enter [\\w]+"))
                 System.out.println("menu navigation is not possible");
-            else
+            else {
                 System.out.println("invalid command!");
+                continue;
+            }
+            System.out.println("** PROFILE MENU **");
         }
     }
 

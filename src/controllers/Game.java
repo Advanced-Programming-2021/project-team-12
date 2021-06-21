@@ -104,7 +104,8 @@ public class Game {
             }
         }
         SaveFile.saveUser(firstUser);
-        SaveFile.saveUser(secondUser);
+        if (!isAIGame)
+            SaveFile.saveUser(secondUser);
     }
 
     private static void restartData(User _firstUser, User _secondUser, int _round) {
@@ -212,6 +213,7 @@ public class Game {
     public static void setWinner(Player winner) {
         Game.winner = winner;
         hasWinner = true;
+        playTurn("EndGame");
     }
 
     public static boolean isAITurn() {

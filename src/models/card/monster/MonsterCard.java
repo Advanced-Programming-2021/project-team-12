@@ -5,10 +5,7 @@ import controllers.move.SetSpell;
 import models.Address;
 import models.Board;
 import models.Player;
-import models.PlayerTurn;
 import models.card.monster.monster_effect.MonsterEffect;
-import models.card.monster.monster_effect.MonsterEffect;
-import models.Board.*;
 import view.Effect;
 import controllers.Game;
 //import card.spell.SpellCard;
@@ -72,13 +69,13 @@ public class MonsterCard {
                 attack += 500;
             }
         }
-        if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST) {
+        if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.BEAST_WARRIOR) {
             if (SetSpell.doIHaveClosedForest()) {
                 attack += 100 * Board.numberOfAllMonstersInGraveYard();
             }
         }
         if (SetSpell.doAnyOneHaveForest()) {
-            if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST || monsterMode == MonsterMode.INSECT)
+            if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.BEAST_WARRIOR || monsterMode == MonsterMode.INSECT)
                 attack += 200;
         }
         if (SetSpell.doAnyOneHaveYami()) {
@@ -102,7 +99,7 @@ public class MonsterCard {
             }
         }
         if (SetSpell.doAnyOneHaveForest()) {
-            if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST || monsterMode == MonsterMode.INSECT)
+            if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.BEAST_WARRIOR || monsterMode == MonsterMode.INSECT)
                 defence += 200;
         }
         if (SetSpell.doAnyOneHaveYami()) {

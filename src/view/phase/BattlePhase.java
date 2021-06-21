@@ -4,8 +4,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import controllers.BattlePhaseController;
+import controllers.Game;
 import controllers.PhaseControl;
 import models.Board;
+import models.Player;
 import view.Main;
 
 public class BattlePhase {
@@ -21,16 +23,50 @@ public class BattlePhase {
     }
 
     public void run() {
-        System.out.println("phase: draw phase");
+        System.out.println("phase: battle phase");
         Board.showBoard();
-        while (true) {
-            PhaseControl.getInstance().checkIfGameEnded();
-            try {
-                if (BattlePhaseController.getInstance().battlePhaseRun(Main.scanner.nextLine().trim())) break;
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+        String input;
+        if (Game.isAITurn())
+            AIRun();
+        else {
+            while (true) {
+                input = Main.scanner.nextLine().trim();
+                PhaseControl.getInstance().checkIfGameEnded();
+                try {
+                    if (BattlePhaseController.getInstance().battlePhaseRun(input)) break;
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
+    }
+
+    private void AIRun() {
+        Player player = Game.whoseTurnPlayer();
+        for (int i = 1; i < 6; i++) {
+            if (player.getMonsterZoneCard().containsKey(i)) {
+                PhaseControl.getInstance().checkIfGameEnded();
+                try {
+                    if (BattlePhaseController.getInstance().battlePhaseRun("select --monster " + i)) break;
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
+    }
+
+    private String getStrongestMonster() {
+        Player player = Game.whoseTurnPlayer();
+        int maxAttack = 0;
+        int place = 0;
+        for (int i = 1; i < 6; i++) {
+            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() > maxAttack) {
+                place = i;
+                maxAttack = player.getCardMonster(i).getAttack();
+            }
+        }
+        return Integer.toString(place);
     }
 
 //    private void selectMonster(Matcher matcher) {

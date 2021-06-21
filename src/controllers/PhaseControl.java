@@ -40,9 +40,9 @@ public class PhaseControl {
     }
 
     public static void checkIfGameEnded() {
-        if (Game.firstPlayer.getLP() < 0) {
+        if (Game.firstPlayer.getLP() <= 0) {
             Game.setWinner(Game.firstPlayer);
-        } else if (Game.secondPlayer.getLP() < 0) {
+        } else if (Game.secondPlayer.getLP() <= 0) {
             Game.setWinner(Game.secondPlayer);
         }
     }
