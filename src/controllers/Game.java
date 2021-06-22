@@ -54,6 +54,9 @@ public class Game {
 
     private static void restartData(User _firstUser, int _round) {
         firstUser = _firstUser;
+        secondUser = new User();
+        firstPlayer = new Player(firstUser);
+        secondPlayer = new Player();
         hasWinner = false;
         round = _round;
         firstPlayerWin = 0;
@@ -111,6 +114,8 @@ public class Game {
     private static void restartData(User _firstUser, User _secondUser, int _round) {
         firstUser = _firstUser;
         secondUser = _secondUser;
+        firstPlayer = new Player(firstUser);
+        secondPlayer = new Player(secondUser);
         hasWinner = false;
         round = _round;
         firstPlayerWin = 0;
@@ -135,8 +140,6 @@ public class Game {
     private static void generateRandomTurn() {
         Random random = new Random();
         int whoIsFirstNumber = random.nextInt(2);
-        firstPlayer = new Player(firstUser);
-        secondPlayer = new Player(secondUser);
         if (whoIsFirstNumber == 0)
             playerTurn = PlayerTurn.FIRSTPLAYER;
         else

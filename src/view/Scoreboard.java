@@ -15,5 +15,4 @@ public class Scoreboard {
         }
         System.out.println();
     }
-
 }

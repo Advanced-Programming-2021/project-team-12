@@ -25,11 +25,8 @@ public class Profile {
                 System.out.println("Profile");
             else if (input.matches("menu enter [\\w]+"))
                 System.out.println("menu navigation is not possible");
-            else {
+            else
                 System.out.println("invalid command!");
-                continue;
-            }
-            System.out.println("** PROFILE MENU **");
         }
     }
 

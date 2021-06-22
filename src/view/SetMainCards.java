@@ -2,17 +2,33 @@ package view;
 
 import Utility.CommandMatcher;
 import com.sun.jdi.IntegerType;
+import controllers.Game;
 import models.Card;
 import models.Deck;
 import models.Player;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 
 public class SetMainCards {
     public SetMainCards(Player firstPlayer, Player secondPlayer) {
         setCards(firstPlayer, "First");
-        setCards(secondPlayer, "Second");
+        if (!Game.isAITurn())
+            setCards(secondPlayer, "Second");
+        else
+            setAICards();
+    }
+
+    private void setAICards() {
+        Player AI = Game.secondPlayer;
+        for (int i = 1; i < 5; i++) {
+            Random random = new Random();
+            int slideCard = (random.nextInt() % 15) + 1;
+            int mainCard = (random.nextInt() % 40) + 1;
+            AI.setSlideToMain(slideCard, mainCard);
+        }
+        AI.setHandCard();
     }
 
     private void setCards(Player player, String flag) {

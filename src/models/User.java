@@ -26,6 +26,14 @@ public class User {
         users.add(this);
     }
 
+    public User() {
+        this.userName = "**AI**";
+        this.nickName = "**AI**";
+        this.password = "**AI**";
+        score = 0;
+        money = 180000;
+    }
+
     public void increaseScore(int score) {
         this.score += score;
     }
