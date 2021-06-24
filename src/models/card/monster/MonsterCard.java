@@ -65,7 +65,8 @@ public class MonsterCard {
             Address spellAddress = new Address(spellPlace, "spell", true);
             attack = doEquipSpellEffect(attack, currentPlayer.getSpellCardByAddress(spellAddress), false, address);
         }
-        if (!currentPlayer.didBeastKingBarbarosSummonedSuperHighLevel(indexOfAttacker)) attack -= 1900;
+        if (name.equals("Beast King Barbaros"))
+            if (!currentPlayer.didBeastKingBarbarosSummonedSuperHighLevel(indexOfAttacker)) attack -= 1900;
         if (Attack.whatKindOfCardIsDefenderNow() != null && Attack.whatKindOfCardIsDefenderNow().equals("Suijin") && !Attack.isDefenderFacedDown()) {
             if (whenSuijinIsDefending())
                 return 0;
@@ -88,8 +89,10 @@ public class MonsterCard {
             if (monsterMode == MonsterMode.SPELLCASTER || monsterMode == MonsterMode.FIEND) attack += 200;
             if (monsterMode == MonsterMode.FAIRY) attack -= 200;
         }
-        if (Board.doThisMonsterExistFacedUp("CommandKnight")) attack = +400;
+        if (Board.doThisMonsterExistFacedUp("Command Knight")) attack = +400;
         if (name.equals("Calculator")) return 300 * Board.sumOfLevelOfFacedUpMonsters();//doubt
+        if (attack < 0)
+            return 0;
         return attack;
     }
 
