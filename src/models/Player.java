@@ -107,9 +107,11 @@ public class Player {
     public HashMap<Integer, Boolean> getFaceHashMapByKind(String kind) {
         if (kind.equals("monster"))
 //            return isMonsterFaceUp;
-        if (kind.equals("spell"))
-            return isSpellFaceUp;
+            if (kind.equals("spell"))
+                return isSpellFaceUp;
         return null;
+    }
+
     private int moveToGraveyard(Card card) {
         int place;
         graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, card);
@@ -251,13 +253,10 @@ public class Player {
     }
 
     public void removeCard(Address address) {
-<<<<<<< HEAD
         if (getMonsterCardByAddress(address) != null) {
             if (address.checkIsMine()) Game.whoseTurnPlayer().setOneHisMonstersDestroyedInThisRound(true);
             else Game.whoseRivalPlayer().setOneHisMonstersDestroyedInThisRound(true);
         }
-=======
->>>>>>> 5bd739bffe7713abff39729bb5e8eafce3cc5f31
         if (Board.isAddressEmpty(address))
             return;
         if (address.getKind().equals("graveyard")) {
