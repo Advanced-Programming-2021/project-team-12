@@ -33,10 +33,8 @@ public class Player {
     private boolean[] didBeastKingBarbarosSummonedSuperHighLevel;
     private Card[] cardByIndex;//dear Ali do the thing
     private ArrayList<Integer> indexOfCardUsedSuijin;
-    private int[] fromMonsterToSpellEquip;
 
     {
-        fromMonsterToSpellEquip = new int[6];
         cardByIndex = new Card[100];
         isThisSpellActivated = new boolean[100];
         didBeastKingBarbarosSummonedSuperHighLevel = new boolean[100];
@@ -109,8 +107,8 @@ public class Player {
     public HashMap<Integer, Boolean> getFaceHashMapByKind(String kind) {
         if (kind.equals("monster"))
 //            return isMonsterFaceUp;
-            if (kind.equals("spell"))
-                return isSpellFaceUp;
+        if (kind.equals("spell"))
+            return isSpellFaceUp;
         return null;
     private int moveToGraveyard(Card card) {
         int place;
@@ -235,10 +233,6 @@ public class Player {
         isSpellFaceUp.put(place, false);
     }
 
-    public void setIsSpellFaceUp(int place, boolean isFacedUp) {
-        isSpellFaceUp.put(place, isFacedUp);
-    }
-
     public String addCardFromUnusedToHand() {
         int count = unusedCards.size();
         if (count == 0)
@@ -259,7 +253,6 @@ public class Player {
     public void removeCard(Address address) {
 <<<<<<< HEAD
         if (getMonsterCardByAddress(address) != null) {
-            unSetFromMonsterToSpellEquip(address.getNumber());
             if (address.checkIsMine()) Game.whoseTurnPlayer().setOneHisMonstersDestroyedInThisRound(true);
             else Game.whoseRivalPlayer().setOneHisMonstersDestroyedInThisRound(true);
         }
@@ -603,7 +596,6 @@ public class Player {
             if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("SupplySquad"))) return true;
         return false;
     }
-
     public boolean isOneHisSpellAbsorptionActivated() {
         for (int i = 0; i < isThisSpellActivated.length; i++)
             if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("SpellAbsorption"))) return true;
@@ -813,17 +805,5 @@ public class Player {
 
     public TrapCard getTrapCardByAddress(Address address) {
         return TrapCard.getTrapCardByName(getCardByAddress(address).getCardName());
-    }
-
-    public void setFromMonsterToSpellEquip(int spellPlace, int monsterPlace) {
-        fromMonsterToSpellEquip[monsterPlace] = spellPlace;
-    }
-
-    public void unSetFromMonsterToSpellEquip(int monsterPlace) {
-        fromMonsterToSpellEquip[monsterPlace] = -1;
-    }
-
-    public int getFromMonsterToSpellEquip(int monsterPlace) {
-        return fromMonsterToSpellEquip[monsterPlace];
     }
 }

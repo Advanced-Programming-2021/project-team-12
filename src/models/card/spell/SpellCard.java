@@ -6,7 +6,6 @@ import models.Player;
 import models.card.spell.spell_effect.SpellEffect;
 import view.Effect;
 import controllers.Game;
-import view.Main;
 //import card.trap.TrapCard;
 
 import java.util.ArrayList;
@@ -85,30 +84,25 @@ public class SpellCard {
             Attack.destroyAllMonstersInTheBoard();
             currentPlayer.removeCard(address);
         }
-        if (name.equals("TwinTwisters")) {
-            String[] input = Effect.run("TwinTwisters").split(",");
-            Address address1 = new Address(Integer.parseInt(input[0]), "hand", true);
-            Address address2 = new Address(Integer.parseInt(input[1]), "spell", false);
-            Address address3 = new Address(Integer.parseInt(input[2]), "spell", false);
+        if(name.equals("TwinTwisters")){
+            String[] input=Effect.run("TwinTwisters").split(",");
+            Address address1=new Address(Integer.parseInt(input[0]),"hand",true);
+            Address address2=new Address(Integer.parseInt(input[1]),"spell",false);
+            Address address3=new Address(Integer.parseInt(input[2]),"spell",false);
             currentPlayer.removeCard(address1);
             currentPlayer.removeCard(address2);
             currentPlayer.removeCard(address3);
         }
-        if (name.equals("MysticalSpaceTyphoon")) {
+        if(name.equals("MysticalSpaceTyphoon")){
             String input = Effect.run("MysticalSpaceTyphoon");
-            Address address1 = new Address(Integer.parseInt(input), "spell", false);
+            Address address1=new Address(Integer.parseInt(input),"spell",false);
             currentPlayer.removeCard(address1);
         }
-        if (name.equals("MonsterReborn")) {
+        if(name.equals("MonsterReborn")) {
             currentPlayer.summonAMonsterCardFromGraveyard();
             currentPlayer.removeCard(address);
         }
-        if (spellMode.equals(SpellMode.EQUIP)) {
-            System.out.println("choose a faced up monster to be equipped with this spell!(type number in monster zone)");
-            String input = Main.scanner.nextLine();
-            //if(Game.whoseTurnPlayer().getMonsterCardByAddress(new Address(Integer.parseInt(input), "monster", true)).getAttribute().equals(E))
-            Game.whoseTurnPlayer().setFromMonsterToSpellEquip(address.getNumber(), Integer.parseInt(input));
-        }
+
     }
 
     public SpellMode getSpellMode() {
