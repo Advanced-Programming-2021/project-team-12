@@ -11,12 +11,15 @@ public class Attack {
 
 
     public static void destroyAllRivalMonstersAndTrapInTheBoard() {
+
     }
 
     public static void destroyAllMonsters() {
+
     }
 
     public static void destroyAllRivalMonsters() {
+
     }
 
     //Dear Alireza you have to call "timeToEffect" method after every attack(when attack get over)
@@ -64,12 +67,17 @@ public class Attack {
         return null;
         //sadlfkhskldfjhsaldkjf
     }
+
     public static Player whichPlayerIsDefender(){
         return null;
         //asdlfhslkdfjhsad
     }
+
     public static void destroyAllRivalMonstersInTheBoard() {
+
     }
+
     public static void destroyAllMonstersInTheBoard() {
+
     }
 }

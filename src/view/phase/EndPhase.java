@@ -28,7 +28,7 @@ public class EndPhase {
         }
         PhaseControl.getInstance().checkIfGameEnded();
         PhaseControl.getInstance().switchPlayerTurn();
-        System.out.println(PhaseControl.getInstance().printWhoseTurnIsIt());
+        Game.playTurn("DrawPhase");
     }
 
     private static Matcher getCommandMatcher(String input, String regex) {

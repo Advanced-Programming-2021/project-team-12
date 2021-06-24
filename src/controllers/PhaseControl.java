@@ -24,10 +24,8 @@ public class PhaseControl {
     }
 
     public void payMessengerOfPeaceSpellCardHarm(String answer) {
-        if (SetSpell.doIHaveMessengerOfPeace()) {
-            if (answer.equals("yes")) SetSpell.destroyMessengerOfPeace();
-            else Game.whoseTurnPlayer().decreaseLP(100);
-        }
+        if (answer.equals("yes")) SetSpell.destroyMessengerOfPeace();
+        else Game.whoseTurnPlayer().decreaseLP(100);
     }
 
     public void resetMoves() {
@@ -42,10 +40,12 @@ public class PhaseControl {
     }
 
     public static void checkIfGameEnded() {
-        if (Game.firstPlayer.getLP() < 0) {
+        if (Game.firstPlayer.getLP() <= 0) {
             Game.setWinner(Game.firstPlayer);
-        } else if (Game.secondPlayer.getLP() < 0) {
+            Game.playTurn("EndGame");
+        } else if (Game.secondPlayer.getLP() <= 0) {
             Game.setWinner(Game.secondPlayer);
+            Game.playTurn("EndGame");
         }
     }
 
@@ -62,9 +62,9 @@ public class PhaseControl {
             String newAddedCard = Game.secondPlayer.addCardFromUnusedToHand();
             if (newAddedCard.equals("unused is empty")) {
                 Game.setWinner(Game.firstPlayer);
-                return "second player is the winner";
+                return "second player cannot draw a card, first player is the winner";
             } else if (!newAddedCard.equals("Hand is full")) {
-                return "second player cannot draw a card,new card added to the hand : " + newAddedCard;
+                return "new card added to the hand : " + newAddedCard;
             }
         }
         return null;
@@ -100,7 +100,7 @@ public class PhaseControl {
     public void checkInputNonCardSelected(String input) throws NoSelectedCardException, InvalidCommandException, BreakException, InvalidCardSelection {
         if (input.matches("^[ ]*next phase[ ]*$"))
             throw new BreakException("next phase!");
-        else if (input.matches("^[ ]*select [.*][ ]*$"))
+        else if (input.matches("^[ ]*select .*$"))
             whatIsSelected(input);
         else if (input.matches("^[ ]*summon[ ]*$"))
             throw new NoSelectedCardException("no card is selected!");
@@ -127,6 +127,8 @@ public class PhaseControl {
     }
 
     public void whatIsSelected(String input) throws NoSelectedCardException, InvalidCardSelection {
+        if (Address.isAddressValid(input) && Board.getCardByAddress(new Address(input)) == null)
+            throw new InvalidCardSelection("address is empty");
         if (input.matches("^[ ]*select --monster [\\d]+[ ]*$"))
             Game.getMainPhase1().selectMonster(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select --monster --opponent [\\d]+[ ]*$"))
@@ -355,11 +357,11 @@ public class PhaseControl {
     public void whatIsSet(Matcher matcher) {
         if (matcher.find()) {
             String whatKind = Game.whoseTurnPlayer().whatKindaCardIsInThisAddress(matcher.group(1));
-            if (whatKind.equals("monster")) {
+            if (whatKind.equals("Monster")) {
                 Game.getMainPhase1().setMonster(CommandMatcher.getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
-            } else if (whatKind.equals("trap")) {
+            } else if (whatKind.equals("Trap")) {
                 Game.getMainPhase1().setTrap(CommandMatcher.getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
-            } else if (whatKind.equals("spell")) {
+            } else if (whatKind.equals("Spell")) {
                 Game.getMainPhase1().setSpell(CommandMatcher.getCommandMatcher(matcher.group(1), "(^[ ]*select --hand [\\d]+[ ]*$)"));
             }
         }
@@ -392,19 +394,12 @@ public class PhaseControl {
         }
     }
 
-    public void spellSet(Matcher matcher) throws SpellZoneFull, RitualSummonException, CantRitualSummon {
+    public void spellSet(Matcher matcher) throws SpellZoneFull{
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
             if (!currentPlayer.isSpellZoneFull()) {
-                if (currentPlayer.getSpellCardByStringAddress(matcher.group(1)).getSpellMode() != SpellMode.RITUAL) {
-                    currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
-                    currentPlayer.setHeSummonedOrSet(true);
-                } else {
-                    if (currentPlayer.isThereAnyRitualTypeMonsterInOurHand()
-                            && currentPlayer.isOneOfLevelOfRitualMonstersInTheHandIsEqualToSumOfLevelOfSubsetOfMonsterZone()) {
-                        throw new RitualSummonException("ritual card!");
-                    } else throw new CantRitualSummon("there is no way you could ritual summon a monster");
-                }
+                currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
+                currentPlayer.setHeSummonedOrSet(true);
             } else throw new SpellZoneFull("spell card zone is full!");
         }
     }
@@ -412,6 +407,8 @@ public class PhaseControl {
     public void summonControl(Matcher matcher) throws MonsterZoneFull, AlreadySummonedOrSet, CancelException, NotEnoughTribute, NoMonsterInThisAddress {
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
+            if (currentPlayer.getMonsterCardByStringAddress(matcher.group(1)) == null)
+                throw new MonsterZoneFull("you cant summon spell or trap");
             if (!currentPlayer.isMonsterZoneFull()) {
                 if (!currentPlayer.isHeSummonedOrSet()) {
                     Address address = new Address(matcher.group(1));
@@ -442,8 +439,8 @@ public class PhaseControl {
         currentPlayer.setHeSummonedOrSet(true);
         if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
             currentPlayer.summonCardToMonsterZone(matcher.group(1)).setIsScanner(true);
-        } else currentPlayer.summonCardToMonsterZone(matcher.group(1));
-        if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger")) {
+        }
+        else if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger")) {
             if (Integer.parseInt(Effect.run("Terratiger")) != 0) {
                 Address address1 = new Address(Integer.parseInt(Effect.run("Terratiger")), "hand", true);
                 if ((currentPlayer.getMonsterCardByAddress(address1) != null)
@@ -451,7 +448,7 @@ public class PhaseControl {
                         && (!currentPlayer.isMonsterZoneFull()))
                     currentPlayer.setCardFromHandToMonsterZone(address1);
             }
-        }
+        } else currentPlayer.summonCardToMonsterZone(matcher.group(1));
         if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
             currentPlayer.removeCard(address);
             Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
@@ -495,11 +492,11 @@ public class PhaseControl {
         Address address1 = new Address(address);
         Player currentPlayer = Game.whoseTurnPlayer();
         if (Game.whoseTurnPlayer().isThereTwoCardInMonsterZone()) {
-            String tributeCard1 = Game.getMainPhase1().scanForTribute();
+            String tributeCard1 = Game.getMainPhase1().scanForTribute(1);
             if (tributeCard1.equals("cancel")) {
                 throw new CancelException("canceled successfully!");
             } else {
-                String tributeCard2 = Game.getMainPhase1().scanForTribute();
+                String tributeCard2 = Game.getMainPhase1().scanForTribute(2);
                 if (tributeCard2.equals("cancel")) {
                     throw new CancelException("canceled successfully!");
                 } else {
@@ -529,15 +526,15 @@ public class PhaseControl {
         Address address1 = new Address(address);
         Player currentPlayer = Game.whoseTurnPlayer();
         if (Game.whoseTurnPlayer().isThereThreeCardInMonsterZone()) {
-            String tributeCard1 = Game.getMainPhase1().scanForTribute();
+            String tributeCard1 = Game.getMainPhase1().scanForTribute(1);
             if (Game.getMainPhase1().isCancelled(tributeCard1)) {
                 throw new CancelException("canceled successfully!");
             } else {
-                String tributeCard2 = Game.getMainPhase1().scanForTribute();
+                String tributeCard2 = Game.getMainPhase1().scanForTribute(2);
                 if (Game.getMainPhase1().isCancelled(tributeCard2)) {
                     throw new CancelException("canceled successfully!");
                 } else {
-                    String tributeCard3 = Game.getMainPhase1().scanForTribute();
+                    String tributeCard3 = Game.getMainPhase1().scanForTribute(3);
                     if (Game.getMainPhase1().isCancelled(tributeCard3)) {
                         throw new CancelException("canceled successfully!");
                     } else {
@@ -566,19 +563,17 @@ public class PhaseControl {
         } else throw new NotEnoughTribute("there are not enough cards for tribute");
     }
 
-    public void showSelectedCard(Matcher matcher) {
-        if (matcher.find()) {
-            String kind = Game.whoseTurnPlayer().whatKindaCardIsInThisAddress(matcher.group(1));
-            if (kind.equals("monster")) {
-                MonsterCard monsterCardForShow = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1));
-                Game.getMainPhase1().printMonsterAttributes(monsterCardForShow);
-            } else if (kind.equals("spell")) {
-                SpellCard spellCardForShow = Game.whoseTurnPlayer().getSpellCardByStringAddress(matcher.group(1));
-                Game.getMainPhase1().printSpellAttributes(spellCardForShow);
-            } else {
-                TrapCard trapCardForShow = Game.whoseTurnPlayer().getTrapCardByStringAddress(matcher.group(1));
-                Game.getMainPhase1().printTrapAttributes(trapCardForShow);
-            }
+    public void showSelectedCard(Address address) {
+        String kind = Game.whoseTurnPlayer().getCardByAddress(address).getKind();
+        if (kind.equals("Monster")) {
+            MonsterCard monsterCardForShow = Game.whoseTurnPlayer().getMonsterCardByAddress(address);
+            Game.getMainPhase1().printMonsterAttributes(monsterCardForShow);
+        } else if (kind.equals("Spell")) {
+            SpellCard spellCardForShow = Game.whoseTurnPlayer().getSpellCardByAddress(address);
+            Game.getMainPhase1().printSpellAttributes(spellCardForShow);
+        } else if (kind.equals("Trap")){
+            TrapCard trapCardForShow = Game.whoseTurnPlayer().getTrapCardByAddress(address);
+            Game.getMainPhase1().printTrapAttributes(trapCardForShow);
         }
     }
 
@@ -709,6 +704,25 @@ public class PhaseControl {
         if (!player.doIHaveMirageDragonMonster()) if (Game.getMainPhase1().permission()) return true;
         return false;
     }
-//battle phase:
+
+    public void showOpponentCard(Address address) throws Exception {
+        String kind = Game.whoseTurnPlayer().getCardByAddress(address).getKind();
+        if (kind.equals("Monster")) {
+            MonsterCard monsterCardForShow = Game.whoseTurnPlayer().getMonsterCardByAddress(address);
+            if (Game.whoseTurnPlayer().getMonsterPosition(address.getNumber()).equals(PositionOfCardInBoard.DH))
+                    throw new Exception("card is not visible");
+            Game.getMainPhase1().printMonsterAttributes(monsterCardForShow);
+        } else if (kind.equals("Spell")) {
+            SpellCard spellCardForShow = Game.whoseTurnPlayer().getSpellCardByAddress(address);
+            if (!Game.whoseTurnPlayer().getSpellPosition(address.getNumber()))
+                throw new Exception("card is not visible");
+            Game.getMainPhase1().printSpellAttributes(spellCardForShow);
+        } else if (kind.equals("Trap")){
+            TrapCard trapCardForShow = Game.whoseTurnPlayer().getTrapCardByAddress(address);
+            if (!Game.whoseTurnPlayer().getSpellPosition(address.getNumber()))
+                throw new Exception("card is not visible");
+            Game.getMainPhase1().printTrapAttributes(trapCardForShow);
+        }
+    }
 
 }

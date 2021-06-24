@@ -56,7 +56,7 @@ public class Board {
 
     public static boolean isAddressEmpty(Address address) {
         HashMap<Integer, Card> addressHashMap = getHashMapByAddress(address);
-        return addressHashMap.containsKey(address.getNumber());
+        return !addressHashMap.containsKey(address.getNumber());
     }
 
     public static Card getCardByAddress(Address address) {

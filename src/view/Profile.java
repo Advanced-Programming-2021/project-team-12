@@ -1,4 +1,5 @@
 package view;
+import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.regex.Matcher;
 
 import Exceptions.NewPassException;
@@ -9,6 +10,7 @@ import controllers.ProfileControl;
 
 public class Profile {
     public static void run() {
+        System.out.println("** PROFILE MENU **");
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();
