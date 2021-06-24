@@ -624,27 +624,30 @@ public class PhaseControl {
 
     public void activeSpell(Matcher matcher) throws YouAlreadyActivatedThisCard, PreperationsAreNotDoneYet, SpellZoneFull {
         if (matcher.find()) {
-            Address address = new Address(matcher.group(1));
+            String stringAddress = matcher.group(1);
+            Address address = new Address(stringAddress);
             Player currentPlayer = Game.whoseTurnPlayer();
-            int index = currentPlayer.getIndexOfThisCardByAddress(new Address(matcher.group(1)));
+            int index = currentPlayer.getIndexOfThisCardByAddress(address);
             if (currentPlayer.didWeActivateThisSpell(index)) {
-                if (currentPlayer.getSpellCardByStringAddress(matcher.group(1)).getSpellMode() == SpellMode.FIELD) {
-                    if (SpellCard.canWeActivateThisSpell(address)) {
-                        currentPlayer.setDidWeActivateThisSpell(index);
-                        currentPlayer.setIsThisSpellActivated(true, index);
-                        SpellCard.doSpellAbsorptionEffect();
-                        currentPlayer.getSpellCardByStringAddress(matcher.group(1)).doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "field", index));
-                    } else throw new PreperationsAreNotDoneYet("preparations of this spell are not done yet");
-                } else if (!(currentPlayer.isSpellZoneFull())) {
-                    if (SpellCard.canWeActivateThisSpell(address)) {
-                        currentPlayer.setDidWeActivateThisSpell(index);
-                        currentPlayer.setIsThisSpellActivated(true, index);
-                        SpellCard.doSpellAbsorptionEffect();
-                        currentPlayer.getSpellCardByStringAddress(matcher.group(1)).doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), "spell", index));
-                    } else throw new PreperationsAreNotDoneYet("preparations of this spell are not done yet");
-                } else throw new SpellZoneFull("spell card zone is full!");
+                if (currentPlayer.getSpellCardByStringAddress(stringAddress).getSpellMode() == SpellMode.FIELD)
+                    activateThisKindOfAddress(stringAddress, address, currentPlayer, index, "field");
+                else if (currentPlayer.getSpellCardByStringAddress(stringAddress).getSpellMode() == SpellMode.EQUIP)
+                    activateThisKindOfAddress(stringAddress, address, currentPlayer, index, "equip");
+                else if (!(currentPlayer.isSpellZoneFull()))
+                    activateThisKindOfAddress(stringAddress, address, currentPlayer, index, "spell");
+                else throw new SpellZoneFull("spell card zone is full!");
             } else throw new YouAlreadyActivatedThisCard("you have already activated this card");
         }
+    }
+
+    private void activateThisKindOfAddress(String stringAddress, Address address, Player currentPlayer, int index, String cardState) throws PreperationsAreNotDoneYet {
+        if (SpellCard.canWeActivateThisSpell(address)) {
+            currentPlayer.setDidWeActivateThisSpell(index);
+            currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
+            currentPlayer.setIsThisSpellActivated(true, index);
+            SpellCard.doSpellAbsorptionEffect();
+            currentPlayer.getSpellCardByStringAddress(stringAddress).doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), cardState, index));
+        } else throw new PreperationsAreNotDoneYet("preparations of this spell are not done yet");
     }
 
     public void doEffectMainPhase() {

@@ -14,7 +14,7 @@ public class Card {
     private String name;
     private static ArrayList<Card> cards = new ArrayList<>();
 
-    public Card(String name, String king) {
+    public Card(String name, String kind) {
         this.kind = kind;
         this.name = name;
         cards.add(this);
@@ -54,28 +54,28 @@ public class Card {
     }
 
     public void showCard() {
-        if (kind.equals("monster")) {
+        if (kind.equals("Monster")) {
             System.out.println("Name: " + name + "\\nLevel: " + getLevel() + "\\nType: " + "\\nATK: " + getAttack()
                     + "\\nDEF: " + getDefence(true) + "\\nDescription: " + getDescription());
         }
 
-        if (kind.equals("monster")) {
+        if (kind.equals("Spell")) {
             System.out.println(
                     "Name: " + name + "\\nSpell" + "\\nType: " + getType() + "\\nDescription: " + getDescription());
         }
 
-        if (kind.equals("monster")) {
+        if (kind.equals("Trap")) {
             System.out.println(
                     "Name: " + name + "\\nTrap" + "\\nType: " + getType() + "\\nDescription: " + getDescription());
         }
     }
 
     public String getType() {
-        if (kind.equals("monster")) {
+        if (kind.equals("Monster")) {
             MonsterCard card = MonsterCard.getMonsterCardByName(name);
             return card.getMonsterMode().toString();
         }
-        if (kind.equals("spell")) {
+        if (kind.equals("Spell")) {
             SpellCard card = SpellCard.getSpellCardByName(name);
             return card.getSpellMode().toString();
         } else
@@ -83,11 +83,11 @@ public class Card {
     }
 
     public String getDescription() {
-        if (kind.equals("monster")) {
+        if (kind.equals("Monster")) {
             MonsterCard card = MonsterCard.getMonsterCardByName(name);
             return card.getDescription();
         }
-        if (kind.equals("spell")) {
+        if (kind.equals("Spell")) {
             SpellCard card = SpellCard.getSpellCardByName(name);
             return card.getDescription();
         } else {

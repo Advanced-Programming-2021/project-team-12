@@ -12,13 +12,14 @@ public class Shop {
     private User user;
 
     public Shop() {
+        System.out.println("** SHOP **");
         this.user = MainMenu.user;
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();
             if (input.compareTo("menu exit") == 0)
                 return;
-            else if (input.matches("shop buy [\\w]+"))
+            else if (input.matches("shop buy [\\w ]+"))
                 buyCard(input);
             else if (input.matches("shop show (--all|-a)"))
                 showCards();
@@ -31,9 +32,9 @@ public class Shop {
 
     public void buyCard(String input) {
         String cardName;
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "shop buy ([\\w]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "shop buy ([\\w ]+)");
         matcher.find();
-        cardName = matcher.group(1);
+        cardName = matcher.group(1).trim();
         try {
             new ShopControl().buyCard(cardName, user);
             System.out.println("you bought card successfully");
@@ -45,8 +46,8 @@ public class Shop {
     public void showCards() {
         ArrayList<Card> allCards;
         allCards = Card.getAllCards();
-        for (Card card : allCards)
-            System.out.println(card.getCardName() + ":" + " " + card.getDescription());
+        for (int i = 0; i < allCards.size(); i++)
+            System.out.println(i + ". " +allCards.get(i).getCardName() + ":" + " " + allCards.get(i).getDescription());
     }
 
 }

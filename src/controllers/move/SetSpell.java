@@ -7,7 +7,8 @@ import controllers.Game;
 
 public class SetSpell {
     public static boolean doAnyOneHaveForest(){
-
+        return true;
+        //adlfkhasdfihsafkjshdf
     }
 
     public static boolean doIHaveMessengerOfPeace() {

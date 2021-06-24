@@ -7,12 +7,11 @@ import models.User;
 import view.MainMenu;
 
 public class DeckControllers {
-    public void createDeck(String deckName) throws Exception {
-        User user = MainMenu.user;
+    public void createDeck(String deckName, User user) throws Exception {
         if (Deck.getDeckByName(deckName) != null)
             throw new Exception("deck with name " + deckName + " already exists");
         else {
-            new Deck(deckName);
+            new Deck(deckName, user);
             SaveFile.saveUser(user);
         }
     }

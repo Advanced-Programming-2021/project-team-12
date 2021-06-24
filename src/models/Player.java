@@ -33,8 +33,10 @@ public class Player {
     private boolean[] didBeastKingBarbarosSummonedSuperHighLevel;
     private Card[] cardByIndex;//dear Ali do the thing
     private ArrayList<Integer> indexOfCardUsedSuijin;
+    private int[] fromMonsterToSpellEquip;
 
     {
+        fromMonsterToSpellEquip = new int[6];
         cardByIndex = new Card[100];
         isThisSpellActivated = new boolean[100];
         didBeastKingBarbarosSummonedSuperHighLevel = new boolean[100];
@@ -235,6 +237,10 @@ public class Player {
         isSpellFaceUp.put(place, false);
     }
 
+    public void setIsSpellFaceUp(int place, boolean isFacedUp) {
+        isSpellFaceUp.put(place, isFacedUp);
+    }
+
     public String addCardFromUnusedToHand() {
         int count = unusedCards.size();
         if (count == 0)
@@ -253,10 +259,13 @@ public class Player {
     }
 
     public void removeCard(Address address) {
+
         if (getMonsterCardByAddress(address) != null) {
+            unSetFromMonsterToSpellEquip(address.getNumber());
             if (address.checkIsMine()) Game.whoseTurnPlayer().setOneHisMonstersDestroyedInThisRound(true);
             else Game.whoseRivalPlayer().setOneHisMonstersDestroyedInThisRound(true);
         }
+
         if (Board.isAddressEmpty(address))
             return;
         if (address.getKind().equals("graveyard")) {
@@ -265,13 +274,11 @@ public class Player {
                 graveyardCardNumbers.put(i, graveyardCardNumbers.get(i + 1));
                 indexOfCard.put(new Address(i, "graveyard", true), indexOfCard.get(new Address(i + 1, "graveyard", true)));
             }
-        }
-        else if (address.getKind().matches("field")) {
+        } else if (address.getKind().matches("field")) {
             graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, fieldCardNumbers.get(1));
             indexOfCard.put(new Address(graveyardCardNumbers.size(), "graveyard", true), indexOfCard.get(new Address(1, "field", true)));
             fieldCardNumbers.remove(1);
-        }
-        else {
+        } else {
             if (address.getKind().equals("monster"))
                 setOneHisMonstersDestroyedInThisRound(true);
             int place = address.getNumber();
@@ -521,7 +528,8 @@ public class Player {
         return didBeastKingBarbarosSummonedSuperHighLevel[index];
     }
 
-    public void setDidBeastKingBarbarosSummonedSuperHighLevel(boolean didBeastKingBarbarosSummonedSuperHighLevel, int index) {
+    public void setDidBeastKingBarbarosSummonedSuperHighLevel(boolean didBeastKingBarbarosSummonedSuperHighLevel,
+                                                              int index) {
         this.didBeastKingBarbarosSummonedSuperHighLevel[index] = didBeastKingBarbarosSummonedSuperHighLevel;
     }
 
@@ -595,6 +603,7 @@ public class Player {
             if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("SupplySquad"))) return true;
         return false;
     }
+
     public boolean isOneHisSpellAbsorptionActivated() {
         for (int i = 0; i < isThisSpellActivated.length; i++)
             if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("SpellAbsorption"))) return true;
@@ -604,7 +613,7 @@ public class Player {
     public boolean doIHaveActivatedTrapNamedMagicCylinder() {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Magic Cylinder")) {
-                if (isSpellFaceUp.get(i));
+                if (isSpellFaceUp.get(i)) ;
                 return true;
             }
         }
@@ -614,7 +623,7 @@ public class Player {
     public boolean doIHaveActivatedTrapNamedMirrorForce() {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Mirror Force")) {
-                if (isSpellFaceUp.get(i));
+                if (isSpellFaceUp.get(i)) ;
                 return true;
             }
         }
@@ -667,8 +676,8 @@ public class Player {
     public boolean doIHaveActivatedTrapNamedNegateAttack() {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Negate Attack")) {
-                if (isSpellFaceUp.get(i));
-                    return true;
+                if (isSpellFaceUp.get(i)) ;
+                return true;
             }
         }
         return false;
@@ -805,4 +814,17 @@ public class Player {
     public TrapCard getTrapCardByAddress(Address address) {
         return TrapCard.getTrapCardByName(getCardByAddress(address).getCardName());
     }
+
+    public void setFromMonsterToSpellEquip(int spellPlace, int monsterPlace) {
+        fromMonsterToSpellEquip[monsterPlace] = spellPlace;
+    }
+
+    public void unSetFromMonsterToSpellEquip(int monsterPlace) {
+        fromMonsterToSpellEquip[monsterPlace] = -1;
+    }
+
+    public int getFromMonsterToSpellEquip(int monsterPlace) {
+        return fromMonsterToSpellEquip[monsterPlace];
+    }
+
 }

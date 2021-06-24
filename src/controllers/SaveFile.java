@@ -39,12 +39,13 @@ public class SaveFile {
         obj.put("money", user.getMoney());
         obj.put("allCards", userCardsName);
         try {
-            int number = 0;
-            while (new File("data//User//" + number + ".json").exists())
-                number++;
-            FileWriter writer = new FileWriter("data//User//" + number + ".json");
+            String name = user.getName();
+            FileWriter writer = new FileWriter("data//User//" + name + ".json");
             writer.write(obj.toJSONString());
             writer.close();
+            File theDir = new File("data//Decks//" + name);
+            if (!theDir.exists())
+                theDir.mkdirs();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,28 +118,26 @@ public class SaveFile {
 
 
     private static void saveUserDecks(User user) {
-        ArrayList<String> mainCardNames = new ArrayList<>();
-        ArrayList<String> sideCardNames = new ArrayList<>();
-        JSONObject obj = new JSONObject();
         ArrayList<Deck> userDecks = Deck.getDecksOfUser(user);
-        int deckNumber = 0;
         for (Deck deck: userDecks) {
-            deckNumber++;
+            JSONObject obj = new JSONObject();
+            ArrayList<String> mainCardNames = new ArrayList<>();
+            ArrayList<String> sideCardNames = new ArrayList<>();
             for (Card card : deck.getMainCards())
                 mainCardNames.add(card.getCardName());
             for (Card card : deck.getSideCards())
                 sideCardNames.add(card.getCardName());
-            obj.put("deckName" + deckNumber, deck.getName());
-            obj.put("isActive" + deckNumber, deck.checkIsActive());
-            obj.put("mainCards" + deckNumber, mainCardNames);
-            obj.put("sideCards" + deckNumber, sideCardNames);
-        }
-        try {
-            FileWriter writer = new FileWriter("data//Decks//" + user.getName() + ".json");
-            writer.write(obj.toJSONString());
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            obj.put("deckName", deck.getName());
+            obj.put("isActive", deck.checkIsActive());
+            obj.put("mainCards", mainCardNames);
+            obj.put("sideCards", sideCardNames);
+            try {
+                FileWriter writer = new FileWriter("data//Decks//" + user.getName() + "//" + deck.getName() + ".json");
+                writer.write(obj.toJSONString());
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -155,10 +154,7 @@ public class SaveFile {
         obj.put("price", monster.getPrice());
         obj.put("isRitual", monster.isRitual());
         try {
-            int number = 0;
-            while (new File("data//monsterCards//" + number + ".json").exists())
-                number++;
-            FileWriter writer = new FileWriter("data//monsterCards//" + number + ".json");
+            FileWriter writer = new FileWriter("data//monsterCards//" + monster.getName() + ".json");
             writer.write(obj.toJSONString());
             writer.close();
         } catch (IOException e) {
@@ -175,10 +171,7 @@ public class SaveFile {
         obj.put("isLimit", spell.checkIsLimit());
         obj.put("name", spell.getName());
         try {
-            int number = 0;
-            while (new File("data//spellCards//" + number + ".json").exists())
-                number++;
-            FileWriter writer = new FileWriter("data//spellCards//" + number + ".json");
+            FileWriter writer = new FileWriter("data//spellCards//" + spell.getName() + ".json");
             writer.write(obj.toJSONString());
             writer.close();
         } catch (IOException e) {
@@ -194,10 +187,7 @@ public class SaveFile {
         obj.put("isLimit", trap.checkIsLimit());
         obj.put("price", trap.getPrice());
         try {
-            int number = 0;
-            while (new File("data//trapCards//" + number + ".json").exists())
-                number++;
-            FileWriter writer = new FileWriter("data//trapCards//" + number + ".json");
+            FileWriter writer = new FileWriter("data//trapCards//" + trap.getName() + ".json");
             writer.write(obj.toJSONString());
             writer.close();
         } catch (IOException e) {

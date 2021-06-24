@@ -2,17 +2,22 @@ package view.phase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 
 import controllers.PhaseControl;
 import models.Address;
 import models.Board;
+import models.Card;
+import models.Player;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
 import controllers.Game;
 import Exceptions.*;
 import view.Main;
+
+import javax.management.StringValueExp;
 
 public class MainPhase {
     public Boolean goToNextPhase = false;
@@ -21,26 +26,88 @@ public class MainPhase {
 
     public void run() {
         if (!goToNextPhase) {
-            if (whatMainIsPhase == 1) {
-                Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
-                PhaseControl.getInstance().doEffectMainPhase();
+            if (Game.isAITurn())
+                aiRun();
+            else {
+                if (whatMainIsPhase == 1) {
+                    Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
+                    PhaseControl.getInstance().doEffectMainPhase();
+                }
+                System.out.println("phase: main phase " + whatMainIsPhase);
+                Board.showBoard();
+                getSelectedCard();
             }
-            System.out.println("phase: draw phase");
-            Board.showBoard();
-            getSelectedCard();
         }
     }
 
+    private void playNextPhase() {
+        if (whatMainIsPhase == 1)
+            Game.playTurn("BattlePhase");
+        else if (whatMainIsPhase == 2)
+            Game.playTurn("EndPhase");
+    }
+
+    private void aiRun() {
+        if (whatMainIsPhase == 1) {
+            Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
+            PhaseControl.getInstance().doEffectMainPhase();
+        }
+        System.out.println("phase: main phase " + whatMainIsPhase);
+        Board.showBoard();
+        getSelectedCard();
+    }
+
     public void getSelectedCard() {
-        String input;
+        if (Game.isAITurn())
+            getAISelectedCard();
+        else {
+            String input;
+            while (true) {
+                input = Main.scanner.nextLine().trim();
+                try {
+                    PhaseControl.getInstance().checkInputNonCardSelected(input);
+                } catch (InvalidCommandException | InvalidCardSelection | NoSelectedCardException e) {
+                    System.out.println(e.getMessage());
+                } catch (BreakException e) {
+                    playNextPhase();
+                }
+            }
+        }
+    }
+
+    private void getAISelectedCard() {
         while (true) {
-            input = Main.scanner.nextLine().trim();
-            try {
-                PhaseControl.getInstance().checkInputNonCardSelected(input);
-            } catch (InvalidCommandException | InvalidCardSelection | NoSelectedCardException e) {
-                System.out.println(e.getMessage());
-            } catch (BreakException e) {
-                break;
+            String input = "";
+            int place = 0;
+            int maxAttack = 0;
+            Player player = Game.whoseTurnPlayer();
+            for (int i = 1; i <= 7; i++) {
+                if (i == 7 && place != 0) {
+                    input = "select --hand " + place;
+                    try {
+                        PhaseControl.getInstance().checkInputNonCardSelected(input);
+                    } catch (InvalidCommandException | InvalidCardSelection | NoSelectedCardException e) {
+                        System.out.println(e.getMessage());
+                    } catch (BreakException e) {
+                        playNextPhase();
+                    }
+                }
+                else if (player.getHandCard().containsKey(i) && !player.getCardHand(i).getKind().equals("monster")) {
+                    input = "select --hand " + i;
+                    try {
+                        PhaseControl.getInstance().checkInputNonCardSelected(input);
+                    } catch (InvalidCommandException | InvalidCardSelection | NoSelectedCardException e) {
+                        System.out.println(e.getMessage());
+                    } catch (BreakException e) {
+                        playNextPhase();
+                    }
+                }
+                else {
+                    if (player.getCardHand(i).getAttack() > maxAttack) {
+                        place = i;
+                        maxAttack = player.getCardHand(i).getAttack();
+                    }
+                }
             }
         }
     }
@@ -57,7 +124,7 @@ public class MainPhase {
                 } catch (CantSetThisCard | CantSummonThisCard | CantActivateEffect | InvalidCommandException e) {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
-                    break;
+                    playNextPhase();
                 }
             }
         }
@@ -75,25 +142,48 @@ public class MainPhase {
                 } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | CantActivateEffect | InvalidCommandException | CantSetThisCard e) {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
-                    break;
+                    playNextPhase();
                 }
             }
         }
     }
 
     public void selectSpell(Matcher matcher) {
+        if (Game.isAITurn())
+            selectAISpell(matcher);
+        else {
+            if (matcher.find()) {
+                Board.showBoard();
+                String selectedCard = matcher.group(1);
+                String input;
+                while (true) {
+                    input = Main.scanner.nextLine().trim();
+                    try {
+                        PhaseControl.getInstance().spellSelected(input, selectedCard);
+                    } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | InvalidCommandException | CantSetThisCard e) {
+                        System.out.println(e.getMessage());
+                    } catch (BreakException e) {
+                        playNextPhase();
+                    }
+                }
+            }
+        }
+    }
+
+    private void selectAISpell(Matcher matcher) {
         if (matcher.find()) {
-            Board.showBoard();
+            String input = "activate effect";
             String selectedCard = matcher.group(1);
-            String input;
-            while (true) {
-                input = Main.scanner.nextLine().trim();
-                try {
-                    PhaseControl.getInstance().spellSelected(input, selectedCard);
-                } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | InvalidCommandException | CantSetThisCard e) {
-                    System.out.println(e.getMessage());
-                } catch (BreakException e) {
-                    break;
+            int rand = new Random().nextInt();
+            if (rand % 3 != 1) {
+                while (true) {
+                    try {
+                        PhaseControl.getInstance().spellSelected(input, selectedCard);
+                    } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | InvalidCommandException | CantSetThisCard e) {
+                        System.out.println(e.getMessage());
+                    } catch (BreakException e) {
+                        playNextPhase();
+                    }
                 }
             }
         }
@@ -111,7 +201,7 @@ public class MainPhase {
                 } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | CantActivateEffect | InvalidCommandException | CantSetThisCard e) {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
-                    break;
+                    playNextPhase();
                 }
             }
         }
@@ -127,7 +217,7 @@ public class MainPhase {
             } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | CantActivateEffect | InvalidCommandException | CantSetThisCard e) {
                 System.out.println(e.getMessage());
             } catch (BreakException e) {
-                break;
+                playNextPhase();
             }
         }
     }
@@ -142,24 +232,48 @@ public class MainPhase {
             } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | CantActivateEffect | InvalidCommandException | CantSetThisCard e) {
                 System.out.println(e.getMessage());
             } catch (BreakException e) {
-                break;
+                playNextPhase();
             }
         }
     }
 
     public void selectHand(Matcher matcher) {
+        if (Game.isAITurn())
+            selectAIHand(matcher);
+        else {
+            if (matcher.find()) {
+                Board.showBoard();
+                String selectedCard = matcher.group(1);
+                String input;
+                while (true) {
+                    input = Main.scanner.nextLine().trim();
+                    try {
+                        PhaseControl.getInstance().handSelected(input, selectedCard);
+                    } catch (CantAttack | CantChangeCardPosition | CantActivateEffect | InvalidCommandException e) {
+                        System.out.println(e.getMessage());
+                    } catch (BreakException e) {
+                        playNextPhase();
+                    }
+                }
+            }
+        }
+    }
+
+    private void selectAIHand(Matcher matcher) {
         if (matcher.find()) {
-            Board.showBoard();
+            String input = "set";
             String selectedCard = matcher.group(1);
-            String input;
+            int place = Integer.parseInt(selectedCard);
+            Card card = Game.whoseTurnPlayer().getCardHand(place);
+            if (card.getKind().equals("Monster"))
+                input = "summon";
             while (true) {
-                input = Main.scanner.nextLine().trim();
                 try {
                     PhaseControl.getInstance().handSelected(input, selectedCard);
                 } catch (CantAttack | CantChangeCardPosition | CantActivateEffect | InvalidCommandException e) {
-                    System.out.println(e.getMessage());
+
                 } catch (BreakException e) {
-                    break;
+                    playNextPhase();
                 }
             }
         }
@@ -168,29 +282,32 @@ public class MainPhase {
     public void summon(Matcher matcher) {
         try {
             PhaseControl.getInstance().summonControl(matcher);
-            System.out.println("summoned successfully");
+            if (!Game.isAITurn())
+                System.out.println("summoned successfully");
         } catch (AlreadySummonedOrSet | MonsterZoneFull | CancelException | NotEnoughTribute | NoMonsterInThisAddress e) {
-            System.out.println(e.getMessage());
+            if (!Game.isAITurn())
+                System.out.println(e.getMessage());
         }
     }
 
 
     public void summonForTribute(int numberOfTributes, String address) throws CancelException, NotEnoughTribute, NoMonsterInThisAddress {
-        System.out.println("select" + numberOfTributes + "monsters for tribute(write in different lines.)");
+        if (!Game.isAITurn())
+            System.out.println("select" + numberOfTributes + "monsters for tribute(write in different lines.)");
         if (numberOfTributes == 1) PhaseControl.getInstance().summonAMediumLevelMonster(address);
         else if (numberOfTributes == 2) PhaseControl.getInstance().summonAHighLevelMonster(address);
         else if (numberOfTributes == 3) PhaseControl.getInstance().summonASuperHighLevelMonster(address);
     }
 
     public void ritualSummon(String monsterCardAddress, int monsterLevel) {
-        Address ritualSpellCardAddress = getOneOfRitualSpellCardAddress();
+        Address ritualSpellCardAddress = Game.whoseTurnPlayer().getOneOfRitualSpellCardAddress();
         if (ritualSpellCardAddress != null) {
             System.out.println("Please choose some monsters from your hand or on the board for tribute!" +
                     "(sum of the chosen monsters' level should be equal to level the monster you want to summon ritually)" +
                     "\nplease type them in different lines!");
             int sumOfLevel = 0;
             List<Address> monsterCardsAddress = new ArrayList<>();
-            while (sumOfLevel < monsterLevel && canHeContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress)) {
+            while (sumOfLevel < monsterLevel && Game.whoseTurnPlayer().canIContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress)) {
                 Address address = new Address(Main.scanner.nextLine());
                 MonsterCard monsterCard1 = Board.whatKindaMonsterIsHere(address);
                 monsterCardsAddress.add(address);
@@ -206,38 +323,89 @@ public class MainPhase {
     }
 
     private void tributeThisCards(List<Address> monsterCardsAddress) {
-
-    }
-
-    private boolean canHeContinueTribute(int i, List<Address> monsterCardsAddress) {
-
-    }
-
-    private Address getOneOfRitualSpellCardAddress() {
-    }
-
-    public String scanForTribute() {
-        System.out.println("Please select a monsters for tribute!(type monster address or cancel)");
-        String tributeCard = Main.scanner.nextLine();
-        while (!(tributeCard.matches("[12345]{1}"))) {
-            System.out.println("invalid command!");
-            tributeCard = Main.scanner.nextLine();
+        for (Address cardsAddress : monsterCardsAddress) {
+            Game.whoseTurnPlayer().removeCard(cardsAddress);
         }
-        return tributeCard;
     }
+
+    public String scanForTribute(int i) {
+        if (Game.isAITurn())
+            return scanForAITribute(i);
+        else {
+            System.out.println("Please select a monsters for tribute!(type monster address or cancel)");
+            String tributeCard = Main.scanner.nextLine();
+            while (!(tributeCard.matches("[12345]{1}"))) {
+                System.out.println("invalid command!");
+                tributeCard = Main.scanner.nextLine();
+            }
+            return tributeCard;
+        }
+    }
+
+    private String scanForAITribute(int number) {
+        Player player = Game.whoseTurnPlayer();
+        int minAttack = 1000000;
+        int place1 = 0;
+        int place2 = 0;
+        int place3 = 0;
+        for (int i = 1; i < 6; i++) {
+            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() < minAttack) {
+                minAttack = player.getCardMonster(i).getAttack();
+                place1 = i;
+            }
+        }
+        minAttack = 1000000;
+        for (int i = 1; i < 6; i++) {
+            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() < minAttack && i != place1) {
+                minAttack = player.getCardMonster(i).getAttack();
+                place2 = i;
+            }
+        }
+        minAttack = 1000000;
+        for (int i = 1; i < 6; i++) {
+            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() < minAttack && i != place1 && i != place2) {
+                minAttack = player.getCardMonster(i).getAttack();
+                place3 = i;
+            }
+        }
+        if (number == 1)
+            return String.valueOf(place1);
+        if (number == 2)
+            return String.valueOf(place2);
+        else
+            return String.valueOf(place3);
+    }
+
 
     public boolean isCancelled(String input) {
         return input.equals("cancel");
     }
 
     public String getTributeCard() {
-        System.out.println("Please select two monster for tribute!(type monster address or cancel)");
-        String tributeCard = Main.scanner.nextLine();
-        while (!(tributeCard.matches("[\\d+]") || tributeCard.matches("cancel"))) {
-            System.out.println("invalid command!");
-            tributeCard = Main.scanner.nextLine();
+        if (Game.isAITurn())
+            return getAITributeCard();
+        else {
+            System.out.println("Please select a monster for tribute!(type monster address or cancel)");
+            String tributeCard = Main.scanner.nextLine();
+            while (!(tributeCard.matches("[12345]") || tributeCard.matches("cancel"))) {
+                System.out.println("invalid command!");
+                tributeCard = Main.scanner.nextLine();
+            }
+            return tributeCard;
         }
-        return tributeCard;
+    }
+
+    private String getAITributeCard() {
+        Player player = Game.whoseTurnPlayer();
+        int minAttack = 1000;
+        int place = 0;
+        for (int i = 1; i < 6; i++) {
+            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() < minAttack) {
+                minAttack = player.getCardMonster(i).getAttack();
+                place = i;
+            }
+        }
+        return String.valueOf(place);
     }
 
     public void setMonster(Matcher matcher) {
@@ -252,41 +420,37 @@ public class MainPhase {
     public void setTrap(Matcher matcher) {
         try {
             PhaseControl.getInstance().trapSet(matcher);
-            System.out.println("set successfully");
+            if (!Game.isAITurn())
+                System.out.println("set successfully");
         } catch (SpellZoneFull e) {
-            System.out.println(e.getMessage());
+            if (!Game.isAITurn())
+                System.out.println(e.getMessage());
         }
     }
 
     public void setSpell(Matcher matcher) {
         try {
             PhaseControl.getInstance().spellSet(matcher);
-            System.out.println("set successfully");
-        } catch (RitualSummonException e) {
-            checkRitualSpell(matcher);
-        } catch (SpellZoneFull | CantRitualSummon e) {
-            System.out.println(e.getMessage());
+            if (!Game.isAITurn())
+                System.out.println("set successfully");
+        } catch (SpellZoneFull e) {
+            if (!Game.isAITurn())
+                System.out.println(e.getMessage());
         }
-    }
-
-    private void checkRitualSpell(Matcher matcher) {
-        if (matcher.find()) {
-            System.out.println("Choose a ritual card from hand which has the condition!");
-            String input = Main.scanner.nextLine();
-            while (!(input.matches("^[ ]*select --hand [\\d]+[ ]*$"))) {
-                System.out.println("invalid command!");
-                input = Main.scanner.nextLine();
-            }
-            setTheRitualSpell(input, matcher.group(1));
-        }
-    }
-
-    public void setTheRitualSpell(String input, String address) {
-        //TODO inshaallah
     }
 
     public void showSelectedCard(Matcher matcher) {
-        PhaseControl.getInstance().showSelectedCard(matcher);
+        matcher.find();
+        Address address = new Address(matcher.group(1));
+        if (address.checkIsMine())
+            PhaseControl.getInstance().showSelectedCard(address);
+        else {
+            try {
+                PhaseControl.getInstance().showOpponentCard(address);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     public void printTrapAttributes(TrapCard trapCardForShow) {
@@ -346,16 +510,14 @@ public class MainPhase {
         System.out.println("you can’t do this action in this phase");
     }
 
-    public void specialSummon(Matcher matcher) {
-        //TODO inshaallah
-    }
-
     public void activeSpell(Matcher matcher) {
         try {
             PhaseControl.getInstance().activeSpell(matcher);
-            System.out.println("spell activated");
+            if (!Game.isAITurn())
+                System.out.println("spell activated");
         } catch (YouAlreadyActivatedThisCard | PreperationsAreNotDoneYet | SpellZoneFull e) {
-            System.out.println(e.getMessage());
+            if (!Game.isAITurn())
+                System.out.println(e.getMessage());
         }
     }
 
@@ -363,7 +525,7 @@ public class MainPhase {
         howManyHeraldOfCreationDidWeUseEffect++;
     }
 
-    private void setHowManyHeraldOfCreationDidWeUseEffect(int i) {
+    public void setHowManyHeraldOfCreationDidWeUseEffect(int i) {
         howManyHeraldOfCreationDidWeUseEffect = i;
     }
 
