@@ -14,11 +14,10 @@ public class Deck {
     private static ArrayList<Deck> decks = new ArrayList<>();
     private Boolean isActive;
 
-    public Deck(String name, User user) {
+    public Deck(String name) {
         this.name = name;
-        this.user = user;
+        this.user = MainMenu.user;
         isActive = false;
-        decks.add(this);
     }
 
     public String getName() {
@@ -55,8 +54,8 @@ public class Deck {
     }
 
     public static Deck getActiveDeckOfUser(String userName) {
-        ArrayList<Deck> decksOfUser = Deck.getDecksOfUser(userName);
-        for (Deck deck : decksOfUser)
+        ArrayList<Deck> deckOfUser = Deck.getDecksOfUser(userName);
+        for (Deck deck : deckOfUser) 
             if (deck.checkIsActive())
                 return deck;
         return null;
@@ -74,12 +73,20 @@ public class Deck {
     }
 
     public ArrayList<Card> getMainCards() {
-        Collections.sort(mainCards, Comparator.comparing(Card::getCardName));
+        Collections.sort(mainCards, new Comparator<Card>() {
+            public int compare(Card c1, Card c2) {
+                return c1.getCardName().compareTo(c2.getCardName());
+            }
+        });
         return mainCards;
     }
 
     public ArrayList<Card> getSideCards() {
-        Collections.sort(sideCards, Comparator.comparing(Card::getCardName));
+        Collections.sort(sideCards, new Comparator<Card>() {
+            public int compare(Card c1, Card c2) {
+                return c1.getCardName().compareTo(c2.getCardName());
+            }
+        });
         return sideCards;
     }
 

@@ -10,7 +10,6 @@ import java.util.regex.Matcher;
 
 public class RegistrationMenu {
     public RegistrationMenu() {
-        System.out.println("** WELCOME TO REGISTRATION MENU **");
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();
@@ -30,11 +29,8 @@ public class RegistrationMenu {
                 System.out.println("Login Menu");
             else if (input.matches("menu enter [\\w]+"))
                 System.out.println("please login first");
-            else {
+            else
                 System.out.println("invalid command!");
-                continue;
-            }
-            System.out.println("** REGISTRATION MENU **");
         }
     }
     

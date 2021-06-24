@@ -13,7 +13,6 @@ import models.User;
 public class DeckMenu {
     private User user;
     public DeckMenu() {
-        System.out.println("** DECK MENU **");
         this.user = MainMenu.user;
         String input;
         while (true) {
@@ -22,42 +21,39 @@ public class DeckMenu {
                 System.out.println("user logged out successfully!");
                 return;
             }
-            else if (input.matches("deck create [\\w ]+"))
+            else if (input.matches("deck create [\\w]+"))
                 createDeck(input);
-            else if (input.matches("deck delete [\\w ]+"))
+            else if (input.matches("deck delete [\\w]+"))
                 deleteDeck(input);
-            else if (input.matches("deck set-activate [\\w ]+"))
+            else if (input.matches("deck set-activate [\\w]+"))
                 setDeckActive(input);
-            else if (input.matches("deck add-card (--cards|-c) [\\w ]+ (--deck|-d) [\\w ]+( --side| -s)*")
-                    || input.matches("deck add-card (--deck|-d) [\\w ]+ (--cards|-c) [\\w ]+( --side| -s)*"))
+            else if (input.matches("deck add-card (--cards|-c) [\\w]+ (--deck|-d) [\\w]+( --side| -s)*")
+                    || input.matches("deck add-card (--deck|-d) [\\w]+ (--cards|-c) [\\w]+( --side| -s)*"))
                 addCardToDeck(input);
-            else if (input.matches("deck rm-card (--cards|-c) [\\w ]+ (--deck|-d) [\\w ]+( --side| -s)*")
-                    || input.matches("deck rm-card (--deck|-d) [\\w ]+ (--cards|-c) [\\w ]+( --side| -s)*"))
+            else if (input.matches("deck rm-card (--cards|-c) [\\w]+ (--deck|-d) [\\w]+( --side| -s)*")
+                    || input.matches("deck rm-card (--deck|-d) [\\w]+ (--cards|-c) [\\w]+( --side| -s)*"))
                 removeCardFromDeck(input);
             else if (input.matches("deck show (--all|-a)"))
                 showAllDecks();
-            else if (input.matches("deck show --deck-name [\\w ]+( --side| -s)*"))
+            else if (input.matches("deck show --deck-name [\\w]+( --side| -s)*"))
                 showDeckByName(input);
             else if (input.matches("deck show (--cards|-c)"))
                 showCards();
             else if (input.matches("menu show-current"))
                 System.out.println("Deck");
-            else {
+            else 
                 System.out.println("invalid command!");
-                continue;
-            }
-            System.out.println("** DECK MENU **");
         }
     }
 
     public void createDeck(String input) {
         Matcher matcher;
         String deckName;
-        matcher = CommandMatcher.getCommandMatcher(input, "deck create ([\\w ]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "deck create ([\\w]+)");
         matcher.find();
-        deckName = matcher.group(1).trim();
+        deckName = matcher.group(1);
         try {
-            new DeckControllers().createDeck(deckName, MainMenu.user);
+            new DeckControllers().createDeck(deckName);
             System.out.println("deck created successfully!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -67,9 +63,9 @@ public class DeckMenu {
     public void deleteDeck(String input) {
         Matcher matcher;
         String deckName;
-        matcher = CommandMatcher.getCommandMatcher(input, "deck delete ([\\w ]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "deck delete ([\\w]+)");
         matcher.find();
-        deckName = matcher.group(1).trim();
+        deckName = matcher.group(1);
         try {
             new DeckControllers().deleteDeck(deckName);
             System.out.println("deck deleted successfully!");
@@ -81,9 +77,9 @@ public class DeckMenu {
     public void setDeckActive(String input) {
         Matcher matcher;
         String deckName;
-        matcher = CommandMatcher.getCommandMatcher(input, "deck set-activate ([\\w ]+)");
+        matcher = CommandMatcher.getCommandMatcher(input, "deck set-activate ([\\w]+)");
         matcher.find();
-        deckName = matcher.group(1).trim();
+        deckName = matcher.group(1);
         try {
             new DeckControllers().setActive(deckName);
             System.out.println("deck activated successfully!");
@@ -96,12 +92,12 @@ public class DeckMenu {
         Boolean isSide = false;
         String cardName;
         String deckName;
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--card|-c) ([\\w ]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
         matcher.find();
-        cardName = matcher.group(2).trim();
-        matcher = CommandMatcher.getCommandMatcher(input, "(--deck|-d) ([\\w ]+)");
+        cardName = matcher.group(2);
+        matcher = CommandMatcher.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
         matcher.find();
-        deckName = matcher.group(2).trim();
+        deckName = matcher.group(2);
         matcher = CommandMatcher.getCommandMatcher(input, "( --side| -s)");
         if (matcher.find())
             isSide = true;
@@ -117,12 +113,12 @@ public class DeckMenu {
         Boolean isSide = false;
         String cardName;
         String deckName;
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--card|-c) ([\\w ]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "(--card|-c) ([\\w]+)");
         matcher.find();
-        cardName = matcher.group(2).trim();
-        matcher = CommandMatcher.getCommandMatcher(input, "(--deck|-d) ([\\w ]+)");
+        cardName = matcher.group(2);
+        matcher = CommandMatcher.getCommandMatcher(input, "(--deck|-d) ([\\w]+)");
         matcher.find();
-        deckName = matcher.group(2).trim();
+        deckName = matcher.group(2);
         matcher = CommandMatcher.getCommandMatcher(input, "( --side| -s)");
         if (matcher.find())
             isSide = true;
@@ -157,9 +153,9 @@ public class DeckMenu {
     }
 
     public void showDeckByName(String input) {
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "deck show --deck-name ([\\w ]+)( --side|-s)*");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "deck show --deck-name ([\\w]+)( --side|-s)*");
         matcher.find();
-        String deckName = matcher.group(1).trim();
+        String deckName = matcher.group(1);
         Deck deck = Deck.getDeckByName(deckName);
         if (deck.getDeckByName(deckName) == null) {
             System.out.println("deck with name " + deckName + " does not exists");
@@ -167,8 +163,7 @@ public class DeckMenu {
         }
         ArrayList<Card> cards;
         System.out.println("Deck: " + deckName);
-        matcher = CommandMatcher.getCommandMatcher(input, "deck show --deck-name ([\\w ]+)( --side|-s)");
-        if (!matcher.find()) {
+        if (matcher.group(2).isEmpty()) {
             System.out.println("Main deck:");
             cards = deck.getMainCards();
         }
@@ -178,16 +173,16 @@ public class DeckMenu {
         }
         System.out.println("Monsters:");
         for (Card card : cards) 
-            if (card.getKind().equals("Monster"))
+            if (card.getKind().equals("monster"))
                 System.out.println(card.getCardName() + ": " + card.getDescription());
         System.out.println("Spell and Traps:");
         for (Card card : cards) 
-            if (!card.getKind().equals("Monster"))
+            if (!card.getKind().equals("monster"))
                 System.out.println(card.getCardName() + ": " + card.getDescription());
     }
 
     public void showCards() {
-        ArrayList<Card> allCards = MainMenu.user.getAllCards();
+        ArrayList<Card> allCards = Deck.getCardOfUser(MainMenu.user);
         for (Card card : allCards) 
             System.out.println(card.getCardName() + ": " + card.getDescription());
     }

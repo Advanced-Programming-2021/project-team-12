@@ -17,29 +17,32 @@ public class Address {
     public Address(String address) {
         Matcher matcher;
         this.number = 1;
-        matcher = CommandMatcher.getCommandMatcher(address, "(select )*(--[\\w]+|-[\\w]+)( --opponent| -o)* ([\\d])");
+        matcher = CommandMatcher.getCommandMatcher(address, "(select )*(--[\\w]+|-[\\w])( --opponent| -o)* ([\\d])");
         if (matcher.find()) {
-            if (matcher.group(2).equals("-m") || matcher.group(2).equals("--monster"))
+            if (matcher.group(2).equals("-m"))
                 this.kind = "monster";
-            else if (matcher.group(2).equals("-s") || matcher.group(2).equals("--spell"))
+            else if (matcher.group(2).equals("-s"))
                 this.kind = "spell";
-            else if (matcher.group(2).equals("-h") || matcher.group(2).equals("--hand"))
+            else if (matcher.group(2).equals("-h"))
                 this.kind = "hand";
             else 
                 this.kind = matcher.group(2).substring(2);
             this.number = Integer.parseInt(matcher.group(4));
+            if (!matcher.group(3).isEmpty())
+                this.isMine = false;
+            else this.isMine = true;
         } else {
             matcher = CommandMatcher.getCommandMatcher(address, "(select )*(--field|--graveyard|-f|-g)( --opponent| -o)*");
-            if (matcher.group(2).equals("-f") || matcher.group(2).equals("--field"))
+            if (matcher.group(2).equals("-f"))
                 this.kind = "field";
-            if (matcher.group(2).equals("-g") || matcher.group(2).equals("-graveyard"))
+            if (matcher.group(2).equals("-g"))
                 this.kind = "graveyard";
             else 
                 this.kind = matcher.group(2).substring(2);
+            if (!matcher.group(3).isEmpty())
+                this.isMine = false;
+            else this.isMine = true;
         }
-        if (CommandMatcher.getCommandMatcher(address, "( --opponent| -o)").find())
-            this.isMine = false;
-        else this.isMine = true;
     }
 
     public Address(int number, String kind, boolean isMine) {

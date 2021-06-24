@@ -11,7 +11,7 @@ public class ShowBoard {
     }
 
     public static void showGraveyard(Player currentPlayer, Player opponentPlayer) {
-        System.out.println("current player graveyard cards:");
+        System.out.println("crrent player graveyard cards:");
         if (currentPlayer.getGraveyardCard().size() == 0)
             System.out.println("there is no card in current player graveyard");
         for (int i = 1; i <= currentPlayer.getGraveyardCard().size(); i++)
@@ -37,6 +37,7 @@ public class ShowBoard {
         showSpells(player, "o");
         showMonsters(player, "o");
         showGYF(player, "o");
+        System.out.println();
     }
 
     private void showHandCard(Player player, String flag) {
@@ -94,7 +95,7 @@ public class ShowBoard {
 
     private void monster(Player player, int i) {
         if (player.getCardByAddress(new Address(i, "monster", true)) == null)
-            System.out.printf("\t" + "E");
+            System.out.println("\t" + "E");
         else
             System.out.printf("\t" + player.getMonsterPosition(i).toString());
     }

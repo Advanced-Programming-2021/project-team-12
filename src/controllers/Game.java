@@ -47,23 +47,10 @@ public class Game {
 
     public static void run(User _firstUser, int _round) {
         isAIGame = true;
-        restartData(_firstUser, _round);
+        restartData(_firstUser, null, _round);
         generateRandomTurn();
         playTurn("DrawPhase");
-    }
-
-    private static void restartData(User _firstUser, int _round) {
-        firstUser = _firstUser;
-        secondUser = new User();
-        firstPlayer = new Player(firstUser);
-        secondPlayer = new Player();
-        hasWinner = false;
-        round = _round;
-        firstPlayerWin = 0;
-        secondPlayerWin = 0;
-        firstPlayerMaxLP = 0;
-        secondPlayerMaxLP = 0;
-        roundCounter = 1;
+        SaveFile.saveUser(firstUser);
     }
 
     private static void EndGame() {
@@ -107,15 +94,12 @@ public class Game {
             }
         }
         SaveFile.saveUser(firstUser);
-        if (!isAIGame)
-            SaveFile.saveUser(secondUser);
+        SaveFile.saveUser(secondUser);
     }
 
     private static void restartData(User _firstUser, User _secondUser, int _round) {
         firstUser = _firstUser;
         secondUser = _secondUser;
-        firstPlayer = new Player(firstUser);
-        secondPlayer = new Player(secondUser);
         hasWinner = false;
         round = _round;
         firstPlayerWin = 0;
@@ -140,39 +124,38 @@ public class Game {
     private static void generateRandomTurn() {
         Random random = new Random();
         int whoIsFirstNumber = random.nextInt(2);
+        firstPlayer = new Player(firstUser);
+        secondPlayer = new Player(secondUser);
         if (whoIsFirstNumber == 0)
             playerTurn = PlayerTurn.FIRSTPLAYER;
         else
             playerTurn = PlayerTurn.SECONDPLAYER;
     }
 
-    public static void playTurn(String phase) {
-        if (isAIGame && playerTurn.equals(PlayerTurn.SECONDPLAYER))
-            new AITurn();
-        else {
-            switch (phase) {
-                case "DrawPhase":
-                    new DrawPhase().run();
-                    break;
-                case "StandByPhase":
-                    new StandByPhase().run();
-                    break;
-                case "MainPhase1":
-                    mainPhase1.run();
-                    break;
-                case "BattlePhase":
-                    goToBattlePhase();
-                    break;
-                case "MainPhase2":
-                    mainPhase2.run();
-                    break;
-                case "EndPhase":
-                    new EndPhase().run();
-                    break;
-                case "EndGame":
-                    EndGame();
-                    break;
-            }
+    private static void playTurn(String phase) {
+        switch (phase) {
+            case "DrawPhase":
+                new DrawPhase().run();
+                break;
+            case "StandByPhase":
+                new StandByPhase().run();
+                break;
+            case "MainPhase1":
+                mainPhase1.run();
+                break;
+            case "BattlePhase":
+                goToBattlePhase();
+                break;
+            case "MainPhase2":
+                mainPhase2.run();
+                break;
+            case "EndPhase":
+                switchPlayer();
+                new EndPhase().run();
+                break;
+            case "EndGame":
+                EndGame();
+                break;
         }
     }
 
@@ -216,11 +199,6 @@ public class Game {
     public static void setWinner(Player winner) {
         Game.winner = winner;
         hasWinner = true;
-        playTurn("EndGame");
-    }
-
-    public static boolean isAITurn() {
-        return isAIGame && playerTurn.equals(PlayerTurn.SECONDPLAYER);
     }
 
     public static MainPhase getMainPhase1() {

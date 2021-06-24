@@ -11,8 +11,6 @@ import models.card.spell.SpellCard;
 import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
 import org.json.*;
-import view.MainMenu;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.io.File;
@@ -27,11 +25,12 @@ public class LoadFile {
     }
 
     private void loadMonsterCards() {
+        int number = 0;
         String monsterJsonData = null;
-        File folder = new File("data//monsterCards");
-        for (File fileEntry : folder.listFiles()) {
+        File file = new File("data//monsterCards" + number + ".json");
+        while (file.exists() && !file.isDirectory()) {
             try {
-                Scanner scanner = new Scanner(fileEntry);
+                Scanner scanner = new Scanner(file);
                 if (scanner.hasNextLine())
                     monsterJsonData = scanner.nextLine();
             } catch (Exception e) {
@@ -39,6 +38,8 @@ public class LoadFile {
             }
             JSONObject json = new JSONObject(monsterJsonData);
             loadMonsterFromJson(json);
+            number++;
+            file = new File(number + ".json");
         }
     }
 
@@ -76,11 +77,12 @@ public class LoadFile {
     }
 
     private void loadSpellCards() {
+        int number = 0;
         String spellJsonData = null;
-        File folder = new File("data//spellCards");
-        for (File fileEntry : folder.listFiles()) {
+        File file = new File( "data//spellCards" + number + ".json");
+        while (file.exists() && !file.isDirectory()) {
             try {
-                Scanner scanner = new Scanner(fileEntry);
+                Scanner scanner = new Scanner(file);
                 if (scanner.hasNextLine())
                     spellJsonData = scanner.nextLine();
             } catch (Exception e) {
@@ -88,12 +90,14 @@ public class LoadFile {
             }
             JSONObject json = new JSONObject(spellJsonData);
             loadSpellFromJson(json);
+            number++;
+            file = new File("data//spellCards" + number + ".json");
         }
     }
 
     private void loadSpellFromJson(JSONObject json) {
         String name = json.getString("name");
-        String desctiption = json.getString("description");
+        String desctiption = json.getString("desctiption");
         int price = json.getInt("price");
         String spellMode = json.getString("spellMode");
         Boolean isLimit = json.getBoolean("isLimit");
@@ -102,11 +106,12 @@ public class LoadFile {
     }
 
     private void loadTrapCards() {
+        int number = 0;
         String trapJsonData = null;
-        File folder = new File("data//trapCards");
-        for (File fileEntry : folder.listFiles()) {
+        File file = new File("data//trapCards" + number + ".json");
+        while (file.exists() && !file.isDirectory()) {
             try {
-                Scanner scanner = new Scanner(fileEntry);
+                Scanner scanner = new Scanner(file);
                 if (scanner.hasNextLine())
                     trapJsonData = scanner.nextLine();
             } catch (Exception e) {
@@ -114,6 +119,8 @@ public class LoadFile {
             }
             JSONObject json = new JSONObject(trapJsonData);
             loadTrapFromJson(json);
+            number++;
+            file = new File("data//trapCards" + number + ".json");
         }
     }
 
@@ -127,11 +134,12 @@ public class LoadFile {
     }
 
     private void loadUsers() {
+        int number = 0;
         String userJsonData = null;
-        File folder = new File("data//User");
-        for (File fileEntry : folder.listFiles()) {
+        File file = new File("data//User" + number + ".json");
+        while (file.exists() && !file.isDirectory()) {
             try {
-                Scanner scanner = new Scanner(fileEntry);
+                Scanner scanner = new Scanner(file);
                 if (scanner.hasNextLine())
                     userJsonData = scanner.nextLine();
             } catch (Exception e) {
@@ -139,6 +147,8 @@ public class LoadFile {
             }
             JSONObject json = new JSONObject(userJsonData);
             loadUserFromJson(json);
+            number++;
+            file = new File(number + ".json");
         }
     }
 
@@ -160,11 +170,12 @@ public class LoadFile {
     }
 
     private void loadDecks(User user) {
+        int number = 0;
         String deckJsonData = null;
-        File folder = new File("data//Decks//" + user.getName());
-        for (File fileEntry : folder.listFiles()) {
+        File file = new File("data//Decks" + user.getName() + ".json");
+        if (file.exists() && !file.isDirectory()) {
             try {
-                Scanner scanner = new Scanner(fileEntry);
+                Scanner scanner = new Scanner(file);
                 if (scanner.hasNextLine())
                     deckJsonData = scanner.nextLine();
             } catch (Exception e) {
@@ -172,22 +183,31 @@ public class LoadFile {
             }
             JSONObject json = new JSONObject(deckJsonData);
             loadDeckFromJson(json, user);
+            number++;
+            file = new File("data//trapCards" + number + ".json");
         }
     }
 
     private void loadDeckFromJson(JSONObject json, User user) {
-        String deckName = json.getString("deckName");
-        Boolean isActive = json.getBoolean("isActive");
-        Gson gson = new Gson();
-        Type StringListType = new TypeToken<ArrayList<String>>(){}.getType();
-        ArrayList<String> mainCards = gson.fromJson(json.get("mainCards").toString(), StringListType);
-        ArrayList<String> sideCards = gson.fromJson(json.get("sideCards").toString(), StringListType);
-        Deck deck = new Deck(deckName, user);
-        if (isActive)
+        int deckNumber = 0;
+        while(true) {
+            deckNumber++;
+            if (!json.has("deckName" + deckNumber))
+                break;
+            String deckName = json.getString("deckName");
+            Boolean isActive = json.getBoolean("isActive");
+            Gson gson = new Gson();
+            Type StringListType = new TypeToken<ArrayList<String>>(){}.getType();
+            ArrayList<String> mainCards = gson.fromJson(json.get("mainCards" + deckNumber).toString(), StringListType);
+            ArrayList<String> sideCards = gson.fromJson(json.get("sideCards" + deckNumber).toString(), StringListType);
+            Deck deck = new Deck(deckName);
             deck.changeIsActive(isActive);
-        for (String cardName : mainCards)
-            deck.addCard(cardName, "m");
-        for (String cardName : sideCards)
-            deck.addCard(cardName, "s");
+            for (String cardName : mainCards)
+                deck.addCard(cardName, "m");
+            for (String cardName : sideCards)
+                deck.addCard(cardName, "s");
+        }
     }
+
+
 }

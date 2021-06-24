@@ -5,7 +5,10 @@ import controllers.move.SetSpell;
 import models.Address;
 import models.Board;
 import models.Player;
+import models.PlayerTurn;
 import models.card.monster.monster_effect.MonsterEffect;
+import models.card.monster.monster_effect.MonsterEffect;
+import models.Board.*;
 import view.Effect;
 import controllers.Game;
 //import card.spell.SpellCard;
@@ -59,22 +62,23 @@ public class MonsterCard {
         int attack = this.attack;
         int indexOfAttacker = currentPlayer.getIndexOfThisCardByAddress(address);
         if (!currentPlayer.didBeastKingBarbarosSummonedSuperHighLevel(indexOfAttacker)) attack -= 1900;
-        if (Attack.whatKindOfCardIsDefenderNow() != null && Attack.whatKindOfCardIsDefenderNow().equals("Suijin") && !Attack.isDefenderFacedDown()) {
-            if (whenSuijinIsDefending())
+        if (Attack.whatKindOfCardIsDefenderNow().equals("Suijin") && !Attack.isDefenderFacedDown()) {
+            if (whenSuijinIsDefending()) {
                 return 0;
+            }
         }
         if (SetSpell.doAnyOneHaveUmiruka()) {
             if (monsterMode == MonsterMode.AQUA) {
                 attack += 500;
             }
         }
-        if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.BEAST_WARRIOR) {
+        if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST) {
             if (SetSpell.doIHaveClosedForest()) {
                 attack += 100 * Board.numberOfAllMonstersInGraveYard();
             }
         }
         if (SetSpell.doAnyOneHaveForest()) {
-            if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.BEAST_WARRIOR || monsterMode == MonsterMode.INSECT)
+            if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST || monsterMode == MonsterMode.INSECT)
                 attack += 200;
         }
         if (SetSpell.doAnyOneHaveYami()) {
@@ -98,7 +102,7 @@ public class MonsterCard {
             }
         }
         if (SetSpell.doAnyOneHaveForest()) {
-            if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.BEAST_WARRIOR || monsterMode == MonsterMode.INSECT)
+            if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.WARRIOR_BEAST || monsterMode == MonsterMode.INSECT)
                 defence += 200;
         }
         if (SetSpell.doAnyOneHaveYami()) {

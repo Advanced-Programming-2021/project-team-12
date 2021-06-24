@@ -1,19 +1,15 @@
 package models;
 
-import Utility.CommandMatcher;
-import controllers.DeckControllers;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.regex.Matcher;
 
 public class User {
     private String userName;
     private String nickName;
     private String password;
     private int score;
-    private ArrayList<Card> allCards = new ArrayList<>();
+    private ArrayList<Card> allCards;
     private int money;
     private static ArrayList<User> users = new ArrayList<>();
 
@@ -22,16 +18,8 @@ public class User {
         this.nickName = nickName;
         this.password = password;
         score = 0;
-        money = 180000;
+        money = 0;
         users.add(this);
-    }
-
-    public User() {
-        this.userName = "**AI**";
-        this.nickName = "**AI**";
-        this.password = "**AI**";
-        score = 0;
-        money = 180000;
     }
 
     public void increaseScore(int score) {
@@ -135,5 +123,4 @@ public class User {
     public int getScore() {
         return score;
     }
-
 }

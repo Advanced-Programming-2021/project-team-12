@@ -4,7 +4,6 @@ import models.User;
 public class MainMenu {
     public static User user;
     public MainMenu(User user) {
-        System.out.println("** MAIN MENU **");
         MainMenu.user = user;
         String input;
         while (true) {
@@ -27,11 +26,8 @@ public class MainMenu {
                 Duel.run();
             else if (input.matches("menu show-current"))
                 System.out.println("Main Menu");
-            else {
+            else 
                 System.out.println("invalid command!");
-                continue;
-            }
-            System.out.println("** MAIN MENU **");
         }
     }
 }

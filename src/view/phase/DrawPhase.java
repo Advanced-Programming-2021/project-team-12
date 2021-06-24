@@ -1,11 +1,9 @@
 package view.phase;
-import controllers.Game;
 import controllers.PhaseControl;
 import view.Main;
 
 public class DrawPhase {
     public void run(){
-        System.out.println(PhaseControl.getInstance().printWhoseTurnIsIt());
         System.out.println("phase: draw phase");
         String input;
         System.out.println(PhaseControl.getInstance().drawOneCard());
@@ -16,6 +14,5 @@ public class DrawPhase {
             else
                 System.out.println("invalid command");
         }
-        Game.playTurn("StandByPhase");
     }
 }
