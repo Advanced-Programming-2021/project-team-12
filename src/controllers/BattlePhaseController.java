@@ -19,43 +19,44 @@ public class BattlePhaseController {
     private static BattlePhaseController instance;
 
     public static BattlePhaseController getInstance() {
-        if (instance == null) {
+        if (instance == null)
             instance = new BattlePhaseController();
-        }
         return instance;
     }
 
-    public boolean battlePhaseRun(String input) throws Exception {
+    public boolean battlePhaseRun(String input) throws MyException {
         if (input.matches("^[ ]*next phase[ ]*$"))
             return true;
-        else if (input.matches("^[ ]*select [.*][ ]*$"))
+        else if (input.matches("^[ ]*select .*$"))
             whatIsSelected(input);
         else if (input.matches("^[ ]*summon[ ]*$"))
-            throw new NoSelectedCardException("no card is selected yet");
+            throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*set[ ]*$"))
-            throw new NoSelectedCardException("no card is selected yet");
+            throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-            throw new NoSelectedCardException("no card is selected yet");
+            throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*flip-summon[ ]*$"))
-            throw new NoSelectedCardException("no card is selected yet");
+            throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-            throw new NoSelectedCardException("no card is selected yet");
+            throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*attack direct[ ]*$"))
-            throw new NoSelectedCardException("no card is selected yet");
+            throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*activate effect[ ]*$"))
-            throw new NoSelectedCardException("no card is selected yet");
+            throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*show graveyard[ ]*$"))
             Board.showGraveyard();
         else if (input.matches("^[ ]*card show --selected[ ]*$"))
-            throw new NoSelectedCardException("no card is selected yet");
+            throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*surrender[ ]*$"))
             PhaseControl.getInstance().surrender();
         else
-            throw new InvalidCommandException("invalid command");
+            throw new MyException("invalid command");
         return false;
     }
 
-    public void whatIsSelected(String input) throws Exception {
+    public void whatIsSelected(String input) throws MyException {
+        if (Address.isAddressValid(input) && Board.getCardByAddress(new Address(input)) == null)
+            throw new MyException("address is empty");
         PhaseControl.getInstance().checkIfGameEnded();
         if (input.matches("^[ ]*select --monster [12345][ ]*$"))
             selectMonster(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
@@ -72,12 +73,12 @@ public class BattlePhaseController {
         else if (input.matches("^[ ]*select --hand [\\d]+[ ]*$"))
             selectHand(CommandMatcher.getCommandMatcher(input, "(^[ ]*select --hand ([\\d]+)[ ]*$)"));
         else if (input.matches("^[ ]*select -d[ ]*$"))
-            throw new NoSelectedCardException("no card is selected yet");
+            throw new MyException("no card is selected yet");
         else
-            throw new InvalidCommandException("invalid command");
+            throw new MyException("invalid command");
     }
 
-    private void selectMonster(Matcher matcher) throws Exception {
+    private void selectMonster(Matcher matcher) throws MyException {
         if (matcher.find()) {
             if (!Game.isAITurn())
                 Board.showBoard();
@@ -94,7 +95,7 @@ public class BattlePhaseController {
                         break;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         break;
-                    else if (input.matches("^[ ]*select [.*][ ]*$"))
+                    else if (input.matches("^[ ]*select .*$"))
                         System.out.println("you already selected a card");
                     else if (input.matches("^[ ]*summon[ ]*$"))
                         System.out.println("you can’t summon this card");
@@ -117,10 +118,10 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         PhaseControl.getInstance().surrender();
                     else
-                        throw new InvalidCommandException("invalid command");
+                        throw new MyException("invalid command");
                 }
             } else
-                throw new InvalidCardSelection("invalid selection");
+                throw new MyException("invalid selection");
         }
     }
 
@@ -150,7 +151,7 @@ public class BattlePhaseController {
         else return "attack " + place;
     }
 
-    private void selectOpponentMonster(Matcher matcher) throws InvalidCommandException, InvalidCardSelection, CantSummonThisCard, CantSetThisCard, CantChangeCardPosition, CantAttack, CantActivateEffect {
+    private void selectOpponentMonster(Matcher matcher) throws MyException {
         if (matcher.find()) {
             Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
@@ -164,22 +165,22 @@ public class BattlePhaseController {
                         break;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         break;
-                    else if (input.matches("^[ ]*select [.*][ ]*$"))
+                    else if (input.matches("^[ ]*select .*$"))
                         System.out.println("you already selected a card");
                     else if (input.matches("^[ ]*summon[ ]*$"))
-                        throw new CantSummonThisCard("you can’t summon this card");
+                        throw new MyException("you can’t summon this card");
                     else if (input.matches("^[ ]*set[ ]*$"))
-                        throw new CantSetThisCard("you can’t set this card");
+                        throw new MyException("you can’t set this card");
                     else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                        throw new CantChangeCardPosition("you can’t change this card position");
+                        throw new MyException("you can’t change this card position");
                     else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                        throw new CantChangeCardPosition("you can’t change this card position");
+                        throw new MyException("you can’t change this card position");
                     else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        throw new CantAttack("you can’t attack with this card");
+                        throw new MyException("you can’t attack with this card");
                     else if (input.matches("^[ ]*attack direct[ ]*$"))
-                        throw new CantAttack("you can’t attack with this card");
+                        throw new MyException("you can’t attack with this card");
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
-                        throw new CantActivateEffect("activate effect is only for spell cards.");
+                        throw new MyException("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
                         Board.showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
@@ -187,14 +188,14 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         PhaseControl.getInstance().surrender();
                     else
-                        throw new InvalidCommandException("invalid command");
+                        throw new MyException("invalid command");
                 }
             } else
-                throw new InvalidCardSelection("invalid selection");
+                throw new MyException("invalid selection");
         }
     }
 
-    private void selectSpell(Matcher matcher) throws InvalidCommandException, InvalidCardSelection, CantAttack, CantChangeCardPosition, CantSetThisCard, CantSummonThisCard, CantDoInThisPhase {
+    private void selectSpell(Matcher matcher) throws MyException {
         if (matcher.find()) {
             Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
@@ -208,20 +209,20 @@ public class BattlePhaseController {
                         break;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         break;
-                    else if (input.matches("^[ ]*select [.*][ ]*$"))
+                    else if (input.matches("^[ ]*select .*$"))
                         System.out.println("you already selected a card");
                     else if (input.matches("^[ ]*summon[ ]*$"))
-                        throw new CantSummonThisCard("you can’t summon this card");
+                        throw new MyException("you can’t summon this card");
                     else if (input.matches("^[ ]*set[ ]*$"))
-                        throw new CantSetThisCard("you can’t set this card");
+                        throw new MyException("you can’t set this card");
                     else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                        throw new CantChangeCardPosition("you can’t change this card position");
+                        throw new MyException("you can’t change this card position");
                     else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                        throw new CantChangeCardPosition("you can’t change this card position");
+                        throw new MyException("you can’t change this card position");
                     else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        throw new CantAttack("you can’t attack with this card");
+                        throw new MyException("you can’t attack with this card");
                     else if (input.matches("^[ ]*attack direct[ ]*$"))
-                        throw new CantAttack("you can’t attack with this card");
+                        throw new MyException("you can’t attack with this card");
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         activeSpell(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
@@ -231,15 +232,15 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         PhaseControl.getInstance().surrender();
                     else
-                        throw new InvalidCommandException("invalid command");
+                        throw new MyException("invalid command");
                 }
             } else
-                throw new InvalidCardSelection("invalid selection");
+                throw new MyException("invalid selection");
         }
     }
 
 
-    private void selectOpponentSpell(Matcher matcher) throws InvalidCardSelection, InvalidCommandException, CantActivateEffect, CantAttack, CantChangeCardPosition, CantSetThisCard, CantSummonThisCard {
+    private void selectOpponentSpell(Matcher matcher) throws MyException {
         if (matcher.find()) {
             if (Address.isAddressValid(matcher.group(1))) {
                 String selectedCard = matcher.group(1);
@@ -253,22 +254,22 @@ public class BattlePhaseController {
                         break;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         break;
-                    else if (input.matches("^[ ]*select [.*][ ]*$"))
+                    else if (input.matches("^[ ]*select .*$"))
                         System.out.println("you already selected a card");
                     else if (input.matches("^[ ]*summon[ ]*$"))
-                        throw new CantSummonThisCard("you can’t summon this card");
+                        throw new MyException("you can’t summon this card");
                     else if (input.matches("^[ ]*set[ ]*$"))
-                        throw new CantSetThisCard("you can’t set this card");
+                        throw new MyException("you can’t set this card");
                     else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                        throw new CantChangeCardPosition("you can’t change this card position");
+                        throw new MyException("you can’t change this card position");
                     else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                        throw new CantChangeCardPosition("you can’t change this card position");
+                        throw new MyException("you can’t change this card position");
                     else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        throw new CantAttack("you can’t attack with this card");
+                        throw new MyException("you can’t attack with this card");
                     else if (input.matches("^[ ]*attack direct[ ]*$"))
-                        throw new CantAttack("you can’t attack with this card");
+                        throw new MyException("you can’t attack with this card");
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
-                        throw new CantActivateEffect("activate effect is only for spell cards.");
+                        throw new MyException("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
                         Board.showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
@@ -276,14 +277,14 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         PhaseControl.getInstance().surrender();
                     else
-                        throw new InvalidCommandException("invalid command");
+                        throw new MyException("invalid command");
                 }
             } else
-                throw new InvalidCardSelection("invalid selection");
+                throw new MyException("invalid selection");
         }
     }
 
-    private void selectField() throws CantSummonThisCard, CantSetThisCard, CantChangeCardPosition, CantAttack, CantActivateEffect, InvalidCommandException {
+    private void selectField() throws MyException {
         String input;
         while (true) {
             PhaseControl.getInstance().checkIfGameEnded();
@@ -294,22 +295,22 @@ public class BattlePhaseController {
                 break;
             } else if (input.matches("^[ ]*select -d[ ]*$"))
                 break;
-            else if (input.matches("^[ ]*select [.*][ ]*$"))
+            else if (input.matches("^[ ]*select .*$"))
                 System.out.println("you already selected a card");
             else if (input.matches("^[ ]*summon[ ]*$"))
-                throw new CantSummonThisCard("you can’t summon this card");
+                throw new MyException("you can’t summon this card");
             else if (input.matches("^[ ]*set[ ]*$"))
-                throw new CantSetThisCard("you can’t set this card");
+                throw new MyException("you can’t set this card");
             else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                throw new CantChangeCardPosition("you can’t change this card position");
+                throw new MyException("you can’t change this card position");
             else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                throw new CantChangeCardPosition("you can’t change this card position");
+                throw new MyException("you can’t change this card position");
             else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                throw new CantAttack("you can’t attack with this card");
+                throw new MyException("you can’t attack with this card");
             else if (input.matches("^[ ]*attack direct[ ]*$"))
-                throw new CantAttack("you can’t attack with this card");
+                throw new MyException("you can’t attack with this card");
             else if (input.matches("^[ ]*activate effect[ ]*$"))
-                throw new CantActivateEffect("activate effect is only for spell cards.");
+                throw new MyException("activate effect is only for spell cards.");
             else if (input.matches("^[ ]*show graveyard[ ]*$"))
                 Board.showGraveyard();
             else if (input.matches("^[ ]*card show --selected[ ]*$"))
@@ -317,11 +318,11 @@ public class BattlePhaseController {
             else if (input.matches("^[ ]*surrender[ ]*$"))
                 PhaseControl.getInstance().surrender();
             else
-                throw new InvalidCommandException("invalid command");
+                throw new MyException("invalid command");
         }
     }
 
-    private void selectOpponentField() throws InvalidCommandException, CantSummonThisCard, CantSetThisCard, CantChangeCardPosition, CantAttack, CantActivateEffect {
+    private void selectOpponentField() throws MyException {
         String input;
         while (true) {
             PhaseControl.getInstance().checkIfGameEnded();
@@ -332,22 +333,22 @@ public class BattlePhaseController {
                 break;
             } else if (input.matches("^[ ]*select -d[ ]*$"))
                 break;
-            else if (input.matches("^[ ]*select [.*][ ]*$"))
+            else if (input.matches("^[ ]*select .*$"))
                 System.out.println("you already selected a card");
             else if (input.matches("^[ ]*summon[ ]*$"))
-                throw new CantSummonThisCard("you can’t summon this card");
+                throw new MyException("you can’t summon this card");
             else if (input.matches("^[ ]*set[ ]*$"))
-                throw new CantSetThisCard("you can’t set this card");
+                throw new MyException("you can’t set this card");
             else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                throw new CantChangeCardPosition("you can’t change this card position");
+                throw new MyException("you can’t change this card position");
             else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                throw new CantChangeCardPosition("you can’t change this card position");
+                throw new MyException("you can’t change this card position");
             else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                throw new CantAttack("you can’t attack with this card");
+                throw new MyException("you can’t attack with this card");
             else if (input.matches("^[ ]*attack direct[ ]*$"))
-                throw new CantAttack("you can’t attack with this card");
+                throw new MyException("you can’t attack with this card");
             else if (input.matches("^[ ]*activate effect[ ]*$"))
-                throw new CantActivateEffect("activate effect is only for spell cards.");
+                throw new MyException("activate effect is only for spell cards.");
             else if (input.matches("^[ ]*show graveyard[ ]*$"))
                 Board.showGraveyard();
             else if (input.matches("^[ ]*card show --selected[ ]*$"))
@@ -355,11 +356,11 @@ public class BattlePhaseController {
             else if (input.matches("^[ ]*surrender[ ]*$"))
                 PhaseControl.getInstance().surrender();
             else
-                throw new InvalidCommandException("invalid command");
+                throw new MyException("invalid command");
         }
     }
 
-    private void selectHand(Matcher matcher) throws InvalidCommandException, CantChangeCardPosition, CantAttack, CantActivateEffect, InvalidCardSelection, CantDoInThisPhase {
+    private void selectHand(Matcher matcher) throws MyException {
         if (matcher.find()) {
             Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
@@ -373,22 +374,22 @@ public class BattlePhaseController {
                         break;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         break;
-                    else if (input.matches("^[ ]*select [.*][ ]*$"))
+                    else if (input.matches("^[ ]*select .*$"))
                         System.out.println("you already selected a card");
                     else if (input.matches("^[ ]*summon[ ]*$"))
                         BattlePhase.getInstance().summon(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
                     else if (input.matches("^[ ]*set[ ]*$"))
-                        throw new CantDoInThisPhase("you can’t do this action in this phase");
+                        throw new MyException("you can’t do this action in this phase");
                     else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
-                        throw new CantChangeCardPosition("you can’t change this card position");
+                        throw new MyException("you can’t change this card position");
                     else if (input.matches("^[ ]*flip-summon[ ]*$"))
-                        throw new CantChangeCardPosition("you can’t change this card position");
+                        throw new MyException("you can’t change this card position");
                     else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        throw new CantAttack("you can’t attack with this card");
+                        throw new MyException("you can’t attack with this card");
                     else if (input.matches("^[ ]*attack direct[ ]*$"))
-                        throw new CantAttack("you can’t attack with this card");
+                        throw new MyException("you can’t attack with this card");
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
-                        throw new CantActivateEffect("activate effect is only for spell cards.");
+                        throw new MyException("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
                         Board.showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
@@ -396,14 +397,14 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*surrender[ ]*$"))
                         PhaseControl.getInstance().surrender();
                     else
-                        throw new InvalidCommandException("invalid command");
+                        throw new MyException("invalid command");
                 }
             } else
-                throw new InvalidCardSelection("invalid selection");
+                throw new MyException("invalid selection");
         }
     }
 
-    private void attack(Matcher matcher, String myAddress) throws Exception {
+    private void attack(Matcher matcher, String myAddress) throws MyException {
         if (matcher.find()) {
             Address myAddressType = new Address(myAddress);
             Player currentPlayer = Game.whoseTurnPlayer();
@@ -421,11 +422,11 @@ public class BattlePhaseController {
                             Game.whoseRivalPlayer().destroyAllRivalMonstersWhichInAttackMode();
                         } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
-                            throw new Exception("You can't attack by monster with attack equal or more than 1500 " +
+                            throw new MyException("You can't attack by monster with attack equal or more than 1500 " +
                                     "because of MessengerOfPeace.");
                         } else if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedMagicCylinder() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
-                            throw new Exception("Rival has trap named MagicCylinder so its effect get done.");
+                            throw new MyException("Rival has trap named MagicCylinder so its effect get done.");
                         } else if (rivalMonsterCard.getName().equals("Texchanger")) {
                             Game.getMainPhase1().summonCyberse();
                         } else {
@@ -438,49 +439,49 @@ public class BattlePhaseController {
                                     int damage = myMonsterCard.getAttack(myAddressType) - rivalMonsterCard.getDefence(true);
                                     attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                                     Attack.timeToEffectAfterAttack();
-                                } else throw new Exception("Attack has been cancelled for effect of a card");
+                                } else throw new MyException("Attack has been cancelled for effect of a card");
                             } else {
                                 int damage = myMonsterCard.getAttack(myAddressType) - rivalMonsterCard.getDefence(false);
                                 attackDH(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                                 Attack.timeToEffectAfterAttack();
                             }
                         }
-                    } else throw new Exception("there is no card to attack here");
-                } else throw new Exception("this card already attacked");
-            } else throw new Exception("you cant attack with this card");
+                    } else throw new MyException("there is no card to attack here");
+                } else throw new MyException("this card already attacked");
+            } else throw new MyException("you cant attack with this card");
         }
     }
 
-    private void attackOO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) throws Exception {
+    private void attackOO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) throws MyException {
         if (damage == 0) {
             removeForAttack(address, myAddress);
             removeForAttack(myAddress, address);
-            throw new Exception("both you and your opponent monster cards are destroyed and no one receives damage");
+            throw new MyException("both you and your opponent monster cards are destroyed and no one receives damage");
         } else if (damage > 0) {
             removeForAttack(address, myAddress);
             decreaseLP(myAddress, address, index, Game.whoseRivalPlayer(), myMonsterCard, rivalMonsterCard, damage);
-            throw new Exception("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
+            throw new MyException("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
         } else {
             damage = (-1) * damage;
             currentPlayer.decreaseLP(damage);
             removeForAttack(myAddress, address);
-            throw new Exception("Your monster card is destroyed and you received " + damage + " battle damage");
+            throw new MyException("Your monster card is destroyed and you received " + damage + " battle damage");
         }
     }
 
-    private void attackDO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) throws Exception {
-        if (damage == 0) throw new Exception("no card is destroyed");
+    private void attackDO(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) throws MyException {
+        if (damage == 0) throw new MyException("no card is destroyed");
         else if (damage > 0) {
             removeForAttack(address, myAddress);
-            throw new Exception("the defense position monster is destroyed");
+            throw new MyException("the defense position monster is destroyed");
         } else {
             damage = (-1) * damage;
             decreaseLP(myAddress, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
-            throw new Exception("no card is destroyed and you received " + damage + " battle damage");
+            throw new MyException("no card is destroyed and you received " + damage + " battle damage");
         }
     }
 
-    private void attackDH(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) throws Exception {
+    private void attackDH(Address myAddress, Address address, int index, Player currentPlayer, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) throws MyException {
         String shouldBePrinted;
         if (damage == 0)
             shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getName() + " and no card is destroyed";
@@ -493,7 +494,7 @@ public class BattlePhaseController {
             shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "no card is destroyed and you received " + damage + " battle damage";
         }
         currentPlayer.setPositionOfCardInBoardByAddress(address, PositionOfCardInBoard.DO);
-        throw new Exception(shouldBePrinted);
+        throw new MyException(shouldBePrinted);
     }
 
     private void decreaseLP(Address myAddress, Address address, int index, Player player, MonsterCard myMonsterCard, MonsterCard rivalMonsterCard, int damage) {
@@ -511,15 +512,15 @@ public class BattlePhaseController {
             currentPlayer.removeCard(address);
     }
 
-    private void flipSummon(Matcher matcher) throws CantDoInThisPhase {
-        throw new CantDoInThisPhase("you can’t do this action in this phase");
+    private void flipSummon(Matcher matcher) throws MyException {
+        throw new MyException("you can’t do this action in this phase");
     }
 
-    private void setPosition(Matcher matcher) throws CantDoInThisPhase {
-        throw new CantDoInThisPhase("you can’t do this action in this phase");
+    private void setPosition(Matcher matcher) throws MyException {
+        throw new MyException("you can’t do this action in this phase");
     }
 
-    private void directAttack(Matcher matcher) throws Exception {
+    private void directAttack(Matcher matcher) throws MyException {
         PhaseControl.getInstance().checkIfGameEnded();
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
@@ -527,14 +528,14 @@ public class BattlePhaseController {
             if (currentPlayer.getMonsterPosition(Integer.parseInt(matcher.group(2))).equals(PositionOfCardInBoard.OO)) {
                 if (rivalPlayer.getMonsterZoneCard().size() == 0) {
                     int index = currentPlayer.getIndexOfThisCardByAddress(new Address(matcher.group(1)));
-                    if (currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
+                    if (!currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
                         currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
                         MonsterCard monsterCardForDirectAttack = currentPlayer.getMonsterCardByStringAddress(matcher.group(1));
                         rivalPlayer.decreaseLP(monsterCardForDirectAttack.getAttack(new Address(matcher.group(1))));
-                        throw new Exception("you opponent receives " + monsterCardForDirectAttack.getAttack(new Address(matcher.group(1))) + " battle damage");
-                    } else throw new Exception("this card already attacked");
-                } else throw new Exception("rival monster zone is not empty");
-            } else throw new Exception("you cant attack with this card");
+                        throw new MyException("you opponent receives " + monsterCardForDirectAttack.getAttack(new Address(matcher.group(1))) + " battle damage");
+                    } else throw new MyException("this card already attacked");
+                } else throw new MyException("rival monster zone is not empty");
+            } else throw new MyException("you cant attack with this card");
         }
         PhaseControl.getInstance().checkIfGameEnded();
     }
@@ -543,8 +544,8 @@ public class BattlePhaseController {
 
     }
 
-    private void activeSpell(Matcher matcher) throws CantDoInThisPhase {
-        throw new CantDoInThisPhase("you can’t do this action in this phase");
+    private void activeSpell(Matcher matcher) throws MyException {
+        throw new MyException("you can’t do this action in this phase");
     }
 
     private void activeTrap(Matcher matcher) {

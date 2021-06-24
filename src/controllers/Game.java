@@ -146,7 +146,7 @@ public class Game {
             playerTurn = PlayerTurn.SECONDPLAYER;
     }
 
-    private static void playTurn(String phase) {
+    public static void playTurn(String phase) {
         if (isAIGame && playerTurn.equals(PlayerTurn.SECONDPLAYER))
             new AITurn();
         else {

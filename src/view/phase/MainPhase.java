@@ -40,6 +40,13 @@ public class MainPhase {
         }
     }
 
+    private void playNextPhase() {
+        if (whatMainIsPhase == 1)
+            Game.playTurn("BattlePhase");
+        else if (whatMainIsPhase == 2)
+            Game.playTurn("EndPhase");
+    }
+
     private void aiRun() {
         if (whatMainIsPhase == 1) {
             Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
@@ -62,7 +69,7 @@ public class MainPhase {
                 } catch (InvalidCommandException | InvalidCardSelection | NoSelectedCardException e) {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
-                    break;
+                    playNextPhase();
                 }
             }
         }
@@ -82,7 +89,7 @@ public class MainPhase {
                     } catch (InvalidCommandException | InvalidCardSelection | NoSelectedCardException e) {
                         System.out.println(e.getMessage());
                     } catch (BreakException e) {
-                        break;
+                        playNextPhase();
                     }
                 }
                 else if (player.getHandCard().containsKey(i) && !player.getCardHand(i).getKind().equals("monster")) {
@@ -92,7 +99,7 @@ public class MainPhase {
                     } catch (InvalidCommandException | InvalidCardSelection | NoSelectedCardException e) {
                         System.out.println(e.getMessage());
                     } catch (BreakException e) {
-                        break;
+                        playNextPhase();
                     }
                 }
                 else {
@@ -117,7 +124,7 @@ public class MainPhase {
                 } catch (CantSetThisCard | CantSummonThisCard | CantActivateEffect | InvalidCommandException e) {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
-                    break;
+                    playNextPhase();
                 }
             }
         }
@@ -135,7 +142,7 @@ public class MainPhase {
                 } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | CantActivateEffect | InvalidCommandException | CantSetThisCard e) {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
-                    break;
+                    playNextPhase();
                 }
             }
         }
@@ -156,7 +163,7 @@ public class MainPhase {
                     } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | InvalidCommandException | CantSetThisCard e) {
                         System.out.println(e.getMessage());
                     } catch (BreakException e) {
-                        break;
+                        playNextPhase();
                     }
                 }
             }
@@ -175,7 +182,7 @@ public class MainPhase {
                     } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | InvalidCommandException | CantSetThisCard e) {
                         System.out.println(e.getMessage());
                     } catch (BreakException e) {
-                        break;
+                        playNextPhase();
                     }
                 }
             }
@@ -194,7 +201,7 @@ public class MainPhase {
                 } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | CantActivateEffect | InvalidCommandException | CantSetThisCard e) {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
-                    break;
+                    playNextPhase();
                 }
             }
         }
@@ -210,7 +217,7 @@ public class MainPhase {
             } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | CantActivateEffect | InvalidCommandException | CantSetThisCard e) {
                 System.out.println(e.getMessage());
             } catch (BreakException e) {
-                break;
+                playNextPhase();
             }
         }
     }
@@ -225,7 +232,7 @@ public class MainPhase {
             } catch (CantAttack | CantChangeCardPosition | CantSummonThisCard | CantActivateEffect | InvalidCommandException | CantSetThisCard e) {
                 System.out.println(e.getMessage());
             } catch (BreakException e) {
-                break;
+                playNextPhase();
             }
         }
     }
@@ -245,7 +252,7 @@ public class MainPhase {
                     } catch (CantAttack | CantChangeCardPosition | CantActivateEffect | InvalidCommandException e) {
                         System.out.println(e.getMessage());
                     } catch (BreakException e) {
-                        break;
+                        playNextPhase();
                     }
                 }
             }
@@ -266,7 +273,7 @@ public class MainPhase {
                 } catch (CantAttack | CantChangeCardPosition | CantActivateEffect | InvalidCommandException e) {
 
                 } catch (BreakException e) {
-                    break;
+                    playNextPhase();
                 }
             }
         }
@@ -433,7 +440,17 @@ public class MainPhase {
     }
 
     public void showSelectedCard(Matcher matcher) {
-        PhaseControl.getInstance().showSelectedCard(matcher);
+        matcher.find();
+        Address address = new Address(matcher.group(1));
+        if (address.checkIsMine())
+            PhaseControl.getInstance().showSelectedCard(address);
+        else {
+            try {
+                PhaseControl.getInstance().showOpponentCard(address);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     public void printTrapAttributes(TrapCard trapCardForShow) {

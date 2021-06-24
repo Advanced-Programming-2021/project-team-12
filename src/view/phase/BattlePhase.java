@@ -39,6 +39,7 @@ public class BattlePhase {
                 }
             }
         }
+        Game.playTurn("MainPhase2");
     }
 
     private void AIRun() {

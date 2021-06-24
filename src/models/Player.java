@@ -6,6 +6,7 @@ import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
 import controllers.Game;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Player {
@@ -269,7 +270,6 @@ public class Player {
         }
     }
 
-
     public Card getCardByAddress(Address address) {
         HashMap<Integer, Card> getCardHashMap = getHashMapByAddress(address);
         return getCardHashMap.get(address.getNumber());
@@ -325,6 +325,8 @@ public class Player {
 
     public MonsterCard getMonsterCardByStringAddress(String address) {
         Address cardAddress = new Address(address);
+        if (!getCardByAddress(cardAddress).getKind().equals("Monster"))
+            return null;
         return MonsterCard.getMonsterCardByName(getCardByAddress(cardAddress).getCardName());
     }
 
@@ -432,7 +434,7 @@ public class Player {
     }
 
     public MonsterCard getMonsterCardByAddress(Address address) {
-        return MonsterCard.getMonsterCardByName(monsterZoneCardNumbers.get(address.getNumber()).getCardName());
+        return MonsterCard.getMonsterCardByName(getCardByAddress(address).getCardName());
     }
 
     public boolean isThereAnyRitualModeSpellInOurHand() {
@@ -448,7 +450,20 @@ public class Player {
     }
 
     public ArrayList<Integer> sumOfLevelOfAllSubsetsOfMonsterZone() {
-        return null;
+        ArrayList<Integer> integers = new ArrayList<>();
+        for (int i = 1; i < 32; i++)
+            integers.add(getSubLeve(i));
+        return integers;
+    }
+
+    private Integer getSubLeve(int setNumber) {
+        int number = 0;
+        for (int i = 1; i <= 5; i++) {
+            if (setNumber % 2 == 1 && monsterZoneCardNumbers.containsKey(i))
+                number += monsterZoneCardNumbers.get(i).getLevel();
+            setNumber /= 2;
+        }
+        return number;
     }
 
     public ArrayList<Integer> levelOfRitualMonstersOnOurHand() {
@@ -469,7 +484,7 @@ public class Player {
 
     public int howManyCardIsInTheHandCard() {
         int number = 0;
-        for (int i = 1; i <= 5; i++)
+        for (int i = 1; i <= 6; i++)
             if (handCardNumbers.containsKey(i))
                 number++;
         return number;
@@ -576,13 +591,23 @@ public class Player {
     }
 
     public boolean doIHaveActivatedTrapNamedMagicCylinder() {
-        return true;
-        //sd;khskdljf
+        for (int i = 1; i <= 5; i++) {
+            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Magic Cylinder")) {
+                if (isSpellFaceUp.get(i));
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean doIHaveActivatedTrapNamedMirrorForce() {
-        return true;
-        //sd;khskdljf
+        for (int i = 1; i <= 5; i++) {
+            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Mirror Force")) {
+                if (isSpellFaceUp.get(i));
+                return true;
+            }
+        }
+        return false;
     }
 
     public void destroyAllRivalMonstersWhichInAttackMode() {
@@ -629,8 +654,13 @@ public class Player {
     }
 
     public boolean doIHaveActivatedTrapNamedNegateAttack() {
-        return true;
-        //djhgdsfighdspysfdg
+        for (int i = 1; i <= 5; i++) {
+            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Negate Attack")) {
+                if (isSpellFaceUp.get(i));
+                    return true;
+            }
+        }
+        return false;
     }
 
     public int getNumberOFHandCard() {
@@ -755,5 +785,13 @@ public class Player {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).checkIsRitual())
                 return new Address(i, "spell", true);
         return null;
+    }
+
+    public SpellCard getSpellCardByAddress(Address address) {
+        return SpellCard.getSpellCardByName(getCardByAddress(address).getCardName());
+    }
+
+    public TrapCard getTrapCardByAddress(Address address) {
+        return TrapCard.getTrapCardByName(getCardByAddress(address).getCardName());
     }
 }

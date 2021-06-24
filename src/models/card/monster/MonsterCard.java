@@ -59,10 +59,9 @@ public class MonsterCard {
         int attack = this.attack;
         int indexOfAttacker = currentPlayer.getIndexOfThisCardByAddress(address);
         if (!currentPlayer.didBeastKingBarbarosSummonedSuperHighLevel(indexOfAttacker)) attack -= 1900;
-        if (Attack.whatKindOfCardIsDefenderNow().equals("Suijin") && !Attack.isDefenderFacedDown()) {
-            if (whenSuijinIsDefending()) {
+        if (Attack.whatKindOfCardIsDefenderNow() != null && Attack.whatKindOfCardIsDefenderNow().equals("Suijin") && !Attack.isDefenderFacedDown()) {
+            if (whenSuijinIsDefending())
                 return 0;
-            }
         }
         if (SetSpell.doAnyOneHaveUmiruka()) {
             if (monsterMode == MonsterMode.AQUA) {

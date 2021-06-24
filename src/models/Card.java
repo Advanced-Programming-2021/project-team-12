@@ -54,17 +54,17 @@ public class Card {
     }
 
     public void showCard() {
-        if (kind.equals("monster")) {
+        if (kind.equals("Monster")) {
             System.out.println("Name: " + name + "\\nLevel: " + getLevel() + "\\nType: " + "\\nATK: " + getAttack()
                     + "\\nDEF: " + getDefence(true) + "\\nDescription: " + getDescription());
         }
 
-        if (kind.equals("monster")) {
+        if (kind.equals("Spell")) {
             System.out.println(
                     "Name: " + name + "\\nSpell" + "\\nType: " + getType() + "\\nDescription: " + getDescription());
         }
 
-        if (kind.equals("monster")) {
+        if (kind.equals("Trap")) {
             System.out.println(
                     "Name: " + name + "\\nTrap" + "\\nType: " + getType() + "\\nDescription: " + getDescription());
         }
