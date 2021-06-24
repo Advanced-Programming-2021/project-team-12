@@ -5,7 +5,9 @@ import controllers.move.SetSpell;
 import models.Address;
 import models.Board;
 import models.Player;
+import models.PositionOfCardInBoard;
 import models.card.monster.monster_effect.MonsterEffect;
+import models.card.spell.SpellCard;
 import view.Effect;
 import controllers.Game;
 //import card.spell.SpellCard;
@@ -58,6 +60,11 @@ public class MonsterCard {
         Player currentPlayer = Game.whoseTurnPlayer();
         int attack = this.attack;
         int indexOfAttacker = currentPlayer.getIndexOfThisCardByAddress(address);
+        int spellPlace = currentPlayer.getFromMonsterToSpellEquip(address.getNumber());
+        if (spellPlace > 0) {
+            Address spellAddress = new Address(spellPlace, "spell", true);
+            attack = doEquipSpellEffect(attack, currentPlayer.getSpellCardByAddress(spellAddress), false, address);
+        }
         if (!currentPlayer.didBeastKingBarbarosSummonedSuperHighLevel(indexOfAttacker)) attack -= 1900;
         if (Attack.whatKindOfCardIsDefenderNow() != null && Attack.whatKindOfCardIsDefenderNow().equals("Suijin") && !Attack.isDefenderFacedDown()) {
             if (whenSuijinIsDefending())
@@ -86,12 +93,47 @@ public class MonsterCard {
         return attack;
     }
 
+    private int doEquipSpellEffect(int attackOrDefence, SpellCard spellCard, boolean isItDefence, Address address) {
+        if (isItDefence) {
+            if (spellCard.getName().equals("SwordOfDarkDestruction")) {
+                if (monsterMode.equals(MonsterMode.SPELLCASTER) || monsterMode.equals(MonsterMode.FIEND))
+                    attackOrDefence -= 200;
+            }
+            if (spellCard.getName().equals("MagnumShield")){
+                if(monsterMode.equals(MonsterMode.WARRIOR)){
+                    PositionOfCardInBoard positionOfCardInBoard =Game.whoseTurnPlayer().getMonsterPosition(address.getNumber());
+                    if(positionOfCardInBoard.equals(PositionOfCardInBoard.DH) || positionOfCardInBoard.equals(PositionOfCardInBoard.DO)) attackOrDefence += attack;
+                }
+            }
+        } else {
+            if (spellCard.getName().equals("SwordOfDarkDestruction")) {
+                if (monsterMode.equals(MonsterMode.SPELLCASTER) || monsterMode.equals(MonsterMode.FIEND))
+                    attackOrDefence += 400;
+            }
+            if (spellCard.getName().equals("BlackPendant")) attackOrDefence += 500;
+            if (spellCard.getName().equals("MagnumShield")){
+                if(monsterMode.equals(MonsterMode.WARRIOR)){
+                    if(Game.whoseTurnPlayer().getMonsterPosition(address.getNumber()).equals(PositionOfCardInBoard.OO)) attackOrDefence += defence;
+                }
+            }
+        }
+        if (spellCard.getName().equals("UnitedWeStand")) attackOrDefence += (800*Game.whoseTurnPlayer().getMonsterZoneCard().size());
+
+        return attackOrDefence;
+    }
+
     public int getDefenceNumber() {
         return defence;
     }
 
-    public int getDefence(boolean isFacedUp) {
+    public int getDefence(boolean isFacedUp, Address address) {
+        Player currentPlayer = Game.whoseTurnPlayer();
         int defence = this.defence;
+        int spellPlace = currentPlayer.getFromMonsterToSpellEquip(address.getNumber());
+        if (spellPlace > 0) {
+            Address spellAddress = new Address(spellPlace, "spell", true);
+            defence = doEquipSpellEffect(defence, currentPlayer.getSpellCardByAddress(spellAddress), true, address);
+        }
         if (SetSpell.doAnyOneHaveUmiruka()) {
             if (monsterMode == MonsterMode.AQUA) {
                 defence -= 400;

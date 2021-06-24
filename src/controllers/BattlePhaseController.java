@@ -138,7 +138,7 @@ public class BattlePhaseController {
             if (!player.getMonsterZoneCard().containsKey(i))
                 continue;
             if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.DO))
-                tempDamage = MonsterCard.getMonsterCardByName(card.getCardName()).getAttack(address) - MonsterCard.getMonsterCardByName(player.getCardMonster(i).getCardName()).getDefence(true);
+                tempDamage = MonsterCard.getMonsterCardByName(card.getCardName()).getAttack(address) - MonsterCard.getMonsterCardByName(player.getCardMonster(i).getCardName()).getDefence(true,new Address(i, "monster", false) );
             if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.OO))
                 tempDamage = MonsterCard.getMonsterCardByName(card.getCardName()).getAttack(address) - MonsterCard.getMonsterCardByName(player.getCardMonster(i).getCardName()).getAttack(new Address(i, "monster", true));
             if (damage < tempDamage) {
@@ -435,13 +435,13 @@ public class BattlePhaseController {
                                 attackOO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                                 Attack.timeToEffectAfterAttack();
                             } else if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.DO) {
-                                if (rivalMonsterCard.getDefence(true) != -1) {
-                                    int damage = myMonsterCard.getAttack(myAddressType) - rivalMonsterCard.getDefence(true);
+                                if (rivalMonsterCard.getDefence(true, address) != -1) {
+                                    int damage = myMonsterCard.getAttack(myAddressType) - rivalMonsterCard.getDefence(true, address);
                                     attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                                     Attack.timeToEffectAfterAttack();
                                 } else throw new MyException("Attack has been cancelled for effect of a card");
                             } else {
-                                int damage = myMonsterCard.getAttack(myAddressType) - rivalMonsterCard.getDefence(false);
+                                int damage = myMonsterCard.getAttack(myAddressType) - rivalMonsterCard.getDefence(false, address);
                                 attackDH(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                                 Attack.timeToEffectAfterAttack();
                             }
