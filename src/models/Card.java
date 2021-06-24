@@ -56,7 +56,7 @@ public class Card {
     public void showCard() {
         if (kind.equals("Monster")) {
             System.out.println("Name: " + name + "\\nLevel: " + getLevel() + "\\nType: " + "\\nATK: " + getAttack()
-                    + "\\nDEF: " + getDefence(true) + "\\nDescription: " + getDescription());
+                    + "\\nDEF: " + getDefence() + "\\nDescription: " + getDescription());
         }
 
         if (kind.equals("Spell")) {
@@ -167,9 +167,9 @@ public class Card {
         return card.getNormalAttack();
     }
 
-    public int getDefence(Boolean isFaceUp) {
+    public int getDefence() {
         MonsterCard card = MonsterCard.getMonsterCardByName(name);
-        return card.getDefence(isFaceUp);
+        return card.getNormalDefence();
     }
 
     public int getLevel() {

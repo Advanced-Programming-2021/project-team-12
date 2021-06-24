@@ -31,7 +31,7 @@ public class Player {
     private HashMap<Address, Integer> indexOfCard = new HashMap<>();
     private HashMap<Integer, Boolean> isSpellFaceUp = new HashMap<>();
     private boolean[] didBeastKingBarbarosSummonedSuperHighLevel;
-    private Card[] cardByIndex;//dear Ali do the thing
+    private Card[] cardByIndex;
     private ArrayList<Integer> indexOfCardUsedSuijin;
     private int[] fromMonsterToSpellEquip;
 
@@ -468,18 +468,18 @@ public class Player {
         return false;
     }
 
-    public ArrayList<Integer> sumOfLevelOfAllSubsetsOfMonsterZone() {
+    public ArrayList<Integer> sumOfLevelOfAllSubsetsOfMonsterZone(HashMap<Integer, Card> hasCard) {
         ArrayList<Integer> integers = new ArrayList<>();
         for (int i = 1; i < 32; i++)
-            integers.add(getSubLeve(i));
+            integers.add(getSubLeve(i, hasCard));
         return integers;
     }
 
-    private Integer getSubLeve(int setNumber) {
+    private Integer getSubLeve(int setNumber, HashMap<Integer, Card> hasCard) {
         int number = 0;
         for (int i = 1; i <= 5; i++) {
-            if (setNumber % 2 == 1 && monsterZoneCardNumbers.containsKey(i))
-                number += monsterZoneCardNumbers.get(i).getLevel();
+            if (setNumber % 2 == 1 && hasCard.containsKey(i))
+                number += hasCard.get(i).getLevel();
             setNumber /= 2;
         }
         return number;
@@ -494,9 +494,9 @@ public class Player {
     }
 
     public boolean isOneOfLevelOfRitualMonstersInTheHandIsEqualToSumOfLevelOfSubsetOfMonsterZone() {
-        for (int i = 0; i < sumOfLevelOfAllSubsetsOfMonsterZone().size(); i++)
+        for (int i = 0; i < sumOfLevelOfAllSubsetsOfMonsterZone(monsterZoneCardNumbers).size(); i++)
             for (int j = 0; j < levelOfRitualMonstersOnOurHand().size(); j++)
-                if (sumOfLevelOfAllSubsetsOfMonsterZone().get(i).equals(levelOfRitualMonstersOnOurHand().get(j)))
+                if (sumOfLevelOfAllSubsetsOfMonsterZone(monsterZoneCardNumbers).get(i).equals(levelOfRitualMonstersOnOurHand().get(j)))
                     return true;
         return false;
     }
@@ -795,9 +795,15 @@ public class Player {
         removeCard(new Address(graveyardCardNumbers.size(), "graveyard", true));
     }
 
-    public boolean canIContinueTribute(int i, List<Address> monsterCardsAddress) {
-        return true;
-//        asdlkfjhsadkfhsadkf
+    public boolean canIContinueTribute(int number, List<Address> monsterCardsAddress) {
+        HashMap<Integer, Card> monsters = new HashMap<>();
+        for (int i = 1; i <= 5; i++)
+            if (monsterZoneCardNumbers.containsKey(i))
+                monsters.put(i, monsterZoneCardNumbers.get(i));
+        for (Address cardsAddress : monsterCardsAddress)
+            monsters.remove(cardsAddress.getNumber());
+        ArrayList<Integer> subLevels = sumOfLevelOfAllSubsetsOfMonsterZone(monsters);
+        return subLevels.contains(number);
     }
 
     public Address getOneOfRitualSpellCardAddress() {

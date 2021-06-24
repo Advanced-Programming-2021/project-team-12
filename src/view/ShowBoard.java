@@ -6,7 +6,7 @@ import models.Player;
 public class ShowBoard {
     public ShowBoard(Player currentPlayer, Player opponentPlayer) {
         opponentPlayerData(opponentPlayer);
-        System.out.println("--------------------------------");
+        System.out.println("----------------------------");
         currentPlayerData(currentPlayer);
     }
 
@@ -130,7 +130,7 @@ public class ShowBoard {
         showGYF(player, "c");
         showMonsters(player, "c");
         showSpells(player, "c");
-        System.out.println("\t\t\t\t\t\t     " + player.getNUmberOfUnusedCard());
+        System.out.println("\t\t\t\t\t\t " + player.getNUmberOfUnusedCard());
         showHandCard(player, "c");
         System.out.println(player.getNickName() + ": " + player.getLP());
     }
