@@ -481,9 +481,9 @@ public class PhaseControl {
         currentPlayer.setHeSummonedOrSet(true);
         if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
             currentPlayer.summonCardToMonsterZone(matcher.group(1)).setIsScanner(true);
-        } else if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger")) {
-            if (Integer.parseInt(Effect.run("Terratiger")) != 0) {
-                Address address1 = new Address(Integer.parseInt(Effect.run("Terratiger")), "hand", true);
+        } else if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger, the Empowered Warrior")) {
+            if (Integer.parseInt(Effect.run("Terratiger, the Empowered Warrior")) != 0) {
+                Address address1 = new Address(Integer.parseInt(Effect.run("Terratiger, the Empowered Warrior")), "hand", true);
                 if ((currentPlayer.getMonsterCardByAddress(address1) != null)
                         && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
                         && (!currentPlayer.isMonsterZoneFull()))
@@ -499,7 +499,7 @@ public class PhaseControl {
         if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
             Attack.destroyAllMonstersInTheBoard();
             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
-//                                System.out.println("All monster card got destroyed by effect of TorrentialTribute effect.");
+//                                System.out.println("All monster card got destroyed by effect of Torrential Tribute effect.");
         }
     }
 
@@ -527,7 +527,7 @@ public class PhaseControl {
                     if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                         Attack.destroyAllMonstersInTheBoard();
                         Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
-//                        System.out.println("All monster card got destroyed by effect of TorrentialTribute effect.");
+//                        System.out.println("All monster card got destroyed by effect of Torrential Tribute effect.");
                     }
                 } else throw new NoMonsterInThisAddress("There is no monster in this address!");
             }
@@ -556,14 +556,14 @@ public class PhaseControl {
                         if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             if (monsterCard.getNormalAttack() >= 1000) {
                                 currentPlayer.removeCard(address1);
-                                Game.whoseRivalPlayer().removeOneOfTrapOrSpell("TrapHole");
+                                Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
                                 //System.out.println("The summmoned card got destroyed by effect of Trap Hole efffect.");
                             }
                         }
                         if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             Attack.destroyAllMonstersInTheBoard();
                             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
-                            //System.out.println("All monster card got destroyed by effect of TorrentialTribute efffect.");
+                            //System.out.println("All monster card got destroyed by effect of Torrential Tribute efffect.");
                         }
                     } else throw new NoMonsterInThisAddress("There is no monster in this address!");
                 }
@@ -603,7 +603,7 @@ public class PhaseControl {
                             if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                                 Attack.destroyAllMonstersInTheBoard();
                                 Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
-                                //System.out.println("All monster card got destroyed by effect of TorrentialTribute effect.");
+                                //System.out.println("All monster card got destroyed by effect of Torrential Tribute effect.");
                             }
                         } else throw new NoMonsterInThisAddress("There is no monster in this address!");
                     }
@@ -633,7 +633,7 @@ public class PhaseControl {
                 currentPlayer.convertThisMonsterFromDHToOO(matcher.group(1));
                 Address address = new Address(matcher.group(1));
                 MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
-                if (currentPlayer.getMonsterCardByAddress(address).getName().equals("ManEaterBug")) {
+                if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Man-Eater Bug")) {
                     doManEaterBugEffect();
                 }
                 if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole")) {
@@ -680,7 +680,7 @@ public class PhaseControl {
             Address address = new Address(stringAddress);
             Player currentPlayer = Game.whoseTurnPlayer();
             int index = currentPlayer.getIndexOfThisCardByAddress(address);
-            if (!currentPlayer.didWeActivateThisSpell(index)) {
+            if (!currentPlayer.isThisSpellActivated(index)) {
                 if (currentPlayer.getSpellCardByStringAddress(stringAddress).getSpellMode() == SpellMode.FIELD)
                     activateThisKindOfAddress(stringAddress, address, currentPlayer, index, "field");
                 else if (currentPlayer.getSpellCardByStringAddress(stringAddress).getSpellMode() == SpellMode.EQUIP)
@@ -699,7 +699,6 @@ public class PhaseControl {
                     && BattlePhase.getInstance().getPermissionForTrap("Magic Jammer", false)) {
                 if (MainPhase.removeCardFromMyHand()) Game.whoseTurnPlayer().removeCard(address);
             } else {
-                currentPlayer.setDidWeActivateThisSpell(index);
                 currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
                 currentPlayer.setIsThisSpellActivated(true, index);
                 SpellCard.doSpellAbsorptionEffect();
@@ -718,12 +717,12 @@ public class PhaseControl {
                 //address.setIfItIsScannerThenWhat(monsterCard);
             }
         }
-        int count = Integer.parseInt(Effect.run("HeraldOfCreation1"));
+        int count = Integer.parseInt(Effect.run("Herald of Creation1"));
         int numberOfHeraldOfCreation = Game.whoseTurnPlayer().howManyHeraldOfCreationDoWeHave();
         for (int i = 0; i < minOfTwoNumber(numberOfHeraldOfCreation, count) - Game.getMainPhase1().howManyHeraldOfCreationDidWeUseEffect; i++) {
-            Address shouldBeRemoved = new Address(Integer.parseInt(Effect.run("HeraldOfCreation2")), "monster", true);
+            Address shouldBeRemoved = new Address(Integer.parseInt(Effect.run("Herald of Creation2")), "monster", true);
             if (!Board.isAddressEmpty(shouldBeRemoved)) {
-                Address comeBackFromGraveyard = new Address(Integer.parseInt(Effect.run("HeraldOfCreation3")), "graveyard", true);
+                Address comeBackFromGraveyard = new Address(Integer.parseInt(Effect.run("Herald of Creation3")), "graveyard", true);
                 MonsterCard monsterCardForHeraldOfCreation = Board.whatKindaMonsterIsHere(comeBackFromGraveyard);
                 if (monsterCardForHeraldOfCreation != null) {
                     if (monsterCardForHeraldOfCreation.getLevel() >= 7) {
@@ -738,7 +737,7 @@ public class PhaseControl {
     }
 
     public void doManEaterBugEffect() {
-        int monsterZoneNumber = Integer.parseInt(Effect.run("ManEaterBug"));
+        int monsterZoneNumber = Integer.parseInt(Effect.run("Man-Eater Bug"));
         if (monsterZoneNumber <= 5 && monsterZoneNumber >= 1) {
             Address address1 = new Address(monsterZoneNumber, "monster", false);
             if (!Board.isAddressEmpty(address1)) {

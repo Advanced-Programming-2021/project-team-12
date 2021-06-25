@@ -13,6 +13,13 @@ public class Attack {
     private static Address defenderAddress;
     private static Address attackerAddress;
 
+    public static void setAddress(String stringAddress, boolean isAttacker) {
+        if (isAttacker)
+            attackerAddress = new Address(stringAddress);
+        else
+            defenderAddress = new Address(stringAddress);
+    }
+
     public static void destroyAllRivalMonstersAndTrapInTheBoard() {
         Board.destroyAllMonster(Game.whoseRivalPlayer());
         Board.destroyAllTrapAndSpells(Game.whoseRivalPlayer());
@@ -41,7 +48,7 @@ public class Attack {
 
     public static String whatKindOfCardIsDefenderNow() {
         Card card = Board.getCardByAddress(defenderAddress);
-        card.getCardName();
+        return card.getCardName();
     }
 
     public static void timeToEffectAfterAttack(){

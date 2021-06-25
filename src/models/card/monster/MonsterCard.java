@@ -98,29 +98,29 @@ public class MonsterCard {
 
     private int doEquipSpellEffect(int attackOrDefence, SpellCard spellCard, boolean isItDefence, Address address) {
         if (isItDefence) {
-            if (spellCard.getName().equals("SwordOfDarkDestruction")) {
+            if (spellCard.getName().equals("Sword of Dark Destruction")) {
                 if (monsterMode.equals(MonsterMode.SPELLCASTER) || monsterMode.equals(MonsterMode.FIEND))
                     attackOrDefence -= 200;
             }
-            if (spellCard.getName().equals("MagnumShield")){
+            if (spellCard.getName().equals("Magnum Shield")){
                 if(monsterMode.equals(MonsterMode.WARRIOR)){
                     PositionOfCardInBoard positionOfCardInBoard =Game.whoseTurnPlayer().getMonsterPosition(address.getNumber());
                     if(positionOfCardInBoard.equals(PositionOfCardInBoard.DH) || positionOfCardInBoard.equals(PositionOfCardInBoard.DO)) attackOrDefence += attack;
                 }
             }
         } else {
-            if (spellCard.getName().equals("SwordOfDarkDestruction")) {
+            if (spellCard.getName().equals("Sword of Dark Destruction")) {
                 if (monsterMode.equals(MonsterMode.SPELLCASTER) || monsterMode.equals(MonsterMode.FIEND))
                     attackOrDefence += 400;
             }
-            if (spellCard.getName().equals("BlackPendant")) attackOrDefence += 500;
-            if (spellCard.getName().equals("MagnumShield")){
+            if (spellCard.getName().equals("Black Pendant")) attackOrDefence += 500;
+            if (spellCard.getName().equals("Magnum Shield")){
                 if(monsterMode.equals(MonsterMode.WARRIOR)){
                     if(Game.whoseTurnPlayer().getMonsterPosition(address.getNumber()).equals(PositionOfCardInBoard.OO)) attackOrDefence += defence;
                 }
             }
         }
-        if (spellCard.getName().equals("UnitedWeStand")) attackOrDefence += (800*Game.whoseTurnPlayer().getMonsterZoneCard().size());
+        if (spellCard.getName().equals("United We Stand")) attackOrDefence += (800*Game.whoseTurnPlayer().getMonsterZoneCard().size());
 
         return attackOrDefence;
     }
@@ -150,7 +150,7 @@ public class MonsterCard {
             if (monsterMode == MonsterMode.SPELLCASTER || monsterMode == MonsterMode.FIEND) defence += 200;
             if (monsterMode == MonsterMode.FAIRY) defence -= 200;
         }
-        if ((name.equals("CommandKnight")) && (Board.howManyMonsterIsOnTheBoard() > 1) && isFacedUp) return -1;
+        if ((name.equals("Command Knight")) && (Board.howManyMonsterIsOnTheBoard() > 1) && isFacedUp) return -1;
         return defence;
     }
 
@@ -203,7 +203,7 @@ public class MonsterCard {
         Address addressDestroyer = Attack.whatAddressHasDestroyedNow();
         String gotDestroyed = Attack.whatKindaCardGotDestroyedNow();
         String defender = Attack.whatKindOfCardIsDefenderNow();
-        if (gotDestroyed.equals("YomiShip")) {
+        if (gotDestroyed.equals("Yomi Ship")) {
             Attack.destroyThisAddress(addressDestroyer);
         }
         if (defender.equals("Marshmallon")) {
