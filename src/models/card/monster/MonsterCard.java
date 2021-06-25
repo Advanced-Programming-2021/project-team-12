@@ -77,7 +77,7 @@ public class MonsterCard {
             }
         }
         if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.BEAST_WARRIOR) {
-            if (SetSpell.doIHaveClosedForest()) {
+            if (currentPlayer.doIHaveSpellCard("Closed Forest")) {
                 attack += 100 * Board.numberOfAllMonstersInGraveYard();
             }
         }

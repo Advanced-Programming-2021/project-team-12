@@ -584,7 +584,7 @@ public class MainPhase {
 
 
     public static void doCallOfTheHauntedEffect(boolean isMine) {
-        if(isMine) System.out.println("choose a monster from your graveyard to be summoned!(only type number)");
+        if (isMine) System.out.println("choose a monster from your graveyard to be summoned!(only type number)");
         else System.out.println("choose a monster from your rival's graveyard to be summoned!(only type number)");
         Board.showGraveyard();
         Address address = new Address(Integer.parseInt(Main.scanner.nextLine()), "graveyard", isMine);
@@ -601,5 +601,15 @@ public class MainPhase {
         }
         return false;
     }
+
+    public static boolean doSolemnWarningEffect(Address address) {
+        if (BattlePhase.getInstance().getPermissionForTrap("Solemn Warning", false)) {
+            Game.whoseRivalPlayer().decreaseLP(2000);
+            Game.whoseTurnPlayer().removeCard(address);
+            return true;
+        }
+        return false;
+    }
+
 
 }
