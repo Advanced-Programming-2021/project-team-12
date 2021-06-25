@@ -10,14 +10,17 @@ import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
 
 public class Attack {
-    private static Address defenderAddress;
-    private static Address attackerAddress;
+    public static Address defenderAddress;
+    public static Address attackerAddress;
+    public static String defenderMonsterName;
 
     public static void setAddress(String stringAddress, boolean isAttacker) {
         if (isAttacker)
             attackerAddress = new Address(stringAddress);
-        else
+        else {
             defenderAddress = new Address(stringAddress);
+            defenderMonsterName = Game.whoseRivalPlayer().getMonsterCardByAddress(defenderAddress).getName();
+        }
     }
 
     public static void destroyAllRivalMonstersAndTrapInTheBoard() {
@@ -34,52 +37,30 @@ public class Attack {
         Board.destroyAllMonster(Game.whoseRivalPlayer());
     }
 
-    //Dear Alireza you have to call "timeToEffect" method after every attack(when attack get over)
-    public void run(Address address){
-        if(Board.whatKindaMonsterIsHere(address)!=null){
-            if(Board.whatKindaMonsterIsHere(address).getNormalAttack()>=1500)
-                if(SetSpell.doAnyOneHaveMessengerOfPeace())
-                    System.out.println("You can't attack by monster with attack equal or more than 1500 " +
-                            "because of MessengerOfPeace.");
-                //to be continued
-        }
-
-    }
-
     public static String whatKindOfCardIsDefenderNow() {
         Card card = Board.getCardByAddress(defenderAddress);
         return card.getCardName();
     }
 
-    public static void timeToEffectAfterAttack(){
+    public static void timeToEffectAfterAttack() {
         MonsterCard.welcomeToEffect();
         TrapCard.welcomeToEffect();
         SpellCard.welcomeToEffect();
     }
 
-    public static void destroyThisAddress(Address address){
+    public static void destroyThisAddress(Address address) {
         Board.removeCardByAddress(address);
     }
 
-    public static Address whatAddressHasDestroyedNow(){
-        return null;
-        //written by mohamad
-    }
-
-    public static String whatKindaCardGotDestroyedNow(){
-        return null;
-        //written by mohamad
-    }
-
-    public static int whatIndexOfDefender(){
+    public static int whatIndexOfDefender() {
         return Game.whoseRivalPlayer().getIndexOfThisCardByAddress(defenderAddress);
     }
 
-    public static boolean isDefenderFacedDown(){
+    public static boolean isDefenderFacedDown() {
         return Game.whoseRivalPlayer().getSpellPosition(defenderAddress.getNumber());
     }
 
-    public static Player whichPlayerIsAttacker(){
+    public static Player whichPlayerIsAttacker() {
         return Game.whoseTurnPlayer();
     }
 
