@@ -826,6 +826,8 @@ public class Player {
         for (int i = 1; i <= 5; i++)
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName))
                 spellZoneCardNumbers.remove(i);
+    }
+
     public void destroyMyTrapNamed(String  trapName) {
 
     }

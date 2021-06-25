@@ -393,7 +393,6 @@ public class PhaseControl {
             if (!currentPlayer.isSpellZoneFull()) {
                 Address address = new Address(matcher.group(1));
                 currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
-                currentPlayer.setHeSummonedOrSet(true);
                 activateSomeOfTraps(address, currentPlayer.getSpellCardByAddress(address), currentPlayer);
             } else throw new SpellZoneFull("spell card zone is full!");
         }
