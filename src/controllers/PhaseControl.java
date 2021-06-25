@@ -474,13 +474,13 @@ public class PhaseControl {
                     currentPlayer.setCardFromHandToMonsterZone(address1);
             }
         } else currentPlayer.summonCardToMonsterZone(matcher.group(1));
-        if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+        if (Game.whoseRivalPlayer().doIHaveSpellCard("Hole Trap") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
             if(monsterCard.getNormalAttack()>= 1000) {
                 currentPlayer.removeCard(address);
                 Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
             }
         }
-        if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+        if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
             Attack.destroyAllMonstersInTheBoard();
             Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
 //                                System.out.println("All monster card got destroyed by effect of TorrentialTribute effect.");
@@ -501,14 +501,14 @@ public class PhaseControl {
                     currentPlayer.setHeSummonedOrSet(true);
                     currentPlayer.removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard));
                     currentPlayer.summonCardToMonsterZone(address);
-                    if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                    if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                         if(monsterCard.getNormalAttack()>= 1000) {
                             currentPlayer.removeCard(address1);
                             Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
 //                        System.out.println("The summoned card got destroyed by effect of Trap Hole effect.");
                         }
                     }
-                    if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                    if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                         Attack.destroyAllMonstersInTheBoard();
                         Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
 //                        System.out.println("All monster card got destroyed by effect of TorrentialTribute effect.");
@@ -537,14 +537,14 @@ public class PhaseControl {
                         Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard1));
                         Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard2));
                         Game.whoseTurnPlayer().summonCardToMonsterZone(address);
-                        if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                        if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             if(monsterCard.getNormalAttack()>= 1000) {
                                 currentPlayer.removeCard(address1);
                                 Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
                                 //System.out.println("The summmoned card got destroyed by effect of Trap Hole efffect.");
                             }
                         }
-                        if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                        if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             Attack.destroyAllMonstersInTheBoard();
                             Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
                             //System.out.println("All monster card got destroyed by effect of TorrentialTribute efffect.");
@@ -579,12 +579,12 @@ public class PhaseControl {
                             Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard2));
                             Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard3));
                             Game.whoseTurnPlayer().summonCardToMonsterZone(address);
-                            if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                            if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                                 currentPlayer.removeCard(address1);
                                 Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
                                 //System.out.println("The summoned card got destroyed by effect of Trap Hole effect.");
                             }
-                            if (Game.whoseRivalPlayer().doIHaveTorrentialTributeTrapOnTheBoard() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                            if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                                 Attack.destroyAllMonstersInTheBoard();
                                 Game.whoseRivalPlayer().removeOneOfMyTorrentialTributeTrapOnTheBoard();
                                 //System.out.println("All monster card got destroyed by effect of TorrentialTribute effect.");
@@ -620,7 +620,7 @@ public class PhaseControl {
                 if (currentPlayer.getMonsterCardByAddress(address).getName().equals("ManEaterBug")) {
                     doManEaterBugEffect();
                 }
-                if (Game.whoseRivalPlayer().doIHaveTrapHoleTrapOnTheBoard()) {
+                if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole")) {
                     if(monsterCard.getNormalAttack()>= 1000) {
                         currentPlayer.removeCard(address);
                         Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
