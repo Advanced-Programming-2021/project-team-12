@@ -149,32 +149,28 @@ public class Game {
     }
 
     public static void playTurn(String phase) {
-        if (isAIGame && playerTurn.equals(PlayerTurn.SECONDPLAYER))
-            new AITurn();
-        else {
-            switch (phase) {
-                case "DrawPhase":
-                    new DrawPhase().run();
-                    break;
-                case "StandByPhase":
-                    new StandByPhase().run();
-                    break;
-                case "MainPhase1":
-                    mainPhase1.run();
-                    break;
-                case "BattlePhase":
-                    goToBattlePhase();
-                    break;
-                case "MainPhase2":
-                    mainPhase2.run();
-                    break;
-                case "EndPhase":
-                    new EndPhase().run();
-                    break;
-                case "EndGame":
-                    EndGame();
-                    break;
-            }
+        switch (phase) {
+            case "DrawPhase":
+                new DrawPhase().run();
+                break;
+            case "StandByPhase":
+                new StandByPhase().run();
+                break;
+            case "MainPhase1":
+                mainPhase1.run();
+                break;
+            case "BattlePhase":
+                goToBattlePhase();
+                break;
+            case "MainPhase2":
+                mainPhase2.run();
+                break;
+            case "EndPhase":
+                new EndPhase().run();
+                break;
+            case "EndGame":
+                EndGame();
+                break;
         }
     }
 

@@ -27,9 +27,9 @@ public class User {
     }
 
     public User() {
-        this.userName = "**AI**";
-        this.nickName = "**AI**";
-        this.password = "**AI**";
+        this.userName = "*AI";
+        this.nickName = "*AI";
+        this.password = "*AI";
         score = 0;
         money = 180000;
     }
