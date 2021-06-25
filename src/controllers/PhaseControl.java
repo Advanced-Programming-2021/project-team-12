@@ -454,18 +454,20 @@ public class PhaseControl {
                     MonsterCard monsterCard = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1));
                     int level = monsterCard.getLevel();
                     if (!currentPlayer.getMonsterCardByStringAddress(matcher.group(1)).isRitual()) {
-                        if (monsterCard.getName().equals("GateGuardian")) {
-                            Game.getMainPhase1().summonForTribute(3, matcher.group(1));
+                        if (monsterCard.getName().equals("Gate Guardian")) {
+                            if(!MainPhase.doSolemnWarningEffect(address)) Game.getMainPhase1().summonForTribute(3, matcher.group(1));
                         } else {
-                            if (level <= 4) summonALowLevelMonster(matcher, currentPlayer, address);
-                            else if (level <= 6) Game.getMainPhase1().summonForTribute(1, matcher.group(1));
-                            else {
-                                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
-                                if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("BeastKingBarbaros")
-                                        && (Integer.parseInt(Effect.run("BeastKingBarbaros")) == 3)) {
-                                    Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
-                                    Game.getMainPhase1().summonForTribute(3, matcher.group(1));
-                                } else Game.getMainPhase1().summonForTribute(2, matcher.group(1));
+                            if(!MainPhase.doSolemnWarningEffect(address)) {
+                                if (level <= 4) summonALowLevelMonster(matcher, currentPlayer, address);
+                                else if (level <= 6) Game.getMainPhase1().summonForTribute(1, matcher.group(1));
+                                else {
+                                    int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+                                    if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Beast King Barbaros")
+                                            && (Integer.parseInt(Effect.run("Beast King Barbaros")) == 3)) {
+                                        Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
+                                        Game.getMainPhase1().summonForTribute(3, matcher.group(1));
+                                    } else Game.getMainPhase1().summonForTribute(2, matcher.group(1));
+                                }
                             }
                         }
                     } else Game.getMainPhase1().ritualSummon(matcher.group(1), level);
