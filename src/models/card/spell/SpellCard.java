@@ -95,8 +95,8 @@ public class SpellCard {
             currentPlayer.removeCard(address2);
             currentPlayer.removeCard(address3);
         }
-        if (name.equals("Mystical Space Typhoon")) {
-            String input = Effect.run("Mystical Space Typhoon");
+        if (name.equals("Mystical space typhoon")) {
+            String input = Effect.run("Mystical space typhoon");
             Address address1 = new Address(Integer.parseInt(input), "spell", false);
             currentPlayer.removeCard(address1);
         }

@@ -433,7 +433,7 @@ public class BattlePhaseController {
                         } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                             throw new MyException("You can't attack by monster with attack equal or more than 1500 " +
-                                    "because of MessengerOfPeace.");
+                                    "because of Messenger of peace.");
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Cylinder")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
                                 && BattlePhase.getInstance().getPermissionForTrap("Magic Cylinder", false)) {
