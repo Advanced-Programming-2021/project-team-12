@@ -459,9 +459,10 @@ public class PhaseControl {
                     int level = monsterCard.getLevel();
                     if (!currentPlayer.getMonsterCardByStringAddress(matcher.group(1)).isRitual()) {
                         if (monsterCard.getName().equals("Gate Guardian")) {
-                            if(!MainPhase.doSolemnWarningEffect(address)) Game.getMainPhase1().summonForTribute(3, matcher.group(1));
+                            if (!MainPhase.doSolemnWarningEffect(address))
+                                Game.getMainPhase1().summonForTribute(3, matcher.group(1));
                         } else {
-                            if(!MainPhase.doSolemnWarningEffect(address)) {
+                            if (!MainPhase.doSolemnWarningEffect(address)) {
                                 if (level <= 4) summonALowLevelMonster(matcher, currentPlayer, address);
                                 else if (level <= 6) Game.getMainPhase1().summonForTribute(1, matcher.group(1));
                                 else {
@@ -481,29 +482,31 @@ public class PhaseControl {
     }
 
     public void summonALowLevelMonster(Matcher matcher, Player currentPlayer, Address address) {
-        MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
-        currentPlayer.setHeSummonedOrSet(true);
-        if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
-            currentPlayer.summonCardToMonsterZone(matcher.group(1)).setIsScanner(true);
-        } else if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger, the Empowered Warrior")) {
-            if (Integer.parseInt(Effect.run("Terratiger, the Empowered Warrior")) != 0) {
-                Address address1 = new Address(Integer.parseInt(Effect.run("Terratiger, the Empowered Warrior")), "hand", true);
-                if ((currentPlayer.getMonsterCardByAddress(address1) != null)
-                        && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
-                        && (!currentPlayer.isMonsterZoneFull()))
-                    currentPlayer.setCardFromHandToMonsterZone(address1);
+        if (matcher.find()) {
+            MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
+            currentPlayer.setHeSummonedOrSet(true);
+            if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
+                currentPlayer.summonCardToMonsterZone(matcher.group(1)).setIsScanner(true);
+            } else if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger, the Empowered Warrior")) {
+                if (Integer.parseInt(Effect.run("Terratiger, the Empowered Warrior")) != 0) {
+                    Address address1 = new Address(Integer.parseInt(Effect.run("Terratiger, the Empowered Warrior")), "hand", true);
+                    if ((currentPlayer.getMonsterCardByAddress(address1) != null)
+                            && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
+                            && (!currentPlayer.isMonsterZoneFull()))
+                        currentPlayer.setCardFromHandToMonsterZone(address1);
+                }
+            } else currentPlayer.summonCardToMonsterZone(matcher.group(1));
+            if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                if (monsterCard.getNormalAttack() >= 1000) {
+                    currentPlayer.removeCard(address);
+                    Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
+                }
             }
-        } else currentPlayer.summonCardToMonsterZone(matcher.group(1));
-        if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-            if (monsterCard.getNormalAttack() >= 1000) {
-                currentPlayer.removeCard(address);
-                Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
-            }
-        }
-        if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-            Attack.destroyAllMonstersInTheBoard();
-            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
+            if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                Attack.destroyAllMonstersInTheBoard();
+                Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
 //                                System.out.println("All monster card got destroyed by effect of Torrential Tribute effect.");
+            }
         }
     }
 
