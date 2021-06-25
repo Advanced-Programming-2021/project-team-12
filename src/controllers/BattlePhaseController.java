@@ -1,10 +1,6 @@
 package controllers;
 
 import Exceptions.*;
-import Exceptions.CantSummonThisCard;
-import Exceptions.InvalidCardSelection;
-import Exceptions.InvalidCommandException;
-import Exceptions.NoSelectedCardException;
 import Utility.CommandMatcher;
 import controllers.move.Attack;
 import controllers.move.SetSpell;
@@ -416,17 +412,23 @@ public class BattlePhaseController {
                     if (Game.whoseRivalPlayer().getCardByAddress(address) != null) {
                         MonsterCard rivalMonsterCard = Game.whoseRivalPlayer().getMonsterCardByAddress(address);
                         currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
-                        if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedNegateAttack() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                        if (Game.whoseRivalPlayer().doIHaveTrapNamedNegateAttack() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             BattlePhase.getInstance().goToNextPhase = true;
-                        } else if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedMirrorForce() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                            Board.destroyAllAttackerMonster(Game.whoseTurnPlayer());
-                        } else if ((Board.whatKindaMonsterIsHere(myAddressType).getNormalAttack() >= 1500)
+                        } else if (Game.whoseRivalPlayer().doIHaveTrapNamedMirrorForce() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                            if(BattlePhase.getInstance().getPermissionForTrap("Mirror Force")) {
+                                Game.whoseRivalPlayer().destroyAllRivalMonstersWhichInAttackMode();
+                                Game.whoseRivalPlayer().destroyMyTrapNamed("Mirror Force");
+                            }
+                        } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                             throw new MyException("You can't attack by monster with attack equal or more than 1500 " +
                                     "because of MessengerOfPeace.");
-                        } else if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedMagicCylinder() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                            currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
-                            throw new MyException("Rival has trap named MagicCylinder so its effect get done.");
+                        } else if (Game.whoseRivalPlayer().doIHaveTrapNamedMagicCylinder() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                            if(BattlePhase.getInstance().getPermissionForTrap("Magic Cylinder")) {
+                                currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
+                                Game.whoseRivalPlayer().destroyMyTrapNamed("Magic Cylinder");
+                                throw new MyException("Rival has trap named Magic Cylinder so its effect get done.");
+                            }
                         } else if (rivalMonsterCard.getName().equals("Texchanger")) {
                             Game.getMainPhase1().summonCyberse();
                         } else {

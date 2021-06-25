@@ -603,7 +603,7 @@ public class Player {
         return false;
     }
 
-    public boolean doIHaveActivatedTrapNamedMagicCylinder() {
+    public boolean doIHaveTrapNamedMagicCylinder() {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Magic Cylinder")) {
                 if (isSpellFaceUp.get(i)) ;
@@ -613,7 +613,7 @@ public class Player {
         return false;
     }
 
-    public boolean doIHaveActivatedTrapNamedMirrorForce() {
+    public boolean doIHaveTrapNamedMirrorForce() {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Mirror Force")) {
                 if (isSpellFaceUp.get(i)) ;
@@ -662,7 +662,7 @@ public class Player {
         }
     }
 
-    public boolean doIHaveActivatedTrapNamedNegateAttack() {
+    public boolean doIHaveTrapNamedNegateAttack() {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Negate Attack")) {
                 if (isSpellFaceUp.get(i)) ;
@@ -826,5 +826,14 @@ public class Player {
         for (int i = 1; i <= 5; i++)
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName))
                 spellZoneCardNumbers.remove(i);
+    public void destroyMyTrapNamed(String  trapName) {
+
+    }
+
+    public void removeOneOfMyCardFromHandRandomly() {
+
+    }
+
+    public void removeAllCardWithThisNameInMyHand() {
     }
 }

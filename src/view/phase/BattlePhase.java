@@ -530,4 +530,14 @@ public class BattlePhase {
 //
 //    }
 
+    private static Matcher getCommandMatcher(String input, String regex) {
+        input = input.trim();
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(input);
+    }
+
+    public boolean getPermissionForTrap(String cardName) {
+        System.out.println("do you want to activate "+ cardName+"trap?(yes/no)");
+        return (Main.scanner.nextLine().equals("yes"));
+    }
 }
