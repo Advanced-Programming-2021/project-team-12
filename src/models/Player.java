@@ -836,4 +836,11 @@ public class Player {
     public void destroyMyTrapNamed(String  trapName) {
 
     }
+
+    public void removeOneOfMyCardFromHandRandomly() {
+
+    }
+
+    public void removeAllCardWithThisNameInMyHand() {
+    }
 }

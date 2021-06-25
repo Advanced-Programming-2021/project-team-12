@@ -17,8 +17,6 @@ import controllers.Game;
 import Exceptions.*;
 import view.Main;
 
-import javax.management.StringValueExp;
-
 public class MainPhase {
     public Boolean goToNextPhase = false;
     public int howManyHeraldOfCreationDidWeUseEffect = 0;
@@ -549,8 +547,12 @@ public class MainPhase {
     }
 
     public static void doMindCrushEffect() {
+        Player currentPlayer = Game.whoseTurnPlayer();
+        Player rivalPlayer = Game.whoseRivalPlayer();
         System.out.println("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly.");
-        
+        if(){
+            rivalPlayer.removeAllCardWithThisNameInMyHand();
+        }else currentPlayer.removeOneOfMyCardFromHandRandomly();
     }
 
 }
