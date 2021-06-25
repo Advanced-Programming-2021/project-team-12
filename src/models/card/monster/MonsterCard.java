@@ -98,7 +98,7 @@ public class MonsterCard {
 
     private int doEquipSpellEffect(int attackOrDefence, SpellCard spellCard, boolean isItDefence, Address address) {
         if (isItDefence) {
-            if (spellCard.getName().equals("Sword of Dark Destruction")) {
+            if (spellCard.getName().equals("Sword of dark destruction")) {
                 if (monsterMode.equals(MonsterMode.SPELLCASTER) || monsterMode.equals(MonsterMode.FIEND))
                     attackOrDefence -= 200;
             }
@@ -110,7 +110,7 @@ public class MonsterCard {
                 }
             }
         } else {
-            if (spellCard.getName().equals("Sword of Dark Destruction")) {
+            if (spellCard.getName().equals("Sword of dark destruction")) {
                 if (monsterMode.equals(MonsterMode.SPELLCASTER) || monsterMode.equals(MonsterMode.FIEND))
                     attackOrDefence += 400;
             }

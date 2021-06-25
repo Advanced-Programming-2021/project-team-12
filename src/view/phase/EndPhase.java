@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EndPhase {
+
     public void run() {
         if (Game.isAITurn())
             new AIEndPhase();
