@@ -603,12 +603,18 @@ public class MainPhase {
     }
 
     public static boolean doSolemnWarningEffect(Address address) {
-        if (BattlePhase.getInstance().getPermissionForTrap("Solemn Warning", false)) {
-            Game.whoseRivalPlayer().decreaseLP(2000);
-            Game.whoseTurnPlayer().removeCard(address);
-            return true;
+        if (!Game.isAITurn()) {
+            if (BattlePhase.getInstance().getPermissionForTrap("Solemn Warning", false)) {
+                Game.whoseRivalPlayer().decreaseLP(2000);
+                Game.whoseTurnPlayer().removeCard(address);
+                return true;
+            }
+            return false;
+        } else {
+            Player currentPlayer = Game.whoseTurnPlayer();
+            MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
+            return ((monsterCard.getNormalAttack() >= 2000) && (currentPlayer.getLP() > 5000));
         }
-        return false;
     }
 
 
