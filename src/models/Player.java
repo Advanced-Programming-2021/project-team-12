@@ -781,7 +781,10 @@ public class Player {
     }
 
     public void removeAllCardWithThisNameInMyHand(String cardName) {
-
+        if (Card.getCardByName(cardName) == null)
+            return;
+        for (int i = 1; i <=5; i++)
+            
     }
 
     public void summonThisCardFromGraveYardToMonsterZone(Address address) {
