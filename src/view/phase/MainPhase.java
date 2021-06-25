@@ -575,9 +575,18 @@ public class MainPhase {
         } else currentPlayer.removeOneOfMyCardFromHandRandomly();
     }
 
-    public static void doCallOfTheHauntedEffect() {
-        System.out.println("choose a monster from your graveyard to be summoned!(only type number)");
-        Address address = new Address(Integer.parseInt(Main.scanner.nextLine()), "graveyard", true);
+    public static void summonAMonsterCardFromGraveyard() {
+        System.out.println("whose graveyard you want to summon from?(yours/rival's)");
+        Board.showGraveyard();
+        doCallOfTheHauntedEffect(Main.scanner.nextLine().equals("yours"));
+    }
+
+
+    public static void doCallOfTheHauntedEffect(boolean isMine) {
+        if(isMine) System.out.println("choose a monster from your graveyard to be summoned!(only type number)");
+        else System.out.println("choose a monster from your rival's graveyard to be summoned!(only type number)");
+        Board.showGraveyard();
+        Address address = new Address(Integer.parseInt(Main.scanner.nextLine()), "graveyard", isMine);
         if (Game.whoseTurnPlayer().getMonsterCardByAddress(address) != null)
             Game.whoseTurnPlayer().summonThisCardFromGraveYardToMonsterZone(address);
     }

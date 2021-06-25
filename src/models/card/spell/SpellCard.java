@@ -7,6 +7,7 @@ import models.card.spell.spell_effect.SpellEffect;
 import view.Effect;
 import controllers.Game;
 import view.Main;
+import view.phase.MainPhase;
 //import card.trap.TrapCard;
 
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class SpellCard {
             currentPlayer.removeCard(address1);
         }
         if (name.equals("Monster Reborn")) {
-            currentPlayer.summonAMonsterCardFromGraveyard();
+            MainPhase.summonAMonsterCardFromGraveyard();
             currentPlayer.removeCard(address);
         }
         if (spellMode.equals(SpellMode.EQUIP)) {
