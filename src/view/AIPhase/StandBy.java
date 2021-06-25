@@ -14,7 +14,6 @@ public class StandBy {
             PhaseControl.getInstance().payMessengerOfPeaceSpellCardHarm(answer);
         }
         PhaseControl.getInstance().resetMoves();
-        System.out.println("phase: standby phase");
         PhaseControl.getInstance().checkIfGameEnded();
         Game.playTurn("MainPhase1");
     }

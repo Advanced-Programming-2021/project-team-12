@@ -724,7 +724,9 @@ public class PhaseControl {
                 //address.setIfItIsScannerThenWhat(monsterCard);
             }
         }
-        int count = Integer.parseInt(Effect.run("Herald of Creation1"));
+        int count = 0;
+        if (!Game.isAITurn())
+            count = Integer.parseInt(Effect.run("Herald of Creation1"));
         int numberOfHeraldOfCreation = Game.whoseTurnPlayer().howManyHeraldOfCreationDoWeHave();
         for (int i = 0; i < minOfTwoNumber(numberOfHeraldOfCreation, count) - Game.getMainPhase1().howManyHeraldOfCreationDidWeUseEffect; i++) {
             Address shouldBeRemoved = new Address(Integer.parseInt(Effect.run("Herald of Creation2")), "monster", true);

@@ -7,12 +7,11 @@ import view.Main;
 
 public class DrawPhase {
     public void run(){
-        System.out.println(Game.whoseRivalPlayer().getName());
+        System.out.println(PhaseControl.getInstance().printWhoseTurnIsIt());
+        System.out.println("phase: draw phase");
         if (Game.isAITurn())
-            new AIDrawPhase();
+            new AIDrawPhase().run();
         else {
-            System.out.println(PhaseControl.getInstance().printWhoseTurnIsIt());
-            System.out.println("phase: draw phase");
             String input;
             System.out.println(PhaseControl.getInstance().drawOneCard());
             while (true) {

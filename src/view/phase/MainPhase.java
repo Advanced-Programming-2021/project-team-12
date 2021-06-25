@@ -282,7 +282,7 @@ public class MainPhase {
         if (matcher.find()) {
             String input = "set";
             String selectedCard = matcher.group(1);
-            int place = Integer.parseInt(selectedCard);
+            int place = Integer.parseInt(matcher.group(2));
             Card card = Game.whoseTurnPlayer().getCardHand(place);
             if (card.getKind().equals("Monster"))
                 input = "summon";

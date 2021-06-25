@@ -345,6 +345,7 @@ public class Player {
     }
 
     public String whatKindaCardIsInThisAddress(String address) {
+        System.out.println(address);
         Address cardAddress = new Address(address);
         return getCardByAddress(cardAddress).getKind();
     }

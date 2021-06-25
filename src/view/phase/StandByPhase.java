@@ -8,15 +8,15 @@ import view.Main;
 
 public class StandByPhase {
     public void run(){
+        System.out.println("phase: standby phase");
         if (Game.isAITurn())
-            new StandBy();
+            new StandBy().run();
         if (SetSpell.doIHaveMessengerOfPeace()) {
             System.out.println("Do you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?" +
                     "(type \"yes\" or \"not\")");
             PhaseControl.getInstance().payMessengerOfPeaceSpellCardHarm(Main.scanner.nextLine().trim());
         }
         PhaseControl.getInstance().resetMoves();
-        System.out.println("phase: standby phase");
         String input;
         //mamad function here
         PhaseControl.getInstance().checkIfGameEnded();
