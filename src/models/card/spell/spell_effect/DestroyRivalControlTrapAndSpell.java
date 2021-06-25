@@ -5,6 +5,6 @@ import controllers.Game;
 
 public class DestroyRivalControlTrapAndSpell implements SpellEffect{
     public void run(){
-        Game.whoseTurnPlayer().destroyAllRivalTrapAndSpells();
+        Board.destroyAllTrapAndSpells(Game.whoseRivalPlayer());
     }
 }

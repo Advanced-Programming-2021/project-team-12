@@ -3,6 +3,7 @@ package view.phase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Exceptions.MyException;
 import controllers.BattlePhaseController;
 import controllers.Game;
 import controllers.PhaseControl;
@@ -25,6 +26,11 @@ public class BattlePhase {
     public void run() {
         System.out.println("phase: battle phase");
         Board.showBoard();
+        selectCard();
+        Game.playTurn("MainPhase2");
+    }
+
+    public void selectCard() {
         String input;
         if (Game.isAITurn())
             AIRun();
@@ -34,12 +40,13 @@ public class BattlePhase {
                 PhaseControl.getInstance().checkIfGameEnded();
                 try {
                     if (BattlePhaseController.getInstance().battlePhaseRun(input)) break;
-                } catch (Exception e) {
+                } catch (MyException e) {
                     System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
-        Game.playTurn("MainPhase2");
     }
 
     private void AIRun() {
@@ -49,8 +56,10 @@ public class BattlePhase {
                 PhaseControl.getInstance().checkIfGameEnded();
                 try {
                     if (BattlePhaseController.getInstance().battlePhaseRun("select --monster " + i)) break;
-                } catch (Exception e) {
+                } catch (MyException e) {
                     System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -521,9 +530,4 @@ public class BattlePhase {
 //
 //    }
 
-    private static Matcher getCommandMatcher(String input, String regex) {
-        input = input.trim();
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(input);
-    }
 }

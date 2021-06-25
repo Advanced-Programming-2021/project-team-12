@@ -389,7 +389,6 @@ public class PhaseControl {
         if (matcher.find()) {
             if (!Game.whoseTurnPlayer().isSpellZoneFull()) {
                 Game.whoseTurnPlayer().setCardFromHandToSpellZone(matcher.group(1));
-                Game.whoseTurnPlayer().setHeSummonedOrSet(true);
             } else throw new SpellZoneFull("spell card zone is full!");
         }
     }
@@ -399,7 +398,6 @@ public class PhaseControl {
             Player currentPlayer = Game.whoseTurnPlayer();
             if (!currentPlayer.isSpellZoneFull()) {
                 currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
-                currentPlayer.setHeSummonedOrSet(true);
             } else throw new SpellZoneFull("spell card zone is full!");
         }
     }
@@ -466,6 +464,7 @@ public class PhaseControl {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (currentPlayer.isThereAnyCardInMonsterZone()) {
             String tributeCard = Game.getMainPhase1().getTributeCard();
+            System.out.println(tributeCard);
             if (tributeCard.equals("cancel")) {
                 throw new CancelException("canceled successfully!");
             } else {
@@ -602,18 +601,18 @@ public class PhaseControl {
             Matcher matcher1 = CommandMatcher.getCommandMatcher(input, "^[ ]*set -- position (attack|defense)[ ]*$");
             if (matcher1.find()) {
                 if (matcher1.group(1).equals("attack")) {
-                    if (currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
-                        if (currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
+                    if (!currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
+                        if (!currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
                             currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
-                            currentPlayer.convertThisMonsterFromAttackToDefence(matcher.group(1));
+                            currentPlayer.convertThisMonsterFromDefenceToAttack(matcher.group(1));
                         } else
                             throw new YouAlreadyChangedThisCardPosition("you already changed this card position in this turn");
                     } else throw new ThisCardIsInWantedPosition("This card is already in the wanted position!");
                 } else {
-                    if (!currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
-                        if (currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
+                    if (currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
+                        if (!currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
                             currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
-                            currentPlayer.convertThisMonsterFromDefenceToAttack(matcher.group(1));
+                            currentPlayer.convertThisMonsterFromAttackToDefence(matcher.group(1));
                         } else
                             throw new YouAlreadyChangedThisCardPosition("you already changed this card position in this turn");
                     } else throw new ThisCardIsInWantedPosition("This card is already in the wanted position!");
@@ -628,7 +627,7 @@ public class PhaseControl {
             Address address = new Address(stringAddress);
             Player currentPlayer = Game.whoseTurnPlayer();
             int index = currentPlayer.getIndexOfThisCardByAddress(address);
-            if (currentPlayer.didWeActivateThisSpell(index)) {
+            if (!currentPlayer.didWeActivateThisSpell(index)) {
                 if (currentPlayer.getSpellCardByStringAddress(stringAddress).getSpellMode() == SpellMode.FIELD)
                     activateThisKindOfAddress(stringAddress, address, currentPlayer, index, "field");
                 else if (currentPlayer.getSpellCardByStringAddress(stringAddress).getSpellMode() == SpellMode.EQUIP)
@@ -646,7 +645,8 @@ public class PhaseControl {
             currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
             currentPlayer.setIsThisSpellActivated(true, index);
             SpellCard.doSpellAbsorptionEffect();
-            currentPlayer.getSpellCardByStringAddress(stringAddress).doEffect(currentPlayer.addCardToAddress(Board.getCardByAddress(address), cardState, index));
+            currentPlayer.getSpellCardByStringAddress(stringAddress).doEffect(address);
+            //currentPlayer.addCardToAddress(Board.getCardByAddress(address), cardState, index)
         } else throw new PreperationsAreNotDoneYet("preparations of this spell are not done yet");
     }
 

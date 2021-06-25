@@ -65,7 +65,7 @@ public class Address {
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, kind, isMine);
+        return Objects.hash(number, kind);
     }
 
     public String getKind() {

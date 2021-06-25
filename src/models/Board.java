@@ -99,26 +99,33 @@ public class Board {
         return null;
     }
 
-    public static void destroyAllRivalAttackerMonster(Player player) {
-        Player opp;
-        if (player.getName().equals(currentPlayer.getName()))
-            opp = opponentPlayer;
-        else
-            opp = currentPlayer;
+    public static void destroyAllAttackerMonster(Player player) {
         for (int i = 0; i < 5; i++)
-            if (opp.getMonsterZoneCard().containsKey(i) && !opp.getMonsterPosition(i).equals(PositionOfCardInBoard.DH))
-                opp.getMonsterZoneCard().remove(i);
+            if (player.getMonsterZoneCard().containsKey(i) && !player.getMonsterPosition(i).equals(PositionOfCardInBoard.DH))
+                player.removeCard(new Address(i, "monster", false));
     }
 
-    public static void destroyRivalTrapAndSpells(Player player) {
-        Player opp;
-        if (player.getName().equals(currentPlayer.getName()))
-            opp = opponentPlayer;
-        else
-            opp = currentPlayer;
+    public static void destroyAllMonster(Player player) {
         for (int i = 0; i < 5; i++)
-            if (opp.getSpellZoneCard().containsKey(i))
-                opp.getSpellZoneCard().remove(i);
+            if (player.getMonsterZoneCard().containsKey(i))
+                player.removeCard(new Address(i, "monster", false));
+    }
+
+    public static void destroyAllTrapAndSpells(Player player) {
+        for (int i = 0; i < 5; i++)
+            if (player.getSpellZoneCard().containsKey(i))
+                player.removeCard(new Address(i, "spell", false));
+    }
+
+    public static void removeCardByAddress(Address address) {
+        if (address.checkIsMine())
+            currentPlayer.removeCard(address);
+        else
+            opponentPlayer.removeCard(address);
+    }
+
+    public static boolean getAnyoneHave(String cardName) {
+        return currentPlayer.doIHaveSpellCard(cardName) || opponentPlayer.doIHaveSpellCard(cardName);
     }
 
     public String getKindByAddress(Address address) {

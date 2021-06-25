@@ -1,5 +1,6 @@
 package controllers.move;
 
+import controllers.Game;
 import models.Address;
 import models.Board;
 import models.Player;
@@ -11,15 +12,17 @@ public class Attack {
 
 
     public static void destroyAllRivalMonstersAndTrapInTheBoard() {
-
+        Board.destroyAllMonster(Game.whoseRivalPlayer());
+        Board.destroyAllTrapAndSpells(Game.whoseRivalPlayer());
     }
 
     public static void destroyAllMonsters() {
-
+        Board.destroyAllMonster(Game.whoseRivalPlayer());
+        Board.destroyAllMonster(Game.whoseTurnPlayer());
     }
 
     public static void destroyAllRivalMonsters() {
-
+        Board.destroyAllMonster(Game.whoseRivalPlayer());
     }
 
     //Dear Alireza you have to call "timeToEffect" method after every attack(when attack get over)
@@ -47,10 +50,12 @@ public class Attack {
     public static void destroyThisAddress(Address address){
         //written by mohamad
     }
+
     public static Address whatAddressHasDestroyedNow(){
         return null;
         //written by mohamad
     }
+
     public static String whatKindaCardGotDestroyedNow(){
         return null;
         //written by mohamad
@@ -64,8 +69,7 @@ public class Attack {
         //s;kdfhslkdfjhsf
     }
     public static Player whichPlayerIsAttacker(){
-        return null;
-        //sadlfkhskldfjhsaldkjf
+        return Game.whoseTurnPlayer();
     }
 
     public static Player whichPlayerIsDefender(){
@@ -74,10 +78,11 @@ public class Attack {
     }
 
     public static void destroyAllRivalMonstersInTheBoard() {
-
+        Board.destroyAllMonster(Game.whoseRivalPlayer());
     }
 
     public static void destroyAllMonstersInTheBoard() {
-
+        Board.destroyAllMonster(Game.whoseRivalPlayer());
+        Board.destroyAllMonster(Game.whoseTurnPlayer());
     }
 }

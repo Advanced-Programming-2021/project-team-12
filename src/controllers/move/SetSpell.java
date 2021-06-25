@@ -1,62 +1,34 @@
 package controllers.move;
 
-import models.Address;
 import models.Board;
-import models.PlayerTurn;
 import controllers.Game;
 
 public class SetSpell {
     public static boolean doAnyOneHaveForest(){
-        return true;
-        //adlfkhasdfihsafkjshdf
+        return Board.getAnyoneHave("Forest");
     }
 
     public static boolean doIHaveMessengerOfPeace() {
-        return true;
-        //klsdhfsalkdfhsadf
+        return Game.whoseTurnPlayer().doIHaveSpellCard("Messenger of Peace");
     }
 
     public static void destroyMessengerOfPeace() {
-
+        Game.whoseTurnPlayer().removeOneOfMySpell("Messenger of Peace");
     }
 
     public static boolean doIHaveClosedForest() {
-        return true;
-        //klsdhfsalkdfhsadf
+        return Game.whoseTurnPlayer().doIHaveSpellCard("Closed Forest");
     }
 
-    public static boolean doAnyOneHaveUmiruka() {
-        return true;
-        //klsdhfsalkdfhsadf
+    public static boolean doAnyOneHaveUmiiruka() {
+        return Board.getAnyoneHave("Umiiruka");
     }
 
-    public void run(Address address){
-        
-    }
-    public void spellActivation(){
-
-
-
-
-
-
-        doSpellAbsorptionEffect();
-    }
-
-    private void doSpellAbsorptionEffect() {
-        if(doIHaveSpellAbsorptionCard()) Game.whoseTurnPlayer().increaseLP(500);
-    }
-
-    private boolean doIHaveSpellAbsorptionCard() {
-        return true;
-        //klsdhfsalkdfhsadf
-    }
     public static boolean doAnyOneHaveMessengerOfPeace(){
-        return true;
-        //klsdhfsalkdfhsadf
+        return Board.getAnyoneHave("Messenger of Peace");
     }
+
     public static boolean doAnyOneHaveYami(){
-        return true;
-        //klsdhfsalkdfhsadf
+        return Board.getAnyoneHave("Yami");
     }
 }

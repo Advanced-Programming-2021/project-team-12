@@ -70,6 +70,8 @@ public class MainPhase {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
                     playNextPhase();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -90,6 +92,8 @@ public class MainPhase {
                         System.out.println(e.getMessage());
                     } catch (BreakException e) {
                         playNextPhase();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
                 else if (player.getHandCard().containsKey(i) && !player.getCardHand(i).getKind().equals("monster")) {
@@ -100,6 +104,8 @@ public class MainPhase {
                         System.out.println(e.getMessage());
                     } catch (BreakException e) {
                         playNextPhase();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
                 else {
@@ -125,6 +131,8 @@ public class MainPhase {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
                     playNextPhase();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -143,6 +151,8 @@ public class MainPhase {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
                     playNextPhase();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -164,6 +174,8 @@ public class MainPhase {
                         System.out.println(e.getMessage());
                     } catch (BreakException e) {
                         playNextPhase();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -183,6 +195,8 @@ public class MainPhase {
                         System.out.println(e.getMessage());
                     } catch (BreakException e) {
                         playNextPhase();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -202,6 +216,8 @@ public class MainPhase {
                     System.out.println(e.getMessage());
                 } catch (BreakException e) {
                     playNextPhase();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -218,6 +234,8 @@ public class MainPhase {
                 System.out.println(e.getMessage());
             } catch (BreakException e) {
                 playNextPhase();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -233,6 +251,8 @@ public class MainPhase {
                 System.out.println(e.getMessage());
             } catch (BreakException e) {
                 playNextPhase();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -253,6 +273,8 @@ public class MainPhase {
                         System.out.println(e.getMessage());
                     } catch (BreakException e) {
                         playNextPhase();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }

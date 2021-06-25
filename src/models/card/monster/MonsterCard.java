@@ -71,7 +71,7 @@ public class MonsterCard {
             if (whenSuijinIsDefending())
                 return 0;
         }
-        if (SetSpell.doAnyOneHaveUmiruka()) {
+        if (SetSpell.doAnyOneHaveUmiiruka()) {
             if (monsterMode == MonsterMode.AQUA) {
                 attack += 500;
             }
@@ -137,7 +137,7 @@ public class MonsterCard {
             Address spellAddress = new Address(spellPlace, "spell", true);
             defence = doEquipSpellEffect(defence, currentPlayer.getSpellCardByAddress(spellAddress), true, address);
         }
-        if (SetSpell.doAnyOneHaveUmiruka()) {
+        if (SetSpell.doAnyOneHaveUmiiruka()) {
             if (monsterMode == MonsterMode.AQUA) {
                 defence -= 400;
             }

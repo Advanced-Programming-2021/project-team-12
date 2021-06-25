@@ -6,7 +6,6 @@ import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
 import controllers.Game;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Player {
@@ -36,6 +35,7 @@ public class Player {
     private int[] fromMonsterToSpellEquip;
 
     {
+        didWeActivateThisSpell = new boolean[100];
         fromMonsterToSpellEquip = new int[6];
         cardByIndex = new Card[100];
         isThisSpellActivated = new boolean[100];
@@ -259,13 +259,11 @@ public class Player {
     }
 
     public void removeCard(Address address) {
-
         if (getMonsterCardByAddress(address) != null) {
             unSetFromMonsterToSpellEquip(address.getNumber());
             if (address.checkIsMine()) Game.whoseTurnPlayer().setOneHisMonstersDestroyedInThisRound(true);
             else Game.whoseRivalPlayer().setOneHisMonstersDestroyedInThisRound(true);
         }
-
         if (Board.isAddressEmpty(address))
             return;
         if (address.getKind().equals("graveyard")) {
@@ -279,8 +277,6 @@ public class Player {
             indexOfCard.put(new Address(graveyardCardNumbers.size(), "graveyard", true), indexOfCard.get(new Address(1, "field", true)));
             fieldCardNumbers.remove(1);
         } else {
-            if (address.getKind().equals("monster"))
-                setOneHisMonstersDestroyedInThisRound(true);
             int place = address.getNumber();
             HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
             graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, removeCardHashMap.get(place));
@@ -339,7 +335,8 @@ public class Player {
     }
 
     public void removeThisMonsterZoneTypeAddressForTribute(int monsterZoneTypeAddress) {
-        monsterZoneCardNumbers.remove(monsterZoneTypeAddress);
+        Address address = new Address(monsterZoneTypeAddress, "monster", true);
+        removeCard(address);
     }
 
     public MonsterCard getMonsterCardByStringAddress(String address) {
@@ -363,10 +360,6 @@ public class Player {
         if (count >= 2)
             return true;
         return false;
-    }
-
-    public void destroyAllRivalTrapAndSpells() {
-        Board.destroyRivalTrapAndSpells(this);
     }
 
     public SpellCard getSpellCardByStringAddress(String address) {
@@ -606,7 +599,7 @@ public class Player {
 
     public boolean isOneHisSpellAbsorptionActivated() {
         for (int i = 0; i < isThisSpellActivated.length; i++)
-            if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("SpellAbsorption"))) return true;
+            if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("Absorption"))) return true;
         return false;
     }
 
@@ -630,10 +623,6 @@ public class Player {
         return false;
     }
 
-    public void destroyAllRivalMonstersWhichInAttackMode() {
-        Board.destroyAllRivalAttackerMonster(this);
-    }
-
     public void removeOneOfMyTrapHoleTrapOnTheBoard() {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Trap Hole")) {
@@ -650,7 +639,7 @@ public class Player {
         return false;
     }
 
-    public boolean doIHaveCard(String cardName) {
+    public boolean doIHaveSpellCard(String cardName) {
         for (int i = 1; i <= 5; i++)
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName))
                 return true;
@@ -833,4 +822,9 @@ public class Player {
         return fromMonsterToSpellEquip[monsterPlace];
     }
 
+    public void removeOneOfMySpell(String cardName) {
+        for (int i = 1; i <= 5; i++)
+            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName))
+                spellZoneCardNumbers.remove(i);
+    }
 }

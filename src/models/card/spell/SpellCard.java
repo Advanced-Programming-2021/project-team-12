@@ -64,7 +64,7 @@ public class SpellCard {
             } else System.out.println("This effect can't be done.");
             currentPlayer.removeCard(address);
         }
-        if (name.equals("PotOfGreed")) {
+        if (name.equals("Pot of Greed")) {
             if (!currentPlayer.isHandFull()) {
                 currentPlayer.addCardFromUnusedToHand();
                 if (!currentPlayer.isHandFull()) {
@@ -77,16 +77,16 @@ public class SpellCard {
             Attack.destroyAllRivalMonstersInTheBoard();
             currentPlayer.removeCard(address);
         }
-        if (name.equals("HarpieFeatherDuster")) {
+        if (name.equals("Harpie's Feather Duster")) {
             Attack.destroyAllRivalMonstersAndTrapInTheBoard();
             currentPlayer.removeCard(address);
         }
-        if (name.equals("DarkHole")) {
+        if (name.equals("Dark Hole")) {
             Attack.destroyAllMonstersInTheBoard();
             currentPlayer.removeCard(address);
         }
-        if (name.equals("TwinTwisters")) {
-            String[] input = Effect.run("TwinTwisters").split(",");
+        if (name.equals("Twin Twisters")) {
+            String[] input = Effect.run("Twin Twisters").split(",");
             Address address1 = new Address(Integer.parseInt(input[0]), "hand", true);
             Address address2 = new Address(Integer.parseInt(input[1]), "spell", false);
             Address address3 = new Address(Integer.parseInt(input[2]), "spell", false);
@@ -94,12 +94,12 @@ public class SpellCard {
             currentPlayer.removeCard(address2);
             currentPlayer.removeCard(address3);
         }
-        if (name.equals("MysticalSpaceTyphoon")) {
-            String input = Effect.run("MysticalSpaceTyphoon");
+        if (name.equals("Mystical Space Typhoon")) {
+            String input = Effect.run("Mystical Space Typhoon");
             Address address1 = new Address(Integer.parseInt(input), "spell", false);
             currentPlayer.removeCard(address1);
         }
-        if (name.equals("MonsterReborn")) {
+        if (name.equals("Monster Reborn")) {
             currentPlayer.summonAMonsterCardFromGraveyard();
             currentPlayer.removeCard(address);
         }

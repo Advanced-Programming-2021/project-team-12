@@ -92,9 +92,9 @@ public class BattlePhaseController {
                     else input = getAIAttack(selectedCard);
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        break;
+                        Game.playTurn("MainPhase2");
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
-                        break;
+                        BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
                         System.out.println("you already selected a card");
                     else if (input.matches("^[ ]*summon[ ]*$"))
@@ -162,9 +162,9 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        break;
+                        Game.playTurn("MainPhase2");;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
-                        break;
+                        BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
                         System.out.println("you already selected a card");
                     else if (input.matches("^[ ]*summon[ ]*$"))
@@ -206,9 +206,9 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        break;
+                        Game.playTurn("MainPhase2");;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
-                        break;
+                        BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
                         System.out.println("you already selected a card");
                     else if (input.matches("^[ ]*summon[ ]*$"))
@@ -224,7 +224,7 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*attack direct[ ]*$"))
                         throw new MyException("you can’t attack with this card");
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
-                        activeSpell(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
+                        throw new MyException("you can’t do this action in this phase");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
                         Board.showGraveyard();
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
@@ -251,9 +251,9 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        break;
+                        Game.playTurn("MainPhase2");;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
-                        break;
+                        BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
                         System.out.println("you already selected a card");
                     else if (input.matches("^[ ]*summon[ ]*$"))
@@ -292,9 +292,9 @@ public class BattlePhaseController {
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
                 BattlePhase.getInstance().goToNextPhase = true;
-                break;
+                Game.playTurn("MainPhase2");;
             } else if (input.matches("^[ ]*select -d[ ]*$"))
-                break;
+                BattlePhase.getInstance().selectCard();
             else if (input.matches("^[ ]*select .*$"))
                 System.out.println("you already selected a card");
             else if (input.matches("^[ ]*summon[ ]*$"))
@@ -330,9 +330,9 @@ public class BattlePhaseController {
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
                 BattlePhase.getInstance().goToNextPhase = true;
-                break;
+                Game.playTurn("MainPhase2");
             } else if (input.matches("^[ ]*select -d[ ]*$"))
-                break;
+                BattlePhase.getInstance().selectCard();
             else if (input.matches("^[ ]*select .*$"))
                 System.out.println("you already selected a card");
             else if (input.matches("^[ ]*summon[ ]*$"))
@@ -371,9 +371,9 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        break;
+                        Game.playTurn("MainPhase2");;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
-                        break;
+                        BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
                         System.out.println("you already selected a card");
                     else if (input.matches("^[ ]*summon[ ]*$"))
@@ -411,16 +411,16 @@ public class BattlePhaseController {
             Address address = new Address(Integer.parseInt(matcher.group(2)), "monster", false);
             MonsterCard myMonsterCard = currentPlayer.getMonsterCardByStringAddress(myAddress);
             if (currentPlayer.getMonsterPosition(myAddressType.getNumber()).equals(PositionOfCardInBoard.OO)) {
-                int index = currentPlayer.getIndexOfThisCardByAddress(new Address(myAddress));
-                if (currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
-                    if (currentPlayer.getCardByAddress(address) != null) {
-                        MonsterCard rivalMonsterCard = currentPlayer.getMonsterCardByAddress(address);
+                int index = currentPlayer.getIndexOfThisCardByAddress(myAddressType);
+                if (!currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
+                    if (Game.whoseRivalPlayer().getCardByAddress(address) != null) {
+                        MonsterCard rivalMonsterCard = Game.whoseRivalPlayer().getMonsterCardByAddress(address);
                         currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
                         if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedNegateAttack() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             BattlePhase.getInstance().goToNextPhase = true;
                         } else if (Game.whoseRivalPlayer().doIHaveActivatedTrapNamedMirrorForce() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                            Game.whoseRivalPlayer().destroyAllRivalMonstersWhichInAttackMode();
-                        } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
+                            Board.destroyAllAttackerMonster(Game.whoseTurnPlayer());
+                        } else if ((Board.whatKindaMonsterIsHere(myAddressType).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                             throw new MyException("You can't attack by monster with attack equal or more than 1500 " +
                                     "because of MessengerOfPeace.");
@@ -430,11 +430,11 @@ public class BattlePhaseController {
                         } else if (rivalMonsterCard.getName().equals("Texchanger")) {
                             Game.getMainPhase1().summonCyberse();
                         } else {
-                            if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.OO) {
+                            if (Game.whoseRivalPlayer().positionOfCardInBoardByAddress(address).equals(PositionOfCardInBoard.OO)) {
                                 int damage = myMonsterCard.getAttack(myAddressType) - rivalMonsterCard.getAttack(address);
                                 attackOO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
                                 Attack.timeToEffectAfterAttack();
-                            } else if (currentPlayer.positionOfCardInBoardByAddress(address) == PositionOfCardInBoard.DO) {
+                            } else if (Game.whoseRivalPlayer().positionOfCardInBoardByAddress(address).equals(PositionOfCardInBoard.DO)) {
                                 if (rivalMonsterCard.getDefence(true, address) != -1) {
                                     int damage = myMonsterCard.getAttack(myAddressType) - rivalMonsterCard.getDefence(true, address);
                                     attackDO(myAddressType, address, index, currentPlayer, myMonsterCard, rivalMonsterCard, damage);
@@ -504,12 +504,12 @@ public class BattlePhaseController {
         PhaseControl.getInstance().checkIfGameEnded();
     }
 
-    private void removeForAttack(Address address, Address theOtherAddress) {
-        Player currentPlayer = Game.whoseTurnPlayer();
-        if (currentPlayer.getMonsterCardByAddress(address).getName().equals("ExploderDragon"))
-            currentPlayer.removeCard(theOtherAddress);
-        if (!currentPlayer.getMonsterCardByAddress(address).getName().equals("Marshmallon"))
-            currentPlayer.removeCard(address);
+    private void removeForAttack(Address destroyedAddress, Address theOtherAddress) {
+        if (Board.getCardByAddress(theOtherAddress) != null &&
+                Board.getCardByAddress(destroyedAddress).getCardName().equals("Exploder Dragon"))
+            Board.removeCardByAddress(theOtherAddress);
+        if (!Board.getCardByAddress(destroyedAddress).getCardName().equals("Marshmallon"))
+            Board.removeCardByAddress(destroyedAddress);
     }
 
     private void flipSummon(Matcher matcher) throws MyException {
