@@ -25,6 +25,10 @@ public class BattlePhaseController {
             return true;
         else if (input.matches("^[ ]*select .*$"))
             whatIsSelected(input);
+        else if (input.matches("[ ]*increase --LP [\\d]+[ ]*"))
+            forcedIncreaseLP(input);
+        else if (input.matches("duel set-winner (.)"))
+            forcedSetWinner();
         else if (input.matches("^[ ]*summon[ ]*$"))
             throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*set[ ]*$"))
@@ -204,7 +208,6 @@ public class BattlePhaseController {
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
                         Game.playTurn("MainPhase2");
-                        ;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -236,7 +239,6 @@ public class BattlePhaseController {
                 throw new MyException("invalid selection");
         }
     }
-
 
     private void selectOpponentSpell(Matcher matcher) throws MyException {
         if (matcher.find()) {
@@ -278,8 +280,7 @@ public class BattlePhaseController {
                     else
                         throw new MyException("invalid command");
                 }
-            } else
-                throw new MyException("invalid selection");
+            } else throw new MyException("invalid selection");
         }
     }
 
@@ -410,6 +411,8 @@ public class BattlePhaseController {
             Address myAddressType = new Address(myAddress);
             Player currentPlayer = Game.whoseTurnPlayer();
             Address address = new Address(Integer.parseInt(matcher.group(2)), "monster", false);
+            Attack.setAddress(myAddressType, true);
+            Attack.setAddress(address, false);
             MonsterCard myMonsterCard = currentPlayer.getMonsterCardByStringAddress(myAddress);
             if (currentPlayer.getMonsterPosition(myAddressType.getNumber()).equals(PositionOfCardInBoard.OO)) {
                 int index = currentPlayer.getIndexOfThisCardByAddress(myAddressType);
@@ -550,6 +553,18 @@ public class BattlePhaseController {
             } else throw new MyException("you cant attack with this card");
         }
         PhaseControl.getInstance().checkIfGameEnded();
+    }
+
+    private void forcedIncreaseLP(String input) {
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "increase --LP ([\\d]+)");
+        matcher.find();
+        int LP = Integer.parseInt(matcher.group(1));
+        Game.whoseTurnPlayer().increaseLP(LP);
+    }
+
+    private void forcedSetWinner() {
+        Game.setWinner(Game.whoseTurnPlayer());
+        Game.playTurn("EndGame");
     }
 
     private void specialSummon(Matcher matcher) {

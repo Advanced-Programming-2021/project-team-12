@@ -117,6 +117,10 @@ public class PhaseControl {
             throw new BreakException("next phase!");
         else if (input.matches("^[ ]*select .*$"))
             whatIsSelected(input);
+        else if (input.matches("[ ]*increase --LP [\\d]+[ ]*"))
+            forcedIncreaseLP(input);
+        else if (input.matches("duel set-winner (.)"))
+            forcedSetWinner();
         else if (input.matches("^[ ]*summon[ ]*$"))
             throw new NoSelectedCardException("no card is selected!");
         else if (input.matches("^[ ]*set[ ]*$"))
@@ -746,6 +750,18 @@ public class PhaseControl {
         }
     }
 
+    private void forcedIncreaseLP(String input) {
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "increase --LP ([\\d]+)");
+        matcher.find();
+        int LP = Integer.parseInt(matcher.group(1));
+        Game.whoseTurnPlayer().increaseLP(LP);
+    }
+
+    private void forcedSetWinner() {
+        Game.setWinner(Game.whoseTurnPlayer());
+        Game.playTurn("EndGame");
+    }
+
     public int minOfTwoNumber(int num1, int num2) {
         if (num1 <= num2) return num1;
         return num2;
@@ -754,7 +770,7 @@ public class PhaseControl {
     public void surrender() {
         Game.setIsSurrender(true);
         Game.setWinner(Game.whoseRivalPlayer());
-        Game.getMainPhase1().goToNextPhase = true;
+        Game.playTurn("EndGame");
     }
 
 

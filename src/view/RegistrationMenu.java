@@ -1,4 +1,5 @@
 package view;
+import Exceptions.MyException;
 import Exceptions.NickNameException;
 import Exceptions.UserNameException;
 import Exceptions.WrongUserOrPassException;
@@ -47,6 +48,8 @@ public class RegistrationMenu {
             new LogInController().checkData(userName, password);
             System.out.println("user logged in successfully!");
             new MainMenu(User.getUserByName(userName));
+        } catch (MyException e) {
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -62,6 +65,8 @@ public class RegistrationMenu {
         try {
             new SignInController().checkData(userName, nickName, password);
             System.out.println("user created successfully!");
+        } catch (MyException e) {
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

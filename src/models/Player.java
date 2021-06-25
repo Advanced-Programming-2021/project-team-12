@@ -19,8 +19,8 @@ public class Player {
     private String name;
     private String nickName;
     private int LP;
-    private ArrayList<Card> unusedCards;
-    private ArrayList<Card> secondaryCard;
+    private ArrayList<Card> unusedCards = new ArrayList<>();
+    private ArrayList<Card> secondaryCard = new ArrayList<>();
     private HashMap<Integer, Card> handCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> graveyardCardNumbers = new HashMap<>();
     private HashMap<Integer, Card> fieldCardNumbers = new HashMap<>();
@@ -618,7 +618,7 @@ public class Player {
         return handCardNumbers.size();
     }
 
-    public int getNUmberOfUnusedCard() {
+    public int getNumberOfUnusedCard() {
         return unusedCards.size();
     }
 
@@ -660,12 +660,6 @@ public class Player {
     public void setHandCard() {
         for (int i = 0; i < 5; i++)
             addCardFromUnusedToHand();
-    }
-
-    public void setSlideToMain(int slideNumber, int mainNumber) {
-        Card tempCard = unusedCards.get(mainNumber - 1);
-        unusedCards.set(mainNumber - 1, secondaryCard.get(slideNumber - 1));
-        secondaryCard.set(slideNumber - 1, tempCard);
     }
 
     public ArrayList<Card> getMainCards() {
@@ -795,5 +789,15 @@ public class Player {
             if (handCardNumbers.containsKey(i) && handCardNumbers.get(i).getCardName().equals(cardName))
                 return true;
         return false;
+    }
+
+    public void setSlideToMain(int slideNumber) {
+        unusedCards.add(secondaryCard.get(slideNumber));
+        secondaryCard.remove(slideNumber);
+    }
+
+    public void setMainToSlide(int mainNumber) {
+        secondaryCard.add(unusedCards.get(mainNumber));
+        unusedCards.remove(mainNumber);
     }
 }

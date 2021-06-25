@@ -33,7 +33,7 @@ public class ShowBoard {
     private void opponentPlayerData(Player player) {
         System.out.println(player.getNickName() + ": " + player.getLP());
         showHandCard(player, "o");
-        System.out.println(player.getNUmberOfUnusedCard());
+        System.out.println(player.getNumberOfUnusedCard());
         showSpells(player, "o");
         showMonsters(player, "o");
         showGYF(player, "o");
@@ -130,7 +130,7 @@ public class ShowBoard {
         showGYF(player, "c");
         showMonsters(player, "c");
         showSpells(player, "c");
-        System.out.println("\t\t\t\t\t\t" + player.getNUmberOfUnusedCard());
+        System.out.println("\t\t\t\t\t\t" + player.getNumberOfUnusedCard());
         showHandCard(player, "c");
         System.out.println(player.getNickName() + ": " + player.getLP());
     }

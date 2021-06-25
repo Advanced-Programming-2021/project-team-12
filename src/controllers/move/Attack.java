@@ -14,11 +14,11 @@ public class Attack {
     public static Address attackerAddress;
     public static String defenderMonsterName;
 
-    public static void setAddress(String stringAddress, boolean isAttacker) {
+    public static void setAddress(Address address, boolean isAttacker) {
         if (isAttacker)
-            attackerAddress = new Address(stringAddress);
+            attackerAddress = address;
         else {
-            defenderAddress = new Address(stringAddress);
+            defenderAddress = address;
             defenderMonsterName = Game.whoseRivalPlayer().getMonsterCardByAddress(defenderAddress).getName();
         }
     }

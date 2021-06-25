@@ -1,5 +1,6 @@
 package view;
 
+import Exceptions.MyException;
 import Utility.CommandMatcher;
 import controllers.ImportOrExportControl;
 
@@ -33,7 +34,9 @@ public class ImportOrExport {
         try {
             new ImportOrExportControl().doImport(address, flag);
             System.out.println("Card Import Successfully");
-        }catch (Exception e) {
+        } catch (MyException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -46,7 +49,9 @@ public class ImportOrExport {
         try {
             new ImportOrExportControl().doExport(address, cardName);
             System.out.println("Card Import Successfully");
-        }catch (Exception e) {
+        } catch (MyException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
