@@ -427,7 +427,7 @@ public class PhaseControl {
             }
             if (spellCard.getName().equals("Call of the Haunted")) {
                 if (BattlePhase.getInstance().getPermissionForTrap("Call of the Haunted", true)) {
-                    MainPhase.doCallOfTheHauntedEffect();
+                    MainPhase.doCallOfTheHauntedEffect(true);
                     currentPlayer.removeCard(address);
                 }
             }
