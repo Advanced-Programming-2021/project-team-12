@@ -334,8 +334,8 @@ public class Player {
         return monsterZoneCardNumbers.containsKey(monsterZoneTypeAddress);
     }
 
-    public void removeThisMonsterZoneTypeAddressForTribute(int monsterZoneTypeAddress) {
-        Address address = new Address(monsterZoneTypeAddress, "monster", true);
+    public void removeMonsterByInt(int monsterNumber) {
+        Address address = new Address(monsterNumber, "monster", true);
         removeCard(address);
     }
 
@@ -603,9 +603,9 @@ public class Player {
         return false;
     }
 
-    public void removeOneOfMyTrapHoleTrapOnTheBoard() {
+    public void removeOneOfTrapOrSpell(String name) {
         for (int i = 1; i <= 5; i++) {
-            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Trap Hole")) {
+            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(name)) {
                 removeCard(new Address(i, "spell", true));
                 break;
             }
@@ -617,15 +617,6 @@ public class Player {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName))
                 return true;
         return false;
-    }
-
-    public void removeOneOfMyTorrentialTributeTrapOnTheBoard() {
-        for (int i = 1; i <= 5; i++) {
-            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Torrential Tribute")) {
-                removeCard(new Address(i, "spell", true));
-                break;
-            }
-        }
     }
 
     public int getNumberOFHandCard() {
@@ -793,9 +784,11 @@ public class Player {
     }
 
     public void removeAllCardWithThisNameInMyHand() {
+
     }
 
     public void summonThisCardFromGraveYardToMonsterZone(Address address) {
 
     }
+
 }

@@ -3,13 +3,15 @@ package controllers.move;
 import controllers.Game;
 import models.Address;
 import models.Board;
+import models.Card;
 import models.Player;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
 
 public class Attack {
-
+    private static Address defenderAddress;
+    private static Address attackerAddress;
 
     public static void destroyAllRivalMonstersAndTrapInTheBoard() {
         Board.destroyAllMonster(Game.whoseRivalPlayer());
@@ -38,8 +40,8 @@ public class Attack {
     }
 
     public static String whatKindOfCardIsDefenderNow() {
-        return null;
-        //sadflksdf
+        Card card = Board.getCardByAddress(defenderAddress);
+        card.getCardName();
     }
 
     public static void timeToEffectAfterAttack(){
@@ -49,7 +51,7 @@ public class Attack {
     }
 
     public static void destroyThisAddress(Address address){
-        //written by mohamad
+        Board.removeCardByAddress(address);
     }
 
     public static Address whatAddressHasDestroyedNow(){
@@ -61,21 +63,17 @@ public class Attack {
         return null;
         //written by mohamad
     }
+
     public static int whatIndexOfDefender(){
-        return 1;
-        //sa;lkdfjsldfkjsad;kjfhsd
-    }
-    public static boolean isDefenderFacedDown(){
-        return true;
-        //s;kdfhslkdfjhsf
-    }
-    public static Player whichPlayerIsAttacker(){
-        return Game.whoseTurnPlayer();
+        return Game.whoseRivalPlayer().getIndexOfThisCardByAddress(defenderAddress);
     }
 
-    public static Player whichPlayerIsDefender(){
-        return null;
-        //asdlfhslkdfjhsad
+    public static boolean isDefenderFacedDown(){
+        return Game.whoseRivalPlayer().getSpellPosition(defenderAddress.getNumber());
+    }
+
+    public static Player whichPlayerIsAttacker(){
+        return Game.whoseTurnPlayer();
     }
 
     public static void destroyAllRivalMonstersInTheBoard() {
