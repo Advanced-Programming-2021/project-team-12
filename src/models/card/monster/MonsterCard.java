@@ -71,7 +71,7 @@ public class MonsterCard {
             if (whenSuijinIsDefending())
                 return 0;
         }
-        if (SetSpell.doAnyOneHaveUmiiruka()) {
+        if (currentPlayer.doIHaveSpellCard("Umiiruka")) {
             if (monsterMode == MonsterMode.AQUA) {
                 attack += 500;
             }
@@ -81,11 +81,11 @@ public class MonsterCard {
                 attack += 100 * Board.numberOfAllMonstersInGraveYard();
             }
         }
-        if (SetSpell.doAnyOneHaveForest()) {
+        if (currentPlayer.doIHaveSpellCard("Forest")) {
             if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.BEAST_WARRIOR || monsterMode == MonsterMode.INSECT)
                 attack += 200;
         }
-        if (SetSpell.doAnyOneHaveYami()) {
+        if (currentPlayer.doIHaveSpellCard("Yami")) {
             if (monsterMode == MonsterMode.SPELLCASTER || monsterMode == MonsterMode.FIEND) attack += 200;
             if (monsterMode == MonsterMode.FAIRY) attack -= 200;
         }
@@ -137,16 +137,16 @@ public class MonsterCard {
             Address spellAddress = new Address(spellPlace, "spell", true);
             defence = doEquipSpellEffect(defence, currentPlayer.getSpellCardByAddress(spellAddress), true, address);
         }
-        if (SetSpell.doAnyOneHaveUmiiruka()) {
+        if (currentPlayer.doIHaveSpellCard("Umiiruka")) {
             if (monsterMode == MonsterMode.AQUA) {
                 defence -= 400;
             }
         }
-        if (SetSpell.doAnyOneHaveForest()) {
+        if (currentPlayer.doIHaveSpellCard("Forest")) {
             if (monsterMode == MonsterMode.BEAST || monsterMode == MonsterMode.BEAST_WARRIOR || monsterMode == MonsterMode.INSECT)
                 defence += 200;
         }
-        if (SetSpell.doAnyOneHaveYami()) {
+        if (currentPlayer.doIHaveSpellCard("Yami")) {
             if (monsterMode == MonsterMode.SPELLCASTER || monsterMode == MonsterMode.FIEND) defence += 200;
             if (monsterMode == MonsterMode.FAIRY) defence -= 200;
         }
