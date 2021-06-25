@@ -791,4 +791,6 @@ public class Player {
 
     }
 
+    public boolean doIHaveCardWithThisNameInMyHand(String cardName) {
+    }
 }
