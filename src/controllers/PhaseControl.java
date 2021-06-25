@@ -10,6 +10,8 @@ import models.card.spell.SpellCard;
 import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
 import view.Effect;
+import view.phase.BattlePhase;
+import view.phase.MainPhase;
 
 import java.util.regex.Matcher;
 
@@ -387,10 +389,21 @@ public class PhaseControl {
 
     public void trapSet(Matcher matcher) throws SpellZoneFull {
         if (matcher.find()) {
-            if (!Game.whoseTurnPlayer().isSpellZoneFull()) {
-                Game.whoseTurnPlayer().setCardFromHandToSpellZone(matcher.group(1));
-                Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+            Player currentPlayer = Game.whoseTurnPlayer();
+            if (!currentPlayer.isSpellZoneFull()) {
+                Address address = new Address(matcher.group(1));
+                currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
+                currentPlayer.setHeSummonedOrSet(true);
+                activateSomeOfTraps(address, currentPlayer.getSpellCardByAddress(address), currentPlayer);
             } else throw new SpellZoneFull("spell card zone is full!");
+        }
+    }
+
+    private void activateSomeOfTraps(Address address, SpellCard spellCard, Player currentPlayer) {
+        if(spellCard.getName().equals("Mind Crush")){
+            if(BattlePhase.getInstance().getPermissionForTrap("Mind Crush")){
+                MainPhase.doMindCrushEffect();
+            }
         }
     }
 

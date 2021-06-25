@@ -24,6 +24,7 @@ public class MainPhase {
     public int howManyHeraldOfCreationDidWeUseEffect = 0;
     public int whatMainIsPhase;
 
+
     public void run() {
         if (!goToNextPhase) {
             if (Game.isAITurn())
@@ -546,4 +547,10 @@ public class MainPhase {
         System.out.println("Do you want do the effect?(yes/no)");
         return Main.scanner.nextLine().equals("yes");
     }
+
+    public static void doMindCrushEffect() {
+        System.out.println("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly.");
+        
+    }
+
 }
