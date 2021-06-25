@@ -17,12 +17,21 @@ import java.util.regex.Matcher;
 
 public class PhaseControl {
     private static PhaseControl instance;
+    private boolean canDraw = true;
 
     public static PhaseControl getInstance() {
         if (instance == null) {
             instance = new PhaseControl();
         }
         return instance;
+    }
+
+    public void setCanDraw(boolean canDraw) {
+        this.canDraw = canDraw;
+    }
+
+    public boolean isCanDraw() {
+        return canDraw;
     }
 
     public void payMessengerOfPeaceSpellCardHarm(String answer) {
@@ -52,6 +61,10 @@ public class PhaseControl {
     }
 
     public String drawOneCard() {
+        if (!canDraw) {
+            canDraw = true;
+            return "you cant draw because of Time Seal";
+        }
         if (Game.playerTurn == PlayerTurn.FIRSTPLAYER) {
             String newAddedCard = Game.firstPlayer.addCardFromUnusedToHand();
             if (newAddedCard.equals("unused is empty")) {
