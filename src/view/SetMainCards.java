@@ -1,15 +1,14 @@
 package view;
 
+import Exceptions.MyException;
 import Utility.CommandMatcher;
-import com.sun.jdi.IntegerType;
 import controllers.AIController;
 import controllers.Game;
+import controllers.SetMainAndSlide;
 import models.Card;
-import models.Deck;
 import models.Player;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.regex.Matcher;
 
 public class SetMainCards {
@@ -18,26 +17,61 @@ public class SetMainCards {
         if (!Game.isAITurn())
             setCards(secondPlayer, "Second");
         else
-            new AIController().setMainCard();
+            new SetMainAndSlide().setAICard();
     }
 
     private void setCards(Player player, String flag) {
         System.out.println("Set Main Card Of " + flag + " Player\n");
-        System.out.println("--- change slide card (slide number) with main card (main number) ---");
+        System.out.println("--- add slide card (slide number) to main card ---");
+        System.out.println("--- add main card (main number) to slide card ---");
         System.out.println("--- show main and slide deck ---");
         System.out.println("--- end ---\n");
         while (true) {
             String input = Main.scanner.nextLine().trim();
             if (input.compareTo("end") == 0)
                 break;
-            else if (input.matches("change card [\\d]+ with [\\d]+"))
-                changeCard(input, player);
+            else if (input.matches("add slide card [\\d]+ to main card"))
+                addSlideToMain(input, player);
+            else if (input.matches("add main card [\\d]+ to slide card"))
+                addMainToSlide(input, player);
             else if (input.matches("show main and slide deck"))
                 showDeck(player);
             else
                 System.out.println("invalid command!");
         }
         player.setHandCard();
+    }
+
+    private void addMainToSlide(String input, Player player) {
+        Matcher matcher;
+        int mainNumber;
+        matcher = CommandMatcher.getCommandMatcher(input.trim(), "add main card ([\\d]+) to slide card");
+        matcher.find();
+        mainNumber = Integer.parseInt(matcher.group(1));
+        try {
+            new SetMainAndSlide().setMainToSlide(mainNumber, player);
+            System.out.println("main card " + mainNumber + "added to slide deck successfully");
+        } catch (MyException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addSlideToMain(String input, Player player) {
+        Matcher matcher;
+        int slideNumber;
+        matcher = CommandMatcher.getCommandMatcher(input.trim(), "add slide card ([\\d]+) to main card");
+        matcher.find();
+        slideNumber = Integer.parseInt(matcher.group(1));
+        try {
+            new SetMainAndSlide().setSlideToMain(slideNumber, player);
+            System.out.println("slide card " + slideNumber + "added to main deck successfully");
+        } catch (MyException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void showDeck(Player player) {
@@ -50,16 +84,5 @@ public class SetMainCards {
         System.out.println("Side deck: ");
         for (int i = 1; i <= cards.size(); i++)
             System.out.println(i + ": " + cards.get(i - 1).getCardName());
-    }
-
-    private void changeCard(String input, Player player) {
-        Matcher matcher;
-        int slideNumber;
-        int mainNumber;
-        matcher = CommandMatcher.getCommandMatcher(input, "change slide card ([\\d]+) with main card ([\\d]+)");
-        matcher.find();
-        slideNumber = Integer.parseInt(matcher.group(1));
-        mainNumber = Integer.parseInt(matcher.group(2));
-        player.setSlideToMain(slideNumber, mainNumber);
     }
 }

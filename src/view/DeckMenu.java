@@ -59,8 +59,10 @@ public class DeckMenu {
         try {
             new DeckControllers().createDeck(deckName, MainMenu.user);
             System.out.println("deck created successfully!");
-        } catch (Exception e) {
+        } catch (MyException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -73,8 +75,10 @@ public class DeckMenu {
         try {
             new DeckControllers().deleteDeck(deckName);
             System.out.println("deck deleted successfully!");
-        } catch (Exception e) {
+        } catch (MyException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -87,8 +91,10 @@ public class DeckMenu {
         try {
             new DeckControllers().setActive(deckName);
             System.out.println("deck activated successfully!");
-        } catch (Exception e) {
+        } catch (MyException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -108,8 +114,10 @@ public class DeckMenu {
         try {
             new DeckControllers().addCard(cardName, deckName, isSide);
             System.out.println("card added to deck successfully");
-        } catch (Exception e) {
+        } catch (MyException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -129,8 +137,10 @@ public class DeckMenu {
         try {
             new DeckControllers().removeCard(cardName, deckName, isSide);
             System.out.println("card removed form deck successfully");
-        }catch (Exception e) {
+        } catch (MyException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

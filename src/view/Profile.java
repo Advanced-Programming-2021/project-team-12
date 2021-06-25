@@ -2,6 +2,7 @@ package view;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.regex.Matcher;
 
+import Exceptions.MyException;
 import Exceptions.NewPassException;
 import Exceptions.NickNameException;
 import Exceptions.WrongPassException;
@@ -39,6 +40,8 @@ public class Profile {
         try {
             new ProfileControl().changeNickName(nickName);
             System.out.println("nickname changed successfully!");
+        } catch (MyException e) {
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -57,6 +60,8 @@ public class Profile {
         try {
             new ProfileControl().changePass(currentPassword, newPassword);
             System.out.println("password changed successfully!");
+        } catch (MyException e) {
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

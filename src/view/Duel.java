@@ -2,6 +2,7 @@ package view;
 
 import java.util.regex.Matcher;
 
+import Exceptions.MyException;
 import Utility.CommandMatcher;
 import controllers.DuelControl;
 
@@ -37,8 +38,10 @@ public class Duel {
         int round = Integer.parseInt(matcher.group(2));
         try {
             new DuelControl(secondPlayer, round);
-        } catch (Exception e) {
+        } catch (MyException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -48,8 +51,10 @@ public class Duel {
         int round = Integer.parseInt(matcher.group(2));
         try {
             new DuelControl(round);
-        } catch (Exception e) {
+        } catch (MyException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
