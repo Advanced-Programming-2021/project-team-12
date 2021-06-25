@@ -2,6 +2,7 @@ package view;
 
 import Utility.CommandMatcher;
 import com.sun.jdi.IntegerType;
+import controllers.AIController;
 import controllers.Game;
 import models.Card;
 import models.Deck;
@@ -17,18 +18,7 @@ public class SetMainCards {
         if (!Game.isAITurn())
             setCards(secondPlayer, "Second");
         else
-            setAICards();
-    }
-
-    private void setAICards() {
-        Player AI = Game.secondPlayer;
-        for (int i = 1; i < 5; i++) {
-            Random random = new Random();
-            int slideCard = (random.nextInt() % 15) + 1;
-            int mainCard = (random.nextInt() % 40) + 1;
-            AI.setSlideToMain(slideCard, mainCard);
-        }
-        AI.setHandCard();
+            new AIController().setMainCard();
     }
 
     private void setCards(Player player, String flag) {

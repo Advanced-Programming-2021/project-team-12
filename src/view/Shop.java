@@ -1,8 +1,10 @@
 package view;
 
+import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
+import Exceptions.MyException;
 import Utility.CommandMatcher;
 import controllers.ShopControl;
 import models.Card;
@@ -19,6 +21,8 @@ public class Shop {
             input = Main.scanner.nextLine().trim();
             if (input.compareTo("menu exit") == 0)
                 return;
+            else if (input.matches("increase (--money|-m) [\\d]+"))
+                cheatyIncreaseMoney(input);
             else if (input.matches("shop buy [\\w ]+"))
                 buyCard(input);
             else if (input.matches("shop show (--all|-a)"))
@@ -30,6 +34,14 @@ public class Shop {
         }
     }
 
+    private void cheatyIncreaseMoney(String input) {
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "increase (--money|-m) ([\\d]+)");
+        matcher.find();
+        int money = Integer.parseInt(matcher.group(2));
+        new ShopControl().cheatyIncreaseMoney(money);
+        System.out.println("money added successfully");
+    }
+
     public void buyCard(String input) {
         String cardName;
         Matcher matcher = CommandMatcher.getCommandMatcher(input, "shop buy ([\\w ]+)");
@@ -38,8 +50,10 @@ public class Shop {
         try {
             new ShopControl().buyCard(cardName, user);
             System.out.println("you bought card successfully");
-        } catch (Exception e) {
+        } catch (MyException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
