@@ -1,10 +1,13 @@
 package view.phase;
 import controllers.Game;
 import controllers.PhaseControl;
+import view.AIPhase.AIDrawPhase;
 import view.Main;
 
 public class DrawPhase {
     public void run(){
+        if (Game.isAITurn())
+            new AIDrawPhase();
         System.out.println(PhaseControl.getInstance().printWhoseTurnIsIt());
         System.out.println("phase: draw phase");
         String input;

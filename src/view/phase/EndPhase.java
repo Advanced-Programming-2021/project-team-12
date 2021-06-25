@@ -3,6 +3,7 @@ package view.phase;
 import controllers.PhaseControl;
 import models.Address;
 import controllers.Game;
+import view.AIPhase.AIEndPhase;
 import view.Main;
 
 import java.util.regex.Matcher;
@@ -10,6 +11,8 @@ import java.util.regex.Pattern;
 
 public class EndPhase {
     public void run() {
+        if (Game.isAITurn())
+            new AIEndPhase();
         PhaseControl.getInstance().doEffectEndPhase();
         String input;
         System.out.println("phase: end phase");

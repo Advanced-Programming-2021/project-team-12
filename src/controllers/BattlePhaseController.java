@@ -437,7 +437,7 @@ public class BattlePhaseController {
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Cylinder")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
                                 && BattlePhase.getInstance().getPermissionForTrap("Magic Cylinder", false)) {
-                            if(!currentPlayer.doIHaveSpellCard("Ring of Defense")) {
+                            if(!currentPlayer.doIHaveSpellCard("Ring of defense")) {
                                 currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
                             }
                             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Magic Cylinder");
