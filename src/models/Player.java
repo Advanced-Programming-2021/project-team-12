@@ -13,7 +13,6 @@ public class Player {
     private boolean[] isThisSpellActivated;
     private boolean isOneHisMonstersDestroyedInThisRound;
     private HashMap<Address, PositionOfCardInBoard> positionOfCardInBoardByAddress;
-    private boolean[] didWeActivateThisSpell;
     private boolean[] didWeAttackByThisCardInThisCard;
     private boolean isHeSummonedOrSet;
     private boolean[] didWeChangePositionThisCardInThisTurn;
@@ -35,7 +34,6 @@ public class Player {
     private int[] fromMonsterToSpellEquip;
 
     {
-        didWeActivateThisSpell = new boolean[100];
         fromMonsterToSpellEquip = new int[6];
         cardByIndex = new Card[100];
         isThisSpellActivated = new boolean[100];
@@ -280,7 +278,7 @@ public class Player {
             int place = address.getNumber();
             HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
             graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, removeCardHashMap.get(place));
-            indexOfCard.put(new Address(graveyardCardNumbers.size(), "graveyard", true), indexOfCard.get(new Address(place, address.getKind(), true)));
+            indexOfCard.put(new Address(graveyardCardNumbers.size(), "graveyard", true), indexOfCard.get(address));
             removeCardHashMap.remove(place);
         }
     }
@@ -425,14 +423,6 @@ public class Player {
         Arrays.fill(didWeAttackByThisCardInThisCard, false);
     }
 
-    public void setDidWeActivateThisSpell(int index) {
-        didWeActivateThisSpell[index] = true;
-    }
-
-    public boolean didWeActivateThisSpell(int index) {
-        return didWeActivateThisSpell[index];
-    }
-
     public int getIndexOfThisCardByAddress(Address address) {
         return indexOfCard.get(address);
     }
@@ -534,9 +524,12 @@ public class Player {
         return count > 2;
     }
 
-    public int howManyHeraldOfCreationDoWeHave(String cardName) {
-        return 1;
-        //jskdfhsklhf
+    public int howManyHeraldOfCreationDoWeHave() {
+        int number = 0;
+        for (int i = 1; i <= 5; i++)
+            if (monsterZoneCardNumbers.containsKey(i) && monsterZoneCardNumbers.get(i).getCardName().equals("Herald of Creation"))
+                number++;
+        return number;
     }
 
     public Address setCardFromGraveyardToHand(Address comeBackFromGraveyard) {
@@ -616,7 +609,7 @@ public class Player {
         for (int i = 1; i <= 5; i++)
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName))
                 if (spellZoneCardNumbers.get(i).getKind().equals("Trap")
-                        || didWeActivateThisSpell[indexOfCard.get(new Address(i, "spell", true))])
+                        || isThisSpellActivated[indexOfCard.get(new Address(i, "spell", true))])
                     return true;
         return false;
     }
@@ -781,16 +774,26 @@ public class Player {
     }
 
     public void removeAllCardWithThisNameInMyHand(String cardName) {
-        if (Card.getCardByName(cardName) == null)
-            return;
         for (int i = 1; i <=5; i++)
-            
+            if (handCardNumbers.containsKey(i) && handCardNumbers.get(i).getCardName().equals(cardName))
+                removeCard(new Address(i, "hand", true));
     }
 
     public void summonThisCardFromGraveYardToMonsterZone(Address address) {
-
+        if (!graveyardCardNumbers.containsKey(address.getNumber()) || isMonsterZoneFull())
+            return;
+        int place = getFirstEmptyPlace(monsterZoneCardNumbers, 5);
+        monsterZoneCardNumbers.put(place, graveyardCardNumbers.get(address.getNumber()));
+        Address add = new Address(place, "monster", true);
+        indexOfCard.put(add, indexOfCard.get(address));
+        removeCard(address);
+        positionOfCardInBoardByAddress.put(add, PositionOfCardInBoard.OO);
     }
 
     public boolean doIHaveCardWithThisNameInMyHand(String cardName) {
+        for (int i = 1; i <= 5; i++)
+            if (handCardNumbers.containsKey(i) && handCardNumbers.get(i).getCardName().equals(cardName))
+                return true;
+        return false;
     }
 }

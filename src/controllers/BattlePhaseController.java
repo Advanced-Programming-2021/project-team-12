@@ -425,7 +425,7 @@ public class BattlePhaseController {
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Mirror Force")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
                                 && BattlePhase.getInstance().getPermissionForTrap("Mirror Force", false)) {
-                            Board.destroyAllAttackerMonster(Game.whoseTurnPlayer());
+                            Board.destroyAllAttackerMonster(Game.whoseRivalPlayer());
                             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Mirror Force");
                         } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
