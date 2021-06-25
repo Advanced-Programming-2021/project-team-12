@@ -16,7 +16,7 @@ public class GeneralTest {
     static Card card;
     static Deck deck;
     @BeforeAll
-    public void init() {
+    public static void init() {
         new LoadFile();
         user = new User("a", "a", "a");
         currentPlayer = new Player();
@@ -32,10 +32,10 @@ public class GeneralTest {
     }
 
     @Test
-    public void summonALowLevelMonsterTest() {
+    public static void summonALowLevelMonsterTest() {
         currentPlayer.getHandCard().put(2, card);
         PhaseControl.getInstance().summonALowLevelMonster(matcher, currentPlayer, address);
-//        Assert.assertTrue(currentPlayer.isHeSummonedOrSet());
+        Assertions.assertTrue(currentPlayer.isHeSummonedOrSet());
     }
 
 }
