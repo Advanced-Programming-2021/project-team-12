@@ -794,4 +794,8 @@ public class Player {
 
     public void removeAllCardWithThisNameInMyHand() {
     }
+
+    public void summonThisCardFromGraveYardToMonsterZone(Address address) {
+
+    }
 }

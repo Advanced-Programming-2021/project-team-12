@@ -412,21 +412,29 @@ public class PhaseControl {
     }
 
     private void activateSomeOfTraps(Address address, SpellCard spellCard, Player currentPlayer) {
-        if(spellCard.getName().equals("Mind Crush")){
-            if(BattlePhase.getInstance().getPermissionForTrap("Mind Crush")){
-                MainPhase.doMindCrushEffect();
-                currentPlayer.removeCard(address);
+        if (!Game.whoseRivalPlayer().doIHaveMirageDragonMonster()) {
+            if (spellCard.getName().equals("Mind Crush")) {
+                if (BattlePhase.getInstance().getPermissionForTrap("Mind Crush", true)) {
+                    MainPhase.doMindCrushEffect();
+                    currentPlayer.removeCard(address);
+                }
             }
-        }
-        if(spellCard.getName().equals("Time Seal")){
-            if(BattlePhase.getInstance().getPermissionForTrap("Time Seal")){
-                PhaseControl.getInstance().setCanDraw(false);
-                currentPlayer.removeCard(address);
+            if (spellCard.getName().equals("Time Seal")) {
+                if (BattlePhase.getInstance().getPermissionForTrap("Time Seal", true)) {
+                    PhaseControl.getInstance().setCanDraw(false);
+                    currentPlayer.removeCard(address);
+                }
+            }
+            if (spellCard.getName().equals("Call of the Haunted")) {
+                if (BattlePhase.getInstance().getPermissionForTrap("Call of the Haunted", true)) {
+                    MainPhase.doCallOfTheHauntedEffect();
+                    currentPlayer.removeCard(address);
+                }
             }
         }
     }
 
-    public void spellSet(Matcher matcher) throws SpellZoneFull{
+    public void spellSet(Matcher matcher) throws SpellZoneFull {
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
             if (!currentPlayer.isSpellZoneFull()) {
@@ -471,8 +479,7 @@ public class PhaseControl {
         currentPlayer.setHeSummonedOrSet(true);
         if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
             currentPlayer.summonCardToMonsterZone(matcher.group(1)).setIsScanner(true);
-        }
-        else if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger")) {
+        } else if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger")) {
             if (Integer.parseInt(Effect.run("Terratiger")) != 0) {
                 Address address1 = new Address(Integer.parseInt(Effect.run("Terratiger")), "hand", true);
                 if ((currentPlayer.getMonsterCardByAddress(address1) != null)
@@ -482,7 +489,7 @@ public class PhaseControl {
             }
         } else currentPlayer.summonCardToMonsterZone(matcher.group(1));
         if (Game.whoseRivalPlayer().doIHaveSpellCard("Hole Trap") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-            if(monsterCard.getNormalAttack()>= 1000) {
+            if (monsterCard.getNormalAttack() >= 1000) {
                 currentPlayer.removeCard(address);
                 Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
             }
@@ -509,7 +516,7 @@ public class PhaseControl {
                     currentPlayer.removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard));
                     currentPlayer.summonCardToMonsterZone(address);
                     if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                        if(monsterCard.getNormalAttack()>= 1000) {
+                        if (monsterCard.getNormalAttack() >= 1000) {
                             currentPlayer.removeCard(address1);
                             Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
 //                        System.out.println("The summoned card got destroyed by effect of Trap Hole effect.");
@@ -545,7 +552,7 @@ public class PhaseControl {
                         Game.whoseTurnPlayer().removeThisMonsterZoneTypeAddressForTribute(Integer.parseInt(tributeCard2));
                         Game.whoseTurnPlayer().summonCardToMonsterZone(address);
                         if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                            if(monsterCard.getNormalAttack()>= 1000) {
+                            if (monsterCard.getNormalAttack() >= 1000) {
                                 currentPlayer.removeCard(address1);
                                 Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
                                 //System.out.println("The summmoned card got destroyed by effect of Trap Hole efffect.");
@@ -611,7 +618,7 @@ public class PhaseControl {
         } else if (kind.equals("Spell")) {
             SpellCard spellCardForShow = Game.whoseTurnPlayer().getSpellCardByAddress(address);
             Game.getMainPhase1().printSpellAttributes(spellCardForShow);
-        } else if (kind.equals("Trap")){
+        } else if (kind.equals("Trap")) {
             TrapCard trapCardForShow = Game.whoseTurnPlayer().getTrapCardByAddress(address);
             Game.getMainPhase1().printTrapAttributes(trapCardForShow);
         }
@@ -628,7 +635,7 @@ public class PhaseControl {
                     doManEaterBugEffect();
                 }
                 if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole")) {
-                    if(monsterCard.getNormalAttack()>= 1000) {
+                    if (monsterCard.getNormalAttack() >= 1000) {
                         currentPlayer.removeCard(address);
                         Game.whoseRivalPlayer().removeOneOfMyTrapHoleTrapOnTheBoard();
 //                    System.out.println("The summoned card got destroyed by effect of Trap Hole effect.");
@@ -685,12 +692,18 @@ public class PhaseControl {
 
     private void activateThisKindOfAddress(String stringAddress, Address address, Player currentPlayer, int index, String cardState) throws PreperationsAreNotDoneYet {
         if (SpellCard.canWeActivateThisSpell(address)) {
-            currentPlayer.setDidWeActivateThisSpell(index);
-            currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
-            currentPlayer.setIsThisSpellActivated(true, index);
-            SpellCard.doSpellAbsorptionEffect();
-            currentPlayer.getSpellCardByStringAddress(stringAddress).doEffect(address);
-            //currentPlayer.addCardToAddress(Board.getCardByAddress(address), cardState, index)
+            if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Jammer")
+                    && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
+                    && BattlePhase.getInstance().getPermissionForTrap("Magic Jammer", false)) {
+                if (MainPhase.removeCardFromMyHand()) Game.whoseTurnPlayer().removeCard(address);
+            } else {
+                currentPlayer.setDidWeActivateThisSpell(index);
+                currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
+                currentPlayer.setIsThisSpellActivated(true, index);
+                SpellCard.doSpellAbsorptionEffect();
+                currentPlayer.getSpellCardByStringAddress(stringAddress).doEffect(address);
+                //currentPlayer.addCardToAddress(Board.getCardByAddress(address), cardState, index)
+            }
         } else throw new PreperationsAreNotDoneYet("preparations of this spell are not done yet");
     }
 
@@ -754,14 +767,14 @@ public class PhaseControl {
         if (kind.equals("Monster")) {
             MonsterCard monsterCardForShow = Game.whoseTurnPlayer().getMonsterCardByAddress(address);
             if (Game.whoseTurnPlayer().getMonsterPosition(address.getNumber()).equals(PositionOfCardInBoard.DH))
-                    throw new Exception("card is not visible");
+                throw new Exception("card is not visible");
             Game.getMainPhase1().printMonsterAttributes(monsterCardForShow);
         } else if (kind.equals("Spell")) {
             SpellCard spellCardForShow = Game.whoseTurnPlayer().getSpellCardByAddress(address);
             if (!Game.whoseTurnPlayer().getSpellPosition(address.getNumber()))
                 throw new Exception("card is not visible");
             Game.getMainPhase1().printSpellAttributes(spellCardForShow);
-        } else if (kind.equals("Trap")){
+        } else if (kind.equals("Trap")) {
             TrapCard trapCardForShow = Game.whoseTurnPlayer().getTrapCardByAddress(address);
             if (!Game.whoseTurnPlayer().getSpellPosition(address.getNumber()))
                 throw new Exception("card is not visible");

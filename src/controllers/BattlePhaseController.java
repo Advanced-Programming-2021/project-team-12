@@ -134,7 +134,7 @@ public class BattlePhaseController {
             if (!player.getMonsterZoneCard().containsKey(i))
                 continue;
             if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.DO))
-                tempDamage = MonsterCard.getMonsterCardByName(card.getCardName()).getAttack(address) - MonsterCard.getMonsterCardByName(player.getCardMonster(i).getCardName()).getDefence(true,new Address(i, "monster", false) );
+                tempDamage = MonsterCard.getMonsterCardByName(card.getCardName()).getAttack(address) - MonsterCard.getMonsterCardByName(player.getCardMonster(i).getCardName()).getDefence(true, new Address(i, "monster", false));
             if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.OO))
                 tempDamage = MonsterCard.getMonsterCardByName(card.getCardName()).getAttack(address) - MonsterCard.getMonsterCardByName(player.getCardMonster(i).getCardName()).getAttack(new Address(i, "monster", true));
             if (damage < tempDamage) {
@@ -158,7 +158,8 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        Game.playTurn("MainPhase2");;
+                        Game.playTurn("MainPhase2");
+                        ;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -202,7 +203,8 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        Game.playTurn("MainPhase2");;
+                        Game.playTurn("MainPhase2");
+                        ;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -247,7 +249,8 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        Game.playTurn("MainPhase2");;
+                        Game.playTurn("MainPhase2");
+                        ;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -288,7 +291,8 @@ public class BattlePhaseController {
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
                 BattlePhase.getInstance().goToNextPhase = true;
-                Game.playTurn("MainPhase2");;
+                Game.playTurn("MainPhase2");
+                ;
             } else if (input.matches("^[ ]*select -d[ ]*$"))
                 BattlePhase.getInstance().selectCard();
             else if (input.matches("^[ ]*select .*$"))
@@ -367,7 +371,8 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        Game.playTurn("MainPhase2");;
+                        Game.playTurn("MainPhase2");
+                        ;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -412,23 +417,26 @@ public class BattlePhaseController {
                     if (Game.whoseRivalPlayer().getCardByAddress(address) != null) {
                         MonsterCard rivalMonsterCard = Game.whoseRivalPlayer().getMonsterCardByAddress(address);
                         currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
-                        if (Game.whoseRivalPlayer().doIHaveSpellCard("Negate Attack") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                        if (Game.whoseRivalPlayer().doIHaveSpellCard("Negate Attack")
+                                && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
+                                && BattlePhase.getInstance().getPermissionForTrap("Negate Attack", false)) {
                             BattlePhase.getInstance().goToNextPhase = true;
-                        } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Mirror Force") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                            if(BattlePhase.getInstance().getPermissionForTrap("Mirror Force")) {
-                                Board.destroyAllAttackerMonster(Game.whoseTurnPlayer());
-                                Game.whoseRivalPlayer().destroyMyTrapNamed("Mirror Force");
-                            }
+                            Game.whoseRivalPlayer().destroyMyTrapNamed("Negate Attack");
+                        } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Mirror Force")
+                                && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
+                                && BattlePhase.getInstance().getPermissionForTrap("Mirror Force", false)) {
+                            Board.destroyAllAttackerMonster(Game.whoseTurnPlayer());
+                            Game.whoseRivalPlayer().destroyMyTrapNamed("Mirror Force");
                         } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                             throw new MyException("You can't attack by monster with attack equal or more than 1500 " +
                                     "because of MessengerOfPeace.");
-                        } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Cylinder") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                            if(BattlePhase.getInstance().getPermissionForTrap("Magic Cylinder")) {
-                                currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
-                                Game.whoseRivalPlayer().destroyMyTrapNamed("Magic Cylinder");
-                                throw new MyException("Rival has trap named Magic Cylinder so its effect get done.");
-                            }
+                        } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Cylinder")
+                                && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
+                                && BattlePhase.getInstance().getPermissionForTrap("Magic Cylinder", false)) {
+                            currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
+                            Game.whoseRivalPlayer().destroyMyTrapNamed("Magic Cylinder");
+                            throw new MyException("Rival has trap named Magic Cylinder so its effect get done.");
                         } else if (rivalMonsterCard.getName().equals("Texchanger")) {
                             Game.getMainPhase1().summonCyberse();
                         } else {

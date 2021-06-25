@@ -12,7 +12,7 @@ import models.Player;
 import view.Main;
 
 public class BattlePhase {
-   public Boolean goToNextPhase = false;
+    public Boolean goToNextPhase = false;
 
     private static BattlePhase instance;
 
@@ -536,8 +536,11 @@ public class BattlePhase {
         return pattern.matcher(input);
     }
 
-    public boolean getPermissionForTrap(String cardName) {
-        System.out.println("do you want to activate "+ cardName+"trap?(yes/no)");
+    public boolean getPermissionForTrap(String cardName, boolean isMine) {
+        if (!isMine){
+            System.out.print("Dear " + Game.whoseRivalPlayer().getNickName() + ",");
+        }
+        System.out.println("do you want to activate " + cardName + "trap?(yes/no)");
         return (Main.scanner.nextLine().equals("yes"));
     }
 }

@@ -94,8 +94,7 @@ public class MainPhase {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                else if (player.getHandCard().containsKey(i) && !player.getCardHand(i).getKind().equals("monster")) {
+                } else if (player.getHandCard().containsKey(i) && !player.getCardHand(i).getKind().equals("monster")) {
                     input = "select --hand " + i;
                     try {
                         PhaseControl.getInstance().checkInputNonCardSelected(input);
@@ -106,8 +105,7 @@ public class MainPhase {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                else {
+                } else {
                     if (player.getCardHand(i).getAttack() > maxAttack) {
                         place = i;
                         maxAttack = player.getCardHand(i).getAttack();
@@ -555,7 +553,7 @@ public class MainPhase {
     }
 
     public void summonCyberse() {
-        if(permission()){
+        if (permission()) {
             System.out.println("Please select one Cyberse type monster from your hand or deck or graveyard to be summoned.");
             System.out.println("which card do you want to special summon?\n1.Texchanger\n2.Leotron");
             String monsterName = Main.scanner.nextLine();
@@ -563,7 +561,7 @@ public class MainPhase {
         }
     }
 
-    public boolean permission(){
+    public boolean permission() {
         System.out.println("Do you want do the effect?(yes/no)");
         return Main.scanner.nextLine().equals("yes");
     }
@@ -572,9 +570,26 @@ public class MainPhase {
         Player currentPlayer = Game.whoseTurnPlayer();
         Player rivalPlayer = Game.whoseRivalPlayer();
         System.out.println("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly.");
-        if(rivalPlayer.doIHaveSpellCard("Mind Crush")){
+        if (rivalPlayer.doIHaveSpellCard("Mind Crush")) {
             rivalPlayer.removeAllCardWithThisNameInMyHand();
-        }else currentPlayer.removeOneOfMyCardFromHandRandomly();
+        } else currentPlayer.removeOneOfMyCardFromHandRandomly();
+    }
+
+    public static void doCallOfTheHauntedEffect() {
+        System.out.println("choose a monster from your graveyard to be summoned!(only type number)");
+        Address address = new Address(Integer.parseInt(Main.scanner.nextLine()), "graveyard", true);
+        if (Game.whoseTurnPlayer().getMonsterCardByAddress(address) != null)
+            Game.whoseTurnPlayer().summonThisCardFromGraveYardToMonsterZone(address);
+    }
+
+    public static boolean removeCardFromMyHand() {
+        System.out.println("choose card from your to be remove!(only type number)");
+        Address address = new Address(Integer.parseInt(Main.scanner.nextLine()), "hand", true);
+        if (Game.whoseTurnPlayer().getCardByAddress(address) != null) {
+            Game.whoseTurnPlayer().removeCard(address);
+            return true;
+        }
+        return false;
     }
 
 }
