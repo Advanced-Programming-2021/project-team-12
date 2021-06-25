@@ -476,7 +476,7 @@ public class PhaseControl {
         }
     }
 
-    private void summonALowLevelMonster(Matcher matcher, Player currentPlayer, Address address) {
+    public void summonALowLevelMonster(Matcher matcher, Player currentPlayer, Address address) {
         MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
         currentPlayer.setHeSummonedOrSet(true);
         if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
