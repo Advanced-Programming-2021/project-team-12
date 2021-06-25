@@ -421,12 +421,12 @@ public class BattlePhaseController {
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
                                 && BattlePhase.getInstance().getPermissionForTrap("Negate Attack", false)) {
                             BattlePhase.getInstance().goToNextPhase = true;
-                            Game.whoseRivalPlayer().destroyMyTrapNamed("Negate Attack");
+                            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Negate Attack");
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Mirror Force")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
                                 && BattlePhase.getInstance().getPermissionForTrap("Mirror Force", false)) {
                             Board.destroyAllAttackerMonster(Game.whoseTurnPlayer());
-                            Game.whoseRivalPlayer().destroyMyTrapNamed("Mirror Force");
+                            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Mirror Force");
                         } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                             throw new MyException("You can't attack by monster with attack equal or more than 1500 " +
@@ -435,7 +435,7 @@ public class BattlePhaseController {
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
                                 && BattlePhase.getInstance().getPermissionForTrap("Magic Cylinder", false)) {
                             currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
-                            Game.whoseRivalPlayer().destroyMyTrapNamed("Magic Cylinder");
+                            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Magic Cylinder");
                             throw new MyException("Rival has trap named Magic Cylinder so its effect get done.");
                         } else if (rivalMonsterCard.getName().equals("Texchanger")) {
                             Game.getMainPhase1().summonCyberse();

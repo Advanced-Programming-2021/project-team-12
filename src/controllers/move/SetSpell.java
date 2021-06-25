@@ -13,7 +13,7 @@ public class SetSpell {
     }
 
     public static void destroyMessengerOfPeace() {
-        Game.whoseTurnPlayer().removeOneOfMySpell("Messenger of Peace");
+        Game.whoseTurnPlayer().removeOneOfTrapOrSpell("Messenger of Peace");
     }
 
     public static boolean doIHaveClosedForest() {

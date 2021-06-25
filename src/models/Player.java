@@ -615,7 +615,9 @@ public class Player {
     public boolean doIHaveSpellCard(String cardName) {
         for (int i = 1; i <= 5; i++)
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName))
-                return true;
+                if (spellZoneCardNumbers.get(i).getKind().equals("Trap")
+                        || didWeActivateThisSpell[indexOfCard.get(new Address(i, "spell", true))])
+                    return true;
         return false;
     }
 
@@ -769,21 +771,16 @@ public class Player {
         return fromMonsterToSpellEquip[monsterPlace];
     }
 
-    public void removeOneOfMySpell(String cardName) {
-        for (int i = 1; i <= 5; i++)
-            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName))
-                spellZoneCardNumbers.remove(i);
+    public void removeOneOfHandCard() {
+        for (int i = 1; i <= 5; i++) {
+            if (handCardNumbers.containsKey(i)) {
+                removeCard(new Address(i, "hand", true));
+                break;
+            }
+        }
     }
 
-    public void destroyMyTrapNamed(String  trapName) {
-
-    }
-
-    public void removeOneOfMyCardFromHandRandomly() {
-
-    }
-
-    public void removeAllCardWithThisNameInMyHand() {
+    public void removeAllCardWithThisNameInMyHand(String cardName) {
 
     }
 

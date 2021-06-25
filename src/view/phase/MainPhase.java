@@ -571,8 +571,8 @@ public class MainPhase {
         Player rivalPlayer = Game.whoseRivalPlayer();
         System.out.println("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly.");
         if (rivalPlayer.doIHaveSpellCard("Mind Crush")) {
-            rivalPlayer.removeAllCardWithThisNameInMyHand();
-        } else currentPlayer.removeOneOfMyCardFromHandRandomly();
+            rivalPlayer.removeAllCardWithThisNameInMyHand(Main.scanner.nextLine());
+        } else currentPlayer.removeOneOfHandCard();
     }
 
     public static void summonAMonsterCardFromGraveyard() {
