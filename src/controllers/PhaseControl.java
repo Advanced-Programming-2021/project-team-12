@@ -415,6 +415,13 @@ public class PhaseControl {
         if(spellCard.getName().equals("Mind Crush")){
             if(BattlePhase.getInstance().getPermissionForTrap("Mind Crush")){
                 MainPhase.doMindCrushEffect();
+                currentPlayer.removeCard(address);
+            }
+        }
+        if(spellCard.getName().equals("Time Seal")){
+            if(BattlePhase.getInstance().getPermissionForTrap("Time Seal")){
+                PhaseControl.getInstance().setCanDraw(false);
+                currentPlayer.removeCard(address);
             }
         }
     }
