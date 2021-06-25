@@ -488,7 +488,7 @@ public class PhaseControl {
                     currentPlayer.setCardFromHandToMonsterZone(address1);
             }
         } else currentPlayer.summonCardToMonsterZone(matcher.group(1));
-        if (Game.whoseRivalPlayer().doIHaveSpellCard("Hole Trap") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+        if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
             if (monsterCard.getNormalAttack() >= 1000) {
                 currentPlayer.removeCard(address);
                 Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
