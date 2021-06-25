@@ -603,26 +603,6 @@ public class Player {
         return false;
     }
 
-    public boolean doIHaveTrapNamedMagicCylinder() {
-        for (int i = 1; i <= 5; i++) {
-            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Magic Cylinder")) {
-                if (isSpellFaceUp.get(i)) ;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean doIHaveTrapNamedMirrorForce() {
-        for (int i = 1; i <= 5; i++) {
-            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Mirror Force")) {
-                if (isSpellFaceUp.get(i)) ;
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void removeOneOfMyTrapHoleTrapOnTheBoard() {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Trap Hole")) {
@@ -632,23 +612,9 @@ public class Player {
         }
     }
 
-    public boolean doIHaveTrapHoleTrapOnTheBoard() {
-        for (int i = 1; i <= 5; i++)
-            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Trap Hole"))
-                return true;
-        return false;
-    }
-
     public boolean doIHaveSpellCard(String cardName) {
         for (int i = 1; i <= 5; i++)
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName))
-                return true;
-        return false;
-    }
-
-    public boolean doIHaveTorrentialTributeTrapOnTheBoard() {
-        for (int i = 1; i <= 5; i++)
-            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Torrential Tribute"))
                 return true;
         return false;
     }
@@ -660,16 +626,6 @@ public class Player {
                 break;
             }
         }
-    }
-
-    public boolean doIHaveTrapNamedNegateAttack() {
-        for (int i = 1; i <= 5; i++) {
-            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Negate Attack")) {
-                if (isSpellFaceUp.get(i)) ;
-                return true;
-            }
-        }
-        return false;
     }
 
     public int getNumberOFHandCard() {

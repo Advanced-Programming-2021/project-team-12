@@ -47,6 +47,7 @@ public class Attack {
         TrapCard.welcomeToEffect();
         SpellCard.welcomeToEffect();
     }
+
     public static void destroyThisAddress(Address address){
         //written by mohamad
     }

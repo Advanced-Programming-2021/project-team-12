@@ -412,18 +412,18 @@ public class BattlePhaseController {
                     if (Game.whoseRivalPlayer().getCardByAddress(address) != null) {
                         MonsterCard rivalMonsterCard = Game.whoseRivalPlayer().getMonsterCardByAddress(address);
                         currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
-                        if (Game.whoseRivalPlayer().doIHaveTrapNamedNegateAttack() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                        if (Game.whoseRivalPlayer().doIHaveSpellCard("Negate Attack") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             BattlePhase.getInstance().goToNextPhase = true;
-                        } else if (Game.whoseRivalPlayer().doIHaveTrapNamedMirrorForce() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                        } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Mirror Force") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             if(BattlePhase.getInstance().getPermissionForTrap("Mirror Force")) {
-                                Game.whoseRivalPlayer().destroyAllRivalMonstersWhichInAttackMode();
+                                Board.destroyAllAttackerMonster(Game.whoseTurnPlayer());
                                 Game.whoseRivalPlayer().destroyMyTrapNamed("Mirror Force");
                             }
                         } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                             throw new MyException("You can't attack by monster with attack equal or more than 1500 " +
                                     "because of MessengerOfPeace.");
-                        } else if (Game.whoseRivalPlayer().doIHaveTrapNamedMagicCylinder() && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                        } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Cylinder") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             if(BattlePhase.getInstance().getPermissionForTrap("Magic Cylinder")) {
                                 currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
                                 Game.whoseRivalPlayer().destroyMyTrapNamed("Magic Cylinder");
