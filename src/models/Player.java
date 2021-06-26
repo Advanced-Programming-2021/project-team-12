@@ -633,17 +633,6 @@ public class Player {
         return false;
     }
 
-    public void summonAMonsterCardFromGraveyard() {
-        if (isMonsterZoneFull() || graveyardCardNumbers.size() == 0)
-            return;
-        int place = getFirstEmptyPlace(monsterZoneCardNumbers, 5);
-        Address add = new Address(place, "monster", true);
-        positionOfCardInBoardByAddress.put(add, PositionOfCardInBoard.OO);
-        monsterZoneCardNumbers.put(place, graveyardCardNumbers.get(graveyardCardNumbers.size()));
-        indexOfCard.put(add, indexOfCard.get(new Address(graveyardCardNumbers.size(), "graveyard", true)));
-        removeCard(new Address(graveyardCardNumbers.size(), "graveyard", true));
-    }
-
     public boolean canIContinueTribute(int number, List<Address> monsterCardsAddress) {
         HashMap<Integer, Card> monsters = new HashMap<>();
         for (int i = 1; i <= 5; i++)
@@ -726,6 +715,12 @@ public class Player {
     }
 
     public void setCardFromHandToFieldZone(String stringAddress) {
-
+        Address address = new Address(stringAddress);
+        if (!handCardNumbers.containsKey(address.getNumber()) || fieldCardNumbers.containsKey(1))
+            return;
+        fieldCardNumbers.put(1, handCardNumbers.get(address.getNumber()));
+        Address add = new Address(1, "field", true);
+        indexOfCard.put(add, indexOfCard.get(address));
+        handCardNumbers.remove(address.getNumber());
     }
 }
