@@ -13,7 +13,7 @@ import models.User;
 public class DeckMenu {
     private User user;
     public DeckMenu() {
-        System.out.println("** DECK MENU **");
+        System.out.println(" ** DECK MENU **");
         this.user = MainMenu.user;
         String input;
         while (true) {

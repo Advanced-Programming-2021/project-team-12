@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 
 public class RegistrationMenu {
     public RegistrationMenu() {
-        System.out.println("** WELCOME TO REGISTRATION MENU **");
+        System.out.println(" ** WELCOME TO REGISTRATION MENU **");
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();

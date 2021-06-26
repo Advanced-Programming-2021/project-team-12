@@ -4,7 +4,7 @@ import models.User;
 public class MainMenu {
     public static User user;
     public MainMenu(User user) {
-        System.out.println("** MAIN MENU **");
+        System.out.println(" ** MAIN MENU **");
         MainMenu.user = user;
         String input;
         while (true) {

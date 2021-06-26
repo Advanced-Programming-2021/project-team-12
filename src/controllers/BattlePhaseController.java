@@ -27,7 +27,7 @@ public class BattlePhaseController {
             whatIsSelected(input);
         else if (input.matches("[ ]*increase --LP [\\d]+[ ]*"))
             forcedIncreaseLP(input);
-        else if (input.matches("duel set-winner (.)"))
+        else if (input.matches("duel set-winner(.)*"))
             forcedSetWinner();
         else if (input.matches("^[ ]*summon[ ]*$"))
             throw new MyException("no card is selected yet");
@@ -83,7 +83,7 @@ public class BattlePhaseController {
             if (!Game.isAITurn())
                 Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
-                String selectedCard = matcher.group(1);
+                String selectedCard = matcher.group(2);
                 String input;
                 while (true) {
                     PhaseControl.getInstance().checkIfGameEnded();

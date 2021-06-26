@@ -49,7 +49,7 @@ public class TrapCard {
 
     public static TrapCard getTrapCardByName(String name) {
         for (TrapCard trapCard : trapCards)
-            if (trapCard.name.equals(name)) return trapCard;
+            if (trapCard.getName().equals(name)) return trapCard;
         return null;
     }
 

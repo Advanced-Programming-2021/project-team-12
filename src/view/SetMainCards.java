@@ -21,7 +21,7 @@ public class SetMainCards {
     }
 
     private void setCards(Player player, String flag) {
-        System.out.println("Set Main Card Of " + flag + " Player\n");
+        System.out.println("Set Main Card Of " + flag + " Player:");
         System.out.println("--- add slide card (slide number) to main card ---");
         System.out.println("--- add main card (main number) to slide card ---");
         System.out.println("--- show main and slide deck ---");

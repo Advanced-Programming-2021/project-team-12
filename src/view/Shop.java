@@ -14,7 +14,7 @@ public class Shop {
     private User user;
 
     public Shop() {
-        System.out.println("** SHOP **");
+        System.out.println(" ** SHOP **");
         this.user = MainMenu.user;
         String input;
         while (true) {

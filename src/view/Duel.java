@@ -9,7 +9,7 @@ import controllers.DuelControl;
 public class Duel {
     public static void run() {
         String input;
-        System.out.println("** DUEL **");
+        System.out.println(" ** DUEL **");
         while (true) {
             input = Main.scanner.nextLine().trim();
             if (input.compareTo("menu exit") == 0)

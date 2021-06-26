@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 public class Scoreboard {
     public static void run(){
-        System.out.println("\n ** SCOREBOARD **");
+        System.out.println(" ** SCOREBOARD **");
         ArrayList<User> sortedUser = User.getUsers();
         int rank = 1;
         for (User user : sortedUser) {

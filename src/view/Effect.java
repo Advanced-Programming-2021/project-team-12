@@ -1,10 +1,17 @@
 package view;
 
 
+import controllers.Game;
+import controllers.PhaseControl;
+import view.phase.BattlePhase;
+import view.phase.MainPhase;
+
 import java.util.Scanner;
 
 public class Effect {
     public static String run(String cardName){
+        if (Game.isAITurn())
+            return AIEffect(cardName);
         if(cardName.equals("Suijin"))
             System.out.println("Do you want to use its effect?(please type \"yes\" or \"no\"!)");
         if(cardName.equals("Man-Eater Bug"))
@@ -22,7 +29,7 @@ public class Effect {
         if(cardName.equals("Terratiger, the Empowered Warrior"))
             System.out.println("Choose a monster card with level 4 or less for your hand!(type number if you don't type 0)");
         if(cardName.equals("Terraforming"))
-            System.out.println("Type a name of field spell card from your deck to come to your hand.(Please type in CamelCase!)");
+            System.out.println("Type a name of field spell card from your deck to come to your hand.");
         if(cardName.equals("Twin Twisters")) {
             System.out.println("Choose a card from your hand to remove and choose two of rival's trap or trap to be destroyed!(type 3 number in 3 lines)");
             return Main.scanner.nextLine()+","+Main.scanner.nextLine()+","+Main.scanner.nextLine();
@@ -30,5 +37,31 @@ public class Effect {
         if(cardName.equals("Mystical space typhoon"))
             System.out.println("Choose one of rival's trap or trap to be destroyed!(type a number)");
         return (Main.scanner.nextLine());
+    }
+
+    private static String AIEffect(String cardName) {
+        if(cardName.equals("Suijin"))
+            return "yes";
+        if(cardName.equals("Man-Eater Bug"))
+            return BattlePhase.getInstance().getStrongestMonster();
+        if(cardName.equals("Scanner"))
+            return "1";
+        if(cardName.equals("Beast King Barbaros"))
+           return "2";
+        if(cardName.equals("Herald of Creation1"))
+            return "0";
+        if(cardName.equals("Herald of Creation2"))
+            Game.getMainPhase1().getTributeCard();
+        if(cardName.equals("Herald of Creation3"))
+            return "0";
+        if(cardName.equals("Terratiger, the Empowered Warrior"))
+            return "0";
+        if(cardName.equals("Terraforming"))
+            return "Umiiruka";
+        if(cardName.equals("Twin Twisters"))
+            return "1"+","+"2"+","+"3";
+        if(cardName.equals("Mystical space typhoon"))
+            return "1";
+        else return "0";
     }
 }

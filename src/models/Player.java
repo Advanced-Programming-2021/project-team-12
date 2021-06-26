@@ -345,7 +345,6 @@ public class Player {
     }
 
     public String whatKindaCardIsInThisAddress(String address) {
-        System.out.println(address);
         Address cardAddress = new Address(address);
         return getCardByAddress(cardAddress).getKind();
     }
@@ -734,7 +733,7 @@ public class Player {
 
     public Address getOneOfRitualSpellCardAddress() {
         for (int i = 1; i <= 5; i++)
-            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).checkIsRitual())
+            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals("Advanced Ritual Art"))
                 return new Address(i, "spell", true);
         return null;
     }

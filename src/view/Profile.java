@@ -11,7 +11,7 @@ import controllers.ProfileControl;
 
 public class Profile {
     public static void run() {
-        System.out.println("** PROFILE MENU **");
+        System.out.println(" ** PROFILE MENU **");
         String input;
         while (true) {
             input = Main.scanner.nextLine().trim();

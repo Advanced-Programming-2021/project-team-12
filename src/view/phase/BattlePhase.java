@@ -66,8 +66,8 @@ public class BattlePhase {
 
     }
 
-    private String getStrongestMonster() {
-        Player player = Game.whoseTurnPlayer();
+    public String getStrongestMonster() {
+        Player player = Game.whoseRivalPlayer();
         int maxAttack = 0;
         int place = 0;
         for (int i = 1; i < 6; i++) {
