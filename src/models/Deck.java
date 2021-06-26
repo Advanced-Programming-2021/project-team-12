@@ -138,27 +138,6 @@ public class Deck {
         return false;
     }
 
-    public static ArrayList<Card> getCardOfUser(User user) {
-        ArrayList<Deck> decks;
-        ArrayList<Card> allCards = new ArrayList<>();
-        decks = Deck.getDecksOfUser(user.getName());
-        for (Deck deck : decks) {
-            ArrayList<Card> deckCards;
-            deckCards = deck.getMainCards();
-            for (Card card : deckCards)
-                allCards.add(card);
-            deckCards = deck.getSideCards();
-            for (Card card : deckCards)
-                allCards.add(card);
-        }
-        Collections.sort(allCards, new Comparator<Card>() {
-            public int compare(Card c1, Card c2) {
-                return c1.getCardName().compareTo(c2.getCardName());
-            }
-        });
-        return allCards;
-    }
-
     public User getUser() {
         return user;
     }

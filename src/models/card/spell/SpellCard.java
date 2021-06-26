@@ -3,13 +3,11 @@ package models.card.spell;
 import controllers.move.Attack;
 import models.Address;
 import models.Player;
-import models.card.spell.spell_effect.SpellEffect;
 import view.Effect;
 import controllers.Game;
 import view.Main;
 import view.phase.BattlePhase;
 import view.phase.MainPhase;
-//import card.trap.TrapCard;
 
 import java.util.ArrayList;
 
@@ -20,7 +18,6 @@ public class SpellCard {
     private SpellMode spellMode;
     private boolean isLimit;
     private String name;
-    private SpellEffect spellEffect;
     private static ArrayList<SpellCard> spellCards;
 
     static {
@@ -33,7 +30,6 @@ public class SpellCard {
         this.isLimit = isLimit;
         this.effect = effect;
         this.price = price;
-        this.spellEffect = spellEffect;
         this.description = description;
         spellCards.add(this);
     }
@@ -137,10 +133,6 @@ public class SpellCard {
         return name;
     }
 
-    public void runEffect() {
-        this.spellEffect.run();
-    }
-
     public static SpellCard getSpellCardByName(String name) {
         for (SpellCard spellCard : spellCards)
             if (spellCard.getName().equals(name)) return spellCard;
@@ -169,14 +161,6 @@ public class SpellCard {
 
     public void setEffect(String effect) {
         this.effect = effect;
-    }
-
-    public void setLimit(boolean limit) {
-        isLimit = limit;
-    }
-
-    public void setSpellEffect(SpellEffect spellEffect) {
-        this.spellEffect = spellEffect;
     }
 
     public void setSpellMode(SpellMode spellMode) {

@@ -165,7 +165,6 @@ public class BattlePhaseController {
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
                         Game.playTurn("MainPhase2");
-                        ;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -254,7 +253,6 @@ public class BattlePhaseController {
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
                         Game.playTurn("MainPhase2");
-                        ;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -295,7 +293,6 @@ public class BattlePhaseController {
             if (input.matches("^[ ]*next phase[ ]*$")) {
                 BattlePhase.getInstance().goToNextPhase = true;
                 Game.playTurn("MainPhase2");
-                ;
             } else if (input.matches("^[ ]*select -d[ ]*$"))
                 BattlePhase.getInstance().selectCard();
             else if (input.matches("^[ ]*select .*$"))
@@ -375,13 +372,12 @@ public class BattlePhaseController {
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
                         Game.playTurn("MainPhase2");
-                        ;
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
                         System.out.println("you already selected a card");
                     else if (input.matches("^[ ]*summon[ ]*$"))
-                        BattlePhase.getInstance().summon(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
+                        throw new MyException("action not allowed in this phase");
                     else if (input.matches("^[ ]*set[ ]*$"))
                         throw new MyException("you can’t do this action in this phase");
                     else if (input.matches("^[ ]*set -- position (attack|defense)[ ]*$"))
@@ -567,21 +563,5 @@ public class BattlePhaseController {
     private void forcedSetWinner() {
         Game.setWinner(Game.whoseTurnPlayer());
         Game.playTurn("EndGame");
-    }
-
-    private void specialSummon(Matcher matcher) {
-
-    }
-
-    private void activeSpell(Matcher matcher) throws MyException {
-        throw new MyException("you can’t do this action in this phase");
-    }
-
-    private void activeTrap(Matcher matcher) {
-
-    }
-
-    private void ritualSummon(Matcher matcher) {
-
     }
 }

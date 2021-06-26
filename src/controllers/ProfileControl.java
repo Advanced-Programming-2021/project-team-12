@@ -1,9 +1,6 @@
 package controllers;
 
 import Exceptions.MyException;
-import Exceptions.NewPassException;
-import Exceptions.NickNameException;
-import Exceptions.WrongPassException;
 import models.User;
 import view.MainMenu;
 

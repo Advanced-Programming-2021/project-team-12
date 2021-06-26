@@ -12,7 +12,6 @@ import view.MainMenu;
 import view.SetMainCards;
 
 public class Game {
-    private static int roundCounter;
     public static PlayerTurn playerTurn;
     public static Player firstPlayer;
     public static Player secondPlayer;
@@ -20,7 +19,6 @@ public class Game {
     private static User secondUser;
     private static Player winner;
     private static boolean isSurrender;
-    private static boolean hasWinner;
     private static boolean isAIGame;
     private static int round;
     private static int firstPlayerWin = 0;
@@ -61,13 +59,11 @@ public class Game {
         secondUser = new User();
         firstPlayer = new Player(firstUser);
         secondPlayer = new Player();
-        hasWinner = false;
         round = _round;
         firstPlayerWin = 0;
         secondPlayerWin = 0;
         firstPlayerMaxLP = 0;
         secondPlayerMaxLP = 0;
-        roundCounter = 1;
     }
 
     private static void EndGame() {
@@ -124,13 +120,11 @@ public class Game {
         secondUser = _secondUser;
         firstPlayer = new Player(firstUser);
         secondPlayer = new Player(secondUser);
-        hasWinner = false;
         round = _round;
         firstPlayerWin = 0;
         secondPlayerWin = 0;
         firstPlayerMaxLP = 0;
         secondPlayerMaxLP = 0;
-        roundCounter = 1;
     }
 
     private static void setWinnData() {
@@ -184,13 +178,6 @@ public class Game {
         BattlePhase.getInstance().run();
     }
 
-    private static void switchPlayer() {
-        if (Game.playerTurn == PlayerTurn.FIRSTPLAYER)
-            playerTurn = PlayerTurn.SECONDPLAYER;
-        else
-            playerTurn = PlayerTurn.FIRSTPLAYER;
-    }
-
     public static Player whoseTurnPlayer() {
         if (Game.playerTurn == PlayerTurn.FIRSTPLAYER)
             return Game.firstPlayer;
@@ -205,13 +192,6 @@ public class Game {
             return Game.firstPlayer;
     }
 
-    public static Player getWinner() {
-        return winner;
-    }
-
-    public static boolean isSurrender() {
-        return isSurrender;
-    }
 
     public static void setIsSurrender(boolean isSurrender1) {
         isSurrender = isSurrender1;
@@ -219,7 +199,6 @@ public class Game {
 
     public static void setWinner(Player winner) {
         Game.winner = winner;
-        hasWinner = true;
     }
 
     public static boolean isAITurn() {

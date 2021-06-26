@@ -34,14 +34,6 @@ public class Board {
         return count;
     }
 
-    public static boolean doThisMonsterExist(String monsterName) {
-        Card monsterCard = Card.getCardByName(monsterName);
-        if (currentPlayer.getMonsterZoneCard().containsValue(monsterCard)
-                || opponentPlayer.getMonsterZoneCard().containsValue(monsterCard))
-            return true;
-        return false;
-    }
-
     public static boolean doThisMonsterExistFacedUp(String monsterName) {
         for (int i = 1; i <= 5; i++) {
             if (currentPlayer.getMonsterZoneCard().containsKey(i) && currentPlayer.getMonsterZoneCard().get(i).getCardName().equals(monsterName)
@@ -128,11 +120,6 @@ public class Board {
 
     public static boolean getAnyoneHave(String cardName) {
         return currentPlayer.doIHaveSpellCard(cardName) || opponentPlayer.doIHaveSpellCard(cardName);
-    }
-
-    public String getKindByAddress(Address address) {
-        HashMap<Integer, Card> addressHashMap = getHashMapByAddress(address);
-        return addressHashMap.get(address.getNumber()).getKind();
     }
 
     public static void summonThisCardFromGraveYardToMonsterZone(Address address) {

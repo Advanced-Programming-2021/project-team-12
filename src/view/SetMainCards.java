@@ -2,7 +2,6 @@ package view;
 
 import Exceptions.MyException;
 import Utility.CommandMatcher;
-import controllers.AIController;
 import controllers.Game;
 import controllers.SetMainAndSlide;
 import models.Card;

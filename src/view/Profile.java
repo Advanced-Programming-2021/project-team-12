@@ -1,11 +1,7 @@
 package view;
-import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.regex.Matcher;
 
 import Exceptions.MyException;
-import Exceptions.NewPassException;
-import Exceptions.NickNameException;
-import Exceptions.WrongPassException;
 import Utility.CommandMatcher;
 import controllers.ProfileControl;
 

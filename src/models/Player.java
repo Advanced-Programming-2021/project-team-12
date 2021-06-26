@@ -82,14 +82,6 @@ public class Player {
         return !fieldCardNumbers.containsKey(1);
     }
 
-    public HashMap<Integer, Boolean> getFaceHashMapByKind(String kind) {
-        if (kind.equals("monster"))
-//            return isMonsterFaceUp;
-            if (kind.equals("spell"))
-                return isSpellFaceUp;
-        return null;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -415,16 +407,6 @@ public class Player {
             if (handCardNumbers.containsKey(i))
                 number++;
         return number;
-    }
-
-    public boolean doWeHaveThisCardInBoard(String cardName) {
-        for (int i = 1; i <= 5; i++)
-            if (monsterZoneCardNumbers.containsKey(i) && monsterZoneCardNumbers.get(i).getCardName().equals(cardName))
-                return true;
-        for (int i = 1; i <= 5; i++)
-            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName))
-                return true;
-        return false;
     }
 
     public boolean didBeastKingBarbarosSummonedSuperHighLevel(int index) {

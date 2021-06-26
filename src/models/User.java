@@ -135,5 +135,4 @@ public class User {
     public int getScore() {
         return score;
     }
-
 }

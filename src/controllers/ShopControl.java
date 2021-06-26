@@ -1,8 +1,6 @@
 package controllers;
 
-import Exceptions.CardNotExistException;
 import Exceptions.MyException;
-import Exceptions.NotEnoughMoneyException;
 import models.Card;
 import models.User;
 import view.MainMenu;

@@ -1,7 +1,6 @@
 package controllers;
 
 import Exceptions.MyException;
-import Exceptions.WrongUserOrPassException;
 import models.User;
 
 public class LogInController {

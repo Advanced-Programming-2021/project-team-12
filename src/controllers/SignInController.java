@@ -1,8 +1,5 @@
 package controllers;
 
-import Exceptions.NickNameException;
-import Exceptions.UserNameException;
-import Exceptions.WrongUserOrPassException;
 import models.Card;
 import models.Deck;
 import models.User;

@@ -3,17 +3,14 @@ package models;
 import Utility.CommandMatcher;
 import models.card.monster.MonsterCard;
 
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Address {
     private String kind;
     private int number;
     private Boolean isMine;
     private Boolean isScanner;
-    private MonsterCard ifItIsScannerThenWhat;
     public Address(String address) {
         Matcher matcher;
         this.number = 1;
@@ -96,13 +93,5 @@ public class Address {
                 || address.matches("(select )*(--hand|-h)( --opponent| -o)* [123456]"))
             return true;
         else return false;
-    }
-
-    public MonsterCard getIfItIsScannerThenWhat() {
-        return ifItIsScannerThenWhat;
-    }
-
-    public void setIfItIsScannerThenWhat(MonsterCard ifItIsScannerThenWhat) {
-        this.ifItIsScannerThenWhat = ifItIsScannerThenWhat;
     }
 }

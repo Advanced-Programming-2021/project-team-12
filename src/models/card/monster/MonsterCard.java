@@ -1,16 +1,13 @@
 package models.card.monster;
 
 import controllers.move.Attack;
-import controllers.move.SetSpell;
 import models.Address;
 import models.Board;
 import models.Player;
 import models.PositionOfCardInBoard;
-import models.card.monster.monster_effect.MonsterEffect;
 import models.card.spell.SpellCard;
 import view.Effect;
 import controllers.Game;
-//import card.spell.SpellCard;
 
 import java.util.ArrayList;
 
@@ -25,7 +22,6 @@ public class MonsterCard {
     private String name;
     private int price;
     private Attribute attribute;
-    private MonsterEffect monsterEffect;
     private static ArrayList<MonsterCard> monsterCards;
 
     static {
@@ -45,11 +41,6 @@ public class MonsterCard {
         this.attribute = attribute;
         this.description = description;
         monsterCards.add(this);
-    }
-
-
-    public void runEffect() {
-        this.monsterEffect.run();
     }
 
     public int getLevel() {
@@ -184,10 +175,6 @@ public class MonsterCard {
         return monsterMode;
     }
 
-    public static ArrayList<MonsterCard> getMonsterCards() {
-        return monsterCards;
-    }
-
     public Attribute getAttribute() {
         return attribute;
     }
@@ -207,10 +194,6 @@ public class MonsterCard {
             if (Attack.defenderMonsterName.equals("Yomi Ship")) Attack.destroyThisAddress(Attack.attackerAddress);
         if (Attack.defenderMonsterName.equals("Marshmallon"))
             if (Attack.isDefenderFacedDown()) Attack.whichPlayerIsAttacker().decreaseLP(1000);
-    }
-
-    public static void welcomeToEffectStandBy() {
-
     }
 
     public int getNormalAttack() {
@@ -253,19 +236,11 @@ public class MonsterCard {
         this.name = name;
     }
 
-    public void setRitual(boolean ritual) {
-        isRitual = ritual;
-    }
-
     public void setPrice(int price) {
         this.price = price;
     }
 
     public void setMonsterMode(MonsterMode monsterMode) {
         this.monsterMode = monsterMode;
-    }
-
-    public void setMonsterEffect(MonsterEffect monsterEffect) {
-        this.monsterEffect = monsterEffect;
     }
 }

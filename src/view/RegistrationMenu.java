@@ -1,8 +1,5 @@
 package view;
 import Exceptions.MyException;
-import Exceptions.NickNameException;
-import Exceptions.UserNameException;
-import Exceptions.WrongUserOrPassException;
 import Utility.CommandMatcher;
 import controllers.LogInController;
 import controllers.SignInController;

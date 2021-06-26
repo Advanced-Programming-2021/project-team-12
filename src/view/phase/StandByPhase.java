@@ -18,7 +18,6 @@ public class StandByPhase {
         }
         PhaseControl.getInstance().resetMoves();
         String input;
-        //mamad function here
         PhaseControl.getInstance().checkIfGameEnded();
         while (true) {
             input = Main.scanner.nextLine().trim();

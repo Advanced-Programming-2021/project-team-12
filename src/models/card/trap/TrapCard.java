@@ -1,7 +1,5 @@
 package models.card.trap;
 
-import models.card.trap.trap_effect.TrapEffect;
-
 import java.util.ArrayList;
 
 public class TrapCard {
@@ -10,7 +8,6 @@ public class TrapCard {
     private String effect;
     private boolean isLimit;
     private int price;
-    private TrapEffect trapEffect;
     private static ArrayList<TrapCard> trapCards;
 
     static {
@@ -18,10 +15,8 @@ public class TrapCard {
     }
 
     public TrapCard(String name, boolean isLimit, int price, String description) {
-        this.effect = effect;
         this.isLimit = isLimit;
         this.price = price;
-        this.trapEffect = trapEffect;
         this.name = name;
         this.description = description;
         trapCards.add(this);
@@ -43,10 +38,6 @@ public class TrapCard {
         return isLimit;
     }
 
-    public void runEffect() {
-        this.trapEffect.run();
-    }
-
     public static TrapCard getTrapCardByName(String name) {
         for (TrapCard trapCard : trapCards)
             if (trapCard.getName().equals(name)) return trapCard;
@@ -65,10 +56,6 @@ public class TrapCard {
         this.description = description;
     }
 
-    public void setLimit(boolean limit) {
-        isLimit = limit;
-    }
-
     public void setEffect(String effect) {
         this.effect = effect;
     }
@@ -79,9 +66,5 @@ public class TrapCard {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public void setTrapEffect(TrapEffect trapEffect) {
-        this.trapEffect = trapEffect;
     }
 }

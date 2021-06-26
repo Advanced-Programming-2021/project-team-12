@@ -32,44 +32,6 @@ public class Card {
         return kind;
     }
 
-    public static String whatKind(String cardName) {
-        for (Card card : cards)
-            if (card.getCardName().equals(cardName))
-                return card.kind;
-        return "there is no card with this name";
-    }
-
-    //Please don't call this method without my permission.
-    public void runEffect() {
-        if (kind.equals("Monster")) {
-            MonsterCard card = MonsterCard.getMonsterCardByName(name);
-            card.runEffect();
-        } else if (kind.equals("Spell")) {
-            SpellCard card = SpellCard.getSpellCardByName(name);
-            card.runEffect();
-        } else if (kind.equals("Trap")) {
-            TrapCard card = TrapCard.getTrapCardByName(name);
-            card.runEffect();
-        }
-    }
-
-    public void showCard() {
-        if (kind.equals("Monster")) {
-            System.out.println("Name: " + name + "\\nLevel: " + getLevel() + "\\nType: " + "\\nATK: " + getAttack()
-                    + "\\nDEF: " + getDefence() + "\\nDescription: " + getDescription());
-        }
-
-        if (kind.equals("Spell")) {
-            System.out.println(
-                    "Name: " + name + "\\nSpell" + "\\nType: " + getType() + "\\nDescription: " + getDescription());
-        }
-
-        if (kind.equals("Trap")) {
-            System.out.println(
-                    "Name: " + name + "\\nTrap" + "\\nType: " + getType() + "\\nDescription: " + getDescription());
-        }
-    }
-
     public String getType() {
         if (kind.equals("Monster")) {
             MonsterCard card = MonsterCard.getMonsterCardByName(name);
@@ -117,17 +79,6 @@ public class Card {
         return 0;
     }
 
-    public Boolean checkIsLimit() {
-        if (kind.equals("Spell")) {
-            SpellCard card = SpellCard.getSpellCardByName(name);
-            return card.checkIsLimit();
-        } else if (kind.equals("Trap")) {
-            TrapCard card = TrapCard.getTrapCardByName(name);
-            return card.checkIsLimit();
-        }
-        return false;
-    }
-
     public SpellMode getSpellMode() {
         SpellCard card = SpellCard.getSpellCardByName(name);
         return card.getSpellMode();
@@ -155,11 +106,6 @@ public class Card {
     public Attribute getAttribute() {
         MonsterCard card = MonsterCard.getMonsterCardByName(name);
         return card.getAttribute();
-    }
-
-    public Boolean checkIsRitual() {
-        MonsterCard card = MonsterCard.getMonsterCardByName(name);
-        return card.isRitual();
     }
 
     public int getAttack() {

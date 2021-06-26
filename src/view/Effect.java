@@ -2,11 +2,7 @@ package view;
 
 
 import controllers.Game;
-import controllers.PhaseControl;
 import view.phase.BattlePhase;
-import view.phase.MainPhase;
-
-import java.util.Scanner;
 
 public class Effect {
     public static String run(String cardName){

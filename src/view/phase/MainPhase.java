@@ -32,6 +32,7 @@ public class MainPhase {
                 Board.showBoard();
                 getSelectedCard();
             }
+            playNextPhase();
         }
     }
 
