@@ -799,4 +799,8 @@ public class Player {
     public void setIndex(Address address, int index) {
         indexOfCard.put(address, index);
     }
+
+    public void setCardFromHandToFieldZone(String stringAddress) {
+
+    }
 }
