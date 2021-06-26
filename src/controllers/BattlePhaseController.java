@@ -119,6 +119,8 @@ public class BattlePhaseController {
                         PhaseControl.getInstance().surrender();
                     else
                         throw new MyException("invalid command");
+                    if (Game.isAITurn())
+                        Game.playTurn("MainPhase2");
                 }
             } else
                 throw new MyException("invalid selection");

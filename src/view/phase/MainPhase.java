@@ -602,10 +602,13 @@ public class MainPhase {
     }
 
     public static void doMindCrushEffect() {
+        String cardName;
         Player currentPlayer = Game.whoseTurnPlayer();
         Player rivalPlayer = Game.whoseRivalPlayer();
-        System.out.println("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly.");
-        String cardName = Main.scanner.nextLine();
+        if (!Game.isAITurn()) {
+            System.out.println("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly.");
+            cardName = Main.scanner.nextLine();
+        } else cardName = "Beast King Barbaros";
         if (rivalPlayer.doIHaveCardWithThisNameInMyHand(cardName)) {
             rivalPlayer.removeAllCardWithThisNameInMyHand(cardName);
         } else currentPlayer.removeOneOfHandCard();

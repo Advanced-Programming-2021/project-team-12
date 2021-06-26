@@ -63,7 +63,7 @@ public class BattlePhase {
                 }
             }
         }
-
+        Game.playTurn("MainPhase2");
     }
 
     public String getStrongestMonster() {
