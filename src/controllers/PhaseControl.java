@@ -463,9 +463,9 @@ public class PhaseControl {
             Player currentPlayer = Game.whoseTurnPlayer();
             SpellCard spellCard = currentPlayer.getSpellCardByStringAddress(matcher.group(1));
             if (spellCard.getSpellMode().equals(SpellMode.FIELD)) {
-                if (currentPlayer.isFieldEmpty()) {
+                    Address address = new Address(1, "field", true);
+                    currentPlayer.removeCard(address);
                     currentPlayer.setCardFromHandToFieldZone(matcher.group(1));
-                } else throw new MyException("field zone is full!");
             } else {
                 if (!currentPlayer.isSpellZoneFull()) {
                     currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
