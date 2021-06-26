@@ -60,6 +60,8 @@ public class Board {
     }
 
     public static Card getCardByAddress(Address address) {
+        if (address == null)
+            return null;
         HashMap<Integer, Card> addressHashMap = getHashMapByAddress(address);
         return addressHashMap.get(address.getNumber());
     }
@@ -131,6 +133,19 @@ public class Board {
     public String getKindByAddress(Address address) {
         HashMap<Integer, Card> addressHashMap = getHashMapByAddress(address);
         return addressHashMap.get(address.getNumber()).getKind();
+    }
+
+    public static void summonThisCardFromGraveYardToMonsterZone(Address address) {
+        Player player = Game.whoseTurnPlayer();
+        HashMap<Integer, Card> graveYard = getHashMapByAddress(address);
+        if (!graveYard.containsKey(address.getNumber()) || player.isMonsterZoneFull())
+            return;
+        int place = player.getFirstEmptyPlace(player.getMonsterZoneCard(), 5);
+        player.getMonsterZoneCard().put(place, graveYard.get(address.getNumber()));
+        Address add = new Address(place, "monster", true);
+        player.setIndex(add, player.getIndexOfThisCardByAddress(address));
+        player.removeCard(address);
+        player.setPositionOfCardInBoardByAddress(add, PositionOfCardInBoard.OO);
     }
 
     public static int sumOfLevelOfFacedUpMonsters(){

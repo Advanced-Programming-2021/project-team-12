@@ -45,6 +45,10 @@ public class Game {
         playTurn("DrawPhase");
     }
 
+    public static boolean getIsAI(){
+        return isAIGame;
+    }
+
     public static void run(User _firstUser, int _round) {
         isAIGame = true;
         restartData(_firstUser, _round);
@@ -78,7 +82,9 @@ public class Game {
         } else {
             System.out.println(winner.getName() + " won the game and the score is: " + firstPlayerWin + "-" + secondPlayerWin);
             firstPlayer.reset();
-            secondPlayer.reset();
+            if (Game.isAIGame)
+                secondPlayer = new Player();
+            else secondPlayer.reset();
             new SetMainCards(firstPlayer, secondPlayer);
             generateRandomTurn();
             playTurn("DrawPhase");
@@ -142,7 +148,7 @@ public class Game {
     private static void generateRandomTurn() {
         Random random = new Random();
         int whoIsFirstNumber = random.nextInt(2);
-        if (whoIsFirstNumber == 0)
+        if (whoIsFirstNumber != 0)
             playerTurn = PlayerTurn.FIRSTPLAYER;
         else
             playerTurn = PlayerTurn.SECONDPLAYER;

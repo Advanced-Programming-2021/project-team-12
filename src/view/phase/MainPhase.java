@@ -43,13 +43,33 @@ public class MainPhase {
     }
 
     private void aiRun() {
+        System.out.println("phase: main phase " + whatMainIsPhase);
+        Board.showBoard();
         if (whatMainIsPhase == 1) {
             Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
             PhaseControl.getInstance().doEffectMainPhase();
+            getSelectedCard();
+        } else if (whatMainIsPhase == 2)
+            getAISelectedCard2();
+    }
+
+    private void getAISelectedCard2() {
+        Player player = Game.whoseTurnPlayer();
+        for (int i = 1; i <= 5; i++) {
+            if (player.getSpellZoneCard().containsKey(i)) {
+                String input = "select --spell " + i;
+                try {
+                    PhaseControl.getInstance().checkInputNonCardSelected(input);
+                } catch (MyException e) {
+                    System.out.println(e.getMessage());
+                } catch (BreakException e) {
+                    playNextPhase();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        System.out.println("phase: main phase " + whatMainIsPhase);
-        Board.showBoard();
-        getSelectedCard();
+        playNextPhase();
     }
 
     public void getSelectedCard() {
@@ -91,7 +111,7 @@ public class MainPhase {
             } else if (player.getHandCard().containsKey(i))
                 monsters.add(i);
         }
-        if (!monsters.isEmpty()) {
+        if (monsters.size() >= 2) {
             Collections.sort(monsters, new Comparator<Integer>() {
                 public int compare(Integer i1, Integer i2) {
                     Card c1 = player.getCardHand(i1);
@@ -186,8 +206,8 @@ public class MainPhase {
         if (matcher.find()) {
             String input = "activate effect";
             String selectedCard = matcher.group(1);
-            int rand = new Random().nextInt();
-            if (rand % 3 != 1) {
+            int rand = new Random().nextInt(4);
+            if (rand != 1) {
                 while (true) {
                     try {
                         PhaseControl.getInstance().spellSelected(input, selectedCard);
@@ -615,11 +635,42 @@ public class MainPhase {
     }
 
     public static void summonAMonsterCardFromGraveyard() {
-        System.out.println("whose graveyard you want to summon from?(yours/rival's)");
-        Board.showGraveyard();
-        doCallOfTheHauntedEffect(Main.scanner.nextLine().equals("yours"));
+        if (!Game.isAITurn()) {
+            System.out.println("whose graveyard you want to summon from?(yours/rival's)");
+            Board.showGraveyard();
+            String input = Main.scanner.nextLine();
+            doCallOfTheHauntedEffect(input.equals("yours"));
+        }
+        else {
+            Player player1 = Game.whoseTurnPlayer();
+            Player player2 = Game.whoseRivalPlayer();
+            int place1 = getMaxAttackCard(player1.getGraveyardCard());
+            int place2 = getMaxAttackCard(player2.getGraveyardCard());
+            if (place1 == 0 && place2 == 0)
+                return;
+            if (place2 == 0)
+                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place1, "graveyard", true));
+            else if (place1 == 0)
+                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place2, "graveyard", false));
+            else if (player1.getCardGraveyard(place1).getAttack() >= player2.getCardGraveyard(place2).getAttack())
+                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place1, "graveyard", true));
+            else
+                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place2, "graveyard", false));
+        }
     }
 
+    private static int getMaxAttackCard(HashMap<Integer, Card> graveyardCard) {
+        int place = 0;
+        int maxAttack = -1;
+        for (int i = 1; i <= graveyardCard.size(); i++) {
+            if (graveyardCard.containsKey(i) && graveyardCard.get(i).getKind().equals("Monster")
+                    && graveyardCard.get(i).getAttack() >= maxAttack) {
+                place = i;
+                maxAttack = graveyardCard.get(i).getAttack();
+            }
+        }
+        return place;
+    }
 
     public static void doCallOfTheHauntedEffect(boolean isMine) {
         if (isMine) System.out.println("choose a monster from your graveyard to be summoned!(only type number)");
@@ -627,7 +678,7 @@ public class MainPhase {
         Board.showGraveyard();
         Address address = new Address(Integer.parseInt(Main.scanner.nextLine()), "graveyard", isMine);
         if (Game.whoseTurnPlayer().getMonsterCardByAddress(address) != null)
-            Game.whoseTurnPlayer().summonThisCardFromGraveYardToMonsterZone(address);
+            Board.summonThisCardFromGraveYardToMonsterZone(address);
     }
 
     public static boolean removeCardFromMyHand() {

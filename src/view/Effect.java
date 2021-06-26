@@ -43,7 +43,7 @@ public class Effect {
         if(cardName.equals("Suijin"))
             return "yes";
         if(cardName.equals("Man-Eater Bug"))
-            return BattlePhase.getInstance().getStrongestMonster();
+            return Integer.toString(BattlePhase.getInstance().getStrongestMonster(Game.whoseRivalPlayer()));
         if(cardName.equals("Scanner"))
             return "1";
         if(cardName.equals("Beast King Barbaros"))

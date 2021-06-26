@@ -13,9 +13,9 @@ import java.util.regex.Matcher;
 
 public class SetMainCards {
     public SetMainCards(Player firstPlayer, Player secondPlayer) {
-        setCards(firstPlayer, "First");
-        if (!Game.isAITurn())
-            setCards(secondPlayer, "Second");
+        setCards(firstPlayer, "first");
+        if (!Game.getIsAI())
+            setCards(secondPlayer, "second");
         else
             new SetMainAndSlide().setAICard();
     }
@@ -50,7 +50,7 @@ public class SetMainCards {
         mainNumber = Integer.parseInt(matcher.group(1));
         try {
             new SetMainAndSlide().setMainToSlide(mainNumber, player);
-            System.out.println("main card " + mainNumber + "added to slide deck successfully");
+            System.out.println("main card " + mainNumber + " added to slide deck successfully");
         } catch (MyException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {

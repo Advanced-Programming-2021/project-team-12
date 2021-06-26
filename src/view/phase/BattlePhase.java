@@ -50,24 +50,21 @@ public class BattlePhase {
     }
 
     private void AIRun() {
-        Player player = Game.whoseTurnPlayer();
-        for (int i = 1; i < 6; i++) {
-            if (player.getMonsterZoneCard().containsKey(i)) {
-                PhaseControl.getInstance().checkIfGameEnded();
-                try {
-                    if (BattlePhaseController.getInstance().battlePhaseRun("select --monster " + i)) break;
-                } catch (MyException e) {
-                    System.out.println(e.getMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        int place = getStrongestMonster(Game.whoseTurnPlayer());
+        if (place != 0) {
+            PhaseControl.getInstance().checkIfGameEnded();
+            try {
+                BattlePhaseController.getInstance().battlePhaseRun("select --monster " + place);
+            } catch (MyException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         Game.playTurn("MainPhase2");
     }
 
-    public String getStrongestMonster() {
-        Player player = Game.whoseRivalPlayer();
+    public int getStrongestMonster(Player player) {
         int maxAttack = 0;
         int place = 0;
         for (int i = 1; i < 6; i++) {
@@ -76,7 +73,7 @@ public class BattlePhase {
                 maxAttack = player.getCardMonster(i).getAttack();
             }
         }
-        return Integer.toString(place);
+        return place;
     }
 
 //    private void selectMonster(Matcher matcher) {
@@ -530,17 +527,14 @@ public class BattlePhase {
 //
 //    }
 
-    private static Matcher getCommandMatcher(String input, String regex) {
-        input = input.trim();
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(input);
-    }
-
     public boolean getPermissionForTrap(String cardName, boolean isMine) {
-        if (!Game.isAITurn()) {
-            if (!isMine) {
-                System.out.print("Dear " + Game.whoseRivalPlayer().getNickName() + ",");
-            }
+        if (!isMine && (!Game.getIsAI() || Game.isAITurn())) {
+            System.out.print("Dear " + Game.whoseRivalPlayer().getNickName() + ",");
+            System.out.println("do you want to activate " + cardName + "trap?(yes/no)");
+            return (Main.scanner.nextLine().equals("yes"));
+        }
+        else if (!Game.isAITurn()) {
+            System.out.print("Dear " + Game.whoseTurnPlayer().getNickName() + ",");
             System.out.println("do you want to activate " + cardName + "trap?(yes/no)");
             return (Main.scanner.nextLine().equals("yes"));
         } else return (!cardName.equals("Solemn Warning"));

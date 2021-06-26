@@ -38,6 +38,8 @@ public class Attack {
     }
 
     public static String whatKindOfCardIsDefenderNow() {
+        if (Board.getCardByAddress(defenderAddress) == null)
+            return null;
         Card card = Board.getCardByAddress(defenderAddress);
         return card.getCardName();
     }

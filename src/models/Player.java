@@ -34,7 +34,7 @@ public class Player {
     private int[] fromMonsterToSpellEquip;
 
     {
-        fromMonsterToSpellEquip = new int[6];
+        fromMonsterToSpellEquip = new int[10];
         cardByIndex = new Card[100];
         isThisSpellActivated = new boolean[100];
         didBeastKingBarbarosSummonedSuperHighLevel = new boolean[100];
@@ -257,13 +257,13 @@ public class Player {
     }
 
     public void removeCard(Address address) {
+        if (Board.isAddressEmpty(address))
+            return;
         if (getMonsterCardByAddress(address) != null) {
             unSetFromMonsterToSpellEquip(address.getNumber());
             if (address.checkIsMine()) Game.whoseTurnPlayer().setOneHisMonstersDestroyedInThisRound(true);
             else Game.whoseRivalPlayer().setOneHisMonstersDestroyedInThisRound(true);
         }
-        if (Board.isAddressEmpty(address))
-            return;
         if (address.getKind().equals("graveyard")) {
             graveyardCardNumbers.remove(address.getNumber());
             for (int i = address.getNumber(); i < graveyardCardNumbers.size(); i++) {
@@ -773,17 +773,6 @@ public class Player {
                 removeCard(new Address(i, "hand", true));
     }
 
-    public void summonThisCardFromGraveYardToMonsterZone(Address address) {
-        if (!graveyardCardNumbers.containsKey(address.getNumber()) || isMonsterZoneFull())
-            return;
-        int place = getFirstEmptyPlace(monsterZoneCardNumbers, 5);
-        monsterZoneCardNumbers.put(place, graveyardCardNumbers.get(address.getNumber()));
-        Address add = new Address(place, "monster", true);
-        indexOfCard.put(add, indexOfCard.get(address));
-        removeCard(address);
-        positionOfCardInBoardByAddress.put(add, PositionOfCardInBoard.OO);
-    }
-
     public boolean doIHaveCardWithThisNameInMyHand(String cardName) {
         for (int i = 1; i <= 5; i++)
             if (handCardNumbers.containsKey(i) && handCardNumbers.get(i).getCardName().equals(cardName))
@@ -792,12 +781,23 @@ public class Player {
     }
 
     public void setSlideToMain(int slideNumber) {
-        unusedCards.add(secondaryCard.get(slideNumber));
-        secondaryCard.remove(slideNumber);
+        unusedCards.add(secondaryCard.get(slideNumber - 1));
+        secondaryCard.remove(slideNumber - 1);
     }
 
     public void setMainToSlide(int mainNumber) {
-        secondaryCard.add(unusedCards.get(mainNumber));
-        unusedCards.remove(mainNumber);
+        secondaryCard.add(unusedCards.get(mainNumber - 1));
+        unusedCards.remove(mainNumber - 1);
+    }
+
+    public boolean doIHaveMonsterCardInMonsterZone(String cardName) {
+        for (int i = 1; i <= 5; i++)
+            if (monsterZoneCardNumbers.containsKey(i) && monsterZoneCardNumbers.get(i).getCardName().equals(cardName))
+                return true;
+        return false;
+    }
+
+    public void setIndex(Address address, int index) {
+        indexOfCard.put(address, index);
     }
 }

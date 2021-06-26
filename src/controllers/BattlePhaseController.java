@@ -83,13 +83,13 @@ public class BattlePhaseController {
             if (!Game.isAITurn())
                 Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
-                String selectedCard = matcher.group(2);
+                String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
                     PhaseControl.getInstance().checkIfGameEnded();
                     if (!Game.isAITurn())
                         input = Main.scanner.nextLine().trim();
-                    else input = getAIAttack(selectedCard);
+                    else input = getAIAttack(matcher.group(2));
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
                         Game.playTurn("MainPhase2");

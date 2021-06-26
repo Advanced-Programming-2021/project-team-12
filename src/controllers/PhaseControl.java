@@ -119,7 +119,7 @@ public class PhaseControl {
             whatIsSelected(input);
         else if (input.matches("[ ]*increase --LP [\\d]+[ ]*"))
             forcedIncreaseLP(input);
-        else if (input.matches("[ ]*duel set-winner(.)"))
+        else if (input.matches("[ ]*duel set-winner(.)*"))
             forcedSetWinner();
         else if (input.matches("^[ ]*summon[ ]*$"))
             throw new MyException("no card is selected!");
@@ -431,11 +431,31 @@ public class PhaseControl {
             }
             if (trapCard.getName().equals("Call of the Haunted")) {
                 if (BattlePhase.getInstance().getPermissionForTrap("Call of the Haunted", true)) {
-                    MainPhase.doCallOfTheHauntedEffect(true);
+                    if (Game.isAITurn())
+                        AISummonFromGraveyard();
+                    else
+                        MainPhase.doCallOfTheHauntedEffect(true);
                     currentPlayer.removeCard(address);
                 }
             }
         }
+    }
+
+    private void AISummonFromGraveyard() {
+        Player player = Game.whoseTurnPlayer();
+        int place = 0;
+        int maxAttack = -1;
+        for (int i = 1; i <= player.getGraveyardCard().size(); i++) {
+            if (player.getGraveyardCard().containsKey(i) && player.getGraveyardCard().get(i).getKind().equals("Monster")
+                    && player.getGraveyardCard().get(i).getAttack() >= maxAttack) {
+                place = i;
+                maxAttack = player.getGraveyardCard().get(i).getAttack();
+            }
+        }
+        if (place == 0)
+            return;
+        else
+            Board.summonThisCardFromGraveYardToMonsterZone(new Address(place, "graveyard", true));
     }
 
     public void spellSet(Matcher matcher) throws MyException {
@@ -721,21 +741,21 @@ public class PhaseControl {
                 //address.setIfItIsScannerThenWhat(monsterCard);
             }
         }
-        int count = 0;
-        if (!Game.isAITurn())
-            count = Integer.parseInt(Effect.run("Herald of Creation1"));
-        int numberOfHeraldOfCreation = Game.whoseTurnPlayer().howManyHeraldOfCreationDoWeHave();
-        for (int i = 0; i < minOfTwoNumber(numberOfHeraldOfCreation, count) - Game.getMainPhase1().howManyHeraldOfCreationDidWeUseEffect; i++) {
-            Address shouldBeRemoved = new Address(Integer.parseInt(Effect.run("Herald of Creation2")), "monster", true);
-            if (!Board.isAddressEmpty(shouldBeRemoved)) {
-                Address comeBackFromGraveyard = new Address(Integer.parseInt(Effect.run("Herald of Creation3")), "graveyard", true);
-                MonsterCard monsterCardForHeraldOfCreation = Board.whatKindaMonsterIsHere(comeBackFromGraveyard);
-                if (monsterCardForHeraldOfCreation != null) {
-                    if (monsterCardForHeraldOfCreation.getLevel() >= 7) {
-                        currentPlayer.removeCard(shouldBeRemoved);
-                        currentPlayer.setCardFromGraveyardToHand(comeBackFromGraveyard);
-                        if (Game.getMainPhase1().whatMainIsPhase == 1)
-                            Game.getMainPhase2().increaseHowManyHeraldOfCreationDidWeUseEffect();
+        if (Game.whoseTurnPlayer().doIHaveMonsterCardInMonsterZone("Herald of Creation")) {
+            int count = Integer.parseInt(Effect.run("Herald of Creation1"));
+            int numberOfHeraldOfCreation = Game.whoseTurnPlayer().howManyHeraldOfCreationDoWeHave();
+            for (int i = 0; i < minOfTwoNumber(numberOfHeraldOfCreation, count) - Game.getMainPhase1().howManyHeraldOfCreationDidWeUseEffect; i++) {
+                Address shouldBeRemoved = new Address(Integer.parseInt(Effect.run("Herald of Creation2")), "monster", true);
+                if (!Board.isAddressEmpty(shouldBeRemoved)) {
+                    Address comeBackFromGraveyard = new Address(Integer.parseInt(Effect.run("Herald of Creation3")), "graveyard", true);
+                    MonsterCard monsterCardForHeraldOfCreation = Board.whatKindaMonsterIsHere(comeBackFromGraveyard);
+                    if (monsterCardForHeraldOfCreation != null) {
+                        if (monsterCardForHeraldOfCreation.getLevel() >= 7) {
+                            currentPlayer.removeCard(shouldBeRemoved);
+                            currentPlayer.setCardFromGraveyardToHand(comeBackFromGraveyard);
+                            if (Game.getMainPhase1().whatMainIsPhase == 1)
+                                Game.getMainPhase2().increaseHowManyHeraldOfCreationDidWeUseEffect();
+                        }
                     }
                 }
             }

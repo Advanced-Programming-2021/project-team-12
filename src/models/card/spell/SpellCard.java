@@ -7,6 +7,7 @@ import models.card.spell.spell_effect.SpellEffect;
 import view.Effect;
 import controllers.Game;
 import view.Main;
+import view.phase.BattlePhase;
 import view.phase.MainPhase;
 //import card.trap.TrapCard;
 
@@ -61,8 +62,8 @@ public class SpellCard {
                 SpellCard spellCard = SpellCard.getSpellCardByName(fieldSpellName);
                 if ((spellCard != null) && (spellCard.spellMode == SpellMode.FIELD) && (currentPlayer.isThisCardInDeck("Terraforming"))) {
                     currentPlayer.bringCardFromDeckToHand("Terraforming");
-                } else System.out.println("you chose the wrong card.");
-            } else System.out.println("This effect can't be done.");
+                } else if (!Game.isAITurn()) System.out.println("you chose the wrong card.");
+            } else if (!Game.isAITurn()) System.out.println("This effect can't be done.");
             currentPlayer.removeCard(address);
         }
         if (name.equals("Pot of Greed")) {
@@ -70,8 +71,8 @@ public class SpellCard {
                 currentPlayer.addCardFromUnusedToHand();
                 if (!currentPlayer.isHandFull()) {
                     currentPlayer.addCardFromUnusedToHand();
-                } else System.out.println("This effect can't be done completely.");
-            } else System.out.println("This effect can't be done.");
+                } else if (!Game.isAITurn()) System.out.println("This effect can't be done completely.");
+            } else if (!Game.isAITurn()) System.out.println("This effect can't be done.");
             currentPlayer.removeCard(address);
         }
         if (name.equals("Raigeki")) {
@@ -105,9 +106,13 @@ public class SpellCard {
             currentPlayer.removeCard(address);
         }
         if (spellMode.equals(SpellMode.EQUIP)) {
-            System.out.println("choose a faced up monster to be equipped with this spell!(type number in monster zone)");
-            String input = Main.scanner.nextLine();
-            //if(Game.whoseTurnPlayer().getMonsterCardByAddress(new Address(Integer.parseInt(input), "monster", true)).getAttribute().equals(E))
+            String input;
+            if (!Game.isAITurn()) {
+                System.out.println("choose a faced up monster to be equipped with this spell!(type number in monster zone)");
+                input = Main.scanner.nextLine();
+            }
+            else
+                input = Integer.toString(BattlePhase.getInstance().getStrongestMonster(Game.whoseTurnPlayer()));
             Game.whoseTurnPlayer().setFromMonsterToSpellEquip(address.getNumber(), Integer.parseInt(input));
         }
     }

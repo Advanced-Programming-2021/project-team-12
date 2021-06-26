@@ -21,10 +21,10 @@ public class SetMainAndSlide {
 
     public void setAICard() {
         Player AI = Game.secondPlayer;
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i <= 7; i++) {
             Random random = new Random();
-            int slideCard = (random.nextInt() % 15) + 1;
-            int mainCard = (random.nextInt() % 40) + 1;
+            int slideCard = (random.nextInt(10) % 10) + 1;
+            int mainCard = (random.nextInt(40) % 40) + 1;
             AI.setSlideToMain(slideCard);
             AI.setMainToSlide(mainCard);
         }
