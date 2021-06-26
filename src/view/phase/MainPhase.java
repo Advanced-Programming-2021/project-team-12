@@ -208,16 +208,14 @@ public class MainPhase {
             String selectedCard = matcher.group(1);
             int rand = new Random().nextInt(4);
             if (rand != 1) {
-                while (true) {
-                    try {
-                        PhaseControl.getInstance().spellSelected(input, selectedCard);
-                    } catch (MyException e) {
-                        System.out.println(e.getMessage());
-                    } catch (BreakException e) {
-                        playNextPhase();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    PhaseControl.getInstance().spellSelected(input, selectedCard);
+                } catch (MyException e) {
+                    System.out.println(e.getMessage());
+                } catch (BreakException e) {
+                    playNextPhase();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

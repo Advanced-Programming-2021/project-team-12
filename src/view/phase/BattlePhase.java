@@ -533,7 +533,7 @@ public class BattlePhase {
             System.out.println("do you want to activate " + cardName + "trap?(yes/no)");
             return (Main.scanner.nextLine().equals("yes"));
         }
-        else if (!Game.isAITurn()) {
+        else if (!Game.isAITurn() && isMine) {
             System.out.print("Dear " + Game.whoseTurnPlayer().getNickName() + ",");
             System.out.println("do you want to activate " + cardName + "trap?(yes/no)");
             return (Main.scanner.nextLine().equals("yes"));

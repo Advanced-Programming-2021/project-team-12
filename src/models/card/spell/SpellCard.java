@@ -143,7 +143,7 @@ public class SpellCard {
 
     public static SpellCard getSpellCardByName(String name) {
         for (SpellCard spellCard : spellCards)
-            if (spellCard.name.equals(name)) return spellCard;
+            if (spellCard.getName().equals(name)) return spellCard;
         return null;
     }
 

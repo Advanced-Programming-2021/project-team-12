@@ -261,8 +261,7 @@ public class Player {
             return;
         if (getMonsterCardByAddress(address) != null) {
             unSetFromMonsterToSpellEquip(address.getNumber());
-            if (address.checkIsMine()) Game.whoseTurnPlayer().setOneHisMonstersDestroyedInThisRound(true);
-            else Game.whoseRivalPlayer().setOneHisMonstersDestroyedInThisRound(true);
+            setOneHisMonstersDestroyedInThisRound(true);
         }
         if (address.getKind().equals("graveyard")) {
             graveyardCardNumbers.remove(address.getNumber());

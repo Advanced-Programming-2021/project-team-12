@@ -481,20 +481,18 @@ public class PhaseControl {
                         if (monsterCard.getName().equals("Gate Guardian")) {
                             if (!MainPhase.doSolemnWarningEffect(address))
                                 Game.getMainPhase1().summonForTribute(3, matcher.group(1));
-                        } else {
-                            if (!MainPhase.doSolemnWarningEffect(address)) {
-                                if (level <= 4) summonALowLevelMonster(matcher, currentPlayer, address);
-                                else if (level <= 6) Game.getMainPhase1().summonForTribute(1, matcher.group(1));
-                                else {
-                                    int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
-                                    if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Beast King Barbaros")
-                                            && (Integer.parseInt(Effect.run("Beast King Barbaros")) == 3)) {
-                                        Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
-                                        Game.getMainPhase1().summonForTribute(3, matcher.group(1));
-                                    } else Game.getMainPhase1().summonForTribute(2, matcher.group(1));
-                                }
+                        } else if (!MainPhase.doSolemnWarningEffect(address)) {
+                            if (level <= 4) summonALowLevelMonster(matcher, currentPlayer, address);
+                            else if (level <= 6) Game.getMainPhase1().summonForTribute(1, matcher.group(1));
+                            else {
+                                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+                                if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Beast King Barbaros")
+                                        && (Integer.parseInt(Effect.run("Beast King Barbaros")) == 3)) {
+                                    Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
+                                    Game.getMainPhase1().summonForTribute(3, matcher.group(1));
+                                } else Game.getMainPhase1().summonForTribute(2, matcher.group(1));
                             }
-                        }
+                        } else throw new MyException("opponent solemn destroyed your monster");
                     } else Game.getMainPhase1().ritualSummon(matcher.group(1), level);
                 } else throw new MyException("you already summoned/set on this turn!");
             } else throw new MyException("monster card zone is full!");
@@ -703,6 +701,8 @@ public class PhaseControl {
             String stringAddress = matcher.group(1);
             Address address = new Address(stringAddress);
             Player currentPlayer = Game.whoseTurnPlayer();
+            if (currentPlayer.getSpellCardByStringAddress(stringAddress) == null)
+                return;
             int index = currentPlayer.getIndexOfThisCardByAddress(address);
             if (!currentPlayer.isThisSpellActivated(index)) {
                 if (currentPlayer.getSpellCardByStringAddress(stringAddress).getSpellMode() == SpellMode.FIELD)
