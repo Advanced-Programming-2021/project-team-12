@@ -461,10 +461,18 @@ public class PhaseControl {
     public void spellSet(Matcher matcher) throws MyException {
         if (matcher.find()) {
             Player currentPlayer = Game.whoseTurnPlayer();
-            if (!currentPlayer.isSpellZoneFull()) {
-                currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
-            } else throw new MyException("spell card zone is full!");
+            SpellCard spellCard = currentPlayer.getSpellCardByStringAddress(matcher.group(1));
+            if (spellCard.getSpellMode().equals(SpellMode.FIELD)) {
+                if (currentPlayer.isFieldEmpty()) {
+                    currentPlayer.setCardFromHandToFieldZone(matcher.group(1));
+                } else throw new MyException("field zone is full!");
+            } else {
+                if (!currentPlayer.isSpellZoneFull()) {
+                    currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
+                } else throw new MyException("spell zone is full!");
+            }
         }
+
     }
 
     public void summonControl(Matcher matcher) throws MyException {
@@ -593,7 +601,7 @@ public class PhaseControl {
         } else throw new MyException("there are not enough cards for tribute");
     }
 
-    public void summonASuperHighLevelMonster(String address) throws MyException  {
+    public void summonASuperHighLevelMonster(String address) throws MyException {
         Address address1 = new Address(address);
         Player currentPlayer = Game.whoseTurnPlayer();
         if (Game.whoseTurnPlayer().isThereThreeCardInMonsterZone()) {
