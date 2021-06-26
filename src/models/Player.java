@@ -381,6 +381,8 @@ public class Player {
     }
 
     public MonsterCard getMonsterCardByAddress(Address address) {
+        if (getCardByAddress(address) == null)
+            return null;
         return MonsterCard.getMonsterCardByName(getCardByAddress(address).getCardName());
     }
 

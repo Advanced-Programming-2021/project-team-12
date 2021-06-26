@@ -201,5 +201,4 @@ public class DeckMenu {
         for (Card card : allCards) 
             System.out.println(card.getCardName() + ": " + card.getDescription());
     }
-
 }

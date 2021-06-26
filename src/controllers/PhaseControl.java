@@ -48,10 +48,10 @@ public class PhaseControl {
 
     public static void checkIfGameEnded() {
         if (Game.firstPlayer.getLP() <= 0) {
-            Game.setWinner(Game.firstPlayer);
+            Game.setWinner(Game.secondPlayer);
             Game.playTurn("EndGame");
         } else if (Game.secondPlayer.getLP() <= 0) {
-            Game.setWinner(Game.secondPlayer);
+            Game.setWinner(Game.firstPlayer);
             Game.playTurn("EndGame");
         }
     }
@@ -425,8 +425,8 @@ public class PhaseControl {
                     currentPlayer.removeCard(address);
                 }
             }
-            if (trapCard.getName().equals("Call of the Haunted")) {
-                if (BattlePhase.getInstance().getPermissionForTrap("Call of the Haunted", true)) {
+            if (trapCard.getName().equals("Call of The Haunted")) {
+                if (BattlePhase.getInstance().getPermissionForTrap("Call of The Haunted", true)) {
                     if (Game.isAITurn())
                         AISummonFromGraveyard();
                     else

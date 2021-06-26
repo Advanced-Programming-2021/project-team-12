@@ -18,7 +18,6 @@ public class MainPhase {
     public int howManyHeraldOfCreationDidWeUseEffect = 0;
     public int whatMainIsPhase;
 
-
     public void run() {
         if (!goToNextPhase) {
             if (Game.isAITurn())
@@ -691,17 +690,19 @@ public class MainPhase {
     }
 
     public static boolean doSolemnWarningEffect(Address address) {
-        if (!Game.isAITurn()) {
-            if (BattlePhase.getInstance().getPermissionForTrap("Solemn Warning", false)) {
-                Game.whoseRivalPlayer().decreaseLP(2000);
-                Game.whoseTurnPlayer().removeCard(address);
-                return true;
+        if (Game.whoseRivalPlayer().doIHaveSpellCard("Solemn Warning")) {
+            if (!Game.isAITurn()) {
+                if (BattlePhase.getInstance().getPermissionForTrap("Solemn Warning", false)) {
+                    Game.whoseRivalPlayer().decreaseLP(2000);
+                    Game.whoseTurnPlayer().removeCard(address);
+                    return true;
+                }
+                return false;
+            } else {
+                Player currentPlayer = Game.whoseTurnPlayer();
+                MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
+                return ((monsterCard.getNormalAttack() >= 2000) && (currentPlayer.getLP() > 5000));
             }
-            return false;
-        } else {
-            Player currentPlayer = Game.whoseTurnPlayer();
-            MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
-            return ((monsterCard.getNormalAttack() >= 2000) && (currentPlayer.getLP() > 5000));
-        }
+        } return false;
     }
 }

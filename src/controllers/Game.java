@@ -25,7 +25,7 @@ public class Game {
     private static int secondPlayerWin = 0;
     private static int firstPlayerMaxLP = 0;
     private static int secondPlayerMaxLP = 0;
-
+    private static boolean didWePassBattle;
     private static MainPhase mainPhase1;
     private static MainPhase mainPhase2;
 
@@ -52,6 +52,10 @@ public class Game {
         restartData(_firstUser, _round);
         generateRandomTurn();
         playTurn("DrawPhase");
+    }
+
+    public static void setDidWePassBattle(boolean didWe) {
+        didWePassBattle = didWe;
     }
 
     private static void restartData(User _firstUser, int _round) {
@@ -206,10 +210,14 @@ public class Game {
     }
 
     public static MainPhase getMainPhase1() {
-        return mainPhase1;
+        if (!didWePassBattle)
+            return mainPhase1;
+        else
+            return mainPhase2;
     }
 
     public static MainPhase getMainPhase2() {
+
         return mainPhase2;
     }
 }

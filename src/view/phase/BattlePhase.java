@@ -24,6 +24,7 @@ public class BattlePhase {
     }
 
     public void run() {
+        Game.setDidWePassBattle(true);
         System.out.println("phase: battle phase");
         Board.showBoard();
         selectCard();

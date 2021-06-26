@@ -9,6 +9,7 @@ public class DrawPhase {
     public void run(){
         System.out.println(PhaseControl.getInstance().printWhoseTurnIsIt());
         System.out.println("phase: draw phase");
+        Game.setDidWePassBattle(false);
         if (Game.isAITurn())
             new AIDrawPhase().run();
         else {

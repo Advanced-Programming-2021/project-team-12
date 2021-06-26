@@ -1,5 +1,6 @@
 package view;
 
+import controllers.Game;
 import models.Address;
 import models.Player;
 
@@ -32,22 +33,24 @@ public class ShowBoard {
 
     private void opponentPlayerData(Player player) {
         System.out.println(player.getNickName() + ": " + player.getLP());
-        showHandCard(player, "o");
+        showHandCard("o");
         System.out.println(player.getNumberOfUnusedCard());
         showSpells(player, "o");
         showMonsters(player, "o");
         showGYF(player, "o");
     }
 
-    private void showHandCard(Player player, String flag) {
-        int c = player.getNumberOFHandCard();
-        if (flag.equals("c")) {
-            for (int i = 0; i < 6 - c; i++)
-                System.out.printf(" \t");
+    private void showHandCard(String flag) {
+        Player player = Game.whoseTurnPlayer();
+        if (flag.equals("o")) {
+            System.out.printf("\t");
+            player = Game.whoseRivalPlayer();
         }
-        else System.out.printf("\t");
-        for (int i = 0; i < c; i++)
-            System.out.printf("c\t");
+        for (int i = 1; i <= 6; i++) {
+            if (player.getCardHand(i) != null)
+                System.out.printf("c\t");
+            else System.out.printf(" \t");
+        }
         System.out.println();
     }
 
@@ -131,7 +134,7 @@ public class ShowBoard {
         showMonsters(player, "c");
         showSpells(player, "c");
         System.out.println("\t\t\t\t\t\t" + player.getNumberOfUnusedCard());
-        showHandCard(player, "c");
+        showHandCard("c");
         System.out.println(player.getNickName() + ": " + player.getLP());
     }
 
