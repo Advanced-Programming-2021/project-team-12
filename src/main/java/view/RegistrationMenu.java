@@ -45,7 +45,15 @@ public class RegistrationMenu extends Application {
         launch(args);
     }
 
-    public void login(ActionEvent actionEvent) {
+    public void login(ActionEvent actionEvent) throws Exception {
+        new LoginMenu().start(stage);
+    }
 
+    public void register(ActionEvent actionEvent) throws Exception {
+        new SignIN().start(stage);
+    }
+
+    public void exit(ActionEvent actionEvent) {
+        System.exit(0);
     }
 }

@@ -27,7 +27,7 @@
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
          </font>
       </PasswordField>
-      <PasswordField fx:id="userName" accessibleRole="TEXT_FIELD" layoutX="185.0" layoutY="183.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="userName">
+      <PasswordField fx:id="userName" accessibleRole="TEXT_FIELD" layoutX="185.0" layoutY="183.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="UserName">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
          </font>
