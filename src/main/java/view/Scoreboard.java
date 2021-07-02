@@ -39,7 +39,6 @@ public class Scoreboard extends Application {
             Text nickNameText = new Text();
             Text scoreText = new Text();
             rankText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
-            rankText.setFill(Color.valueOf("black"));
             rankText.setLayoutX(100);
             rankText.setLayoutY(i * 17 + 14);
             nickNameText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
@@ -47,9 +46,17 @@ public class Scoreboard extends Application {
             nickNameText.setLayoutX(150);
             nickNameText.setLayoutY(i * 17 + 14);
             scoreText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
-            scoreText.setFill(Color.valueOf("black"));
             scoreText.setLayoutX(300);
             scoreText.setLayoutY(i * 17 + 14);
+            if(sortedUsers.get(i) == MainMenu.user){
+                scoreText.setFill(Color.valueOf("green"));
+                nickNameText.setFill(Color.valueOf("green"));
+                rankText.setFill(Color.valueOf("green"));
+            } else {
+                scoreText.setFill(Color.valueOf("black"));
+                nickNameText.setFill(Color.valueOf("black"));
+                rankText.setFill(Color.valueOf("black"));
+            }
             rankText.setText(Integer.toString(i));
             nickNameText.setText(sortedUsers.get(i).getNickName());
             scoreText.setText(Integer.toString(sortedUsers.get(i).getScore()));
@@ -67,5 +74,9 @@ public class Scoreboard extends Application {
 
     public void exit(ActionEvent actionEvent) {
         System.exit(0);
+    }
+
+    public void goBack(ActionEvent actionEvent) {
+//        new MainMenu(MainMenu.user).start(stage);
     }
 }
