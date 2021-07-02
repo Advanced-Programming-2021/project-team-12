@@ -4,8 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import models.User;
 
@@ -25,4 +23,31 @@ public class MainMenu extends Application {
         user = _user;
     }
 
+    public void playGame(ActionEvent actionEvent) {
+//        new Duel().start(stage);
+    }
+
+    public void goToShop(ActionEvent actionEvent) {
+//        new Shop().start(stage);
+    }
+
+    public void goToImportExport(ActionEvent actionEvent) {
+//        new ImportOrExport().start(stage);
+    }
+
+    public void goToDeckMenu(ActionEvent actionEvent) {
+//        new DeckMenu().start(stage);
+    }
+
+    public void goToChangeProfile(ActionEvent actionEvent) throws Exception {
+        new Profile().start(stage);
+    }
+
+    public void logout(ActionEvent actionEvent) throws Exception {
+        new RegistrationMenu().start(stage);
+    }
+
+    public void goToScoreboard(ActionEvent mouseEvent) throws Exception {
+        new Scoreboard().start(stage);
+    }
 }
