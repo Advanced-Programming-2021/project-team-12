@@ -1,5 +1,6 @@
 package controllers;
 
+import Exceptions.MyException;
 import models.Card;
 import models.Deck;
 import models.User;
@@ -9,9 +10,9 @@ import java.util.ArrayList;
 public class SignInController {
     public void checkData(String userName, String nickName, String password) throws Exception {
         if (User.getUserByName(userName) != null)
-            throw new Exception("user with username \" + userName + \" already exists");
+            throw new MyException("User With Username " + userName + " Already Exists");
         if (User.getUserByNickName(nickName) != null)
-            throw new Exception("user with nickname " + nickName + " already exists");
+            throw new MyException("User With Nickname " + nickName + " Already Exists");
         else {
             User user = new User(nickName, userName, password);
             setDefaultDeck(user);

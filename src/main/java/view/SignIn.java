@@ -42,10 +42,11 @@ public class SignIn extends Application {
             new SignInController().checkData(name, nick, pass);
             new RegistrationMenu().start(stage);
         } catch(MyException e) {
+            String message = e.getMessage();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
-            alert.setHeaderText(e.getMessage());
-            alert.setContentText("Please try again");
+            alert.setHeaderText(message);
+            alert.setContentText("Please Try Again");
             alert.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
