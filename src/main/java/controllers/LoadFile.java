@@ -148,11 +148,13 @@ public class LoadFile {
         String password = json.getString("password");
         int score = json.getInt("score");
         int money = json.getInt("money");
+        int avatar = json.getInt("avatar");
         JSONArray jsonArrayCards = json.getJSONArray("allCards");
         ArrayList<String> userCardsName = new ArrayList<>();
         for (int i = 1; i < jsonArrayCards.length(); i++)
             userCardsName.add((String)jsonArrayCards.get(i));
         User user = new User(nickName, userName, password);
+        user.setAvatar(avatar);
         user.setMoney(money);
         user.setScore(score);
         for (String cardName : userCardsName)

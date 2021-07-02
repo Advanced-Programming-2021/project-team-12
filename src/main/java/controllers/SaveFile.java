@@ -38,6 +38,7 @@ public class SaveFile {
         obj.put("score", user.getScore());
         obj.put("money", user.getMoney());
         obj.put("allCards", userCardsName);
+        obj.put("avatar", user.getIntAvatar());
         try {
             String name = user.getName();
             FileWriter writer = new FileWriter("data//User//" + name + ".json");

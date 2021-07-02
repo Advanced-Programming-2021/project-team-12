@@ -22,7 +22,7 @@ public class User {
         score = 0;
         money = 180000;
         Random random = new Random();
-        avatar = random.nextInt(42);
+        avatar = random.nextInt(38) + 1;
         users.add(this);
     }
 
@@ -129,21 +129,26 @@ public class User {
     }
 
     public void increaseAvatar() {
-        if (avatar < 41)
+        if (avatar < 38)
             avatar++;
-        else avatar = 0;
+        else avatar = 1;
     }
 
     public void decreaseAvatar() {
-        if (avatar > 0)
+        if (avatar > 1)
             avatar--;
-        else avatar = 41;
+        else avatar = 38;
     }
 
     public String getAvatar() {
-        String avatarString = "";
-        if (avatar != 0) avatarString = Integer.toString(avatar);
-        return avatarString;
+        return Integer.toString(avatar);
     }
 
+    public void setAvatar(int avatar) {
+        this.avatar = avatar;
+    }
+
+    public Object getIntAvatar() {
+        return avatar;
+    }
 }

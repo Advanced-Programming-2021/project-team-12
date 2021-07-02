@@ -7,14 +7,14 @@
 
 <Pane fx:id="pane" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Profile">
    <children>
-      <ImageView fx:id="textForError" fitHeight="450.0" fitWidth="600.0" layoutX="-1.0" pickOnBounds="true">
+      <ImageView fitHeight="450.0" fitWidth="600.0" layoutX="-1.0" pickOnBounds="true">
          <image>
             <Image url="@../PNG/NEW/1300558.jpg" />
          </image>
       </ImageView>
-      <TextField fx:id="nickName" layoutX="24.0" layoutY="157.0" opacity="0.83" promptText="New Nick Name">
+      <TextField fx:id="nickName" layoutX="12.0" layoutY="160.0" opacity="0.85" prefHeight="33.0" prefWidth="170.0" promptText="New Nick Name">
          <font>
-            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
          </font>
       </TextField>
       <Button layoutX="34.0" layoutY="298.0" mnemonicParsing="false" onMouseClicked="#changeNickname" prefHeight="53.0" prefWidth="141.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Change Nick Name">
@@ -22,16 +22,6 @@
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
          </font>
       </Button>
-      <TextField fx:id="oldPassword" layoutX="219.0" layoutY="157.0" opacity="0.81" promptText="Password">
-         <font>
-            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="newPassword" layoutX="219.0" layoutY="218.0" opacity="0.81" promptText="New Password">
-         <font>
-            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
-         </font>
-      </TextField>
       <Button layoutX="229.0" layoutY="298.0" mnemonicParsing="false" onMouseClicked="#changePassword" prefHeight="53.0" prefWidth="141.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Change Password">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
@@ -39,7 +29,22 @@
       </Button>
       <Button layoutX="455.0" layoutY="303.0" mnemonicParsing="false" onMouseClicked="#leftAvatar" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 43.3;" styleClass="leftArrow" stylesheets="@../CSS/Buttons.css" />
       <Button layoutX="502.0" layoutY="303.0" mnemonicParsing="false" onMouseClicked="#rightAvatar" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 43.2;" styleClass="rightArrow" stylesheets="@../CSS/Buttons.css" />
-      <Button layoutX="12.0" layoutY="392.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 44;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" textFill="RED" />
-      <ImageView fx:id="avatar" fitHeight="95.0" fitWidth="93.0" layoutX="453.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="12.0" layoutY="392.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 44;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" textFill="RED" />
+      <ImageView fx:id="avatar" fitHeight="117.0" fitWidth="116.0" layoutX="444.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="text" alignment="TOP_LEFT" layoutX="212.0" layoutY="393.0" prefHeight="53.0" prefWidth="176.0" textAlignment="JUSTIFY" textFill="#590000" wrapText="true">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="18.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="oldPassword" layoutX="209.0" layoutY="160.0" opacity="0.85" prefHeight="33.0" prefWidth="176.0" promptText="Password">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
+         </font>
+      </PasswordField>
+      <PasswordField fx:id="newPassword" layoutX="209.0" layoutY="234.0" opacity="0.85" prefHeight="33.0" prefWidth="176.0" promptText="New Password">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
+         </font>
+      </PasswordField>
    </children>
 </Pane>
