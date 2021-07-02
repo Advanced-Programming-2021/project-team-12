@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import java.net.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import java.net.URL?>
-<Pane xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="Sample.View.Game"
-      prefHeight="470.0" prefWidth="625.0" styleClass="main" fx:id="pane">
+<Pane fx:id="pane" prefHeight="470.0" prefWidth="625.0" styleClass="main" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Sample.View.Game">
 
     <stylesheets>
-        <URL value="@../CSS/Game.css"/>
+        <URL value="@../CSS/Game.css" />
     </stylesheets>
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0" />
+      <Pane prefHeight="200.0" prefWidth="200.0" />
+      <Pane prefHeight="200.0" prefWidth="200.0" />
+      <Button layoutX="96.0" layoutY="50.0" mnemonicParsing="false" prefHeight="149.0" prefWidth="387.0" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="play GameButton">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="48.0" />
+         </font>
+      </Button>
+   </children>
 </Pane>

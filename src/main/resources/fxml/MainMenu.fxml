@@ -103,6 +103,6 @@
         </GridPane>
     </center>
     <stylesheets>
-        <URL value="@../CSS/BoardCss.css"/>
+        <URL value="@../CSS/Buttons.css"/>
     </stylesheets>
 </BorderPane>
