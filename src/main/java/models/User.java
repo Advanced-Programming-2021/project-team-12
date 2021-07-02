@@ -3,12 +3,14 @@ package models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 public class User {
     private String userName;
     private String nickName;
     private String password;
     private int score;
+    private int avatar;
     private ArrayList<Card> allCards = new ArrayList<>();
     private int money;
     private static ArrayList<User> users = new ArrayList<>();
@@ -19,6 +21,8 @@ public class User {
         this.password = password;
         score = 0;
         money = 180000;
+        Random random = new Random();
+        avatar = random.nextInt(42);
         users.add(this);
     }
 
@@ -123,4 +127,23 @@ public class User {
     public int getScore() {
         return score;
     }
+
+    public void increaseAvatar() {
+        if (avatar < 41)
+            avatar++;
+        else avatar = 0;
+    }
+
+    public void decreaseAvatar() {
+        if (avatar > 0)
+            avatar--;
+        else avatar = 41;
+    }
+
+    public String getAvatarDds() {
+        String avatarString = "";
+        if (avatar != 0) avatarString = Integer.toString(avatar);
+        return "dds" + avatarString + ".png";
+    }
+
 }

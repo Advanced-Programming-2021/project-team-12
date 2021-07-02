@@ -30,6 +30,7 @@ public class Scoreboard extends Application {
         createScoreboardObjects(pane);
         stage.setScene(scene);
         stage.show();
+        System.out.println("1111");
     }
 
     private void createScoreboardObjects(Pane pane) {
@@ -39,14 +40,13 @@ public class Scoreboard extends Application {
             Text nickNameText = new Text();
             Text scoreText = new Text();
             rankText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
-            rankText.setLayoutX(100);
+            rankText.setLayoutX(175);
             rankText.setLayoutY(i * 17 + 14);
             nickNameText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
-            nickNameText.setFill(Color.valueOf("black"));
-            nickNameText.setLayoutX(150);
+            nickNameText.setLayoutX(275);
             nickNameText.setLayoutY(i * 17 + 14);
             scoreText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
-            scoreText.setLayoutX(300);
+            scoreText.setLayoutX(375);
             scoreText.setLayoutY(i * 17 + 14);
             if(sortedUsers.get(i) == MainMenu.user){
                 scoreText.setFill(Color.valueOf("green"));
@@ -57,10 +57,35 @@ public class Scoreboard extends Application {
                 nickNameText.setFill(Color.valueOf("white"));
                 rankText.setFill(Color.valueOf("white"));
             }
-            rankText.setText(Integer.toString(i));
+            rankText.setText(Integer.toString(i + 1));
             nickNameText.setText(sortedUsers.get(i).getNickName());
             scoreText.setText(Integer.toString(sortedUsers.get(i).getScore()));
             pane.getChildren().add(rankText);
+            pane.getChildren().add(nickNameText);
+            pane.getChildren().add(scoreText);
+        }
+        for (int i = sortedUsers.size(); i < 20; i++) {
+            Text rankText = new Text();
+            Text nickNameText = new Text();
+            Text scoreText = new Text();
+            rankText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
+            rankText.setLayoutX(175);
+            rankText.setLayoutY(i * 17 + 14);
+            nickNameText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
+            nickNameText.setLayoutX(275);
+            nickNameText.setLayoutY(i * 17 + 14);
+            scoreText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
+            scoreText.setLayoutX(375);
+            scoreText.setLayoutY(i * 17 + 14);
+            scoreText.setFill(Color.valueOf("white"));
+            nickNameText.setFill(Color.valueOf("white"));
+            rankText.setFill(Color.valueOf("white"));
+            rankText.setText(Integer.toString(i + 1));
+            nickNameText.setText("-----");
+            scoreText.setText("-----");
+            pane.getChildren().add(rankText);
+            pane.getChildren().add(nickNameText);
+            pane.getChildren().add(scoreText);
         }
     }
 
