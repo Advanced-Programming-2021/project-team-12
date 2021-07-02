@@ -12,11 +12,29 @@
             <Image url="@../PNG/NEW/1300558.jpg" />
          </image>
       </ImageView>
-      <TextField layoutX="24.0" layoutY="157.0" promptText="New Nick Name">
+      <TextField fx:id="nickName" layoutX="24.0" layoutY="157.0" opacity="0.83" promptText="New Nick Name">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
          </font>
       </TextField>
-      <Button layoutX="78.0" layoutY="225.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="34.0" layoutY="298.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="141.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Change Nick Name">
+      </Button>
+      <TextField layoutX="219.0" layoutY="157.0" opacity="0.81" promptText="Password">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="219.0" layoutY="218.0" opacity="0.81" promptText="New Password">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
+         </font>
+      </TextField>
+      <Button layoutX="229.0" layoutY="298.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="141.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Change Password">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="449.0" layoutY="312.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="501.0" layoutY="312.0" mnemonicParsing="false" text="Button" />
    </children>
 </Pane>
