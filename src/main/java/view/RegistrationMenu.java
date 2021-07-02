@@ -34,6 +34,7 @@ public class RegistrationMenu extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        new LoadFile();
         stage = primaryStage;
         Pane pane =  FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/RegistrationMenu.fxml")));
         Scene scene = new Scene(pane);
@@ -50,7 +51,7 @@ public class RegistrationMenu extends Application {
     }
 
     public void register(ActionEvent actionEvent) throws Exception {
-        new SignIN().start(stage);
+        new SignIn().start(stage);
     }
 
     public void exit(ActionEvent actionEvent) {
