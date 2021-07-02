@@ -14,7 +14,9 @@ import javafx.stage.Stage;
 
 public class Profile extends Application {
     public static Stage stage;
-    public static 
+    public static TextField nickName;
+    public static PasswordField pass1;
+    public static PasswordField pass2;
 
     @Override
     public void start(Stage stage) throws Exception {
