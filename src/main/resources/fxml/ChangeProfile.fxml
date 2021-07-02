@@ -7,7 +7,7 @@
 
 <Pane fx:id="pane" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Profile">
    <children>
-      <ImageView fitHeight="450.0" fitWidth="600.0" layoutX="-1.0" pickOnBounds="true">
+      <ImageView fx:id="textForError" fitHeight="450.0" fitWidth="600.0" layoutX="-1.0" pickOnBounds="true">
          <image>
             <Image url="@../PNG/NEW/1300558.jpg" />
          </image>
@@ -17,28 +17,29 @@
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
          </font>
       </TextField>
-      <Button layoutX="34.0" layoutY="298.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="141.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Change Nick Name">
+      <Button layoutX="34.0" layoutY="298.0" mnemonicParsing="false" onMouseClicked="#changeNickname" prefHeight="53.0" prefWidth="141.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Change Nick Name">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
          </font>
       </Button>
-      <TextField layoutX="219.0" layoutY="157.0" opacity="0.81" promptText="Password">
+      <TextField fx:id="oldPassword" layoutX="219.0" layoutY="157.0" opacity="0.81" promptText="Password">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
          </font>
       </TextField>
-      <TextField layoutX="219.0" layoutY="218.0" opacity="0.81" promptText="New Password">
+      <TextField fx:id="newPassword" layoutX="219.0" layoutY="218.0" opacity="0.81" promptText="New Password">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
          </font>
       </TextField>
-      <Button layoutX="229.0" layoutY="298.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="141.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Change Password">
+      <Button layoutX="229.0" layoutY="298.0" mnemonicParsing="false" onMouseClicked="#changePassword" prefHeight="53.0" prefWidth="141.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Change Password">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
          </font>
       </Button>
       <Button layoutX="449.0" layoutY="312.0" mnemonicParsing="false" text="Button" />
       <Button layoutX="501.0" layoutY="312.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="12.0" layoutY="392.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 45;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
+      <Button fx:id="back" layoutX="12.0" layoutY="392.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 45;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
+      <Label fx:id="text" layoutX="232.0" layoutY="14.0" prefHeight="39.0" prefWidth="141.0" textAlignment="CENTER" textFill="#f50505" />
    </children>
 </Pane>
