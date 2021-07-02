@@ -8,9 +8,9 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="Sample.View.SignIn"
+          fx:controller="view.SignIn"
           prefHeight="400.0" prefWidth="600.0" fx:id="gridPane">
 
-</GridPane>
+</BorderPane>
