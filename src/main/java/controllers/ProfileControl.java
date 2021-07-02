@@ -20,7 +20,7 @@ public class ProfileControl {
     public void changeNickName(String nickName) throws MyException {
         User user = User.getUserByNickName(nickName);
         if (user != null)
-            throw new MyException("\"user with nickname \" + nickName + \" already exists\"");
+            throw new MyException("user with nickname " + nickName + " already exists");
         else {
             MainMenu.user.setNickName(nickName);
             SaveFile.saveUser(MainMenu.user);
