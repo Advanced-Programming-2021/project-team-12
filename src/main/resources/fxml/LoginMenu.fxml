@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.Login"
-            prefHeight="400.0" prefWidth="600.0" fx:id="gridPane">
-
-</GridPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Login">
+    <children>
+        <ImageView fitHeight="400.0" fitWidth="600.0" layoutY="-1.0" pickOnBounds="true" smooth="false">
+            <image>
+                <Image url="@../PNG/NEW/1300536.jpg" />
+            </image>
+        </ImageView>
+        <Button layoutX="226.0" layoutY="318.0" mnemonicParsing="false" onMouseClicked="#userLogin" prefHeight="55.0" prefWidth="148.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Login">
+            <font>
+                <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="26.0" />
+            </font>
+        </Button>
+        <PasswordField fx:id="password" disable="true" editable="false" layoutX="185.0" layoutY="270.0" opacity="0.77" prefHeight="10.0" prefWidth="230.0" promptText="Password">
+            <font>
+                <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
+            </font>
+        </PasswordField>
+        <PasswordField fx:id="userName" accessibleRole="TEXT_FIELD" layoutX="185.0" layoutY="227.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="UserName">
+            <font>
+                <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
+            </font>
+        </PasswordField>
+    </children>
+</Pane>
