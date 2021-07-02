@@ -33,27 +33,26 @@ public class Scoreboard extends Application {
     }
 
     private void createScoreboardObjects(Pane pane) {
-        int printed = 0;
         ArrayList<User> sortedUsers = User.getUsers();
         for (int i = 0; i < sortedUsers.size(); i++) {
             Text rankText = new Text();
             Text nickNameText = new Text();
             Text scoreText = new Text();
             rankText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
-            rankText.setFill(Color.valueOf("gold"));
-            rankText.setLayoutX(14);
+            rankText.setFill(Color.valueOf("black"));
+            rankText.setLayoutX(100);
             rankText.setLayoutY(i * 17 + 14);
-            rankText.setX(13);
-            rankText.setY(17);
             nickNameText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
-            nickNameText.setFill(Color.valueOf("gold"));
-            nickNameText.setLayoutX(570);
-            nickNameText.setLayoutY(i * 17 + 70);
+            nickNameText.setFill(Color.valueOf("black"));
+            nickNameText.setLayoutX(150);
+            nickNameText.setLayoutY(i * 17 + 14);
             scoreText.setFont(Font.font("Tempus Sans ITC", FontWeight.BOLD, 15));
-            scoreText.setFill(Color.valueOf("gold"));
-            scoreText.setLayoutX(570);
-            scoreText.setLayoutY(i * 17 + 70);
+            scoreText.setFill(Color.valueOf("black"));
+            scoreText.setLayoutX(300);
+            scoreText.setLayoutY(i * 17 + 14);
             rankText.setText(Integer.toString(i));
+            nickNameText.setText(sortedUsers.get(i).getNickName());
+            scoreText.setText(Integer.toString(sortedUsers.get(i).getScore()));
             pane.getChildren().add(rankText);
         }
     }
