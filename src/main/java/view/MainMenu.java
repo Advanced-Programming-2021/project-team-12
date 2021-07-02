@@ -12,6 +12,7 @@ import models.User;
 public class MainMenu extends Application {
     public static User user;
     public static Stage stage;
+    public static TextField nickName;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -24,5 +25,6 @@ public class MainMenu extends Application {
     public void setUser(User _user) {
         user = _user;
     }
+
 
 }

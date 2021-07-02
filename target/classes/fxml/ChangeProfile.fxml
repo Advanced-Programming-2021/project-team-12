@@ -39,6 +39,5 @@
       </Button>
       <Button layoutX="449.0" layoutY="312.0" mnemonicParsing="false" text="Button" />
       <Button layoutX="501.0" layoutY="312.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="12.0" layoutY="392.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 45;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
    </children>
 </Pane>
