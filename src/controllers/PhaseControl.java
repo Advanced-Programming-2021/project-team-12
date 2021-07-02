@@ -115,37 +115,31 @@ public class PhaseControl {
         } else if (whatKind.equals("Trap")) {
             Game.getMainPhase1().setTrap(address);
         } else if (whatKind.equals("Spell")) {
-            Game.getMainPhase1().setSpell(CommandMatcher.getCommandMatcher(address, "(^[ ]*select --hand [\\d]+[ ]*$)"));
+            Game.getMainPhase1().setSpell(address);
         }
     }
 
-    public void monsterSet(Matcher matcher) throws MyException {
-        if (matcher.find()) {
-            if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
-                if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
-                    Address address = new Address(matcher.group(1));
-                    if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Scanner")) {
-                        Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address).setIsScanner(true);
-                    } else Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address);
-                    Game.whoseTurnPlayer().setHeSummonedOrSet(true);
-                } else {
-                    throw new MyException("you already summoned/set on this turn!");
-                }
+    public void monsterSet(Address address) throws MyException {
+        if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
+            if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
+                if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Scanner")) {
+                    Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address).setIsScanner(true);
+                } else Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address);
+                Game.whoseTurnPlayer().setHeSummonedOrSet(true);
             } else {
-                throw new MyException("monster card zone is full!");
+                throw new MyException("you already summoned/set on this turn!");
             }
+        } else {
+            throw new MyException("monster card zone is full!");
         }
     }
 
-    public void trapSet(Matcher matcher) throws MyException {
-        if (matcher.find()) {
-            Player currentPlayer = Game.whoseTurnPlayer();
-            if (!currentPlayer.isSpellZoneFull()) {
-                Address address = new Address(matcher.group(1));
-                activateSomeOfTraps(address, currentPlayer.getTrapCardByAddress(address), currentPlayer);
-                currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
-            } else throw new MyException("spell card zone is full!");
-        }
+    public void trapSet(Address address) throws MyException {
+        Player currentPlayer = Game.whoseTurnPlayer();
+        if (!currentPlayer.isSpellZoneFull()) {
+            activateSomeOfTraps(address, currentPlayer.getTrapCardByAddress(address), currentPlayer);
+            currentPlayer.setCardFromHandToSpellZone(address);
+        } else throw new MyException("spell card zone is full!");
     }
 
     private void activateSomeOfTraps(Address address, TrapCard trapCard, Player currentPlayer) {
@@ -191,56 +185,50 @@ public class PhaseControl {
             Board.summonThisCardFromGraveYardToMonsterZone(new Address(place, "graveyard", true));
     }
 
-    public void spellSet(Matcher matcher) throws MyException {
-        if (matcher.find()) {
-            Player currentPlayer = Game.whoseTurnPlayer();
-            SpellCard spellCard = currentPlayer.getSpellCardByStringAddress(matcher.group(1));
-            if (spellCard.getSpellMode().equals(SpellMode.FIELD)) {
-                    Address address = new Address(1, "field", true);
-                    currentPlayer.removeCard(address);
-                    currentPlayer.setCardFromHandToFieldZone(matcher.group(1));
-            } else {
-                if (!currentPlayer.isSpellZoneFull()) {
-                    currentPlayer.setCardFromHandToSpellZone(matcher.group(1));
-                } else throw new MyException("spell zone is full!");
-            }
-        }
-
-    }
-
-    public void summonControl(Matcher matcher) throws MyException {
-        if (matcher.find()) {
-            Player currentPlayer = Game.whoseTurnPlayer();
-            if (currentPlayer.getMonsterCardByStringAddress(matcher.group(1)) == null)
-                throw new MyException("you cant summon spell or trap");
-            if (!currentPlayer.isMonsterZoneFull()) {
-                if (!currentPlayer.isHeSummonedOrSet()) {
-                    Address address = new Address(matcher.group(1));
-                    MonsterCard monsterCard = Game.whoseTurnPlayer().getMonsterCardByStringAddress(matcher.group(1));
-                    int level = monsterCard.getLevel();
-                    if (!currentPlayer.getMonsterCardByStringAddress(matcher.group(1)).isRitual()) {
-                        if (monsterCard.getName().equals("Gate Guardian")) {
-                            if (!MainPhase.doSolemnWarningEffect(address))
-                                Game.getMainPhase1().summonForTribute(3, matcher.group(1));
-                        } else if (!MainPhase.doSolemnWarningEffect(address)) {
-                            if (level <= 4) summonALowLevelMonster(matcher, currentPlayer, address);
-                            else if (level <= 6) Game.getMainPhase1().summonForTribute(1, matcher.group(1));
-                            else {
-                                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
-                                if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Beast King Barbaros")
-                                        && (Integer.parseInt(Effect.run("Beast King Barbaros")) == 3)) {
-                                    Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
-                                    Game.getMainPhase1().summonForTribute(3, matcher.group(1));
-                                } else Game.getMainPhase1().summonForTribute(2, matcher.group(1));
-                            }
-                        } else throw new MyException("opponent solemn destroyed your monster");
-                    } else Game.getMainPhase1().ritualSummon(matcher.group(1), level);
-                } else throw new MyException("you already summoned/set on this turn!");
-            } else throw new MyException("monster card zone is full!");
+    public void spellSet(Address address) throws MyException {
+        Player currentPlayer = Game.whoseTurnPlayer();
+        SpellCard spellCard = currentPlayer.getSpellCardByStringAddress(address);
+        if (spellCard.getSpellMode().equals(SpellMode.FIELD)) {
+            Address address1 = new Address(1, "field", true);
+            currentPlayer.removeCard(address1);
+            currentPlayer.setCardFromHandToFieldZone(address);
+        } else {
+            if (!currentPlayer.isSpellZoneFull()) {
+                currentPlayer.setCardFromHandToSpellZone(address);
+            } else throw new MyException("spell zone is full!");
         }
     }
 
-    public void summonALowLevelMonster(Matcher matcher, Player currentPlayer, Address address) {
+    public void summonControl(Address address) throws MyException {
+        Player currentPlayer = Game.whoseTurnPlayer();
+        if (currentPlayer.getMonsterCardByStringAddress(address) == null)
+            throw new MyException("you cant summon spell or trap");
+        if (!currentPlayer.isMonsterZoneFull()) {
+            if (!currentPlayer.isHeSummonedOrSet()) {
+                MonsterCard monsterCard = Game.whoseTurnPlayer().getMonsterCardByStringAddress(address);
+                int level = monsterCard.getLevel();
+                if (!currentPlayer.getMonsterCardByStringAddress(address).isRitual()) {
+                    if (monsterCard.getName().equals("Gate Guardian")) {
+                        if (!MainPhase.doSolemnWarningEffect(address))
+                            Game.getMainPhase1().summonForTribute(3, address);
+                    } else if (!MainPhase.doSolemnWarningEffect(address)) {
+                        if (level <= 4) summonALowLevelMonster(currentPlayer, address);
+                        else if (level <= 6) Game.getMainPhase1().summonForTribute(1, address);
+                        else {
+                            int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+                            if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Beast King Barbaros")
+                                    && (Integer.parseInt(Effect.run("Beast King Barbaros")) == 3)) {
+                                Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
+                                Game.getMainPhase1().summonForTribute(3, address);
+                            } else Game.getMainPhase1().summonForTribute(2, address);
+                        }
+                    } else throw new MyException("opponent solemn destroyed your monster");
+                } else Game.getMainPhase1().ritualSummon(address, level);
+            } else throw new MyException("you already summoned/set on this turn!");
+        } else throw new MyException("monster card zone is full!");
+    }
+
+    public void summonALowLevelMonster(Player currentPlayer, Address address) {
         MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
         if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
             currentPlayer.summonCardToMonsterZone(matcher.group(1)).setIsScanner(true);
@@ -266,10 +254,9 @@ public class PhaseControl {
         currentPlayer.setHeSummonedOrSet(true);
     }
 
-    public void summonAMediumLevelMonster(String address) throws MyException {
-        Address address1 = new Address(address);
+    public void summonAMediumLevelMonster(Address address) throws MyException {
         Player currentPlayer = Game.whoseTurnPlayer();
-        MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address1);
+        MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
         if (currentPlayer.isThereAnyCardInMonsterZone()) {
             String tributeCard = Game.getMainPhase1().getTributeCard();
             if (tributeCard.equals("cancel")) {
@@ -281,7 +268,7 @@ public class PhaseControl {
                     currentPlayer.summonCardToMonsterZone(address);
                     if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                         if (monsterCard.getNormalAttack() >= 1000) {
-                            currentPlayer.removeCard(address1);
+                            currentPlayer.removeCard(address);
                             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
                         }
                     }
@@ -429,27 +416,23 @@ public class PhaseControl {
         }
     }
 
-    public void activeSpell(Matcher matcher) throws MyException {
-        if (matcher.find()) {
-            String stringAddress = matcher.group(1);
-            Address address = new Address(stringAddress);
-            Player currentPlayer = Game.whoseTurnPlayer();
-            if (currentPlayer.getSpellCardByStringAddress(stringAddress) == null)
-                return;
-            int index = currentPlayer.getIndexOfThisCardByAddress(address);
-            if (!currentPlayer.isThisSpellActivated(index)) {
-                if (currentPlayer.getSpellCardByStringAddress(stringAddress).getSpellMode() == SpellMode.FIELD)
-                    activateThisKindOfAddress(stringAddress, address, currentPlayer, index, "field");
-                else if (currentPlayer.getSpellCardByStringAddress(stringAddress).getSpellMode() == SpellMode.EQUIP)
-                    activateThisKindOfAddress(stringAddress, address, currentPlayer, index, "equip");
-                else if (!(currentPlayer.isSpellZoneFull()))
-                    activateThisKindOfAddress(stringAddress, address, currentPlayer, index, "spell");
-                else throw new MyException("spell card zone is full!");
-            } else throw new MyException("you have already activated this card");
-        }
+    public void activeSpell(Address address) throws MyException {
+        Player currentPlayer = Game.whoseTurnPlayer();
+        if (currentPlayer.getSpellCardByStringAddress(address) == null)
+            return;
+        int index = currentPlayer.getIndexOfThisCardByAddress(address);
+        if (!currentPlayer.isThisSpellActivated(index)) {
+            if (currentPlayer.getSpellCardByStringAddress(address).getSpellMode() == SpellMode.FIELD)
+                activateThisKindOfAddress(address, currentPlayer, index, "field");
+            else if (currentPlayer.getSpellCardByStringAddress(address).getSpellMode() == SpellMode.EQUIP)
+                activateThisKindOfAddress(address, currentPlayer, index, "equip");
+            else if (!(currentPlayer.isSpellZoneFull()))
+                activateThisKindOfAddress(address, currentPlayer, index, "spell");
+            else throw new MyException("spell card zone is full!");
+        } else throw new MyException("you have already activated this card");
     }
 
-    private void activateThisKindOfAddress(String stringAddress, Address address, Player currentPlayer, int index, String cardState) throws MyException {
+    private void activateThisKindOfAddress(Address address, Player currentPlayer, int index, String cardState) throws MyException {
         if (SpellCard.canWeActivateThisSpell(address)) {
             if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Jammer")
                     && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
@@ -459,7 +442,7 @@ public class PhaseControl {
                 currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
                 currentPlayer.setIsThisSpellActivated(true, index);
                 SpellCard.doSpellAbsorptionEffect();
-                currentPlayer.getSpellCardByStringAddress(stringAddress).doEffect(address);
+                currentPlayer.getSpellCardByStringAddress(address).doEffect(address);
                 //currentPlayer.addCardToAddress(Board.getCardByAddress(address), cardState, index)
             }
         } else throw new MyException("preparations of this spell are not done yet");

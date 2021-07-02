@@ -174,15 +174,14 @@ public class Player {
         return add;
     }
 
-    public void setCardFromHandToSpellZone(String address) {
-        Address add = new Address(address);
-        if (!handCardNumbers.containsKey(add.getNumber()) || isSpellZoneFull())
+    public void setCardFromHandToSpellZone(Address address) {
+        if (!handCardNumbers.containsKey(address.getNumber()) || isSpellZoneFull())
             return;
         int place = getFirstEmptyPlace(spellZoneCardNumbers, 5);
-        spellZoneCardNumbers.put(place, handCardNumbers.get(add.getNumber()));
+        spellZoneCardNumbers.put(place, handCardNumbers.get(address.getNumber()));
         Address adres = new Address(place, "spell", true);
-        indexOfCard.put(adres, indexOfCard.get(add));
-        handCardNumbers.remove(add.getNumber());
+        indexOfCard.put(adres, indexOfCard.get(address));
+        handCardNumbers.remove(address.getNumber());
         isSpellFaceUp.put(place, false);
     }
 
@@ -271,9 +270,8 @@ public class Player {
         return isHeSummonedOrSet;
     }
 
-    public Address summonCardToMonsterZone(String address) {
-        Address add = new Address(address);
-        Address adres = setCardFromHandToMonsterZone(add);
+    public Address summonCardToMonsterZone(Address address) {
+        Address adres = setCardFromHandToMonsterZone(address);
         positionOfCardInBoardByAddress.put(adres, PositionOfCardInBoard.OO);
         return adres;
     }
@@ -287,16 +285,14 @@ public class Player {
         removeCard(address);
     }
 
-    public MonsterCard getMonsterCardByStringAddress(String address) {
-        Address cardAddress = new Address(address);
-        if (!getCardByAddress(cardAddress).getKind().equals("Monster"))
+    public MonsterCard getMonsterCardByStringAddress(Address address) {
+        if (!getCardByAddress(address).getKind().equals("Monster"))
             return null;
-        return MonsterCard.getMonsterCardByName(getCardByAddress(cardAddress).getCardName());
+        return MonsterCard.getMonsterCardByName(getCardByAddress(address).getCardName());
     }
 
-    public String whatKindaCardIsInThisAddress(String address) {
-        Address cardAddress = new Address(address);
-        return getCardByAddress(cardAddress).getKind();
+    public String whatKindaCardIsInThisAddress(Address address) {
+        return getCardByAddress(address).getKind();
     }
 
     public boolean isThereAnyCardInMonsterZone() {
@@ -310,9 +306,8 @@ public class Player {
         return false;
     }
 
-    public SpellCard getSpellCardByStringAddress(String address) {
-        Address cardAddress = new Address(address);
-        return SpellCard.getSpellCardByName(getCardByAddress(cardAddress).getCardName());
+    public SpellCard getSpellCardByStringAddress(Address address) {
+        return SpellCard.getSpellCardByName(getCardByAddress(address).getCardName());
     }
 
     public boolean isThisMonsterOnDHPosition(String address) {
@@ -698,8 +693,7 @@ public class Player {
         indexOfCard.put(address, index);
     }
 
-    public void setCardFromHandToFieldZone(String stringAddress) {
-        Address address = new Address(stringAddress);
+    public void setCardFromHandToFieldZone(Address address) {
         if (!handCardNumbers.containsKey(address.getNumber()) || fieldCardNumbers.containsKey(1))
             return;
         fieldCardNumbers.put(1, handCardNumbers.get(address.getNumber()));

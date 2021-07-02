@@ -57,13 +57,11 @@ public class MainPhase {
         Player player = Game.whoseTurnPlayer();
         for (int i = 1; i <= 5; i++) {
             if (player.getSpellZoneCard().containsKey(i)) {
-                String input = "select --spell " + i;
+                Address address = new Address(i, "spell", true);
                 try {
-                    PhaseControl.getInstance().checkInputNonCardSelected(input);
+                    PhaseControl.getInstance().activeSpell(address);
                 } catch (MyException e) {
                     System.out.println(e.getMessage());
-                } catch (BreakException e) {
-                    playNextPhase();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -98,13 +96,11 @@ public class MainPhase {
         Player player = Game.whoseTurnPlayer();
         for (int i = 1; i <= 6; i++) {
             if (player.getHandCard().containsKey(i) && !player.getCardHand(i).getKind().equals("Monster")) {
-                input = "select --hand " + i;
+                Address address = new Address(i, "hand", true);
                 try {
-                    PhaseControl.getInstance().checkInputNonCardSelected(input);
+                    PhaseControl.getInstance().spellSet(address);
                 } catch (MyException e) {
                     System.out.println(e.getMessage());
-                } catch (BreakException e) {
-                    playNextPhase();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -123,13 +119,11 @@ public class MainPhase {
                 }
             });
             for (int i = 0; i < monsters.size(); i++) {
-                input = "select --hand " + monsters.get(i);
+                Address address = new Address(monsters.get(i), "hand", true);
                 try {
-                    PhaseControl.getInstance().checkInputNonCardSelected(input);
+                    PhaseControl.getInstance().summonControl(address);
                 } catch (MyException e) {
                     System.out.println(e.getMessage());
-                } catch (BreakException e) {
-                    playNextPhase();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -332,7 +326,7 @@ public class MainPhase {
         }
     }
 
-    public void summonForTribute(int numberOfTributes, String address) throws MyException {
+    public void summonForTribute(int numberOfTributes, Address address) throws MyException {
         if (!Game.isAITurn())
             System.out.println("select" + numberOfTributes + "monsters for tribute(write in different lines.)");
         if (numberOfTributes == 1) PhaseControl.getInstance().summonAMediumLevelMonster(address);
@@ -468,9 +462,9 @@ public class MainPhase {
         return String.valueOf(place);
     }
 
-    public void setMonster(Matcher matcher) {
+    public void setMonster(Address address) {
         try {
-            PhaseControl.getInstance().monsterSet(matcher);
+            PhaseControl.getInstance().monsterSet(address);
             System.out.println("set successfully");
         } catch (MyException e) {
             System.out.println(e.getMessage());
@@ -479,9 +473,9 @@ public class MainPhase {
         }
     }
 
-    public void setTrap(Matcher matcher) {
+    public void setTrap(Address address) {
         try {
-            PhaseControl.getInstance().trapSet(matcher);
+            PhaseControl.getInstance().trapSet(address);
             if (!Game.isAITurn())
                 System.out.println("set successfully");
         } catch (MyException e) {
@@ -492,9 +486,9 @@ public class MainPhase {
         }
     }
 
-    public void setSpell(Matcher matcher) {
+    public void setSpell(Address address) {
         try {
-            PhaseControl.getInstance().spellSet(matcher);
+            PhaseControl.getInstance().spellSet(address);
             if (!Game.isAITurn())
                 System.out.println("set successfully");
         } catch (MyException e) {
@@ -580,9 +574,9 @@ public class MainPhase {
         System.out.println("you can’t do this action in this phase");
     }
 
-    public void activeSpell(Matcher matcher) {
+    public void activeSpell(Address address) {
         try {
-            PhaseControl.getInstance().activeSpell(matcher);
+            PhaseControl.getInstance().activeSpell(address);
             if (!Game.isAITurn())
                 System.out.println("spell activated");
         } catch (MyException e) {
