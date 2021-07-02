@@ -53,9 +53,9 @@ public class Scoreboard extends Application {
                 nickNameText.setFill(Color.valueOf("green"));
                 rankText.setFill(Color.valueOf("green"));
             } else {
-                scoreText.setFill(Color.valueOf("black"));
-                nickNameText.setFill(Color.valueOf("black"));
-                rankText.setFill(Color.valueOf("black"));
+                scoreText.setFill(Color.valueOf("white"));
+                nickNameText.setFill(Color.valueOf("white"));
+                rankText.setFill(Color.valueOf("white"));
             }
             rankText.setText(Integer.toString(i));
             nickNameText.setText(sortedUsers.get(i).getNickName());
