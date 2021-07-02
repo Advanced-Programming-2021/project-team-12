@@ -40,6 +40,7 @@ public class SignIn extends Application {
         password.clear();
         try {
             new SignInController().checkData(name, nick, pass);
+            new RegistrationMenu().start(stage);
         } catch(MyException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
