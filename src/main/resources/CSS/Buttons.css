@@ -1,7 +1,8 @@
 .button1 {
-    -fx-background-image: url('../PNG/NEW/RegistrationMenu.png');
+    -fx-background-color: transparent;
+    -fx-background-image: url('../PNG/NEW/Button.png');
+    -fx-border-width: 0 2 2 0;
 }
-
 
 .button1:hover {
     -fx-background-color: #ffae00;
