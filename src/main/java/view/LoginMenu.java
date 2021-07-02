@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import javax.sound.sampled.Clip;
 import java.util.Objects;
 
-public class Login extends Application {
+public class LoginMenu extends Application {
     public static Boolean isMute = false;
     private static Stage stage;
     private static Clip clip;

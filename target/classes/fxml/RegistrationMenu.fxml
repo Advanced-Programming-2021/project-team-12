@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.RegistrationMenu"
-            prefHeight="400.0" prefWidth="600.0" fx:id="borderPane">
+<?import javafx.scene.text.*?>
 
-    <stylesheets>
-        <URL value="@../CSS/BoardCss.css"/>
-    </stylesheets>
-</BorderPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegistrationMenu">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
+         <image>
+            <Image url="@../PNG/NEW/background5.jpg" />
+         </image>
+      </ImageView>
+      <Button layoutX="87.0" layoutY="87.0" mnemonicParsing="false" onAction="#login" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Login" textAlignment="CENTER" textFill="#ffed78">
+         <font>
+            <Font name="Yu Gothic Medium" size="20.0" />
+         </font></Button>
+      <Button layoutX="87.0" layoutY="179.0" mnemonicParsing="false" onAction="#register" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Register" textFill="#ffed78">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button layoutX="87.0" layoutY="270.0" mnemonicParsing="false" onAction="#exit" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Exit" textFill="#ffed78">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+   </children>
+</Pane>
