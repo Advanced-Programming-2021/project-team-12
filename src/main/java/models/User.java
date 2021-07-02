@@ -140,10 +140,10 @@ public class User {
         else avatar = 41;
     }
 
-    public String getAvatarDds() {
+    public String getAvatar() {
         String avatarString = "";
         if (avatar != 0) avatarString = Integer.toString(avatar);
-        return "dds" + avatarString + ".png";
+        return avatarString;
     }
 
 }
