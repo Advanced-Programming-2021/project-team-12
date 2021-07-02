@@ -17,14 +17,14 @@ import javafx.stage.Stage;
 import javax.sound.sampled.Clip;
 import java.util.Objects;
 
-public class Login extends Application {
+public class LoginMenu extends Application {
     public static Stage stage;
     public TextField userName;
     public PasswordField password;
 
     @Override
     public void start(Stage stage) throws Exception {
-        Login.stage = stage;
+        LoginMenu.stage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginMenu.fxml"));
         stage.setScene(new Scene(root));
         stage.show();
