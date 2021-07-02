@@ -10,7 +10,7 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="view.RegistrationMenu"
-            prefHeight="400.0" prefWidth="600.0" fx:id="borderPane" styleClass="main">
+            prefHeight="400.0" prefWidth="600.0" fx:id="borderPane" background-image: url="@../PNG/Pacman.png">
     <top>
         <HBox alignment="CENTER">
             <Label>
@@ -19,19 +19,6 @@
             </Label>
         </HBox>
     </top>
-    <center>
-        <GridPane vgap="5" hgap="5" fx:id="gameBoard" alignment="CENTER">
-            <children>
-                <VBox alignment="CENTER" GridPane.columnIndex="0">
-                <ImageView fitHeight="300.0" fitWidth="400.0"  preserveRatio="true">
-                    <image>
-                        <Image url="@../PNG/ghost and pacman.png" />
-                    </image>
-                </ImageView>
-                </VBox>
-            </children>
-        </GridPane>
-    </center>
     <stylesheets>
         <URL value="@../CSS/BoardCss.css"/>
     </stylesheets>
