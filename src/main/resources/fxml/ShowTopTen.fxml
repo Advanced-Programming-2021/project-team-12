@@ -7,8 +7,8 @@
 <?import javafx.scene.layout.*?>
 
 <GridPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Sample.View.ShowTopTen"
-            prefHeight="400.0" prefWidth="600.0" fx:id="gridPane">
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="Sample.View.ShowTopTen"
+          prefHeight="400.0" prefWidth="600.0" fx:id="gridPane">
 
 </GridPane>
