@@ -11,8 +11,8 @@
             <Image url="@../PNG/NEW/background5.jpg" />
          </image>
       </ImageView>
-      <Button layoutX="68.0" layoutY="134.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="202.0" text="Login" textAlignment="CENTER" />
-      <Button layoutX="68.0" layoutY="182.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="202.0" text="Register" />
+      <Button layoutX="68.0" layoutY="134.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="202.0" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Login" textAlignment="CENTER" />
+      <Button layoutX="68.0" layoutY="182.0" mnemonicParsing="false" onAction="#register" prefHeight="30.0" prefWidth="202.0" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Register" />
       <Button layoutX="27.0" layoutY="356.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0" text="Exit" />
    </children>
 </Pane>
