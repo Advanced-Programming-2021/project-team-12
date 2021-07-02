@@ -310,31 +310,26 @@ public class Player {
         return SpellCard.getSpellCardByName(getCardByAddress(address).getCardName());
     }
 
-    public boolean isThisMonsterOnDHPosition(String address) {
-        Address cardAddress = new Address(address);
-        if (positionOfCardInBoardByAddress.get(cardAddress).equals(PositionOfCardInBoard.DH))
+    public boolean isThisMonsterOnDHPosition(Address address) {
+        if (positionOfCardInBoardByAddress.get(address).equals(PositionOfCardInBoard.DH))
             return true;
         else return false;
     }
 
-    public void convertThisMonsterFromDHToOO(String address) {
-        Address cardAddress = new Address(address);
-        positionOfCardInBoardByAddress.put(cardAddress, PositionOfCardInBoard.OO);
+    public void convertThisMonsterFromDHToOO(Address address) {
+        positionOfCardInBoardByAddress.put(address, PositionOfCardInBoard.OO);
     }
 
-    public void convertThisMonsterFromAttackToDefence(String address) {
-        Address cardAddress = new Address(address);
-        positionOfCardInBoardByAddress.put(cardAddress, PositionOfCardInBoard.DO);
+    public void convertThisMonsterFromAttackToDefence(Address address) {
+        positionOfCardInBoardByAddress.put(address, PositionOfCardInBoard.DO);
     }
 
-    public void convertThisMonsterFromDefenceToAttack(String address) {
-        Address cardAddress = new Address(address);
-        positionOfCardInBoardByAddress.put(cardAddress, PositionOfCardInBoard.OO);
+    public void convertThisMonsterFromDefenceToAttack(Address address) {
+        positionOfCardInBoardByAddress.put(address, PositionOfCardInBoard.OO);
     }
 
-    public boolean isThisMonsterOnAttackPosition(String address) {
-        Address cardAddress = new Address(address);
-        if (!positionOfCardInBoardByAddress.get(cardAddress).equals(PositionOfCardInBoard.DH))
+    public boolean isThisMonsterOnAttackPosition(Address address) {
+        if (!positionOfCardInBoardByAddress.get(address).equals(PositionOfCardInBoard.DH))
             return true;
         else return false;
     }

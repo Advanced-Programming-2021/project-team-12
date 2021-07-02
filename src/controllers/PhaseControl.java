@@ -231,7 +231,7 @@ public class PhaseControl {
     public void summonALowLevelMonster(Player currentPlayer, Address address) {
         MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
         if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
-            currentPlayer.summonCardToMonsterZone(matcher.group(1)).setIsScanner(true);
+            currentPlayer.summonCardToMonsterZone(address).setIsScanner(true);
         } else if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger, the Empowered Warrior")) {
             if (Integer.parseInt(Effect.run("Terratiger, the Empowered Warrior")) != 0) {
                 Address address1 = new Address(Integer.parseInt(Effect.run("Terratiger, the Empowered Warrior")), "hand", true);
@@ -240,7 +240,7 @@ public class PhaseControl {
                         && (!currentPlayer.isMonsterZoneFull()))
                     currentPlayer.setCardFromHandToMonsterZone(address1);
             }
-        } else currentPlayer.summonCardToMonsterZone(matcher.group(1));
+        } else currentPlayer.summonCardToMonsterZone(address);
         if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
             if (monsterCard.getNormalAttack() >= 1000) {
                 currentPlayer.removeCard(address);
@@ -281,10 +281,9 @@ public class PhaseControl {
         } else throw new MyException("there are not enough cards for tribute");
     }
 
-    public void summonAHighLevelMonster(String address) throws MyException {
-        Address address1 = new Address(address);
+    public void summonAHighLevelMonster(Address address) throws MyException {
         Player currentPlayer = Game.whoseTurnPlayer();
-        MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address1);
+        MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
         if (Game.whoseTurnPlayer().isThereTwoCardInMonsterZone()) {
             String tributeCard1 = Game.getMainPhase1().scanForTribute(1);
             if (tributeCard1.equals("cancel")) {
@@ -302,7 +301,7 @@ public class PhaseControl {
                         Game.whoseTurnPlayer().summonCardToMonsterZone(address);
                         if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             if (monsterCard.getNormalAttack() >= 1000) {
-                                currentPlayer.removeCard(address1);
+                                currentPlayer.removeCard(address);
                                 Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
                             }
                         }
@@ -316,8 +315,7 @@ public class PhaseControl {
         } else throw new MyException("there are not enough cards for tribute");
     }
 
-    public void summonASuperHighLevelMonster(String address) throws MyException {
-        Address address1 = new Address(address);
+    public void summonASuperHighLevelMonster(Address address) throws MyException {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (Game.whoseTurnPlayer().isThereThreeCardInMonsterZone()) {
             String tributeCard1 = Game.getMainPhase1().scanForTribute(1);
@@ -341,7 +339,7 @@ public class PhaseControl {
                             Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard3));
                             Game.whoseTurnPlayer().summonCardToMonsterZone(address);
                             if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                                currentPlayer.removeCard(address1);
+                                currentPlayer.removeCard(address);
                                 Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
                             }
                             if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
@@ -369,12 +367,10 @@ public class PhaseControl {
         }
     }
 
-    public void flipSummon(Matcher matcher) throws MyException {
-        if (matcher.find()) {
+    public void flipSummon(Address address) throws MyException {
             Player currentPlayer = Game.whoseTurnPlayer();
-            if (currentPlayer.isThisMonsterOnDHPosition(matcher.group(1))) {
-                currentPlayer.convertThisMonsterFromDHToOO(matcher.group(1));
-                Address address = new Address(matcher.group(1));
+            if (currentPlayer.isThisMonsterOnDHPosition(address)) {
+                currentPlayer.convertThisMonsterFromDHToOO(address);
                 MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
                 if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Man-Eater Bug")) {
                     doManEaterBugEffect();
@@ -386,34 +382,31 @@ public class PhaseControl {
                     }
                 }
             } else throw new MyException("You cant do this action in this phase!");
-        }
     }
 
-    public void setPosition(String input, Matcher matcher) throws MyException {
+    public void setPosition(String input, Address address) throws MyException {
         Player currentPlayer = Game.whoseTurnPlayer();
-        if (matcher.find()) {
-            int index = currentPlayer.getIndexOfThisCardByAddress(new Address(matcher.group(1)));
+            int index = currentPlayer.getIndexOfThisCardByAddress(address);
             Matcher matcher1 = CommandMatcher.getCommandMatcher(input, "^[ ]*set -- position (attack|defense)[ ]*$");
             if (matcher1.find()) {
                 if (matcher1.group(1).equals("attack")) {
-                    if (!currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
+                    if (!currentPlayer.isThisMonsterOnAttackPosition(address)) {
                         if (!currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
                             currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
-                            currentPlayer.convertThisMonsterFromDefenceToAttack(matcher.group(1));
+                            currentPlayer.convertThisMonsterFromDefenceToAttack(address);
                         } else
                             throw new MyException("you already changed this card position in this turn");
                     } else throw new MyException("This card is already in the wanted position!");
                 } else {
-                    if (currentPlayer.isThisMonsterOnAttackPosition(matcher.group(1))) {
+                    if (currentPlayer.isThisMonsterOnAttackPosition(address)) {
                         if (!currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
                             currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
-                            currentPlayer.convertThisMonsterFromAttackToDefence(matcher.group(1));
+                            currentPlayer.convertThisMonsterFromAttackToDefence(address);
                         } else
                             throw new MyException("you already changed this card position in this turn");
                     } else throw new MyException("This card is already in the wanted position!");
                 }
             }
-        }
     }
 
     public void activeSpell(Address address) throws MyException {
@@ -423,16 +416,16 @@ public class PhaseControl {
         int index = currentPlayer.getIndexOfThisCardByAddress(address);
         if (!currentPlayer.isThisSpellActivated(index)) {
             if (currentPlayer.getSpellCardByStringAddress(address).getSpellMode() == SpellMode.FIELD)
-                activateThisKindOfAddress(address, currentPlayer, index, "field");
+                activateThisKindOfAddress(address, currentPlayer, index);
             else if (currentPlayer.getSpellCardByStringAddress(address).getSpellMode() == SpellMode.EQUIP)
-                activateThisKindOfAddress(address, currentPlayer, index, "equip");
+                activateThisKindOfAddress(address, currentPlayer, index);
             else if (!(currentPlayer.isSpellZoneFull()))
-                activateThisKindOfAddress(address, currentPlayer, index, "spell");
+                activateThisKindOfAddress(address, currentPlayer, index);
             else throw new MyException("spell card zone is full!");
         } else throw new MyException("you have already activated this card");
     }
 
-    private void activateThisKindOfAddress(Address address, Player currentPlayer, int index, String cardState) throws MyException {
+    private void activateThisKindOfAddress(Address address, Player currentPlayer, int index) throws MyException {
         if (SpellCard.canWeActivateThisSpell(address)) {
             if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Jammer")
                     && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
@@ -443,7 +436,6 @@ public class PhaseControl {
                 currentPlayer.setIsThisSpellActivated(true, index);
                 SpellCard.doSpellAbsorptionEffect();
                 currentPlayer.getSpellCardByStringAddress(address).doEffect(address);
-                //currentPlayer.addCardToAddress(Board.getCardByAddress(address), cardState, index)
             }
         } else throw new MyException("preparations of this spell are not done yet");
     }
@@ -481,10 +473,7 @@ public class PhaseControl {
         }
     }
 
-    private void forcedIncreaseLP(String input) {
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "increase --LP ([\\d]+)");
-        matcher.find();
-        int LP = Integer.parseInt(matcher.group(1));
+    private void forcedIncreaseLP(int LP) {
         Game.whoseTurnPlayer().increaseLP(LP);
     }
 
@@ -502,12 +491,6 @@ public class PhaseControl {
         Game.setIsSurrender(true);
         Game.setWinner(Game.whoseRivalPlayer());
         Game.playTurn("EndGame");
-    }
-
-
-    public boolean activeTrap(Matcher matcher, Player player) {
-        if (!player.doIHaveMirageDragonMonster()) return Game.getMainPhase1().permission();
-        return false;
     }
 
     public void showOpponentCard(Address address) throws MyException {

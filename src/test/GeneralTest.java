@@ -36,7 +36,7 @@ public class GeneralTest {
     @Test
     public static void summonALowLevelMonsterTest() {
         currentPlayer.getHandCard().put(2, card);
-        PhaseControl.getInstance().summonALowLevelMonster(matcher, currentPlayer, address);
+        PhaseControl.getInstance().summonALowLevelMonster(currentPlayer, address);
         Assertions.assertTrue(currentPlayer.isHeSummonedOrSet());
     }
 

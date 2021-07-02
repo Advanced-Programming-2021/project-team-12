@@ -77,15 +77,15 @@ public class MainPhase {
             String input;
             while (true) {
                 input = Main.scanner.nextLine().trim();
-                try {
-                    PhaseControl.getInstance().checkInputNonCardSelected(input);
-                } catch (MyException e) {
-                    System.out.println(e.getMessage());
-                } catch (BreakException e) {
-                    playNextPhase();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    PhaseControl.getInstance().checkInputNonCardSelected(input);
+//                } catch (MyException e) {
+//                    System.out.println(e.getMessage());
+//                } catch (BreakException e) {
+//                    playNextPhase();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
         }
     }
@@ -98,9 +98,7 @@ public class MainPhase {
             if (player.getHandCard().containsKey(i) && !player.getCardHand(i).getKind().equals("Monster")) {
                 Address address = new Address(i, "hand", true);
                 try {
-                    PhaseControl.getInstance().spellSet(address);
-                } catch (MyException e) {
-                    System.out.println(e.getMessage());
+                    PhaseControl.getInstance().whatIsSet(address);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -313,9 +311,9 @@ public class MainPhase {
         }
     }
 
-    public void summon(Matcher matcher) {
+    public void summon(Address address) {
         try {
-            PhaseControl.getInstance().summonControl(matcher);
+            PhaseControl.getInstance().summonControl(address);
             if (!Game.isAITurn())
                 System.out.println("summoned successfully");
         } catch (MyException e) {
@@ -334,7 +332,7 @@ public class MainPhase {
         else if (numberOfTributes == 3) PhaseControl.getInstance().summonASuperHighLevelMonster(address);
     }
 
-    public void ritualSummon(String monsterCardAddress, int monsterLevel) {
+    public void ritualSummon(Address monsterCardAddress, int monsterLevel) {
         Address ritualSpellCardAddress = Game.whoseTurnPlayer().getOneOfRitualSpellCardAddress();
         if (ritualSpellCardAddress != null) {
             if (!Game.isAITurn())
@@ -540,9 +538,9 @@ public class MainPhase {
         System.out.println("you can’t do this action in this phase");
     }
 
-    public void flipSummon(Matcher matcher) {
+    public void flipSummon(Address address) {
         try {
-            PhaseControl.getInstance().flipSummon(matcher);
+            PhaseControl.getInstance().flipSummon(address);
             System.out.println("flip summoned successfully");
         } catch (MyException e) {
             System.out.println(e.getMessage());
@@ -551,9 +549,9 @@ public class MainPhase {
         }
     }
 
-    public void setPosition(String input, Matcher matcher) {
+    public void setPosition(String input, Address address) {
         try {
-            PhaseControl.getInstance().setPosition(input, matcher);
+            PhaseControl.getInstance().setPosition(input, address);
             System.out.println("monster card position changed successfully");
         } catch (MyException e) {
             System.out.println(e.getMessage());
