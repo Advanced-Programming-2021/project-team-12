@@ -8,7 +8,6 @@ import view.Main;
 
 public class StandByPhase {
     public void run(){
-        System.out.println("phase: standby phase");
         if (Game.isAITurn())
             new StandBy().run();
         if (SetSpell.doIHaveMessengerOfPeace()) {
@@ -17,15 +16,7 @@ public class StandByPhase {
             PhaseControl.getInstance().payMessengerOfPeaceSpellCardHarm(Main.scanner.nextLine().trim());
         }
         PhaseControl.getInstance().resetMoves();
-        String input;
         PhaseControl.getInstance().checkIfGameEnded();
-        while (true) {
-            input = Main.scanner.nextLine().trim();
-            if (input.matches("^[ ]*next phase[ ]*$"))
-                break;
-            else
-                System.out.println("invalid command");
-        }
         Game.playTurn("MainPhase1");
     }
 }

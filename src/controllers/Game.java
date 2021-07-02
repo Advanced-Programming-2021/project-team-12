@@ -155,31 +155,27 @@ public class Game {
     public static void playTurn(String phase) {
         switch (phase) {
             case "DrawPhase":
-                new DrawPhase().run();
+                new NextPhaseController().drawPhase();
                 break;
             case "StandByPhase":
-                new StandByPhase().run();
+                new NextPhaseController().standByPhase();
                 break;
             case "MainPhase1":
                 mainPhase1.run();
                 break;
             case "BattlePhase":
-                goToBattlePhase();
+                new NextPhaseController().battlePhase();
                 break;
             case "MainPhase2":
                 mainPhase2.run();
                 break;
             case "EndPhase":
-                new EndPhase().run();
+                new NextPhaseController().endPhase();
                 break;
             case "EndGame":
                 EndGame();
                 break;
         }
-    }
-
-    private static void goToBattlePhase() {
-        BattlePhase.getInstance().run();
     }
 
     public static Player whoseTurnPlayer() {
