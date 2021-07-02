@@ -29,7 +29,7 @@
       </Button>
       <Button layoutX="455.0" layoutY="303.0" mnemonicParsing="false" onMouseClicked="#leftAvatar" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 43.3;" styleClass="leftArrow" stylesheets="@../CSS/Buttons.css" />
       <Button layoutX="502.0" layoutY="303.0" mnemonicParsing="false" onMouseClicked="#rightAvatar" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 43.2;" styleClass="rightArrow" stylesheets="@../CSS/Buttons.css" />
-      <Button layoutX="12.0" layoutY="392.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 44;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" textFill="RED" />
+      <Button layoutX="12.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 44;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" textFill="RED" />
       <ImageView fx:id="avatar" fitHeight="117.0" fitWidth="116.0" layoutX="444.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="text" alignment="TOP_LEFT" layoutX="212.0" layoutY="393.0" prefHeight="53.0" prefWidth="176.0" textAlignment="JUSTIFY" textFill="#590000" wrapText="true">
          <font>
@@ -46,10 +46,5 @@
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
          </font>
       </PasswordField>
-      </Button>
-      <Button layoutX="455.0" layoutY="303.0" mnemonicParsing="false" onMouseClicked="#leftAvatar" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 43.3;" styleClass="leftArrow" stylesheets="@../CSS/Buttons.css" />
-      <Button layoutX="502.0" layoutY="303.0" mnemonicParsing="false" onMouseClicked="#rightAvatar" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 43.2;" styleClass="rightArrow" stylesheets="@../CSS/Buttons.css" />
-      <Button layoutX="12.0" layoutY="392.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 44;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" textFill="RED" />
-      <ImageView fx:id="avatar" fitHeight="95.0" fitWidth="93.0" layoutX="453.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </Pane>
