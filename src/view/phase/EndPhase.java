@@ -1,5 +1,6 @@
 package view.phase;
 
+import Utility.CommandMatcher;
 import controllers.PhaseControl;
 import models.Address;
 import controllers.Game;
@@ -24,7 +25,7 @@ public class EndPhase {
                 System.out.println("invalid command!");
                 input = Main.scanner.nextLine();
             }
-            Matcher matcher = getCommandMatcher(input, "(^[ ]*select --hand [123456]{1}[ ]*$)");
+            Matcher matcher = CommandMatcher.getCommandMatcher(input, "(^[ ]*select --hand [123456]{1}[ ]*$)");
             if (matcher.find()) {
                 Address address = new Address(matcher.group(1));
                 Game.whoseTurnPlayer().removeCard(address);
@@ -33,11 +34,5 @@ public class EndPhase {
         PhaseControl.getInstance().checkIfGameEnded();
         PhaseControl.getInstance().switchPlayerTurn();
         Game.playTurn("DrawPhase");
-    }
-
-    private static Matcher getCommandMatcher(String input, String regex) {
-        input.trim();
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(input);
     }
 }

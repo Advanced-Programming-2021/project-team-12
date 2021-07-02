@@ -533,30 +533,25 @@ public class BattlePhaseController {
         throw new MyException("you can’t do this action in this phase");
     }
 
-    private void directAttack(Matcher matcher) throws MyException {
+    private void directAttack(Address address) throws MyException {
         PhaseControl.getInstance().checkIfGameEnded();
-        if (matcher.find()) {
-            Player currentPlayer = Game.whoseTurnPlayer();
-            Player rivalPlayer = Game.whoseRivalPlayer();
-            if (currentPlayer.getMonsterPosition(Integer.parseInt(matcher.group(2))).equals(PositionOfCardInBoard.OO)) {
-                if (rivalPlayer.getMonsterZoneCard().size() == 0) {
-                    int index = currentPlayer.getIndexOfThisCardByAddress(new Address(matcher.group(1)));
-                    if (!currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
-                        currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
-                        MonsterCard monsterCardForDirectAttack = currentPlayer.getMonsterCardByStringAddress(matcher.group(1));
-                        rivalPlayer.decreaseLP(monsterCardForDirectAttack.getAttack(new Address(matcher.group(1))));
-                        throw new MyException("you opponent receives " + monsterCardForDirectAttack.getAttack(new Address(matcher.group(1))) + " battle damage");
-                    } else throw new MyException("this card already attacked");
-                } else throw new MyException("rival monster zone is not empty");
-            } else throw new MyException("you cant attack with this card");
-        }
+        Player currentPlayer = Game.whoseTurnPlayer();
+        Player rivalPlayer = Game.whoseRivalPlayer();
+        if (currentPlayer.getMonsterPosition(address.getNumber()).equals(PositionOfCardInBoard.OO)) {
+            if (rivalPlayer.getMonsterZoneCard().size() == 0) {
+                int index = currentPlayer.getIndexOfThisCardByAddress(address);
+                if (!currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
+                    currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
+                    MonsterCard monsterCardForDirectAttack = currentPlayer.(address);
+                    rivalPlayer.decreaseLP(monsterCardForDirectAttack.getAttack(address);
+                    throw new MyException("you opponent receives " + monsterCardForDirectAttack.getAttack(address) + " battle damage");
+                } else throw new MyException("this card already attacked");
+            } else throw new MyException("rival monster zone is not empty");
+        } else throw new MyException("you cant attack with this card");
         PhaseControl.getInstance().checkIfGameEnded();
     }
 
-    private void forcedIncreaseLP(String input) {
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "increase --LP ([\\d]+)");
-        matcher.find();
-        int LP = Integer.parseInt(matcher.group(1));
+    private void forcedIncreaseLP(int LP) {
         Game.whoseTurnPlayer().increaseLP(LP);
     }
 
