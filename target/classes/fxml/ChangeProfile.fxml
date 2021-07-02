@@ -18,9 +18,6 @@
          </font>
       </TextField>
       <Button layoutX="34.0" layoutY="298.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="141.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Change Nick Name">
-         <font>
-            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
-         </font>
       </Button>
       <TextField layoutX="219.0" layoutY="157.0" opacity="0.81" promptText="Password">
          <font>
