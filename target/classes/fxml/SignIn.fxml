@@ -20,7 +20,7 @@
       </Button>
       <PasswordField fx:id="password" layoutX="185.0" layoutY="270.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="Password">
          <font>
-            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="15.0" />
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
          </font>
       </PasswordField>
       <TextField fx:id="nickName" layoutX="185.0" layoutY="227.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="Nick Name">
