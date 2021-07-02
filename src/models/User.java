@@ -1,12 +1,8 @@
 package models;
 
-import Utility.CommandMatcher;
-import controllers.DeckControllers;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.regex.Matcher;
 
 public class User {
     private String userName;
@@ -48,11 +44,7 @@ public class User {
 
     public ArrayList<Card> getAllCards() {
         if (allCards == null) return  null;
-        Collections.sort(allCards, new Comparator<Card>() {
-            public int compare(Card c1, Card c2) {
-                    return c1.getCardName().compareTo(c2.getCardName());
-            }
-        });   
+        allCards.sort(Comparator.comparing(Card::getCardName));
         return allCards;
     }
 
@@ -65,9 +57,7 @@ public class User {
     }
 
     public boolean checkPassword(String password) {
-        if (this.password.equals(password))
-            return true;
-        return false;
+        return this.password.equals(password);
     }
 
     public void setNickName(String nickName) {
@@ -113,13 +103,11 @@ public class User {
     }
 
     public static ArrayList<User> getUsers() {
-        Collections.sort(users, new Comparator<User>() {
-            public int compare(User u1, User u2) {
-                if (u1.getScore() != u2.getScore())
-                    return (u1.getScore() > u2.getScore()) ? -1 : 1;
-                else
-                    return u1.getNickName().compareTo(u2.getNickName());
-            }
+        users.sort((u1, u2) -> {
+            if (u1.getScore() != u2.getScore())
+                return (u1.getScore() > u2.getScore()) ? -1 : 1;
+            else
+                return u1.getNickName().compareTo(u2.getNickName());
         });
         return users;
     }

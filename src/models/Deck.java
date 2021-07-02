@@ -114,15 +114,11 @@ public class Deck {
     }
 
     public Boolean isMainCardsFull() {
-        if (mainCards.size() >= 60)
-            return true;
-        return false;
+        return mainCards.size() >= 60;
     }
 
     public Boolean isSideCardsFull() {
-        if (sideCards.size() >= 15)
-            return true;
-        return false;
+        return sideCards.size() >= 15;
     }
 
     public Boolean checkIfThereIsThree(String cardName) {

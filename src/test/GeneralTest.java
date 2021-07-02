@@ -5,6 +5,8 @@ import controllers.LoadFile;
 import controllers.PhaseControl;
 import models.*;
 import org.junit.jupiter.api.*;
+import Utility.CommandMatcher;
+
 import java.util.regex.Matcher;
 
 public class GeneralTest {
@@ -20,7 +22,7 @@ public class GeneralTest {
         new LoadFile();
         user = new User("a", "a", "a");
         currentPlayer = new Player();
-        matcher = Utility.CommandMatcher.getCommandMatcher("select --hand 2", "(^[ ]*select --hand [\\d]+[ ]*$)");
+        matcher = CommandMatcher.getCommandMatcher("select --hand 2", "(^[ ]*select --hand [\\d]+[ ]*$)");
         address = new Address("select --hand 2");
         card = new Card("Battle OX", "Monster");
         Game.firstPlayer = currentPlayer;
