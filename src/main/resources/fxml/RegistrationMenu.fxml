@@ -1,38 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import java.net.*?>
 <?import javafx.scene.layout.*?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.RegistrationMenu"
-            prefHeight="400.0" prefWidth="600.0" fx:id="borderPane" styleClass="main">
-    <top>
-        <HBox alignment="CENTER">
-            <Label>
-                <graphic>
-                </graphic>
-            </Label>
-        </HBox>
-    </top>
-    <center>
-        <GridPane vgap="5" hgap="5" fx:id="gameBoard" alignment="CENTER">
-            <children>
-                <VBox alignment="CENTER" GridPane.columnIndex="0">
-                <ImageView fitHeight="300.0" fitWidth="400.0"  preserveRatio="true">
-                    <image>
-                        <Image url="@../PNG/ghost and pacman.png" />
-                    </image>
-                </ImageView>
-                </VBox>
-            </children>
-        </GridPane>
-    </center>
+
+<BorderPane fx:id="borderPane" prefHeight="191.0" prefWidth="678.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegistrationMenu">
+
     <stylesheets>
-        <URL value="@../CSS/BoardCss.css"/>
+        <URL value="@../CSS/BoardCss.css" />
     </stylesheets>
 </BorderPane>

@@ -12,7 +12,7 @@ public class Board {
 
     public static void showBoard() {
         loadData();
-        new ShowBoard(currentPlayer, opponentPlayer);
+//        new ShowBoard(currentPlayer, opponentPlayer);
     }
 
     public static void loadData() {
@@ -168,14 +168,14 @@ public class Board {
         return number;
     }
 
-    public static void showGraveyard() {
-        ShowBoard.showGraveyard(currentPlayer, opponentPlayer);
-    }
-
-    public static void showFieldZoneCard(boolean isMine) {
-        if (isMine)
-            ShowBoard.showFieldZone(currentPlayer);
-        else
-            ShowBoard.showFieldZone(opponentPlayer);
-    }
+//    public static void showGraveyard() {
+//        ShowBoard.showGraveyard(currentPlayer, opponentPlayer);
+//    }
+//
+//    public static void showFieldZoneCard(boolean isMine) {
+//        if (isMine)
+//            ShowBoard.showFieldZone(currentPlayer);
+//        else
+//            ShowBoard.showFieldZone(opponentPlayer);
+//    }
 }

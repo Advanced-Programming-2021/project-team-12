@@ -11,5 +11,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class SetMainCards {
-
+    public SetMainCards(Player firstPlayer, Player secondPlayer) {
+    }
 }

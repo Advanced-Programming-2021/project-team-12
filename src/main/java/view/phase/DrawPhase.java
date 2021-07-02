@@ -1,5 +1,4 @@
 package view.phase;
-import com.sun.source.tree.WhileLoopTree;
 import controllers.Game;
 import controllers.PhaseControl;
 import view.AIPhase.AIDrawPhase;
