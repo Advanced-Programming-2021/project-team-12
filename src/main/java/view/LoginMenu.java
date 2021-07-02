@@ -32,6 +32,7 @@ public class LoginMenu extends Application {
         password.clear();
         try {
             new LogInController().checkData(name, pass);
+            new MainMenu().start(stage);
         } catch (MyException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");

@@ -78,7 +78,6 @@ public class Game {
         if (firstPlayerWin > floorWin || secondPlayerWin > floorWin) {
             System.out.println(winner.getName() + " won the whole match with score: " + firstPlayerWin + "-" + secondPlayerWin);
             setScoreAndMoneyOfPlayers();
-            new MainMenu(firstUser);
         } else {
             System.out.println(winner.getName() + " won the game and the score is: " + firstPlayerWin + "-" + secondPlayerWin);
             firstPlayer.reset();

@@ -1,4 +1,5 @@
 package view;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,12 +9,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import models.User;
 
-public class MainMenu {
+public class MainMenu extends Application {
     public static User user;
     public static Stage stage;
-    public TextField userName;
-    public TextField nickName;
-    public PasswordField password;
 
     @Override
     public void start(Stage stage) throws Exception {

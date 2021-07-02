@@ -77,6 +77,10 @@ public class Scoreboard extends Application {
     }
 
     public void goBack(ActionEvent actionEvent) {
-//        new MainMenu(MainMenu.user).start(stage);
+        try {
+            new MainMenu().start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
