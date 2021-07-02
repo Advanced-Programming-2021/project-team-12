@@ -1,9 +1,7 @@
 .button1 {
     -fx-background-color: transparent;
-    -fx-pref-height: 300px;
-    -fx-pref-width: 300px;
+    -fx-background-image: url('../PNG/NEW/Button.png');
 }
-
 
 .button1:hover {
     -fx-background-color: #ffae00;

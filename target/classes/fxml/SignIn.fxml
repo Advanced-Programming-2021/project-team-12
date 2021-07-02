@@ -1,16 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<GridPane xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml"
-          fx:controller="Sample.View.SignIn"
-          prefHeight="400.0" prefWidth="600.0" fx:id="gridPane">
-
-</GridPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignIn">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="600.0" layoutY="-1.0" pickOnBounds="true" smooth="false">
+         <image>
+            <Image url="@../PNG/NEW/1300536.jpg" />
+         </image>
+      </ImageView>
+      <Button layoutX="226.0" layoutY="318.0" mnemonicParsing="false" onMouseClicked="#signInUser" prefHeight="55.0" prefWidth="148.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Signin">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="26.0" />
+         </font>
+      </Button>
+      <PasswordField fx:id="Password" disable="true" editable="false" layoutX="185.0" layoutY="270.0" opacity="0.77" prefHeight="10.0" prefWidth="230.0" promptText="Password">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
+         </font>
+      </PasswordField>
+      <PasswordField fx:id="NickName" accessibleRole="TEXT_FIELD" layoutX="185.0" layoutY="228.0" opacity="0.76" prefHeight="33.0" prefWidth="230.0" promptText="NickName">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
+         </font>
+      </PasswordField>
+      <PasswordField fx:id="userName" accessibleRole="TEXT_FIELD" layoutX="185.0" layoutY="183.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="userName">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
+         </font>
+      </PasswordField>
+   </children>
+</Pane>

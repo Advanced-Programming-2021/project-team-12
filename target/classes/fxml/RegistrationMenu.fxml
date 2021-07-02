@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.RegistrationMenu"
-            prefHeight="400.0" prefWidth="600.0" fx:id="borderPane">
 
-    <stylesheets>
-        <URL value="@../CSS/BoardCss.css"/>
-    </stylesheets>
-</BorderPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RegistrationMenu">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
+         <image>
+            <Image url="@../PNG/NEW/background5.jpg" />
+         </image>
+      </ImageView>
+      <Button layoutX="68.0" layoutY="134.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="202.0" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Login" textAlignment="CENTER" />
+      <Button layoutX="68.0" layoutY="182.0" mnemonicParsing="false" onAction="#register" prefHeight="30.0" prefWidth="202.0" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Register" />
+      <Button layoutX="27.0" layoutY="356.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0" text="Exit" />
+   </children>
+</Pane>

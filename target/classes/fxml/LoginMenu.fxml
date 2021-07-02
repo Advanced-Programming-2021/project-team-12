@@ -12,17 +12,22 @@
                 <Image url="@../PNG/NEW/1300536.jpg" />
             </image>
         </ImageView>
-        <Button layoutX="226.0" layoutY="318.0" mnemonicParsing="false" onMouseClicked="#userLogin" prefHeight="55.0" prefWidth="148.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Login">
+        <Button layoutX="226.0" layoutY="318.0" mnemonicParsing="false" onAction="#LogInUser" prefHeight="55.0" prefWidth="148.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Login">
             <font>
                 <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="26.0" />
             </font>
         </Button>
-        <PasswordField fx:id="password" disable="true" editable="false" layoutX="185.0" layoutY="270.0" opacity="0.77" prefHeight="10.0" prefWidth="230.0" promptText="Password">
+        <PasswordField disable="true" editable="false" layoutX="185.0" layoutY="270.0" opacity="0.77" prefHeight="10.0" prefWidth="230.0" promptText="Password">
             <font>
                 <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
             </font>
         </PasswordField>
-        <PasswordField fx:id="userName" accessibleRole="TEXT_FIELD" layoutX="185.0" layoutY="227.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="UserName">
+        <PasswordField accessibleRole="TEXT_FIELD" layoutX="185.0" layoutY="228.0" opacity="0.76" prefHeight="33.0" prefWidth="230.0" promptText="NickName">
+            <font>
+                <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
+            </font>
+        </PasswordField>
+        <PasswordField accessibleRole="TEXT_FIELD" layoutX="185.0" layoutY="183.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="userName">
             <font>
                 <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
             </font>
