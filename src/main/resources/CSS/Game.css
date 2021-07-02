@@ -1,0 +1,17 @@
+.board{
+    -fx-fill: #1e5ec6;
+    -fx-arc-width: 20;
+    -fx-arc-height: 20;
+}
+
+.ball{
+    -fx-fill: rgba(49, 229, 14, 0.87);
+}
+
+.brick{
+    -fx-fill: rgba(137, 38, 38, 0.87);
+}
+
+.main {
+    -fx-background-color: radial-gradient(center 50% 50%,radius 150%, #000000, #000000);
+}
