@@ -50,7 +50,7 @@ public class RegistrationMenu extends Application {
     }
 
     public void register(ActionEvent actionEvent) throws Exception {
-        new SignIN().start(stage);
+        new SignIn().start(stage);
     }
 
     public void exit(ActionEvent actionEvent) {

@@ -1,9 +1,6 @@
 .button1 {
     -fx-background-color: transparent;
     -fx-background-image: url('../PNG/NEW/Button.png');
-    -fx-padding: 2px 8px;
-    -fx-border-width: 0 2 2 0;
-
 }
 
 .button1:hover {
