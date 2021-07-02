@@ -1,108 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import java.net.URL?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Sample.View.MainMenu"
-            prefHeight="400.0" prefWidth="600.0" fx:id="borderPane" styleClass="main">
-    <top>
-        <HBox alignment="CENTER">
-            <Label>
-                <graphic>
-                    <ImageView fitHeight="1000.0" fitWidth="700.0"  preserveRatio="true">
-                        <image>
-                            <Image url="@../PNG/Pacman.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-            </Label>
-        </HBox>
-    </top>
-    <center>
-        <GridPane vgap="5" hgap="5" fx:id="gameBoard" alignment="CENTER">
-            <children>
-                <VBox alignment="CENTER" GridPane.columnIndex="0">
-                    <ImageView fitHeight="300.0" fitWidth="400.0"  preserveRatio="true">
-                        <image>
-                            <Image url="@../PNG/ghost and pacman.png" />
-                        </image>
-                    </ImageView>
-                    <Button styleClass="button1" onMouseClicked="#playGame">
-                        <graphic>
-                            <ImageView fitHeight="300.0" fitWidth="300.0"  preserveRatio="true">
-                                <image>
-                                    <Image url="@../PNG/Play game.png"/>
-                                </image>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                    <Button styleClass="button1" onMouseClicked="#changePassword">
-                        <graphic>
-                            <ImageView fitHeight="300.0" fitWidth="300.0"  preserveRatio="true">
-                                <image>
-                                    <Image url="@../PNG/Change Password.png"/>
-                                </image>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                    <Button styleClass="button1" onMouseClicked="#deleteAccount">
-                        <graphic>
-                            <ImageView fitHeight="300.0" fitWidth="300.0"  preserveRatio="true">
-                                <image>
-                                    <Image url="@../PNG/Delete Account.png" />
-                                </image>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                    <Button styleClass="button1" onMouseClicked="#setLifesAndLevel">
-                        <graphic>
-                            <ImageView fitHeight="200.0" fitWidth="300.0"  preserveRatio="true">
-                                <image>
-                                    <Image url="@../PNG/Set Lifes And Level.png" />
-                                </image>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                    <Button styleClass="button1" onMouseClicked="#drawMap">
-                        <graphic>
-                            <ImageView fitHeight="300.0" fitWidth="300.0"  preserveRatio="true">
-                                <image>
-                                    <Image url="@../PNG/DrawMap.png" />
-                                </image>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                    <Button styleClass="button1" onMouseClicked="#topTen">
-                        <graphic>
-                            <ImageView fitHeight="300.0" fitWidth="300.0"  preserveRatio="true">
-                                <image>
-                                    <Image url="@../PNG/Top ten.png" />
-                                </image>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                    <Button styleClass="button1" onMouseClicked="#exitGame">
-                        <graphic>
-                            <ImageView fitHeight="200.0" fitWidth="300.0" preserveRatio="true" >
-                                <image>
-                                    <Image url="@../PNG/Exit.png" />
-                                </image>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                </VBox>
-            </children>
-        </GridPane>
-    </center>
-    <stylesheets>
-        <URL value="@../CSS/Buttons.css"/>
-    </stylesheets>
-</BorderPane>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainMenu">
+   <children>
+      <Pane layoutY="-8.0" prefHeight="414.0" prefWidth="601.0">
+         <children>
+            <VBox alignment="CENTER" layoutX="203.0" layoutY="37.0" prefHeight="289.0" prefWidth="210.0">
+               <children>
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#key" style="-fx-background-color: cyan;" text="Scoreboard" textAlignment="CENTER" textFill="#bf2c96">
+                     <font>
+                        <Font name="Mongolian Baiti" size="15.0" />
+                     </font></Button>
+                  <Button mnemonicParsing="false" text="Button" textAlignment="CENTER" />
+                  <Button mnemonicParsing="false" text="Button" textAlignment="CENTER" />
+                  <Button mnemonicParsing="false" text="Button" textAlignment="CENTER" />
+                  <Button mnemonicParsing="false" text="Button" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" text="Button" />
+               </children>
+            </VBox>
+            <MenuButton mnemonicParsing="false" text="MenuButton">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+              </items>
+            </MenuButton>
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="80.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../PNG/Items/GUI_T_TowerMissonBase1.dds.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
