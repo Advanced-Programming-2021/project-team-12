@@ -137,15 +137,15 @@ public class MainPhase {
             String input;
             while (true) {
                 input = Main.scanner.nextLine().trim();
-                try {
-                    PhaseControl.getInstance().monsterCardSelected(input, selectedCard);
-                } catch (MyException e) {
-                    System.out.println(e.getMessage());
-                } catch (BreakException e) {
-                    playNextPhase();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    PhaseControl.getInstance().monsterCardSelected(input, selectedCard);
+//                } catch (MyException e) {
+//                    System.out.println(e.getMessage());
+//                } catch (BreakException e) {
+//                    playNextPhase();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
         }
     }
@@ -157,15 +157,15 @@ public class MainPhase {
             String input;
             while (true) {
                 input = Main.scanner.nextLine().trim();
-                try {
-                    PhaseControl.getInstance().OpponentMonsterCardSelected(input, selectedCard);
-                } catch (MyException e) {
-                    System.out.println(e.getMessage());
-                } catch (BreakException e) {
-                    playNextPhase();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    PhaseControl.getInstance().OpponentMonsterCardSelected(input, selectedCard);
+//                } catch (MyException e) {
+//                    System.out.println(e.getMessage());
+//                } catch (BreakException e) {
+//                    playNextPhase();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
         }
     }
@@ -179,16 +179,16 @@ public class MainPhase {
                 String selectedCard = matcher.group(1);
                 String input;
                 while (true) {
-                    input = Main.scanner.nextLine().trim();
-                    try {
-                        PhaseControl.getInstance().spellSelected(input, selectedCard);
-                    } catch (MyException e) {
-                        System.out.println(e.getMessage());
-                    } catch (BreakException e) {
-                        playNextPhase();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//                    input = Main.scanner.nextLine().trim();
+//                    try {
+//                        PhaseControl.getInstance().spellSelected(input, selectedCard);
+//                    } catch (MyException e) {
+//                        System.out.println(e.getMessage());
+//                    } catch (BreakException e) {
+//                        playNextPhase();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
         }
@@ -200,15 +200,15 @@ public class MainPhase {
             String selectedCard = matcher.group(1);
             int rand = new Random().nextInt(4);
             if (rand != 1) {
-                try {
-                    PhaseControl.getInstance().spellSelected(input, selectedCard);
-                } catch (MyException e) {
-                    System.out.println(e.getMessage());
-                } catch (BreakException e) {
-                    playNextPhase();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    PhaseControl.getInstance().spellSelected(input, selectedCard);
+//                } catch (MyException e) {
+//                    System.out.println(e.getMessage());
+//                } catch (BreakException e) {
+//                    playNextPhase();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
         }
     }
@@ -220,15 +220,15 @@ public class MainPhase {
             while (true) {
                 Board.showBoard();
                 input = Main.scanner.nextLine().trim();
-                try {
-                    PhaseControl.getInstance().OpponentSpellCardSelected(input, selectedCard);
-                } catch (MyException e) {
-                    System.out.println(e.getMessage());
-                } catch (BreakException e) {
-                    playNextPhase();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    PhaseControl.getInstance().OpponentSpellCardSelected(input, selectedCard);
+//                } catch (MyException e) {
+//                    System.out.println(e.getMessage());
+//                } catch (BreakException e) {
+//                    playNextPhase();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
         }
     }
@@ -238,15 +238,15 @@ public class MainPhase {
         while (true) {
             Board.showBoard();
             input = Main.scanner.nextLine().trim();
-            try {
-                PhaseControl.getInstance().fieldCardSelected(input);
-            } catch (MyException e) {
-                System.out.println(e.getMessage());
-            } catch (BreakException e) {
-                playNextPhase();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                PhaseControl.getInstance().fieldCardSelected(input);
+//            } catch (MyException e) {
+//                System.out.println(e.getMessage());
+//            } catch (BreakException e) {
+//                playNextPhase();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         }
     }
 
@@ -255,15 +255,15 @@ public class MainPhase {
         while (true) {
             Board.showBoard();
             input = Main.scanner.nextLine().trim();
-            try {
-                PhaseControl.getInstance().opponentFieldCardSelected(input);
-            } catch (MyException e) {
-                System.out.println(e.getMessage());
-            } catch (BreakException e) {
-                playNextPhase();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                PhaseControl.getInstance().opponentFieldCardSelected(input);
+//            } catch (MyException e) {
+//                System.out.println(e.getMessage());
+//            } catch (BreakException e) {
+//                playNextPhase();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         }
     }
 
@@ -277,15 +277,15 @@ public class MainPhase {
                 String input;
                 while (true) {
                     input = Main.scanner.nextLine().trim();
-                    try {
-                        PhaseControl.getInstance().handSelected(input, selectedCard);
-                    } catch (MyException e) {
-                        System.out.println(e.getMessage());
-                    } catch (BreakException e) {
-                        playNextPhase();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        PhaseControl.getInstance().handSelected(input, selectedCard);
+//                    } catch (MyException e) {
+//                        System.out.println(e.getMessage());
+//                    } catch (BreakException e) {
+//                        playNextPhase();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
         }
@@ -299,15 +299,15 @@ public class MainPhase {
             Card card = Game.whoseTurnPlayer().getCardHand(place);
             if (card.getKind().equals("Monster"))
                 input = "summon";
-            try {
-                PhaseControl.getInstance().handSelected(input, selectedCard);
-            } catch (MyException e) {
-                System.out.println(e.getMessage());
-            } catch (BreakException e) {
-                playNextPhase();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                PhaseControl.getInstance().handSelected(input, selectedCard);
+//            } catch (MyException e) {
+//                System.out.println(e.getMessage());
+//            } catch (BreakException e) {
+//                playNextPhase();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         }
     }
 
@@ -561,11 +561,11 @@ public class MainPhase {
     }
 
     public void showFieldZoneCard() {
-        Board.showFieldZoneCard(true);
+//        Board.showFieldZoneCard(true);
     }
 
     public void showOpponentFieldZoneCard() {
-        Board.showFieldZoneCard(false);
+//        Board.showFieldZoneCard(false);
     }
 
     public void directAttack(Matcher matcher) {
@@ -627,7 +627,7 @@ public class MainPhase {
     public static void summonAMonsterCardFromGraveyard() {
         if (!Game.isAITurn()) {
             System.out.println("whose graveyard you want to summon from?(yours/rival's)");
-            Board.showGraveyard();
+//            Board.showGraveyard();
             String input = Main.scanner.nextLine();
             doCallOfTheHauntedEffect(input.equals("yours"));
         }
@@ -665,7 +665,7 @@ public class MainPhase {
     public static void doCallOfTheHauntedEffect(boolean isMine) {
         if (isMine) System.out.println("choose a monster from your graveyard to be summoned!(only type number)");
         else System.out.println("choose a monster from your rival's graveyard to be summoned!(only type number)");
-        Board.showGraveyard();
+//        Board.showGraveyard();
         Address address = new Address(Integer.parseInt(Main.scanner.nextLine()), "graveyard", isMine);
         if (Game.whoseTurnPlayer().getMonsterCardByAddress(address) != null)
             Board.summonThisCardFromGraveYardToMonsterZone(address);

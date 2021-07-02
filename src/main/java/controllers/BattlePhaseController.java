@@ -26,7 +26,7 @@ public class BattlePhaseController {
         else if (input.matches("^[ ]*select .*$"))
             whatIsSelected(input);
         else if (input.matches("[ ]*increase --LP [\\d]+[ ]*"))
-            forcedIncreaseLP(input);
+            throw new MyException("you can’t do this action in this phase");
         else if (input.matches("duel set-winner(.)*"))
             forcedSetWinner();
         else if (input.matches("^[ ]*summon[ ]*$"))
@@ -44,7 +44,7 @@ public class BattlePhaseController {
         else if (input.matches("^[ ]*activate effect[ ]*$"))
             throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*show graveyard[ ]*$"))
-            Board.showGraveyard();
+            throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*card show --selected[ ]*$"))
             throw new MyException("no card is selected yet");
         else if (input.matches("^[ ]*surrender[ ]*$"))
@@ -106,13 +106,13 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*flip-summon[ ]*$"))
                         throw new MyException("you can’t do this action in this phase");
                     else if (input.matches("^[ ]*attack [\\d]+[ ]*$"))
-                        attack(CommandMatcher.getCommandMatcher(input, "(^[ ]*attack ([\\d]+)[ ]*$)"), selectedCard);
+                        throw new MyException("you can’t do this action in this phase");
                     else if (input.matches("^[ ]*attack direct[ ]*$"))
-                        directAttack(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
+                        throw new MyException("you can’t do this action in this phase");
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         System.out.println("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        Board.showGraveyard();
+                        throw new MyException("no card is selected yet");
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
                         Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
@@ -184,7 +184,7 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         throw new MyException("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        Board.showGraveyard();
+                        throw new MyException("no card is selected yet");
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
                         Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --monster --opponent [\\d]+[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
@@ -228,7 +228,7 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         throw new MyException("you can’t do this action in this phase");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        Board.showGraveyard();
+                        throw new MyException("no card is selected yet");
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
                         Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --spell ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
@@ -272,7 +272,7 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         throw new MyException("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        Board.showGraveyard();
+                        throw new MyException("no card is selected yet");
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
                         Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --spell --opponent ([\\d]+)[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
@@ -312,7 +312,7 @@ public class BattlePhaseController {
             else if (input.matches("^[ ]*activate effect[ ]*$"))
                 throw new MyException("activate effect is only for spell cards.");
             else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                Board.showGraveyard();
+                throw new MyException("no card is selected yet");
             else if (input.matches("^[ ]*card show --selected[ ]*$"))
                 Game.getMainPhase1().showFieldZoneCard();
             else if (input.matches("^[ ]*surrender[ ]*$"))
@@ -350,7 +350,7 @@ public class BattlePhaseController {
             else if (input.matches("^[ ]*activate effect[ ]*$"))
                 throw new MyException("activate effect is only for spell cards.");
             else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                Board.showGraveyard();
+                throw new MyException("no card is selected yet");
             else if (input.matches("^[ ]*card show --selected[ ]*$"))
                 Game.getMainPhase1().showOpponentFieldZoneCard();
             else if (input.matches("^[ ]*surrender[ ]*$"))
@@ -391,7 +391,7 @@ public class BattlePhaseController {
                     else if (input.matches("^[ ]*activate effect[ ]*$"))
                         throw new MyException("activate effect is only for spell cards.");
                     else if (input.matches("^[ ]*show graveyard[ ]*$"))
-                        Board.showGraveyard();
+                        throw new MyException("no card is selected yet");
                     else if (input.matches("^[ ]*card show --selected[ ]*$"))
                         Game.getMainPhase1().showSelectedCard(CommandMatcher.getCommandMatcher(selectedCard, "(^[ ]*select --hand [\\d]+[ ]*$)"));
                     else if (input.matches("^[ ]*surrender[ ]*$"))
@@ -530,12 +530,11 @@ public class BattlePhaseController {
                 if (!currentPlayer.didWeAttackByThisCardInThisCardInThisTurn(index)) {
                     currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
                     MonsterCard monsterCardForDirectAttack = currentPlayer.getMonsterCardByAddress(address);
-                    rivalPlayer.decreaseLP(monsterCardForDirectAttack.getAttack(address);
+                    rivalPlayer.decreaseLP(monsterCardForDirectAttack.getAttack(address));
                     throw new MyException("you opponent receives " + monsterCardForDirectAttack.getAttack(address) + " battle damage");
                 } else throw new MyException("this card already attacked");
             } else throw new MyException("rival monster zone is not empty");
         } else throw new MyException("you cant attack with this card");
-        PhaseControl.getInstance().checkIfGameEnded();
     }
 
     private void forcedIncreaseLP(int LP) {

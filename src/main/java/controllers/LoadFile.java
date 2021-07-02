@@ -148,9 +148,10 @@ public class LoadFile {
         String password = json.getString("password");
         int score = json.getInt("score");
         int money = json.getInt("money");
-        Gson gson = new Gson();
-        Type stringListType = new TypeToken<ArrayList<String>>(){}.getType();
-        ArrayList<String> userCardsName = gson.fromJson(json.get("allCards").toString(), stringListType);
+        JSONArray jsonArrayCards = json.getJSONArray("allCards");
+        ArrayList<String> userCardsName = new ArrayList<>();
+        for (int i = 1; i < jsonArrayCards.length(); i++)
+            userCardsName.add((String)jsonArrayCards.get(i));
         User user = new User(nickName, userName, password);
         user.setMoney(money);
         user.setScore(score);
@@ -178,10 +179,14 @@ public class LoadFile {
     private void loadDeckFromJson(JSONObject json, User user) {
         String deckName = json.getString("deckName");
         Boolean isActive = json.getBoolean("isActive");
-        Gson gson = new Gson();
-        Type StringListType = new TypeToken<ArrayList<String>>(){}.getType();
-        ArrayList<String> mainCards = gson.fromJson(json.get("mainCards").toString(), StringListType);
-        ArrayList<String> sideCards = gson.fromJson(json.get("sideCards").toString(), StringListType);
+        JSONArray jsonArrayMain = json.getJSONArray("mainCards");
+        JSONArray jsonArraySide = json.getJSONArray("sideCards");
+        ArrayList<String> mainCards = new ArrayList<>();
+        ArrayList<String> sideCards = new ArrayList<>();
+        for (int i = 1; i < jsonArrayMain.length(); i++)
+            mainCards.add((String)jsonArrayMain.get(i));
+        for (int i = 1; i < jsonArraySide.length(); i++)
+            sideCards.add((String)jsonArraySide.get(i));
         Deck deck = new Deck(deckName, user);
         if (isActive)
             deck.changeIsActive(isActive);
