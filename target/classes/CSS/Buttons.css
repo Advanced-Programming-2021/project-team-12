@@ -17,6 +17,25 @@
     -fx-border-color: #77772a;
 }
 
+.Decks {
+    -fx-background-color: transparent;
+    -fx-background-image: url('../PNG/NEW/Button.png');
+}
+
+.Decks:hover {
+    -fx-background-color: #ffae00;
+    -fx-background-radius:0;
+    -fx-border-color:black;
+    -fx-border-width: 0 2 2 0;
+    -fx-background-insets: 0;
+    -fx-cursor: hand;
+}
+
+.Decks:pressed {
+    -fx-translate-y: +2;
+    -fx-border-color: #77772a;
+}
+
 .rightArrow {
     -fx-background-color: transparent;
     -fx-background-image: url('../PNG/NEW/RightArrow.png');

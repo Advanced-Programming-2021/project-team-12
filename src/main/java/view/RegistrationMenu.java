@@ -36,7 +36,7 @@ public class RegistrationMenu extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         if (!startLoad) {
-            new LoadFile();
+            LoadFile.loadData();
             startLoad = true;
         }
         stage = primaryStage;

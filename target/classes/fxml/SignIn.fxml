@@ -13,7 +13,7 @@
             <Image url="@../PNG/NEW/1300536.jpg" />
          </image>
       </ImageView>
-      <Button layoutX="226.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#signInUser" prefHeight="55.0" prefWidth="148.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Signin">
+      <Button layoutX="226.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#signInUser" prefHeight="55.0" prefWidth="148.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Signin" textFill="#ffed78">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="26.0" />
          </font>

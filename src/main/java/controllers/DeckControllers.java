@@ -8,8 +8,12 @@ import view.MainMenu;
 
 public class DeckControllers {
     public void createDeck(String deckName, User user) throws MyException {
+        if (deckName == null)
+            throw new MyException("write deck name");
         if (Deck.getDeckByName(deckName) != null)
             throw new MyException("deck with name " + deckName + " already exists");
+        if (Deck.getDecksOfUser(user).size() == 5)
+            throw new MyException("you cant have more than 5 deck");
         else {
             new Deck(deckName, user);
             SaveFile.saveUser(user);

@@ -14,7 +14,7 @@ public class ImportOrExportControl {
         if (!file.exists())
             throw new MyException("Empty Address!");
         else
-            card = new LoadFile().importCard(file, flag);
+            card = LoadFile.importCard(file, flag);
         SaveFile.saveCards();
         return card;
     }

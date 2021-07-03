@@ -1,19 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="643.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="654.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DeckMenu">
    <children>
-      <Button layoutX="14.0" layoutY="378.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="140.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Button" textFill="#300161">
+      <ImageView fitHeight="444.0" fitWidth="654.0" pickOnBounds="true">
+         <image>
+            <Image url="@../PNG/NEW/1300565.jpg" />
+         </image>
+      </ImageView>
+      <Button layoutY="375.0" mnemonicParsing="false" onMouseClicked="#back" opacity="0.79" prefHeight="48.0" prefWidth="131.0" style="-fx-background-size: 130;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Back" textFill="#ffed78">
          <font>
-            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="18.0" />
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="24.0" />
          </font>
       </Button>
-      <Button layoutX="21.0" layoutY="336.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="21.0" layoutY="311.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="21.0" layoutY="286.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="131.0" layoutY="375.0" mnemonicParsing="false" onMouseClicked="#delete" opacity="0.79" prefHeight="48.0" prefWidth="131.0" style="-fx-background-size: 130;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Delete" textFill="#ffed78">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="24.0" />
+         </font>
+      </Button>
+      <Button layoutX="392.0" layoutY="375.0" mnemonicParsing="false" onMouseClicked="#setActive" opacity="0.8" prefHeight="48.0" prefWidth="131.0" style="-fx-background-size: 130;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Set Active" textFill="#ffed78">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="24.0" />
+         </font>
+      </Button>
+      <Button layoutX="523.0" layoutY="375.0" mnemonicParsing="false" onMouseClicked="#openDeck" opacity="0.79" prefHeight="48.0" prefWidth="131.0" style="-fx-background-size: 130;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Open Deck" textFill="#ffed78">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="24.0" />
+         </font>
+      </Button>
+      <Button fx:id="data" alignment="BASELINE_LEFT" cancelButton="true" layoutX="20.0" layoutY="272.0" mnemonicParsing="false" opacity="0.71" prefHeight="55.0" prefWidth="615.0" textAlignment="RIGHT" textFill="#b55e02">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="17.0" />
+         </font></Button>
+      <Button layoutX="262.0" layoutY="375.0" mnemonicParsing="false" onMouseClicked="#addDeck" opacity="0.8" prefHeight="48.0" prefWidth="131.0" style="-fx-background-size: 130;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Add Deck" textFill="#ffed78">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="24.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="135.0" fitWidth="115.0" layoutX="31.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="addDeckName" layoutX="255.0" layoutY="347.0" opacity="0.83" prefHeight="28.0" prefWidth="146.0" promptText="Deck Name">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
+         </font>
+      </TextField>
+      <Button fx:id="msg" cancelButton="true" layoutX="129.0" layoutY="2.0" mnemonicParsing="false" opacity="0.8" prefHeight="37.0" prefWidth="412.0" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

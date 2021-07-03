@@ -20,14 +20,14 @@ import java.io.File;
 import java.util.Scanner;
 
 public class LoadFile {
-    public LoadFile() {
+    public static void loadData() {
         loadMonsterCards();
         loadSpellCards();
         loadTrapCards();
         loadUsers();
     }
 
-    private void loadMonsterCards() {
+    private static void loadMonsterCards() {
         String monsterJsonData = null;
         File folder = new File("data//monsterCards");
         for (File fileEntry : folder.listFiles()) {
@@ -43,7 +43,7 @@ public class LoadFile {
         }
     }
 
-    private Card loadMonsterFromJson(JSONObject json) {
+    private static Card loadMonsterFromJson(JSONObject json) {
         String name = json.getString("name");
         String monsterMode = json.getString("monsterMode");
         String attribute = json.getString("attribute");
@@ -58,7 +58,7 @@ public class LoadFile {
         return new Card(name, "Monster");
     }
 
-    public Card importCard(File file, String flag) throws MyException {
+    public static Card importCard(File file, String flag) throws MyException {
         String jsonData = null;
         try {
             Scanner scanner = new Scanner(file);
@@ -77,7 +77,7 @@ public class LoadFile {
         else throw new MyException("invalid Card");
     }
 
-    private void loadSpellCards() {
+    private static void loadSpellCards() {
         String spellJsonData = null;
         File folder = new File("data//spellCards");
         for (File fileEntry : folder.listFiles()) {
@@ -93,7 +93,7 @@ public class LoadFile {
         }
     }
 
-    private Card loadSpellFromJson(JSONObject json) {
+    private static Card loadSpellFromJson(JSONObject json) {
         String name = json.getString("name");
         String description = json.getString("desctiption");
         int price = json.getInt("price");
@@ -103,7 +103,7 @@ public class LoadFile {
         return new Card(name, "Spell");
     }
 
-    private void loadTrapCards() {
+    private static void loadTrapCards() {
         String trapJsonData = null;
         File folder = new File("data//trapCards");
         for (File fileEntry : folder.listFiles()) {
@@ -119,7 +119,7 @@ public class LoadFile {
         }
     }
 
-    private Card loadTrapFromJson(JSONObject json) {
+    private static Card loadTrapFromJson(JSONObject json) {
         String description = json.getString("description");
         String name = json.getString("name");
         Boolean isLimit = json.getBoolean("isLimit");
@@ -128,7 +128,7 @@ public class LoadFile {
         return new Card(name, "Trap");
     }
 
-    private void loadUsers() {
+    private static void loadUsers() {
         String userJsonData = null;
         File folder = new File("data//User");
         for (File fileEntry : folder.listFiles()) {
@@ -144,7 +144,7 @@ public class LoadFile {
         }
     }
 
-    private void loadUserFromJson(JSONObject json) {
+    private static void loadUserFromJson(JSONObject json) {
         String userName = json.getString("userName");
         String nickName = json.getString("nickName");
         String password = json.getString("password");
@@ -166,7 +166,7 @@ public class LoadFile {
         loadDecks(user);
     }
 
-    private void loadDecks(User user) {
+    private static void loadDecks(User user) {
         String deckJsonData = null;
         File folder = new File("data//Decks//" + user.getName());
         for (File fileEntry : folder.listFiles()) {
@@ -182,7 +182,7 @@ public class LoadFile {
         }
     }
 
-    private void loadDeckFromJson(JSONObject json, User user) {
+    private static void loadDeckFromJson(JSONObject json, User user) {
         String deckName = json.getString("deckName");
         Boolean isActive = json.getBoolean("isActive");
         JSONArray jsonArrayMain = json.getJSONArray("mainCards");
