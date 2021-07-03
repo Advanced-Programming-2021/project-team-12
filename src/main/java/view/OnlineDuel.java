@@ -40,7 +40,7 @@ public class OnlineDuel extends Application {
 
     private void createOnlineDuelObjects(Pane pane) {
         ArrayList<User> sortedUsers = User.getUsers();
-        if(sortedUsers.size() <= 0){
+        if(sortedUsers.size() <= 1){
             Text error = new Text();
             error.setFont(Font.font("Yu-Gi-Oh! Matrix Small Caps 1", FontWeight.BOLD, 30));
             error.setLayoutX(60);
@@ -55,7 +55,7 @@ public class OnlineDuel extends Application {
             scrollPane.setPrefHeight(400.0);
             scrollPane.setPrefWidth(600.0);
             Pane innerPane = new Pane();
-            //sortedUsers.remove(MainMenu.user);
+            sortedUsers.remove(MainMenu.user);
             setInnerPane(innerPane, sortedUsers);
             createGoBackButton(pane);
             createOnlineDuelText(sortedUsers, innerPane);
@@ -79,6 +79,7 @@ public class OnlineDuel extends Application {
             imageView.setImage(image);
             imageView.setFitWidth(600.0);
             imageView.setFitHeight(176 * maxHeight);
+            imageView.setStyle("-fx-background-color: transparent");
             imageView.setX(0);
             imageView.setY(0);
             innerPane.getChildren().add(imageView);
