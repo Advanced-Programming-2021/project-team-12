@@ -19,7 +19,7 @@ public class MainMenu extends Application {
         stage.show();
     }
 
-    public void setUser(User _user) {
+    public static void setUser(User _user) {
         user = _user;
     }
 
