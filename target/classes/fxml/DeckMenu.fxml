@@ -2,10 +2,18 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DeckMenu">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="643.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="106.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#msg" text="Button" />
+      <Button layoutX="14.0" layoutY="378.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="140.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Button" textFill="#300161">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="21.0" layoutY="336.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="21.0" layoutY="311.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="21.0" layoutY="286.0" mnemonicParsing="false" text="Button" />
    </children>
-</AnchorPane>
+</Pane>
