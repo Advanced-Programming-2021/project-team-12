@@ -5,7 +5,7 @@ import view.AIPhase.AIDrawPhase;
 import view.Main;
 
 public class DrawPhase {
-    public void run(){
+    public void run() throws Exception {
         System.out.println(PhaseControl.getInstance().printWhoseTurnIsIt());
         System.out.println("phase: draw phase");
         Game.setDidWePassBattle(false);

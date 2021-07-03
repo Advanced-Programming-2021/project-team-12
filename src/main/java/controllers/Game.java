@@ -3,13 +3,12 @@ package controllers;
 import java.util.Random;
 
 
+import view.*;
 import view.phase.*;
 import view.phase.MainPhase;
 import models.Player;
 import models.PlayerTurn;
 import models.User;
-import view.MainMenu;
-import view.SetMainCards;
 
 public class Game {
     public static PlayerTurn playerTurn;
@@ -32,26 +31,24 @@ public class Game {
     static {
         mainPhase1 = new MainPhase();
         mainPhase2 = new MainPhase();
-        mainPhase1.setWhatMainIsPhase(1);
-        mainPhase2.setWhatMainIsPhase(2);
+//        mainPhase1.setWhatMainIsPhase(1);
+//        mainPhase2.setWhatMainIsPhase(2);
     }
 
-    public static void run(User _firstUser, User _secondUser, int _round) {
+    public static void run(User _firstUser, User _secondUser, int _round) throws Exception {
         isAIGame = false;
         restartData(_firstUser, _secondUser, _round);
         generateRandomTurn();
-        playTurn("DrawPhase");
     }
 
     public static boolean getIsAI(){
         return isAIGame;
     }
 
-    public static void run(User _firstUser, int _round) {
+    public static void run(User _firstUser, int _round) throws Exception {
         isAIGame = true;
         restartData(_firstUser, _round);
         generateRandomTurn();
-        playTurn("DrawPhase");
     }
 
     public static void setDidWePassBattle(boolean didWe) {
@@ -70,7 +67,7 @@ public class Game {
         secondPlayerMaxLP = 0;
     }
 
-    private static void EndGame() {
+    private static void EndGame() throws Exception {
         int floorWin = 0;
         if (round == 3)
             floorWin = 1;
@@ -86,7 +83,6 @@ public class Game {
             else secondPlayer.reset();
             new SetMainCards(firstPlayer, secondPlayer);
             generateRandomTurn();
-            playTurn("DrawPhase");
         }
     }
 
@@ -142,37 +138,32 @@ public class Game {
         }
     }
 
-    private static void generateRandomTurn() {
-        Random random = new Random();
-        int whoIsFirstNumber = random.nextInt(2);
-        if (whoIsFirstNumber != 0)
-            playerTurn = PlayerTurn.FIRSTPLAYER;
-        else
-            playerTurn = PlayerTurn.SECONDPLAYER;
+    private static void generateRandomTurn() throws Exception {
+        new RockPaperScissors().start(Duel.stage);
     }
 
-    public static void playTurn(String phase) {
+    public static void playTurn(String phase) throws Exception {
         switch (phase) {
             case "DrawPhase":
-                new NextPhaseController().drawPhase();
+                //new NextPhaseController().drawPhase();
                 break;
             case "StandByPhase":
-                new NextPhaseController().standByPhase();
+                //new NextPhaseController().standByPhase();
                 break;
             case "MainPhase1":
-                mainPhase1.run();
+                //mainPhase1.run();
                 break;
             case "BattlePhase":
-                new NextPhaseController().battlePhase();
+                //new NextPhaseController().battlePhase();
                 break;
             case "MainPhase2":
-                mainPhase2.run();
+                //mainPhase2.run();
                 break;
             case "EndPhase":
                 new NextPhaseController().endPhase();
                 break;
             case "EndGame":
-                EndGame();
+                //EndGame();
                 break;
         }
     }

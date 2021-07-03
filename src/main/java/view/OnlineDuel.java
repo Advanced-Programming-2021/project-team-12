@@ -142,6 +142,8 @@ public class OnlineDuel extends Application {
                     new DuelControl(sortedUsers.get(finalI).getName(), Duel.rounds);
                 } catch (MyException myException) {
                     myException.printStackTrace();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
                 }
             });
             innerPane.getChildren().add(imageView);

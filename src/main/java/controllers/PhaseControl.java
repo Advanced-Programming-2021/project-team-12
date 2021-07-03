@@ -49,10 +49,10 @@ public class PhaseControl {
     public static void checkIfGameEnded() {
         if (Game.firstPlayer.getLP() <= 0) {
             Game.setWinner(Game.secondPlayer);
-            Game.playTurn("EndGame");
+            //Game.playTurn("EndGame");
         } else if (Game.secondPlayer.getLP() <= 0) {
             Game.setWinner(Game.firstPlayer);
-            Game.playTurn("EndGame");
+            //Game.playTurn("EndGame");
         }
     }
 
@@ -479,7 +479,7 @@ public class PhaseControl {
 
     private void forcedSetWinner() {
         Game.setWinner(Game.whoseTurnPlayer());
-        Game.playTurn("EndGame");
+        //Game.playTurn("EndGame");
     }
 
     public int minOfTwoNumber(int num1, int num2) {
@@ -490,7 +490,7 @@ public class PhaseControl {
     public void surrender() {
         Game.setIsSurrender(true);
         Game.setWinner(Game.whoseRivalPlayer());
-        Game.playTurn("EndGame");
+        //Game.playTurn("EndGame");
     }
 
     public void showOpponentCard(Address address) throws MyException {

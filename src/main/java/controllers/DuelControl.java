@@ -6,7 +6,7 @@ import models.User;
 import view.MainMenu;
 
 public class DuelControl {
-    public DuelControl(String secPlayer, int round) throws MyException{
+    public DuelControl(String secPlayer, int round) throws Exception {
         User firstPlayer = MainMenu.user;
         User secondPlayer = User.getUserByName(secPlayer);
         Deck firstPlayerActiveDeck = Deck.getActiveDeckOfUser(firstPlayer.getName());
@@ -27,7 +27,7 @@ public class DuelControl {
             Game.run(firstPlayer, secondPlayer, round);
     }
 
-    public DuelControl(int round) throws MyException {
+    public DuelControl(int round) throws Exception {
         User firstPlayer = MainMenu.user;
         Deck firstPlayerActiveDeck = Deck.getActiveDeckOfUser(firstPlayer.getName());
         if (firstPlayerActiveDeck == null)

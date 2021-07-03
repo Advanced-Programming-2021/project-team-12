@@ -92,7 +92,7 @@ public class BattlePhaseController {
                     else input = getAIAttack(matcher.group(2));
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        Game.playTurn("MainPhase2");
+                        //Game.playTurn("MainPhase2");
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -119,8 +119,10 @@ public class BattlePhaseController {
                         PhaseControl.getInstance().surrender();
                     else
                         throw new MyException("invalid command");
-                    if (Game.isAITurn())
-                        Game.playTurn("MainPhase2");
+                    if (Game.isAITurn()){
+
+                    }
+                        //Game.playTurn("MainPhase2");
                 }
             } else
                 throw new MyException("invalid selection");
@@ -164,7 +166,7 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        Game.playTurn("MainPhase2");
+                        //Game.playTurn("MainPhase2");
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -208,7 +210,7 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        Game.playTurn("MainPhase2");
+                        //Game.playTurn("MainPhase2");
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -252,7 +254,7 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        Game.playTurn("MainPhase2");
+                        //Game.playTurn("MainPhase2");
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -292,7 +294,7 @@ public class BattlePhaseController {
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
                 BattlePhase.getInstance().goToNextPhase = true;
-                Game.playTurn("MainPhase2");
+                //Game.playTurn("MainPhase2");
             } else if (input.matches("^[ ]*select -d[ ]*$"))
                 BattlePhase.getInstance().selectCard();
             else if (input.matches("^[ ]*select .*$"))
@@ -330,7 +332,7 @@ public class BattlePhaseController {
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
                 BattlePhase.getInstance().goToNextPhase = true;
-                Game.playTurn("MainPhase2");
+                //Game.playTurn("MainPhase2");
             } else if (input.matches("^[ ]*select -d[ ]*$"))
                 BattlePhase.getInstance().selectCard();
             else if (input.matches("^[ ]*select .*$"))
@@ -371,7 +373,7 @@ public class BattlePhaseController {
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
                         BattlePhase.getInstance().goToNextPhase = true;
-                        Game.playTurn("MainPhase2");
+                        //Game.playTurn("MainPhase2");
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -543,6 +545,6 @@ public class BattlePhaseController {
 
     private void forcedSetWinner() {
         Game.setWinner(Game.whoseTurnPlayer());
-        Game.playTurn("EndGame");
+        //Game.playTurn("EndGame");
     }
 }

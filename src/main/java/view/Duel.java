@@ -20,12 +20,12 @@ public class Duel extends Application {
         stage.show();
     }
 
-    public void singleDuelAI(ActionEvent actionEvent) throws MyException {
+    public void singleDuelAI(ActionEvent actionEvent) throws Exception {
         rounds = 1;
         new DuelControl(1);
     }
 
-    public void matchDuelAI(ActionEvent actionEvent) throws MyException {
+    public void matchDuelAI(ActionEvent actionEvent) throws Exception {
         rounds = 3;
         new DuelControl(3);
     }
