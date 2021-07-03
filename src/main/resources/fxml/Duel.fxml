@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Duel">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
+         <image>
+            <Image url="@../PNG/NEW/background7.jpg" />
+         </image>
+      </ImageView>
+      <Button layoutX="68.0" layoutY="98.0" mnemonicParsing="false" onAction="#singleDuelAI" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Single Duel" textFill="#ffed78">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="68.0" layoutY="182.0" mnemonicParsing="false" onAction="#matchDuelAI" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Match Duel" textFill="#ffed78">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="68.0" layoutY="268.0" mnemonicParsing="false" onAction="#PlayOnline" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Play Online" textFill="#ffed78">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#goBack" prefHeight="30.0" prefWidth="30.0" style="-fx-background-size: 30;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
+   </children>
+</Pane>

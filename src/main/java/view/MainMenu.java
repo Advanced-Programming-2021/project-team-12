@@ -23,8 +23,8 @@ public class MainMenu extends Application {
         user = _user;
     }
 
-    public void playGame(ActionEvent actionEvent) {
-//        new Duel().start(stage);
+    public void playGame(ActionEvent actionEvent) throws Exception {
+        new Duel().start(stage);
     }
 
     public void goToShop(ActionEvent actionEvent) throws Exception {
