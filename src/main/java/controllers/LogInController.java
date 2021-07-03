@@ -1,7 +1,9 @@
 package controllers;
 
 import Exceptions.MyException;
+import javafx.stage.Stage;
 import models.User;
+import view.MainMenu;
 
 public class LogInController {
     public void checkData(String userName, String password) throws MyException {

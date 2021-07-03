@@ -17,6 +17,63 @@
     -fx-border-color: #77772a;
 }
 
+.rightArrow {
+    -fx-background-color: transparent;
+    -fx-background-image: url('../PNG/NEW/RightArrow.png');
+}
+
+.rightArrow:hover {
+    -fx-background-color: #ffae00;
+    -fx-background-radius:0;
+    -fx-border-color:black;
+    -fx-border-width: 0 2 2 0;
+    -fx-background-insets: 2;
+    -fx-cursor: hand;
+}
+
+.rightArrow:pressed {
+    -fx-translate-y: +2;
+    -fx-border-color: #77772a;
+}
+
+.leftArrow {
+    -fx-background-color: transparent;
+    -fx-background-image: url('../PNG/NEW/LeftArrow.png');
+}
+
+.leftArrow:hover {
+    -fx-background-color: #ffae00;
+    -fx-background-radius:0;
+    -fx-border-color: black;
+    -fx-border-width: 0 2 2 0;
+    -fx-background-insets: 2;
+    -fx-cursor: hand;
+}
+
+.leftArrow:pressed {
+    -fx-translate-y: +2;
+    -fx-border-color: #77772a;
+}
+
+.back {
+    -fx-background-color: transparent;
+    -fx-background-image: url('../PNG/NEW/exitButton.png');
+}
+
+.back:hover {
+    -fx-background-color: #ffae00;
+    -fx-background-radius:0;
+    -fx-border-color:black;
+    -fx-border-width: 0 2 2 0;
+    -fx-background-insets: 0;
+    -fx-cursor: hand;
+}
+
+.back:pressed {
+    -fx-translate-y: +2;
+    -fx-border-color: #77772a;
+}
+
 .buttons {
     -fx-background-color: transparent;
     -fx-background-image: url('../PNG/NEW/exitButton2.png');

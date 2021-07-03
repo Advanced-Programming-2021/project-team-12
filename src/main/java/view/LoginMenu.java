@@ -11,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import models.User;
 
 public class LoginMenu extends Application {
     public static Stage stage;
@@ -32,6 +33,7 @@ public class LoginMenu extends Application {
         password.clear();
         try {
             new LogInController().checkData(name, pass);
+            MainMenu.setUser(User.getUserByName(name));
             new MainMenu().start(stage);
         } catch (MyException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
