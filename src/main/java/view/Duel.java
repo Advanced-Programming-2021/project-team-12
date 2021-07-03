@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 public class Duel extends Application {
     public static Stage stage;
+    public static int rounds = 1;
     @Override
     public void start(Stage stage) throws Exception {
         Duel.stage = stage;
@@ -20,18 +21,26 @@ public class Duel extends Application {
     }
 
     public void singleDuelAI(ActionEvent actionEvent) throws MyException {
+        rounds = 1;
         new DuelControl(1);
     }
 
     public void matchDuelAI(ActionEvent actionEvent) throws MyException {
+        rounds = 3;
         new DuelControl(3);
-    }
-
-    public void PlayOnline(ActionEvent actionEvent) throws Exception {
-        new OnlineDuel().start(stage);
     }
 
     public void goBack(ActionEvent actionEvent) throws Exception {
         new MainMenu().start(stage);
+    }
+
+    public void PlayOnlineMatch(ActionEvent actionEvent) throws Exception {
+        rounds = 3;
+        new OnlineDuel().start(stage);
+    }
+
+    public void playOnlineSingle(ActionEvent actionEvent) throws Exception {
+        rounds = 1;
+        new OnlineDuel().start(stage);
     }
 }

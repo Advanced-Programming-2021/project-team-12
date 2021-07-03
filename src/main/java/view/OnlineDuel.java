@@ -3,6 +3,7 @@ package view;
 import Exceptions.MyException;
 import controllers.DuelControl;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,6 +27,7 @@ import java.util.Objects;
 
 public class OnlineDuel extends Application {
     public static Stage stage;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;
@@ -55,11 +57,16 @@ public class OnlineDuel extends Application {
             Pane innerPane = new Pane();
             //sortedUsers.remove(MainMenu.user);
             setInnerPane(innerPane, sortedUsers);
+            createGoBackButton(pane);
             createOnlineDuelText(sortedUsers, innerPane);
             createOnlineDuelImage(sortedUsers, innerPane);
             scrollPane.setContent(innerPane);
             pane.getChildren().add(scrollPane);
         }
+    }
+
+    private void createGoBackButton(Pane pane) {
+
     }
 
     private void setInnerPane(Pane innerPane, ArrayList<User> sortedUsers) {
@@ -96,8 +103,6 @@ public class OnlineDuel extends Application {
             nickNameText.setFont(Font.font("Yu-Gi-Oh! Matrix Small Caps 1", FontWeight.BOLD, 25));
             nickNameText.setFill(Color.valueOf("white"));
             nickNameText.setText(sortedUsers.get(i).getNickName());
-//            nickNameText.setLayoutX(300);
-//            nickNameText.setLayoutY(200);
             setTextXAndY(sortedUsers.get(i).getNickName(), nickNameText, placementOfX, placementOfY);
             innerPane.getChildren().add(nickNameText);
         }
@@ -108,7 +113,7 @@ public class OnlineDuel extends Application {
             nickNameText.setLayoutX(54 + 182 * placementOfX);
             nickNameText.setLayoutY(176 + 176 * placementOfY);
         } else{
-            nickNameText.setLayoutX(85 + 182 * placementOfX);
+            nickNameText.setLayoutX(90 + 182 * placementOfX);
             nickNameText.setLayoutY(176 + 176 * placementOfY);
         }
     }
@@ -117,30 +122,28 @@ public class OnlineDuel extends Application {
         for (int i = 0; i < sortedUsers.size(); i++) {
             int placementOfX =  i % 3;
             int placementOfY = i / 3;
-            Button button = new Button();
             Image image = new Image(getClass().getResource("/PNG/Characters/Chara001.dds" + sortedUsers.get(i).getAvatar() + ".png").toExternalForm());
             ImageView imageView = new ImageView();
             imageView.setImage(image);
             imageView.setFitWidth(100);
             imageView.setFitHeight(100);
-            button.setPrefWidth(100);
-            button.setPrefHeight(100);
-            button.setGraphic(imageView);
-            button.setLayoutX(54 + 182 * placementOfX);
-            button.setLayoutY(48 + 176 * placementOfY);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
+            imageView.setLayoutX(54 + 182 * placementOfX);
+            imageView.setLayoutY(48 + 176 * placementOfY);
             int finalI = i;
-            button.setOnMouseClicked(e ->{
+            imageView.setOnMouseClicked(e ->{
                 try {
-                    new DuelControl(sortedUsers.get(finalI).getName(), 1);
+                    new DuelControl(sortedUsers.get(finalI).getName(), Duel.rounds);
                 } catch (MyException myException) {
                     myException.printStackTrace();
                 }
             });
-            innerPane.getChildren().add(button);
+            innerPane.getChildren().add(imageView);
         }
     }
 
-    public void goToDuel(MouseEvent mouseEvent) {
-
+    public void goBack(ActionEvent actionEvent) throws Exception {
+        new Duel().start(stage);
     }
 }

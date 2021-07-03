@@ -38,7 +38,10 @@
                   <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
                </font>
             </Button>
-            <Button layoutX="226.0" layoutY="335.0" mnemonicParsing="false" onAction="#goToScoreboard" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Scoreboard" />
+            <Button layoutX="226.0" layoutY="335.0" mnemonicParsing="false" onAction="#goToScoreboard" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Scoreboard">
+               <font>
+                  <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="18.0" />
+               </font></Button>
             <Button layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onAction="#logout" prefHeight="30.0" prefWidth="30.0" style="-fx-background-size: 30;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
          </children></Pane>
    </children>

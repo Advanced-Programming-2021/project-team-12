@@ -12,21 +12,25 @@
             <Image url="@../PNG/NEW/background7.jpg" />
          </image>
       </ImageView>
-      <Button layoutX="68.0" layoutY="98.0" mnemonicParsing="false" onAction="#singleDuelAI" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Single Duel" textFill="#ffed78">
+      <Button layoutX="68.0" layoutY="90.0" mnemonicParsing="false" onAction="#singleDuelAI" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Single Duel" textFill="#ffed78">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
          </font>
       </Button>
-      <Button layoutX="68.0" layoutY="182.0" mnemonicParsing="false" onAction="#matchDuelAI" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Match Duel" textFill="#ffed78">
+      <Button layoutX="68.0" layoutY="150.0" mnemonicParsing="false" onAction="#matchDuelAI" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Match Duel" textFill="#ffed78">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
          </font>
       </Button>
-      <Button layoutX="68.0" layoutY="268.0" mnemonicParsing="false" onAction="#PlayOnline" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Play Online" textFill="#ffed78">
+      <Button layoutX="68.0" layoutY="270.0" mnemonicParsing="false" onAction="#PlayOnlineMatch" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Online Match Duel" textFill="#ffed78">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
          </font>
       </Button>
       <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#goBack" prefHeight="30.0" prefWidth="30.0" style="-fx-background-size: 30;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
+      <Button layoutX="68.0" layoutY="210.0" mnemonicParsing="false" onAction="#playOnlineSingle" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Online Single Duel" textFill="#ffed78">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
+         </font></Button>
    </children>
 </Pane>
