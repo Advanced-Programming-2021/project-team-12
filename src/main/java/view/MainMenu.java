@@ -27,8 +27,8 @@ public class MainMenu extends Application {
 //        new Duel().start(stage);
     }
 
-    public void goToShop(ActionEvent actionEvent) {
-//        new Shop().start(stage);
+    public void goToShop(ActionEvent actionEvent) throws Exception {
+        new Shop().start(stage);
     }
 
     public void goToImportExport(ActionEvent actionEvent) {
