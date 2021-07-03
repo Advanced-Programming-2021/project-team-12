@@ -74,13 +74,13 @@ public class Scoreboard extends Application {
             Text rankText = new Text();
             Text nickNameText = new Text();
             Text scoreText = new Text();
-            rankText.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 25));
+            rankText.setFont(Font.font("StoneSerif-Semibold", FontWeight.BOLD, 15));
             rankText.setLayoutX(175);
             rankText.setLayoutY(i * 45 + 60);
-            nickNameText.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 25));
+            nickNameText.setFont(Font.font("StoneSerif-Semibold", FontWeight.BOLD, 15));
             nickNameText.setLayoutX(270);
             nickNameText.setLayoutY(i * 45 + 60);
-            scoreText.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 25));
+            scoreText.setFont(Font.font("StoneSerif-Semibold", FontWeight.BOLD, 15));
             scoreText.setLayoutX(375);
             scoreText.setLayoutY(i * 45 + 60);
             scoreText.setFill(Color.valueOf("white"));
@@ -100,13 +100,13 @@ public class Scoreboard extends Application {
             Text rankText = new Text();
             Text nickNameText = new Text();
             Text scoreText = new Text();
-            rankText.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 25));
+            rankText.setFont(Font.font("StoneSerif-Semibold", FontWeight.BOLD, 15));
             rankText.setLayoutX(175);
             rankText.setLayoutY(i * 45 + 60);
-            nickNameText.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 25));
+            nickNameText.setFont(Font.font("StoneSerif-Semibold", FontWeight.BOLD, 15));
             nickNameText.setLayoutX(270);
             nickNameText.setLayoutY(i * 45 + 60);
-            scoreText.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 25));
+            scoreText.setFont(Font.font("StoneSerif-Semibold", FontWeight.BOLD, 15));
             scoreText.setLayoutX(375);
             scoreText.setLayoutY(i * 45 + 60);
             if(sortedUsers.get(i) == MainMenu.user){
