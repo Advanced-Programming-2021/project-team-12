@@ -43,7 +43,7 @@ public class OnlineDuel extends Application {
         ArrayList<User> sortedUsers = User.getUsers();
         if(sortedUsers.size() <= 1){
             Text error = new Text();
-            error.setFont(Font.font("Yu-Gi-Oh! Matrix Small Caps 1", FontWeight.BOLD, 30));
+            error.setFont(Font.font("StoneSerif-Semibold", FontWeight.BOLD, 15));
             error.setLayoutX(60);
             error.setLayoutY(175);
             error.setFill(Color.valueOf("gold"));
@@ -102,7 +102,7 @@ public class OnlineDuel extends Application {
             int placementOfX =  i % 3;
             int placementOfY = i / 3;
             Text nickNameText = new Text();
-            nickNameText.setFont(Font.font("Yu-Gi-Oh! Matrix Small Caps 1", FontWeight.BOLD, 25));
+            nickNameText.setFont(Font.font("StoneSerif-Semibold", FontWeight.BOLD, 15));
             nickNameText.setFill(Color.valueOf("white"));
             nickNameText.setText(sortedUsers.get(i).getNickName());
             setTextXAndY(sortedUsers.get(i).getNickName(), nickNameText, placementOfX, placementOfY);
