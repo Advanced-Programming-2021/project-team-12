@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import models.User;
 
 import javax.sound.sampled.Clip;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -44,8 +45,11 @@ public class Scoreboard extends Application {
 
     private void createImageForTop(ArrayList<User> sortedUsers, Pane innerPane) {
         for (int i = 0; i < sortedUsers.size(); i++) {
-            Image image = new Image(getClass().getResource("/PNG/Characters/Chara001.dds" + sortedUsers.get(i).getAvatar() + ".png").toExternalForm());
+            File pictureFile =  new File(MainMenu.user.getAvatarAddress());
+            String string = pictureFile.toURI().toString();
+            Image image = new Image(string);
             ImageView imageView = new ImageView();
+            imageView.setImage(image);
             imageView.setImage(image);
             imageView.setFitWidth(40);
             imageView.setFitHeight(40);

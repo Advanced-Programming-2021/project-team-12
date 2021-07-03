@@ -22,6 +22,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import models.User;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -122,8 +123,11 @@ public class OnlineDuel extends Application {
         for (int i = 0; i < sortedUsers.size(); i++) {
             int placementOfX =  i % 3;
             int placementOfY = i / 3;
-            Image image = new Image(getClass().getResource("/PNG/Characters/Chara001.dds" + sortedUsers.get(i).getAvatar() + ".png").toExternalForm());
+            File pictureFile =  new File(MainMenu.user.getAvatarAddress());
+            String string = pictureFile.toURI().toString();
+            Image image = new Image(string);
             ImageView imageView = new ImageView();
+            imageView.setImage(image);
             imageView.setImage(image);
             imageView.setFitWidth(100);
             imageView.setFitHeight(100);
