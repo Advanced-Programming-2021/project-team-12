@@ -4,13 +4,21 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Scoreboard">
-   <children>
-      <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
-         <image>
-            <Image url="@../PNG/NEW/background2blur.png" />
-         </image>
-      </ImageView>
-      <Button layoutX="14.0" layoutY="356.0" mnemonicParsing="false" onAction="#goBack" prefHeight="30.0" prefWidth="30.0" style="-fx-background-size: 30;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" textFill="#ffed78" />
-   </children>
+<Pane fx:id="firstPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Scoreboard">
+    <children>
+        <ScrollPane hbarPolicy="NEVER" prefHeight="400.0" prefWidth="600.0" vbarPolicy="NEVER">
+            <content>
+                <Pane prefHeight="960.0" prefWidth="585.0">
+                    <children>
+                        <ImageView fitHeight="961.0" fitWidth="600.0" layoutY="-1.0" pickOnBounds="true">
+                            <image>
+                                <Image url="@../PNG/NEW/background2blur.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </Pane>
+            </content>
+        </ScrollPane>
+      <Button layoutX="15.0" layoutY="360.0" mnemonicParsing="false" onAction="#goBack" prefHeight="30.0" prefWidth="30.0" style="-fx-background-size: 30;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
+    </children>
 </Pane>

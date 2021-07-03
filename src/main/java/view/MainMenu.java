@@ -23,12 +23,12 @@ public class MainMenu extends Application {
         user = _user;
     }
 
-    public void playGame(ActionEvent actionEvent) {
-//        new Duel().start(stage);
+    public void playGame(ActionEvent actionEvent) throws Exception {
+        new Duel().start(stage);
     }
 
-    public void goToShop(ActionEvent actionEvent) {
-//        new Shop().start(stage);
+    public void goToShop(ActionEvent actionEvent) throws Exception {
+        new Shop().start(stage);
     }
 
     public void goToImportExport(ActionEvent actionEvent) throws Exception {

@@ -93,6 +93,24 @@
     -fx-border-color: #77772a;
 }
 
+.button2 {
+    -fx-background-color: transparent;
+}
+
+.button2:hover {
+    -fx-background-color: #ffae00;
+    -fx-background-radius:0;
+    -fx-border-color:black;
+    -fx-border-width: 0 2 2 0;
+    -fx-background-insets: 0;
+    -fx-cursor: hand;
+}
+
+.button2:pressed {
+    -fx-translate-y: +2;
+    -fx-border-color: #77772a;
+}
+
 .title {
     -fx-font-weight: bold;
     -fx-font-size: 18px;
