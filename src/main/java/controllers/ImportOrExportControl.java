@@ -2,27 +2,29 @@ package controllers;
 
 import Exceptions.MyException;
 import models.Card;
+import view.MainMenu;
 
 import java.io.File;
 
 public class ImportOrExportControl {
-    public void doImport(String cardAddress, String flag) throws MyException {
-        File file = new File(cardAddress);
-        if (!file.isDirectory())
+    public Card doImport(File file, String flag) throws MyException {
+        Card card;
+        if (file.isDirectory())
             throw new MyException("Wrong Address!");
         if (!file.exists())
             throw new MyException("Empty Address!");
         else
-            new LoadFile().importCard(file, flag);
+            card = new LoadFile().importCard(file, flag);
+        SaveFile.saveCards();
+        return card;
     }
 
-    public void doExport(String cardAddress, String cardName) throws MyException {
+    public void doExport(File file, String cardName) throws MyException {
         if (Card.getCardByName(cardName) == null)
             throw new MyException("card with this name does not exist");
-        File file = new File(cardAddress);
         if (!file.isDirectory())
             throw new MyException("Wrong Address!");
         else
-            SaveFile.exportCard(cardAddress, cardName);
+            SaveFile.exportCard(file, cardName);
     }
 }

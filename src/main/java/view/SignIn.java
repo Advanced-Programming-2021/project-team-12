@@ -22,6 +22,7 @@ public class SignIn extends Application {
     public TextField userName;
     public TextField nickName;
     public PasswordField password;
+    public Button successfully;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -33,21 +34,30 @@ public class SignIn extends Application {
 
     public void signInUser(MouseEvent mouseEvent) {
         String name = userName.getText();
-        String nick = userName.getText();
+        String nick = nickName.getText();
         String pass = password.getText();
         userName.clear();
         nickName.clear();
         password.clear();
         try {
             new SignInController().checkData(name, nick, pass);
-            new RegistrationMenu().start(stage);
+            successfully.setVisible(true);
         } catch(MyException e) {
+            successfully.setVisible(false);
             String message = e.getMessage();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setHeaderText(message);
             alert.setContentText("Please Try Again");
             alert.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void back(MouseEvent mouseEvent) {
+        try {
+            new RegistrationMenu().start(stage);
         } catch (Exception e) {
             e.printStackTrace();
         }

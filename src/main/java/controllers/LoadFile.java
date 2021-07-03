@@ -1,4 +1,5 @@
 package controllers;
+import Exceptions.MyException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import models.Card;
@@ -42,7 +43,7 @@ public class LoadFile {
         }
     }
 
-    private void loadMonsterFromJson(JSONObject json) {
+    private Card loadMonsterFromJson(JSONObject json) {
         String name = json.getString("name");
         String monsterMode = json.getString("monsterMode");
         String attribute = json.getString("attribute");
@@ -54,10 +55,10 @@ public class LoadFile {
         Boolean isRitual = json.getBoolean("isRitual");
         new MonsterCard(level, attack, defence, MonsterMode.valueOf(monsterMode)
                 , isRitual, name, price, Attribute.valueOf(attribute), description);
-        new Card(name, "Monster");
+        return new Card(name, "Monster");
     }
 
-    public void importCard(File file, String flag) {
+    public Card importCard(File file, String flag) throws MyException {
         String jsonData = null;
         try {
             Scanner scanner = new Scanner(file);
@@ -68,11 +69,12 @@ public class LoadFile {
         }
         JSONObject json = new JSONObject(jsonData);
         if (flag.equals("m"))
-            loadMonsterFromJson(json);
+            return loadMonsterFromJson(json);
         else if (flag.equals("s"))
-            loadSpellFromJson(json);
+            return loadSpellFromJson(json);
         else if (flag.equals("t"))
-            loadTrapFromJson(json);
+            return loadTrapFromJson(json);
+        else throw new MyException("invalid Card");
     }
 
     private void loadSpellCards() {
@@ -91,14 +93,14 @@ public class LoadFile {
         }
     }
 
-    private void loadSpellFromJson(JSONObject json) {
+    private Card loadSpellFromJson(JSONObject json) {
         String name = json.getString("name");
-        String desctiption = json.getString("description");
+        String description = json.getString("desctiption");
         int price = json.getInt("price");
         String spellMode = json.getString("spellMode");
         Boolean isLimit = json.getBoolean("isLimit");
-        new SpellCard(name, SpellMode.valueOf(spellMode), isLimit, price, desctiption);
-        new Card(name, "Spell");
+        new SpellCard(name, SpellMode.valueOf(spellMode), isLimit, price, description);
+        return new Card(name, "Spell");
     }
 
     private void loadTrapCards() {
@@ -117,13 +119,13 @@ public class LoadFile {
         }
     }
 
-    private void loadTrapFromJson(JSONObject json) {
+    private Card loadTrapFromJson(JSONObject json) {
         String description = json.getString("description");
         String name = json.getString("name");
         Boolean isLimit = json.getBoolean("isLimit");
         int price = json.getInt("price");
         new TrapCard(name, isLimit, price, description);
-        new Card(name, "Trap");
+        return new Card(name, "Trap");
     }
 
     private void loadUsers() {
@@ -149,6 +151,7 @@ public class LoadFile {
         int score = json.getInt("score");
         int money = json.getInt("money");
         int avatar = json.getInt("avatar");
+        int countAvatar = json.getInt("countAvatar");
         JSONArray jsonArrayCards = json.getJSONArray("allCards");
         ArrayList<String> userCardsName = new ArrayList<>();
         for (int i = 1; i < jsonArrayCards.length(); i++)
@@ -157,6 +160,7 @@ public class LoadFile {
         user.setAvatar(avatar);
         user.setMoney(money);
         user.setScore(score);
+        user.setCountAvatar(countAvatar);
         for (String cardName : userCardsName)
             user.addCardToAllCard(Card.getCardByName(cardName));
         loadDecks(user);

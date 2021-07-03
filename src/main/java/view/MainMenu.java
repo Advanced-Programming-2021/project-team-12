@@ -31,12 +31,12 @@ public class MainMenu extends Application {
 //        new Shop().start(stage);
     }
 
-    public void goToImportExport(ActionEvent actionEvent) {
-//        new ImportOrExport().start(stage);
+    public void goToImportExport(ActionEvent actionEvent) throws Exception {
+        new ImportOrExport().start(stage);
     }
 
-    public void goToDeckMenu(ActionEvent actionEvent) {
-//        new DeckMenu().start(stage);
+    public void goToDeckMenu(ActionEvent actionEvent) throws Exception {
+        new DeckMenu().start(stage);
     }
 
     public void goToChangeProfile(ActionEvent actionEvent) throws Exception {

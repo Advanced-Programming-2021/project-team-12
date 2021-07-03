@@ -11,6 +11,7 @@ public class User {
     private String password;
     private int score;
     private int avatar;
+    private int countAvatar;
     private ArrayList<Card> allCards = new ArrayList<>();
     private int money;
     private static ArrayList<User> users = new ArrayList<>();
@@ -23,6 +24,7 @@ public class User {
         money = 180000;
         Random random = new Random();
         avatar = random.nextInt(38) + 1;
+        countAvatar = 38;
         users.add(this);
     }
 
@@ -129,7 +131,7 @@ public class User {
     }
 
     public void increaseAvatar() {
-        if (avatar < 38)
+        if (avatar < countAvatar)
             avatar++;
         else avatar = 1;
     }
@@ -137,18 +139,32 @@ public class User {
     public void decreaseAvatar() {
         if (avatar > 1)
             avatar--;
-        else avatar = 38;
+        else avatar = countAvatar;
     }
 
-    public String getAvatar() {
-        return Integer.toString(avatar);
+    public String getAvatarAddress() {
+        if (avatar < 39)
+            return "src//main//Characters//Chara001.dds" + avatar + ".png";
+        else return "src//main//Characters//" + userName + ".Chara001.dds" + avatar + ".png";
     }
 
     public void setAvatar(int avatar) {
         this.avatar = avatar;
     }
 
-    public Object getIntAvatar() {
+    public int getIntAvatar() {
         return avatar;
+    }
+
+    public int getAvatarCount() {
+        return countAvatar;
+    }
+
+    public void setCountAvatar(int number) {
+        countAvatar = number;
+    }
+
+    public void increaseCountAvatar() {
+        countAvatar++;
     }
 }

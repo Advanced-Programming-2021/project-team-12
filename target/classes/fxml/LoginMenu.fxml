@@ -27,5 +27,6 @@
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="15.0" />
          </font>
       </TextField>
+      <Button layoutX="22.0" layoutY="346.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="42.0" prefWidth="42.0" style="-fx-background-size: 41.8;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
     </children>
 </Pane>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ImportOrExport">
+   <children>
+      <ImageView fitHeight="401.0" fitWidth="651.0" pickOnBounds="true">
+         <image>
+            <Image url="@../PNG/NEW/1300578.jpg" />
+         </image>
+      </ImageView>
+      <Button layoutX="14.0" layoutY="67.0" mnemonicParsing="false" onAction="#importMonsterFile" opacity="0.85" prefHeight="74.0" prefWidth="200.0" style="-fx-background-size: 200;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Import Monster">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="30.0" />
+         </font>
+      </Button>
+      <Button layoutX="425.0" layoutY="126.0" mnemonicParsing="false" onAction="#exportFile" opacity="0.85" prefHeight="74.0" prefWidth="200.0" style="-fx-background-size: 200;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Export">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="30.0" />
+         </font>
+      </Button>
+      <Button layoutX="14.0" layoutY="349.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="40.0" prefWidth="41.0" style="-fx-background-size: 42;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
+      <Button layoutX="14.0" layoutY="156.0" mnemonicParsing="false" onAction="#importSpell" opacity="0.84" prefHeight="74.0" prefWidth="200.0" style="-fx-background-size: 200;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Import Spell">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="30.0" />
+         </font>
+      </Button>
+      <Button layoutX="14.0" layoutY="247.0" mnemonicParsing="false" onAction="#importTrap" opacity="0.84" prefHeight="74.0" prefWidth="200.0" style="-fx-background-size: 200;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Import Trap">
+         <font>
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="30.0" />
+         </font>
+      </Button>
+      <Button fx:id="msg" layoutX="148.0" layoutY="349.0" mnemonicParsing="false" opacity="0.78" prefHeight="40.0" prefWidth="354.0" textAlignment="CENTER" textFill="#16045c" visible="false">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
+         </font>
+      </Button>
+      <TextField fx:id="cardName" layoutX="439.0" layoutY="200.0" opacity="0.86" prefHeight="40.0" prefWidth="171.0" promptText="Card Name">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="15.0" />
+         </font>
+      </TextField>
+      <Button fx:id="importData" alignment="TOP_LEFT" cacheShape="false" layoutX="214.0" layoutY="5.0" mnemonicParsing="false" opacity="0.89" prefHeight="329.0" prefWidth="210.0" textAlignment="JUSTIFY" textFill="#b55e02" visible="false" wrapText="true">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="16.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

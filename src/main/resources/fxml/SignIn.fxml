@@ -13,17 +13,17 @@
             <Image url="@../PNG/NEW/1300536.jpg" />
          </image>
       </ImageView>
-      <Button layoutX="226.0" layoutY="318.0" mnemonicParsing="false" onMouseClicked="#signInUser" prefHeight="55.0" prefWidth="148.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Signin">
+      <Button layoutX="226.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#signInUser" prefHeight="55.0" prefWidth="148.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Signin">
          <font>
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="26.0" />
          </font>
       </Button>
-      <PasswordField fx:id="password" layoutX="185.0" layoutY="270.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="Password">
+      <PasswordField fx:id="password" layoutX="185.0" layoutY="230.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="Password">
          <font>
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
          </font>
       </PasswordField>
-      <TextField fx:id="nickName" layoutX="185.0" layoutY="227.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="Nick Name">
+      <TextField fx:id="nickName" layoutX="185.0" layoutY="184.0" opacity="0.77" prefHeight="33.0" prefWidth="230.0" promptText="Nick Name">
          <font>
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="15.0" />
          </font>
@@ -31,10 +31,16 @@
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </TextField>
-      <TextField fx:id="userName" layoutX="185.0" layoutY="183.0" opacity="0.76" prefHeight="33.0" prefWidth="230.0" promptText="User Name">
+      <TextField fx:id="userName" layoutX="185.0" layoutY="137.0" opacity="0.76" prefHeight="33.0" prefWidth="230.0" promptText="User Name">
          <font>
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
          </font>
       </TextField>
+      <Button fx:id="successfully" disable="true" layoutX="203.0" layoutY="345.0" mnemonicParsing="false" opacity="0.73" prefHeight="33.0" prefWidth="195.0" text="user sign in successfully" textFill="#0c005c" visible="false">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="14.0" layoutY="345.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="41.0" prefWidth="42.0" style="-fx-background-size: 42;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
    </children>
 </Pane>

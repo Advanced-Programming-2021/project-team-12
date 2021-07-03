@@ -30,7 +30,7 @@
       <Button layoutX="455.0" layoutY="303.0" mnemonicParsing="false" onMouseClicked="#leftAvatar" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 43.3;" styleClass="leftArrow" stylesheets="@../CSS/Buttons.css" />
       <Button layoutX="502.0" layoutY="303.0" mnemonicParsing="false" onMouseClicked="#rightAvatar" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 43.2;" styleClass="rightArrow" stylesheets="@../CSS/Buttons.css" />
       <Button layoutX="12.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="44.0" prefWidth="44.0" style="-fx-background-size: 44;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" textFill="RED" />
-      <ImageView fx:id="avatar" fitHeight="117.0" fitWidth="116.0" layoutX="444.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="avatar" fitHeight="130.0" fitWidth="115.0" layoutX="445.0" layoutY="19.0" pickOnBounds="true" />
       <Label fx:id="text" alignment="TOP_LEFT" layoutX="212.0" layoutY="393.0" prefHeight="53.0" prefWidth="176.0" textAlignment="JUSTIFY" textFill="#590000" wrapText="true">
          <font>
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="18.0" />
@@ -46,5 +46,20 @@
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
          </font>
       </PasswordField>
+      <Button fx:id="userName" cancelButton="true" disable="true" layoutX="220.0" layoutY="48.0" mnemonicParsing="false" opacity="0.92" prefHeight="72.0" prefWidth="160.0" textFill="#0e1466" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="userNickName" cancelButton="true" centerShape="false" disable="true" layoutX="17.0" layoutY="48.0" mnemonicParsing="false" opacity="0.92" prefHeight="72.0" prefWidth="160.0" textFill="#0e1466" wrapText="true">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="imageChooser" layoutX="429.0" layoutY="241.0" mnemonicParsing="false" onAction="#fileChooser" prefHeight="53.0" prefWidth="141.0" style="-fx-background-size: 140;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Choose Image From Computer" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="12.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

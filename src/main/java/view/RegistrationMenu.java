@@ -31,10 +31,14 @@ public class RegistrationMenu extends Application {
     public static Boolean isMute = false;
     private static Stage stage;
     private static Clip clip;
+    private static boolean startLoad;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        new LoadFile();
+        if (!startLoad) {
+            new LoadFile();
+            startLoad = true;
+        }
         stage = primaryStage;
         Pane pane =  FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/RegistrationMenu.fxml")));
         Scene scene = new Scene(pane);

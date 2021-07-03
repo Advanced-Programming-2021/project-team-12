@@ -1,7 +1,7 @@
 package controllers;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 import models.Card;
@@ -17,9 +17,20 @@ public class SaveFile {
         for (User user : User.getUsers())
             saveUser(user);
         for (Card card : Card.getAllCards()) {
-            if (card.getKind().equals("monster"))
+            if (card.getKind().equals("Monster"))
                 saveMonster(card);
-            if (card.getKind().equals("spell"))
+            else if (card.getKind().equals("Spell"))
+                saveSpell(card);
+            else
+                saveTrap(card);
+        }
+    }
+
+    public static void saveCards() {
+        for (Card card : Card.getAllCards()) {
+            if (card.getKind().equals("Monster"))
+                saveMonster(card);
+            else if (card.getKind().equals("Spell"))
                 saveSpell(card);
             else
                 saveTrap(card);
@@ -39,6 +50,7 @@ public class SaveFile {
         obj.put("money", user.getMoney());
         obj.put("allCards", userCardsName);
         obj.put("avatar", user.getIntAvatar());
+        obj.put("countAvatar", user.getAvatarCount());
         try {
             String name = user.getName();
             FileWriter writer = new FileWriter("data//User//" + name + ".json");
@@ -53,17 +65,17 @@ public class SaveFile {
         saveUserDecks(user);
     }
 
-    public static void exportCard(String address, String cardName) {
+    public static void exportCard(File file, String cardName) {
         Card card = Card.getCardByName(cardName);
-        if (card.getKind().equals("monster"))
-            exportMonster(card, address);
-        if (card.getKind().equals("spell"))
-            exportSpell(card, address);
+        if (card.getKind().equals("Monster"))
+            exportMonster(card, file);
+        else if (card.getKind().equals("Spell"))
+            exportSpell(card, file);
         else
-            exportTrap(card, address);
+            exportTrap(card, file);
     }
 
-    private static void exportTrap(Card card, String address) {
+    private static void exportTrap(Card card, File file) {
         TrapCard trap = TrapCard.getTrapCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
         obj.put("description", trap.getDescription());
@@ -71,7 +83,7 @@ public class SaveFile {
         obj.put("isLimit", trap.checkIsLimit());
         obj.put("price", trap.getPrice());
         try {
-            FileWriter writer = new FileWriter(address);
+            FileWriter writer = new FileWriter(file.getAbsolutePath() + "//" + card.getCardName() + ".json");
             writer.write(obj.toJSONString());
             writer.close();
         } catch (IOException e) {
@@ -79,7 +91,7 @@ public class SaveFile {
         }
     }
 
-    private static void exportSpell(Card card, String address) {
+    private static void exportSpell(Card card, File file) {
         SpellCard spell = SpellCard.getSpellCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
         obj.put("desctiption", spell.getDescription());
@@ -88,7 +100,7 @@ public class SaveFile {
         obj.put("isLimit", spell.checkIsLimit());
         obj.put("name", spell.getName());
         try {
-            FileWriter writer = new FileWriter(address);
+            FileWriter writer = new FileWriter(file.getAbsolutePath() + "//" + card.getCardName() + ".json");
             writer.write(obj.toJSONString());
             writer.close();
         } catch (IOException e) {
@@ -96,7 +108,7 @@ public class SaveFile {
         }
     }
 
-    private static void exportMonster(Card card, String address) {
+    private static void exportMonster(Card card, File file) {
         MonsterCard monster = MonsterCard.getMonsterCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
         obj.put("name", monster.getName());
@@ -109,7 +121,7 @@ public class SaveFile {
         obj.put("price", monster.getPrice());
         obj.put("isRitual", monster.isRitual());
         try {
-            FileWriter writer = new FileWriter(address);
+            FileWriter writer = new FileWriter(file.getAbsolutePath() + "//" + card.getCardName() + ".json");
             writer.write(obj.toJSONString());
             writer.close();
         } catch (IOException e) {
@@ -142,7 +154,7 @@ public class SaveFile {
         }
     }
 
-    private void saveMonster(Card card) {
+    private static void saveMonster(Card card) {
         MonsterCard monster = MonsterCard.getMonsterCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
         obj.put("name", monster.getName());
@@ -163,7 +175,7 @@ public class SaveFile {
         }
     }
 
-    private void saveSpell(Card card) {
+    private static void saveSpell(Card card) {
         SpellCard spell = SpellCard.getSpellCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
         obj.put("desctiption", spell.getDescription());
@@ -180,7 +192,7 @@ public class SaveFile {
         }
     }
 
-    private void saveTrap(Card card) {
+    private static void saveTrap(Card card) {
         TrapCard trap = TrapCard.getTrapCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
         obj.put("description", trap.getDescription());
@@ -194,5 +206,11 @@ public class SaveFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void addAvatarImage(File srcFile, User user) throws IOException {
+        int newAvatar = user.getAvatarCount() + 1;
+        File desFile =  new File("src//main//Characters//" + user.getName() + ".Chara001.dds" + newAvatar + ".png");
+        Files.copy(srcFile.toPath(), desFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 }

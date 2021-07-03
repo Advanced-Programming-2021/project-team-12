@@ -45,4 +45,12 @@ public class LoginMenu extends Application {
             e.printStackTrace();
         }
     }
+
+    public void back(MouseEvent mouseEvent) {
+        try {
+            new RegistrationMenu().start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

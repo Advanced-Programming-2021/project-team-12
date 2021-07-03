@@ -4,6 +4,8 @@ import Exceptions.MyException;
 import models.User;
 import view.MainMenu;
 
+import java.io.File;
+
 public class ProfileControl {
     public void changePass(String currentPass, String newPas) throws MyException {
         User user = MainMenu.user;
@@ -25,5 +27,12 @@ public class ProfileControl {
             MainMenu.user.setNickName(nickName);
             SaveFile.saveUser(MainMenu.user);
         }
+    }
+
+    public void changeAvatar(File file) throws Exception{
+        SaveFile.addAvatarImage(file, MainMenu.user);
+        MainMenu.user.increaseCountAvatar();
+        MainMenu.user.setAvatar(MainMenu.user.getAvatarCount());
+        SaveFile.saveUser(MainMenu.user);
     }
 }
