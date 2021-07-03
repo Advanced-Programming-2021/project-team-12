@@ -14,15 +14,15 @@
       </ImageView>
       <Button layoutX="87.0" layoutY="87.0" mnemonicParsing="false" onAction="#login" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Login" textAlignment="CENTER" textFill="#ffed78">
          <font>
-            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="30.0" />
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="26.0" />
          </font></Button>
       <Button layoutX="87.0" layoutY="179.0" mnemonicParsing="false" onAction="#register" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Register" textFill="#ffed78">
          <font>
-            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="30.0" />
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="26.0" />
          </font></Button>
       <Button layoutX="87.0" layoutY="270.0" mnemonicParsing="false" onAction="#exit" prefHeight="55.0" prefWidth="150.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Exit" textFill="#ffed78">
          <font>
-            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="30.0" />
+            <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="26.0" />
          </font></Button>
    </children>
 </Pane>
