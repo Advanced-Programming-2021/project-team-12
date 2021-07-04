@@ -85,5 +85,7 @@
          <image>
             <Image url="@../PNG/Textures/CardInfoBackground.png" />
          </image></ImageView>
+      <ImageView fitHeight="100.0" fitWidth="74.0" layoutX="259.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="296.0" fitWidth="205.0" layoutX="7.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </Pane>
