@@ -58,11 +58,12 @@ public class DeckMenu extends Application {
         setButton();
         setNameButton();
         setNumbers();
+        setStyles();
     }
 
     private void setClassStyle() {
-        File file = new File ("src//main//resources//CSS//Buttons.css")
-        pane.getStylesheets().add(style);
+        File file = new File ("src//main//resources//CSS//Buttons.css");
+        pane.getStylesheets().add(file.toURI().toString());
     }
 
     private void setNumbers() {
@@ -111,7 +112,8 @@ public class DeckMenu extends Application {
         ArrayList<Deck> decks = Deck.getDecksOfUser(user);
         for (int i = 0; i < decks.size(); i++) {
             if (i == selectedDeck)
-                decksButton[i].getStyleClass().add("")
+                decksButton[i].setId("SelectedDeck");
+            else decksButton[i].setId("Decks");
         }
     }
 
