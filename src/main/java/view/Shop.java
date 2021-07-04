@@ -82,9 +82,9 @@ public class Shop extends Application {
         Button button = new Button();
         button.setText("buy");
 //        button.(VerticalDirection.UP);
-        button.setLayoutX(x * scale(90) + scale(20) + 800);
+        button.setLayoutX(x * scale(60) + scale(20) + 800);
         button.setLayoutY(y * scale(150) + scale(130));
-        button.setPrefWidth(scale(50));
+        button.setPrefWidth(scale(80));
         button.setPrefHeight(scale(5));
         button.setStyle("-fx-background-color: cyan");
         button.setOnAction(e -> {
@@ -124,6 +124,6 @@ public class Shop extends Application {
     }
 
     public double scale(double v){
-        return 4*v/5;
+        return 3*v/5;
     }
 }

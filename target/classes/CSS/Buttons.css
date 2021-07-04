@@ -38,7 +38,7 @@
 #selected {
     -fx-background-color: transparent;
     -fx-background-radius:0;
-    -fx-border-color: #b60030;
+    -fx-border-color: #ffa824;
     -fx-border-width: 2 2 2 2;
 }
 
@@ -158,7 +158,7 @@
 
 .buttonPhaseOur {
     -fx-background-color: transparent;
-    -fx-background-image: url('../PNG/Textures/sugoroku_btn_s2.dds.png');
+    -fx-background-image: url('../PNG/Textures/ButtonPhaseOur.png');
 }
 
 .buttonPhaseOur:hover {
@@ -177,7 +177,7 @@
 
 .buttonPhaseOpponent {
     -fx-background-color: transparent;
-    -fx-background-image: url('../PNG/Textures/sugoroku_btn_s.dds.png');
+    -fx-background-image: url('../PNG/Textures/ButtonPhaseOpponent.png');
 }
 
 .buttonPhaseOpponent:hover {
