@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
@@ -125,5 +126,9 @@ public class Shop extends Application {
 
     public double scale(double v){
         return 3*v/5;
+    }
+
+    public void back(MouseEvent mouseEvent) throws Exception {
+        new MainMenu().start(stage);
     }
 }
