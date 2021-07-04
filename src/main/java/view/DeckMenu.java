@@ -60,7 +60,6 @@ public class DeckMenu extends Application {
     private void setNumbers() {
         ArrayList<Deck> decks = Deck.getDecksOfUser(user);
         for (int i = 0; i < decks.size(); i++) {
-            labels[i] = new Button();
             deckNames[i].setLayoutY(225);
             deckNames[i].setLayoutX(130 * i + 25);
             deckNames[i].setText(decks.get(i).getName());
