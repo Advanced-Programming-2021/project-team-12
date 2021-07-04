@@ -110,9 +110,9 @@ public class Scoreboard extends Application {
             scoreText.setLayoutX(375);
             scoreText.setLayoutY(i * 45 + 60);
             if(sortedUsers.get(i) == MainMenu.user){
-                scoreText.setFill(Color.valueOf("green"));
-                nickNameText.setFill(Color.valueOf("green"));
-                rankText.setFill(Color.valueOf("green"));
+                scoreText.setFill(Color.valueOf("0FE530FF"));
+                nickNameText.setFill(Color.valueOf("0FE530FF"));
+                rankText.setFill(Color.valueOf("0FE530FF"));
             } else {
                 scoreText.setFill(Color.valueOf("white"));
                 nickNameText.setFill(Color.valueOf("white"));
