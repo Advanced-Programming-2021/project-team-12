@@ -124,7 +124,7 @@ public class OnlineDuel extends Application {
         for (int i = 0; i < sortedUsers.size(); i++) {
             int placementOfX =  i % 3;
             int placementOfY = i / 3;
-            File pictureFile =  new File(MainMenu.user.getAvatarAddress());
+            File pictureFile =  new File(sortedUsers.get(i).getAvatarAddress());
             String string = pictureFile.toURI().toString();
             Image image = new Image(string);
             ImageView imageView = new ImageView();
