@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane fx:id="pane" prefHeight="600.0" prefWidth="828.0" styleClass="main" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GameView">
+<Pane fx:id="pane" prefHeight="600.0" prefWidth="1055.0" styleClass="main" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GameView">
    <children>
       <ImageView fitHeight="600.0" fitWidth="602.0" layoutX="227.0" pickOnBounds="true">
          <image>
@@ -25,5 +26,11 @@
             <Image url="@../PNG/Textures/CardInfoBackground.png" />
          </image>
       </ImageView>
+      <Button layoutX="14.0" layoutY="496.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="33.0" style="-fx-background-size: 30;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="DP" />
+      <Button layoutX="88.0" layoutY="496.0" mnemonicParsing="false" text="SP" />
+      <Button layoutX="160.0" layoutY="496.0" mnemonicParsing="false" text="M1" />
+      <Button layoutX="14.0" layoutY="561.0" mnemonicParsing="false" text="BP" />
+      <Button layoutX="88.0" layoutY="561.0" mnemonicParsing="false" text="M2" />
+      <Button layoutX="160.0" layoutY="561.0" mnemonicParsing="false" text="EP" />
    </children>
 </Pane>
