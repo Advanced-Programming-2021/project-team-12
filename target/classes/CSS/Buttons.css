@@ -17,11 +17,11 @@
     -fx-border-color: #77772a;
 }
 
-.Decks {
+#nonSelected {
     -fx-background-color: transparent;
 }
 
-.Decks:hover {
+#nonSelected:hover {
     -fx-background-color: #ffae00;
     -fx-background-radius:0;
     -fx-border-color:black;
@@ -30,17 +30,19 @@
     -fx-cursor: hand;
 }
 
-.Decks:pressed {
+#nonSelected:pressed {
     -fx-translate-y: +2;
     -fx-border-color: #77772a;
 }
 
-.SelectedDeck {
+#selected {
     -fx-background-color: transparent;
-    -fx-border-color: #77772a;
+    -fx-background-radius:0;
+    -fx-border-color: #b60030;
+    -fx-border-width: 2 2 2 2;
 }
 
-.SelectedDeck:hover {
+#selected:hover {
     -fx-background-color: #ffae00;
     -fx-background-radius:0;
     -fx-border-color:black;
@@ -49,7 +51,7 @@
     -fx-cursor: hand;
 }
 
-.SelectedDeck:pressed {
+#selected:pressed {
     -fx-translate-y: +2;
     -fx-border-color: #77772a;
 }
@@ -155,5 +157,5 @@
 }
 
 .root {
-    -fx-background-image: url('../PNG/NEW/RegistrationMenu.png');
+    -fx-background-color: #ffae00;
 }

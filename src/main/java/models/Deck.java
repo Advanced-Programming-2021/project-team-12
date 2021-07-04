@@ -85,7 +85,6 @@ public class Deck {
 
     public void addCard(String cardName, String flag) {
         Card card = Card.getCardByName(cardName);
-        this.user.removeCardFromAllCard(card);
         if (flag.equals("s"))
             sideCards.add(card);
         else      
@@ -94,7 +93,6 @@ public class Deck {
 
     public void removeCard(String cardName, String flag) {
         Card card = Card.getCardByName(cardName);
-        this.user.addCardToAllCard(card);
         if (flag.equals("s"))
             sideCards.remove(card);
         else      
@@ -103,7 +101,8 @@ public class Deck {
 
     public void setAcctive() {
         Deck deck = Deck.getActiveDeckOfUser(user.getName());
-        deck.changeIsActive(false);
+        if (deck != null)
+            deck.changeIsActive(false);
         this.isActive = true;
     }
 

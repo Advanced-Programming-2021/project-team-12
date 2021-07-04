@@ -154,8 +154,8 @@ public class LoadFile {
         int countAvatar = json.getInt("countAvatar");
         JSONArray jsonArrayCards = json.getJSONArray("allCards");
         ArrayList<String> userCardsName = new ArrayList<>();
-        for (int i = 1; i < jsonArrayCards.length(); i++)
-            userCardsName.add((String)jsonArrayCards.get(i));
+        for (int i = 0; i < jsonArrayCards.length(); i++)
+            userCardsName.add((String) jsonArrayCards.get(i));
         User user = new User(nickName, userName, password);
         user.setAvatar(avatar);
         user.setMoney(money);
@@ -189,9 +189,9 @@ public class LoadFile {
         JSONArray jsonArraySide = json.getJSONArray("sideCards");
         ArrayList<String> mainCards = new ArrayList<>();
         ArrayList<String> sideCards = new ArrayList<>();
-        for (int i = 1; i < jsonArrayMain.length(); i++)
+        for (int i = 0; i < jsonArrayMain.length(); i++)
             mainCards.add((String)jsonArrayMain.get(i));
-        for (int i = 1; i < jsonArraySide.length(); i++)
+        for (int i = 0; i < jsonArraySide.length(); i++)
             sideCards.add((String)jsonArraySide.get(i));
         Deck deck = new Deck(deckName, user);
         if (isActive)

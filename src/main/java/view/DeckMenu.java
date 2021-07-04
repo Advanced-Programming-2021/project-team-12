@@ -29,6 +29,8 @@ import models.Card;
 import models.Deck;
 import models.User;
 
+import javax.swing.*;
+
 public class DeckMenu extends Application {
     public static Stage stage;
     public Button data;
@@ -71,10 +73,10 @@ public class DeckMenu extends Application {
         for (int i = 0; i < decks.size(); i++) {
             int number = decks.get(i).getNumberOfCard("m") + decks.get(i).getNumberOfCard("s");
             labels[i] = new Label();
-            labels[i].setLayoutY(122);
-            labels[i].setLayoutX(130 * i + 55);
+            labels[i].setLayoutY(102);
+            labels[i].setLayoutX(130 * i + 42);
             if (number < 10)
-                labels[i].setLayoutX(130 * i + 68);
+                labels[i].setLayoutX(130 * i + 51);
             labels[i].setText(String.valueOf(number));
             labels[i].setMinWidth(120);
             labels[i].setStyle("-fx-text-fill: #f8b090");
@@ -94,8 +96,10 @@ public class DeckMenu extends Application {
             Image image = new Image(string);
             ImageView imageView = new ImageView(image);
             decksButton[i] = new Button();
-            imageView.setLayoutY(70);
-            imageView.setLayoutX(130 * i + 40);
+            decksButton[i].setLayoutY(50);
+            decksButton[i].setLayoutX(130 * i + 15);
+            imageView.setLayoutY(50);
+            imageView.setLayoutX(130 * i + 15);
             imageView.setFitWidth(80);
             imageView.setFitHeight(150);
             decksButton[i].setGraphic(imageView);
@@ -104,7 +108,24 @@ public class DeckMenu extends Application {
                 selectedDeck = finalI;
                 setStyles();
             });
-            pane.getChildren().add(imageView);
+            decksButton[i].setOnMouseEntered(e ->{
+                data.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.NORMAL, 8));
+                data.setTextAlignment(TextAlignment.LEFT);
+                Deck enteredDeck = Deck.getDecksOfUser(user).get(finalI);
+                StringBuilder deckCards = new StringBuilder("Main: ");
+                for (int j = 0; j < enteredDeck.getMainCards().size(); j++)
+                    deckCards.append(enteredDeck.getMainCards().get(j).getCardName() + ", ");
+                deckCards.append("\n---------------\nSide: ");
+                for (int j = 0; j < enteredDeck.getSideCards().size(); j++)
+                    deckCards.append(enteredDeck.getSideCards().get(j).getCardName() + ", ");
+                data.setText(deckCards.toString());
+            });
+            decksButton[i].setOnMouseExited(e ->{
+                data.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 19));
+                data.setTextAlignment(TextAlignment.CENTER);
+                setData();
+            });
+            pane.getChildren().add(decksButton[i]);
         }
     }
 
@@ -112,8 +133,8 @@ public class DeckMenu extends Application {
         ArrayList<Deck> decks = Deck.getDecksOfUser(user);
         for (int i = 0; i < decks.size(); i++) {
             if (i == selectedDeck)
-                decksButton[i].setId("SelectedDeck");
-            else decksButton[i].setId("Decks");
+                decksButton[i].setId("selected");
+            else decksButton[i].setId("nonSelected");
         }
     }
 
@@ -121,8 +142,8 @@ public class DeckMenu extends Application {
         ArrayList<Deck> decks = Deck.getDecksOfUser(user);
         for (int i = 0; i < decks.size(); i++) {
             deckNames[i] = new Button();
-            deckNames[i].setLayoutY(225);
-            deckNames[i].setLayoutX(130 * i + 25);
+            deckNames[i].setLayoutY(220);
+            deckNames[i].setLayoutX(130 * i + 5);
             deckNames[i].setText(decks.get(i).getName());
             deckNames[i].setDisable(true);
             deckNames[i].setMinWidth(120);
@@ -135,8 +156,11 @@ public class DeckMenu extends Application {
     }
 
     private void setData() {
-        data.setText("  User Name: " + user.getName() + "\t Number Of Deck: " + Deck.getDecksOfUser(user).size()
+        if (Deck.getActiveDeckOfUser(user.getName()) != null)
+            data.setText("  User Name: " + user.getName() + "\t Number Of Deck: " + Deck.getDecksOfUser(user).size()
                 + "\t   Active Deck: " + Deck.getActiveDeckOfUser(user.getName()).getName());
+        else data.setText("  User Name: " + user.getName() + "   Number Of Deck: " + Deck.getDecksOfUser(user).size()
+                + "  Active Deck: * Dont Have Active Deck *" );
     }
 
     public void setActive(MouseEvent mouseEvent) {
@@ -145,9 +169,8 @@ public class DeckMenu extends Application {
             setMsg(false, "Didn't Choose Any Deck");
         else try {
             new DeckControllers().setActive(Deck.getDecksOfUser(user).get(selectedDeck).getName());
-            setButton();
-            setNameButton();
-            selectedDeck = -1;
+            removeAll();
+            setAll();
             setMsg(true, "Deck Set Active Successfully");
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,8 +194,8 @@ public class DeckMenu extends Application {
         msg.setVisible(false);
         try {
             new DeckControllers().createDeck(addDeckName.getText(), user);
-            setButton();
-            setNameButton();
+            removeAll();
+            setAll();
             addDeckName.clear();
             setMsg(true, "Add Successfully");
         } catch (MyException e) {
@@ -202,14 +225,31 @@ public class DeckMenu extends Application {
         if (selectedDeck == -1)
             setMsg(false, "Didn't Choose Any Deck");
          else try {
+            removeAll();
             new DeckControllers().deleteDeck(Deck.getDecksOfUser(user).get(selectedDeck).getName());
-            setButton();
-            setNameButton();
             selectedDeck = -1;
+            setAll();
             setMsg(true, "Deck Deleted Successfully");
         } catch (Exception e) {
             e.printStackTrace();
             setMsg(false, e.getMessage());
+        }
+    }
+
+    private void setAll() {
+        setButton();
+        setNameButton();
+        setNumbers();
+        setStyles();
+        setData();
+    }
+
+    private void removeAll() {
+        ArrayList<Deck> decks = Deck.getDecksOfUser(user);
+        for (int i = 0; i < decks.size(); i++) {
+            pane.getChildren().remove(deckNames[i]);
+            pane.getChildren().remove(decksButton[i]);
+            pane.getChildren().remove(labels[i]);
         }
     }
 }
