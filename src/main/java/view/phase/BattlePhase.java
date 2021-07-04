@@ -28,7 +28,7 @@ public class BattlePhase {
         System.out.println("phase: battle phase");
         Board.showBoard();
         selectCard();
-        Game.playTurn("MainPhase2");
+        //Game.playTurn("MainPhase2");
     }
 
     public void selectCard() {
@@ -47,7 +47,7 @@ public class BattlePhase {
                     e.printStackTrace();
                 }
             }
-            Game.playTurn("MainPhase2");
+            //Game.playTurn("MainPhase2");
         }
     }
 
@@ -63,7 +63,7 @@ public class BattlePhase {
                 e.printStackTrace();
             }
         }
-        Game.playTurn("MainPhase2");
+        //Game.playTurn("MainPhase2");
     }
 
     public int getStrongestMonster(Player player) {

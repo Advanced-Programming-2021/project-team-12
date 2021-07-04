@@ -18,7 +18,7 @@ public class MainPhase {
     public int howManyHeraldOfCreationDidWeUseEffect = 0;
     public int whatMainIsPhase;
 
-    public void run() {
+    public void run() throws Exception {
         if (!goToNextPhase) {
             if (Game.isAITurn())
                 aiRun();
@@ -35,14 +35,14 @@ public class MainPhase {
         }
     }
 
-    private void playNextPhase() {
+    private void playNextPhase() throws Exception {
         if (whatMainIsPhase == 1)
             Game.playTurn("BattlePhase");
         else if (whatMainIsPhase == 2)
             Game.playTurn("EndPhase");
     }
 
-    private void aiRun() {
+    private void aiRun() throws Exception {
         System.out.println("phase: main phase " + whatMainIsPhase);
         Board.showBoard();
         if (whatMainIsPhase == 1) {
@@ -53,7 +53,7 @@ public class MainPhase {
             getAISelectedCard2();
     }
 
-    private void getAISelectedCard2() {
+    private void getAISelectedCard2() throws Exception {
         Player player = Game.whoseTurnPlayer();
         for (int i = 1; i <= 5; i++) {
             if (player.getSpellZoneCard().containsKey(i)) {
@@ -70,7 +70,7 @@ public class MainPhase {
         playNextPhase();
     }
 
-    public void getSelectedCard() {
+    public void getSelectedCard() throws Exception {
         if (Game.isAITurn())
             getAISelectedCard();
         else {
@@ -90,7 +90,7 @@ public class MainPhase {
         }
     }
 
-    private void getAISelectedCard() {
+    private void getAISelectedCard() throws Exception {
         String input = "";
         ArrayList<Integer> monsters = new ArrayList<>();
         Player player = Game.whoseTurnPlayer();

@@ -15,6 +15,6 @@ public class StandBy {
         }
         PhaseControl.getInstance().resetMoves();
         PhaseControl.getInstance().checkIfGameEnded();
-        Game.playTurn("MainPhase1");
+        //Game.playTurn("MainPhase1");
     }
 }

@@ -32,6 +32,6 @@ public class AIEndPhase {
         }
         PhaseControl.getInstance().checkIfGameEnded();
         PhaseControl.getInstance().switchPlayerTurn();
-        Game.playTurn("DrawPhase");
+        //Game.playTurn("DrawPhase");
     }
 }

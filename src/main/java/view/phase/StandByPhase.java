@@ -7,7 +7,7 @@ import view.AIPhase.StandBy;
 import view.Main;
 
 public class StandByPhase {
-    public void run(){
+    public void run() throws Exception {
         if (Game.isAITurn())
             new StandBy().run();
         if (SetSpell.doIHaveMessengerOfPeace()) {

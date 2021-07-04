@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class EndPhase {
 
-    public void run() {
+    public void run() throws Exception {
         if (Game.isAITurn())
             new AIEndPhase();
         PhaseControl.getInstance().doEffectEndPhase();
