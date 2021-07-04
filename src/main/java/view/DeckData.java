@@ -132,42 +132,56 @@ public class DeckData extends Application {
     }
 
     public void addSideToMain(MouseEvent mouseEvent) {
-    }
-
-    public void addMainToSide(MouseEvent mouseEvent) {
-        if (selectedHand == -1)
+        if (selectedSide == -1)
             msg.setText("Didn't Choose Any Card");
-
         else {
             try {
-                new DeckControllers().addCard(handCards.get(selectedHand).getCardName(), deck.getName(), false);
+                removeAll();
+                Card card = sideCards.get(selectedSide);
+                new DeckControllers().removeCard(card.getCardName(), deck.getName(), true);
+                new DeckControllers().addCard(card.getCardName(), deck.getName(), false);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
             }
+            resetAll();
+        }
+    }
+
+    public void addMainToSide(MouseEvent mouseEvent) {
+        if (selectedMain == -1)
+            msg.setText("Didn't Choose Any Card");
+        else {
+            try {
+                removeAll();
+                Card card = mainCards.get(selectedMain);
+                new DeckControllers().removeCard(card.getCardName(), deck.getName(), false);
+                new DeckControllers().addCard(card.getCardName(), deck.getName(), true);
+            } catch (MyException e) {
+                msg.setText(e.getMessage());
+            }
+            resetAll();
         }
     }
 
     public void removeFromSide(MouseEvent mouseEvent) {
-        if (selectedSide == -1)
-            msg.setText("Didn't Choose Any Main Card");
-        else {
-            try {
-                new DeckControllers().removeCard(sideCards.get(selectedSide).getCardName(), deck.getName(), true);
-            } catch (MyException e) {
-                msg.setText(e.getMessage());
-            }
-        }
+        removeCard(selectedSide, sideCards, true);
     }
 
     public void removeFromMain(MouseEvent mouseEvent) {
-        if (selectedMain == -1)
-            msg.setText("Didn't Choose Any Main Card");
+        removeCard(selectedMain, mainCards, false);
+    }
+
+    public void removeCard(Integer selected, ArrayList<Card> cards, boolean isSide) {
+        if (selected == -1)
+            msg.setText("Didn't Choose Any Card");
         else {
             try {
-                new DeckControllers().removeCard(mainCards.get(selectedMain).getCardName(), deck.getName(), false);
+                removeAll();
+                new DeckControllers().removeCard(cards.get(selected).getCardName(), deck.getName(), isSide);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
             }
+            resetAll();
         }
     }
 
@@ -180,26 +194,44 @@ public class DeckData extends Application {
     }
 
     public void addCardToSide(MouseEvent mouseEvent) {
-        if (selectedHand == -1)
+        moveCardFromHand(selectedHand, handCards, true);
+    }
+
+    private void moveCardFromHand(Integer selected, ArrayList<Card> cards, boolean isSide) {
+        if (selected == -1)
             msg.setText("Didn't Choose Any Card");
         else {
             try {
-                new DeckControllers().addCard(handCards.get(selectedHand).getCardName(), deck.getName(), true);
+                removeAll();
+                new DeckControllers().addCard(cards.get(selected).getCardName(), deck.getName(), isSide);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
             }
+            resetAll();
         }
     }
 
     public void addCardToMain(MouseEvent mouseEvent) {
-        if (selectedHand == -1)
-            msg.setText("Didn't Choose Any Card");
-        else {
-            try {
-                new DeckControllers().addCard(handCards.get(selectedHand).getCardName(), deck.getName(), false);
-            } catch (MyException e) {
-                msg.setText(e.getMessage());
-            }
-        }
+        moveCardFromHand(selectedHand, handCards, false);
+    }
+
+    private void resetAll() {
+        selectedHand = -1;
+        selectedMain = -1;
+        selectedSide = -1;
+        setHand();
+        setMain();
+        setSide();
+        setAllStyle();
+    }
+
+    private void removeAll() {
+        msg.setText("");
+        for (int i = 0; i < handCards.size(); i++)
+            pane.getChildren().remove(handButtons[i / 6][i % 6]);
+        for (int i = 0; i < sideCards.size(); i++)
+            pane.getChildren().remove(sideButtons[i / 12][i % 12]);
+        for (int i = 0; i < mainCards.size(); i++)
+            pane.getChildren().remove(mainButtons[i / 12][i % 12]);
     }
 }

@@ -8,7 +8,7 @@ import view.MainMenu;
 
 public class DeckControllers {
     public void createDeck(String deckName, User user) throws MyException {
-        if (deckName == "")
+        if (deckName.equals(""))
             throw new MyException("write deck name");
         if (Deck.getDeckByName(deckName) != null)
             throw new MyException("deck with name " + deckName + " already exists");
