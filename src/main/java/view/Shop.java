@@ -2,6 +2,8 @@ package view;
 
 import java.util.ArrayList;
 
+import controllers.SaveFile;
+import controllers.ShopControl;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.VerticalDirection;
@@ -43,7 +45,7 @@ public class Shop extends Application {
     private void initialize() {
         user = MainMenu.user;
         allCards = Card.getAllCards();
-        cards = user.getAllCards();
+        cards = user.getDeckAndAllCards();
         for (Card card : cards) {
             addCardAsImage(counter, card);
             counter++;
@@ -56,8 +58,8 @@ public class Shop extends Application {
     }
 
     private void addCardAsImage(int counter1, Card card) {
-        int x = counter1 % 9;
-        int y = counter1 / 9;
+        int x = counter1 % 10;
+        int y = counter1 / 10;
         String kind = "SpellTrap";
         if (card.getKind().equals("Monster")) kind = "Monsters";
         Image image = new Image(getClass().getResource("/PNG/Cards1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
@@ -68,7 +70,7 @@ public class Shop extends Application {
         imageView.setFitHeight(scale(130));
         imageView.setFitWidth(scale(90));
         pane.getChildren().add(imageView);
-        label.setText("money: " + user.getMoney());
+        label.setText("money: " + String.valueOf(user.getMoney()));
     }
 
     private void addCardAsButton(int counter1, Card card) {
@@ -95,7 +97,7 @@ public class Shop extends Application {
         imageView.setLayoutY(y * scale(150));
         imageView.setFitHeight(scale(130));
         imageView.setFitWidth(scale(90));
-        if (user.getMoney() >= card.getPrice()) {
+        if (user.getMoney() < card.getPrice()) {
             cancelButton(button);
         }
         pane.getChildren().addAll(button, imageView);
@@ -108,10 +110,10 @@ public class Shop extends Application {
     }
 
     private void buy(Card card) {
-        System.out.println("###");
-        cards.add(card);
+        new ShopControl().buyCard(card, user);
         addCardAsImage(counter, card);
-        user.setMoney(user.getMoney() - card.getPrice());
+        label.setText("money: " + user.getMoney());
+        counter++;
         int counter1 = 0;
         for (Card allCard : allCards) {
             if (allCard.getPrice() > user.getMoney()) {
@@ -119,7 +121,6 @@ public class Shop extends Application {
             }
             counter1++;
         }
-        label.setText("money: " + user.getMoney());
     }
 
     public double scale(double v){
