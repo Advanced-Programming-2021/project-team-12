@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import Exceptions.MyException;
 import Utility.CommandMatcher;
 import controllers.ShopControl;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,8 +27,8 @@ import models.User;
 public class Shop extends Application {
 
     public javafx.scene.control.Label label;
-    public AnchorPane anchorPane;
-    public Pane pane;
+    public Pane insidePane;
+    public Pane mainPane;
     private Button[] buttons = new Button[1000];
     private User user;
     private ArrayList<Card> cards;
@@ -37,13 +38,14 @@ public class Shop extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        initialize();
-        MainMenu.stage = stage;
+     //   initialize();
+        Shop.stage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Shop.fxml"));
         stage.setScene(new Scene(root));
         stage.show();
     }
 
+    @FXML
     private void initialize() {
         user = MainMenu.user;
         allCards = Card.getAllCards();
@@ -64,7 +66,7 @@ public class Shop extends Application {
         int y = counter1 / 9;
         String kind = "SpellTrap";
         if (card.getKind().equals("Monster")) kind = "Monsters";
-        Image image = new Image(getClass().getResource("/PNG/Card1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
+        Image image = new Image(getClass().getResource("/PNG/Cards1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
         ImagePattern imagePattern = new ImagePattern(image);
         ImageView imageView = new ImageView();
         imageView.setImage(image);
@@ -72,7 +74,7 @@ public class Shop extends Application {
         imageView.setX(x * 90);
         imageView.setFitHeight(90);
         imageView.setFitWidth(130);
-        pane.getChildren().addAll(imageView);
+        insidePane.getChildren().addAll(imageView);
         label.setText("money: " + user.getMoney());
     }
 
@@ -81,7 +83,9 @@ public class Shop extends Application {
         int y = counter1 / 9;
         String kind = "SpellTrap";
         if (card.getKind().equals("Monster")) kind = "Monsters";
-        Image image = new Image(getClass().getResource("/PNG/Card1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
+        System.out.println(card.getCardName());
+        System.out.println("/PNG/Cards1/" + kind + "/" + card.getCardName() + ".jpg");
+        Image image = new Image(getClass().getResource("/PNG/Cards1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
         ImagePattern imagePattern = new ImagePattern(image);
         VBox vBox = new VBox();
         Button button = new Button();
@@ -106,7 +110,7 @@ public class Shop extends Application {
             cancelButton(button);
         }
         vBox.getChildren().add(imageView);
-        anchorPane.getChildren().addAll(vBox);
+        mainPane.getChildren().addAll(vBox);
     }
 
     private void cancelButton(Button button) {

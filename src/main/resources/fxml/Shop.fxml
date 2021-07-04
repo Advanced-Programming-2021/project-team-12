@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="1000.0" prefWidth="2000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Shop">
-    <children>
-        <Pane fx:id="pane" prefHeight="1000.0" prefWidth="900.0">
-         <children>
-            <Label fx:id="label" layoutX="629.0" layoutY="959.0" prefHeight="27.0" prefWidth="61.0" style="-fx-background-color: yellow;" />
-         </children></Pane>
-    </children>
-</AnchorPane>
+
+<Pane fx:controller="view.Shop" fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="2000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane fx:id="insidePane" prefHeight="1000.0" prefWidth="900.0" />
+   </children>
+</Pane>
