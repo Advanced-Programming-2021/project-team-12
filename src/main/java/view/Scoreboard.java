@@ -45,7 +45,7 @@ public class Scoreboard extends Application {
 
     private void createImageForTop(ArrayList<User> sortedUsers, Pane innerPane) {
         for (int i = 0; i < sortedUsers.size(); i++) {
-            File pictureFile =  new File(MainMenu.user.getAvatarAddress());
+            File pictureFile =  new File(sortedUsers.get(i).getAvatarAddress());
             String string = pictureFile.toURI().toString();
             Image image = new Image(string);
             ImageView imageView = new ImageView();
