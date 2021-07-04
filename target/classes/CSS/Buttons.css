@@ -156,6 +156,44 @@
     -fx-text-fill: #ffffff;
 }
 
+.buttonPhaseOur {
+    -fx-background-color: transparent;
+    -fx-background-image: url('../PNG/Textures/ButtonPhaseOur.png');
+}
+
+.buttonPhaseOur:hover {
+    -fx-background-color: rgba(245, 235, 20, 0.42);
+    -fx-background-radius:0;
+    -fx-border-color:black;
+    -fx-border-width: 0 2 2 0;
+    -fx-background-insets: 0;
+    -fx-cursor: hand;
+}
+
+.buttonPhaseOur:pressed {
+    -fx-translate-y: +2;
+    -fx-border-color: #77772a;
+}
+
+.buttonPhaseOpponent {
+    -fx-background-color: transparent;
+    -fx-background-image: url('../PNG/Textures/ButtonPhaseOpponent.png');
+}
+
+.buttonPhaseOpponent:hover {
+    -fx-background-color: rgba(245, 235, 20, 0.42);
+    -fx-background-radius:0;
+    -fx-border-color:black;
+    -fx-border-width: 0 2 2 0;
+    -fx-background-insets: 0;
+    -fx-cursor: hand;
+}
+
+.buttonPhaseOpponent:pressed {
+    -fx-translate-y: +2;
+    -fx-border-color: #77772a;
+}
+
 .root {
     -fx-background-color: #ffae00;
 }

@@ -162,7 +162,7 @@
 }
 
 .buttonPhaseOur:hover {
-    -fx-background-color: #ffae00;
+    -fx-background-color: rgba(245, 235, 20, 0.42);
     -fx-background-radius:0;
     -fx-border-color:black;
     -fx-border-width: 0 2 2 0;
@@ -181,7 +181,7 @@
 }
 
 .buttonPhaseOpponent:hover {
-    -fx-background-color: #ffae00;
+    -fx-background-color: rgba(245, 235, 20, 0.42);
     -fx-background-radius:0;
     -fx-border-color:black;
     -fx-border-width: 0 2 2 0;

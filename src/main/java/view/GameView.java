@@ -2,10 +2,12 @@ package view;
 
 import controllers.Game;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -65,5 +67,27 @@ public class GameView extends Application {
 //        imageView.setX(200);
 //        imageView.setY(0);
 //        pane.getChildren().add(imageView);
+    }
+
+    public void checkSurrender(MouseEvent mouseEvent) {
+
+    }
+
+    public void goToDrawPhase(ActionEvent actionEvent) {
+    }
+
+    public void goToStandByPhase(ActionEvent actionEvent) {
+    }
+
+    public void goToMainPhaseOne(ActionEvent actionEvent) {
+    }
+
+    public void goToBattlePhase(ActionEvent actionEvent) {
+    }
+
+    public void goToMainPhaseTwo(ActionEvent actionEvent) {
+    }
+
+    public void goToEndPhase(ActionEvent actionEvent) {
     }
 }
