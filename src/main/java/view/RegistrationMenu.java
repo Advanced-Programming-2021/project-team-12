@@ -20,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import models.Card;
 import models.User;
 
 import javax.sound.sampled.Clip;

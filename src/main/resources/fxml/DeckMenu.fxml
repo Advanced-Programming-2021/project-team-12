@@ -32,9 +32,9 @@
             <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="24.0" />
          </font>
       </Button>
-      <Button fx:id="data" alignment="BASELINE_LEFT" cancelButton="true" disable="true" layoutX="20.0" layoutY="272.0" mnemonicParsing="false" opacity="0.71" prefHeight="55.0" prefWidth="615.0" textAlignment="RIGHT" textFill="#b55e02">
+      <Button fx:id="data" alignment="TOP_LEFT" cancelButton="true" contentDisplay="TOP" disable="true" layoutX="9.0" layoutY="254.0" mnemonicParsing="false" opacity="0.86" prefHeight="86.0" prefWidth="638.0" textFill="#b55e02" wrapText="true">
          <font>
-            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="17.0" />
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="19.0" />
          </font></Button>
       <Button layoutX="262.0" layoutY="375.0" mnemonicParsing="false" onMouseClicked="#addDeck" opacity="0.8" prefHeight="48.0" prefWidth="131.0" style="-fx-background-size: 130;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Add Deck" textFill="#ffed78">
          <font>

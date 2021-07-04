@@ -8,7 +8,7 @@ import view.MainMenu;
 
 public class DeckControllers {
     public void createDeck(String deckName, User user) throws MyException {
-        if (deckName == null)
+        if (deckName == "")
             throw new MyException("write deck name");
         if (Deck.getDeckByName(deckName) != null)
             throw new MyException("deck with name " + deckName + " already exists");
@@ -25,6 +25,7 @@ public class DeckControllers {
         if (Deck.getDeckByName(deckName) == null)
             throw new MyException("deck with name " + deckName + " does not exists");
         else {
+            SaveFile.removeDeck(deckName, user);
             Deck.deleteDeck(deckName);
             SaveFile.saveUser(user);
         }
@@ -51,6 +52,7 @@ public class DeckControllers {
                 if (!deck.containsCardInMain(cardName))
                     throw new MyException("card with name " + cardName + " does not exist in main deck");
                 else  {
+                    user.addCardToAllCard(Card.getCardByName(cardName));
                     deck.removeCard(cardName, "m");
                     SaveFile.saveUser(user);
                 }
@@ -59,6 +61,7 @@ public class DeckControllers {
                 if (!deck.containsCardInSide(cardName))
                     throw new MyException("card with name " + cardName + " does not exist in side deck");
                 else  {
+                    user.addCardToAllCard(Card.getCardByName(cardName));
                     deck.removeCard(cardName, "s");
                     SaveFile.saveUser(user);
                 }
@@ -80,6 +83,7 @@ public class DeckControllers {
                 else if (deck.checkIfThereIsThree(cardName))
                     throw new MyException("there are already three cards with name " + cardName + " in deck " + deckName);
                 else  {
+                    user.removeCardFromAllCard(Card.getCardByName(cardName));
                     deck.addCard(cardName, "m");
                     SaveFile.saveUser(user);
                 }
@@ -90,6 +94,7 @@ public class DeckControllers {
                 else if (deck.checkIfThereIsThree(cardName))
                     throw new MyException("there are already three cards with name " + cardName + " in deck " + deckName);
                 else  {
+                    user.removeCardFromAllCard(Card.getCardByName(cardName));
                     deck.addCard(cardName, "s");
                     SaveFile.saveUser(user);
                 }

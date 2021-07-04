@@ -213,4 +213,9 @@ public class SaveFile {
         File desFile =  new File("src//main//Characters//" + user.getName() + ".Chara001.dds" + newAvatar + ".png");
         Files.copy(srcFile.toPath(), desFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
+
+    public static void removeDeck(String deckName, User user) {
+        File file = new File("data//Decks//" + user.getName() + "//" + deckName + ".json");
+        file.delete();
+    }
 }
