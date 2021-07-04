@@ -15,6 +15,8 @@ import javafx.scene.control.Button;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
@@ -24,6 +26,8 @@ import models.User;
 public class Shop extends Application {
 
     public javafx.scene.control.Label label;
+    public AnchorPane anchorPane;
+    public Pane pane;
     private Button[] buttons = new Button[1000];
     private User user;
     private ArrayList<Card> cards;
@@ -68,6 +72,7 @@ public class Shop extends Application {
         imageView.setX(x * 90);
         imageView.setFitHeight(90);
         imageView.setFitWidth(130);
+        pane.getChildren().addAll(imageView);
         label.setText("money: " + user.getMoney());
     }
 
@@ -101,6 +106,7 @@ public class Shop extends Application {
             cancelButton(button);
         }
         vBox.getChildren().add(imageView);
+        anchorPane.getChildren().addAll(vBox);
     }
 
     private void cancelButton(Button button) {

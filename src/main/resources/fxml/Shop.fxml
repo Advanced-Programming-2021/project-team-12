@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="2000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Shop">
+<AnchorPane fx:id="anchorPane" prefHeight="1000.0" prefWidth="2000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Shop">
     <children>
-        <Pane prefHeight="1000.0" prefWidth="900.0">
+        <Pane fx:id="pane" prefHeight="1000.0" prefWidth="900.0">
          <children>
             <Label fx:id="label" layoutX="629.0" layoutY="959.0" prefHeight="27.0" prefWidth="61.0" style="-fx-background-color: yellow;" />
          </children></Pane>
