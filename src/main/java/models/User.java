@@ -54,6 +54,20 @@ public class User {
         return allCards;
     }
 
+    public ArrayList<Card> getDeckAndAllCards() {
+        ArrayList<Card> cards = new ArrayList<>();
+        ArrayList<Deck> deckCards = Deck.getDecksOfUser(this);
+        for (int i = 0; i < allCards.size(); i++)
+            cards.add(allCards.get(i));
+        for (int i = 0; i < deckCards.size(); i++) {
+            for (Card mainCard : deckCards.get(i).getMainCards())
+                cards.add(mainCard);
+            for (Card sideCard : deckCards.get(i).getSideCards())
+                cards.add(sideCard);
+        }
+        return cards;
+    }
+
     public String getName() {
         return userName;
     }

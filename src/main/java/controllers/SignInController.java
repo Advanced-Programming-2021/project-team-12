@@ -16,8 +16,16 @@ public class SignInController {
         else {
             User user = new User(nickName, userName, password);
             setDefaultDeck(user);
+            setDefaultUserCards(user);
             SaveFile.saveUser(user);
         }
+    }
+
+    private void setDefaultUserCards(User user) {
+        ArrayList<Card> cards = Card.getAllCards();
+        for (int i = 0; i < cards.size(); i++)
+            if (i % 11 == 0 || i % 13 == 0)
+                user.addCardToAllCard(cards.get(i));
     }
 
     private void setDefaultDeck(User user) {

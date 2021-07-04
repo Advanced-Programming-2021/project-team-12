@@ -11,6 +11,7 @@ import controllers.DuelControl;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import models.Card;
 import models.Deck;
@@ -51,32 +53,39 @@ public class DeckMenu extends Application {
     private void initialize() {
         selectedDeck = -1;
         user = MainMenu.user;
+        setClassStyle();
         setData();
-        setNameButton();
         setButton();
+        setNameButton();
         setNumbers();
+    }
+
+    private void setClassStyle() {
+        File file = new File ("src//main//resources//CSS//Buttons.css")
+        pane.getStylesheets().add(style);
     }
 
     private void setNumbers() {
         ArrayList<Deck> decks = Deck.getDecksOfUser(user);
         for (int i = 0; i < decks.size(); i++) {
-            deckNames[i].setLayoutY(225);
-            deckNames[i].setLayoutX(130 * i + 25);
-            deckNames[i].setText(decks.get(i).getName());
-            deckNames[i].setDisable(true);
-            deckNames[i].setMinWidth(120);
-            deckNames[i].setCancelButton(true);
-            deckNames[i].setStyle("-fx-text-fill: #6d1b00");
-            deckNames[i].setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 15));
-            deckNames[i].setOpacity(0.70);
-            pane.getChildren().add(decksButton[i]);
+            int number = decks.get(i).getNumberOfCard("m") + decks.get(i).getNumberOfCard("s");
+            labels[i] = new Label();
+            labels[i].setLayoutY(122);
+            labels[i].setLayoutX(130 * i + 55);
+            if (number < 10)
+                labels[i].setLayoutX(130 * i + 68);
+            labels[i].setText(String.valueOf(number));
+            labels[i].setMinWidth(120);
+            labels[i].setStyle("-fx-text-fill: #f8b090");
+            labels[i].setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 40));
+            labels[i].setTextAlignment(TextAlignment.CENTER);
+            pane.getChildren().add(labels[i]);
         }
     }
 
     private void setButton() {
         ArrayList<Deck> decks = Deck.getDecksOfUser(user);
         for (int i = 0; i < decks.size(); i++) {
-            int numberOfCard = decks.get(i).getNumberOfCard("m") + decks.get(i).getNumberOfCard("s");
             File pictureFile = new File("src//main//resources//PNG//NEW//deck.png");
             if (decks.get(i).checkIsActive())
                 pictureFile = new File("src//main//resources//PNG//NEW//ActiveDeck.png");
@@ -99,7 +108,11 @@ public class DeckMenu extends Application {
     }
 
     private void setStyles() {
-
+        ArrayList<Deck> decks = Deck.getDecksOfUser(user);
+        for (int i = 0; i < decks.size(); i++) {
+            if (i == selectedDeck)
+                decksButton[i].getStyleClass().add("")
+        }
     }
 
     private void setNameButton() {
@@ -115,7 +128,7 @@ public class DeckMenu extends Application {
             deckNames[i].setStyle("-fx-text-fill: #6d1b00");
             deckNames[i].setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 15));
             deckNames[i].setOpacity(0.70);
-            pane.getChildren().add(decksButton[i]);
+            pane.getChildren().add(deckNames[i]);
         }
     }
 
