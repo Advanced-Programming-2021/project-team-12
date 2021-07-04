@@ -27,12 +27,6 @@
             <Image url="@../PNG/Textures/CardInfoBackground.png" />
          </image>
       </ImageView>
-      <Button layoutX="42.0" layoutY="340.0" mnemonicParsing="false" prefHeight="148.0" prefWidth="268.0" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="DP" />
-      <Button layoutX="88.0" layoutY="496.0" mnemonicParsing="false" text="SP" />
-      <Button layoutX="160.0" layoutY="496.0" mnemonicParsing="false" text="M1" />
-      <Button layoutX="14.0" layoutY="561.0" mnemonicParsing="false" text="BP" />
-      <Button layoutX="88.0" layoutY="561.0" mnemonicParsing="false" text="M2" />
-      <Button layoutX="160.0" layoutY="561.0" mnemonicParsing="false" text="EP" />
       <Button layoutX="7.0" layoutY="456.0" mnemonicParsing="false" onAction="#goToDrawPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="Draw Phase">
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
