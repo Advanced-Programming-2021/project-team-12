@@ -92,8 +92,8 @@ public class RockPaperScissors extends Application {
         messageText.setFill(Color.valueOf("white"));
         messageText.setText(message);
         if(message.equals("Draw")){
-            messageText.setX(260);
-            messageText.setY(200);
+            messageText.setX(270);
+            messageText.setY(205);
         } else if(message.equals("Opponent starts first")) {
             messageText.setX(225);
             messageText.setY(205);

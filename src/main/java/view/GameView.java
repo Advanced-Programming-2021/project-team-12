@@ -1,5 +1,6 @@
 package view;
 
+import controllers.Game;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.Objects;
 
 public class GameView extends Application {
@@ -18,9 +20,24 @@ public class GameView extends Application {
         stage = primaryStage;
         Pane pane =  FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/GameView.fxml")));
         createBackground("normal", pane);
+        createPlayers();
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void createPlayers() {
+//        File pictureFile =  new File(Game..getAvatarAddress());
+//        String string = pictureFile.toURI().toString();
+//        Image image = new Image(getClass().getResource(string).toExternalForm());
+//        ImageView imageView = new ImageView();
+//        imageView.setImage(image);
+//        imageView.setImage(image);
+//        imageView.setFitWidth(600.0);
+//        imageView.setFitHeight(600.0);
+//        imageView.setPreserveRatio(false);
+//        imageView.setX(200);
+//        imageView.setY(0);
     }
 
     private void createBackground(String type, Pane pane) {
