@@ -82,8 +82,8 @@ public class Shop extends Application {
         Button button = new Button();
         button.setText("buy");
 //        button.(VerticalDirection.UP);
-        button.setLayoutX(x * scale(60) + scale(20) + 800);
-        button.setLayoutY(y * scale(150) + scale(130));
+        button.setLayoutX(x * scale(90) + scale(20) + 790);
+        button.setLayoutY(y * scale(180) + scale(130));
         button.setPrefWidth(scale(80));
         button.setPrefHeight(scale(5));
         button.setStyle("-fx-background-color: cyan");
@@ -94,7 +94,7 @@ public class Shop extends Application {
         ImageView imageView = new ImageView();
         imageView.setImage(image);
         imageView.setLayoutX(x * scale(90) + 800);
-        imageView.setLayoutY(y * scale(150));
+        imageView.setLayoutY(y * scale(180));
         imageView.setFitHeight(scale(130));
         imageView.setFitWidth(scale(90));
         if (user.getMoney() < card.getPrice()) {
