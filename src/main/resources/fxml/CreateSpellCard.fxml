@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="2500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CreateSpellCard" />
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1500.0" prefWidth="2500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CreateSpellCard">
+   <children>
+      <ImageView fitHeight="1064.0" fitWidth="1692.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../PNG/NEW/background3.jpg" />
+         </image>
+      </ImageView>
+      <TextField fx:id="nameTextField" layoutX="88.0" layoutY="87.0" promptText="name" />
+      <Button layoutX="88.0" layoutY="494.0" mnemonicParsing="false" onMouseClicked="#countPrice" style="-fx-background-color: red;" text="price" textFill="#dfee0d" />
+      <Label fx:id="priceLabel" layoutX="139.0" layoutY="493.0" prefHeight="25.0" prefWidth="59.0" text="0" textAlignment="RIGHT" textFill="#f8bc15">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Button layoutX="88.0" layoutY="544.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="42.0" prefWidth="42.0" style="-fx-background-size: 42;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
+      <Label layoutX="88.0" layoutY="155.0" prefHeight="42.0" prefWidth="80.0" text="kind:" textFill="#c98704">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Button fx:id="normal" layoutX="88.0" layoutY="233.0" mnemonicParsing="false" onMouseClicked="#beNormal" prefHeight="27.0" prefWidth="149.0" style="-fx-background-color: gray;" text="Normal" />
+      <Button fx:id="ritual" layoutX="88.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#beRitual" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: gray;" text="Ritual" />
+      <Button fx:id="equip" layoutX="88.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#beEquip" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: gray;" text="Equip" />
+      <Button fx:id="continiuous" layoutX="88.0" layoutY="334.0" mnemonicParsing="false" onMouseClicked="#beContiniuous" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: gray;" text="Continuous" />
+      <Button fx:id="quickPlay" layoutX="88.0" layoutY="367.0" mnemonicParsing="false" onMouseClicked="#beQuickPlay" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: gray;" text="Quick Play" />
+      <Button layoutX="172.0" layoutY="541.0" mnemonicParsing="false" onMouseClicked="#submit" prefHeight="49.0" prefWidth="130.0" style="-fx-background-size: 130;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="submit" textFill="#b8ee08">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

@@ -18,7 +18,6 @@ import models.card.monster.MonsterMode;
 import java.util.ArrayList;
 
 public class CreateMonsterCard extends Application {
-    private static ArrayList<MonsterCard> monsterCards;
     public Pane pane;
     private String name;
     private int level = 1;
@@ -56,7 +55,7 @@ public class CreateMonsterCard extends Application {
 
     @FXML
     public void initialize() {
-        monsterCards = MonsterCard.getMonsterCards();
+        ArrayList<MonsterCard> monsterCards = MonsterCard.getMonsterCards();
         int count = 0;
         for (MonsterCard monsterCard : monsterCards) {
             int x = count % 2;

@@ -18,6 +18,8 @@ public class SpellCard {
     private SpellMode spellMode;
     private boolean isLimit;
     private String name;
+    private String realName;
+    private ArrayList<String> names = new ArrayList<>();
     private static ArrayList<SpellCard> spellCards;
 
     static {
@@ -26,11 +28,20 @@ public class SpellCard {
 
     public SpellCard(String name, SpellMode spellMode, boolean isLimit, int price, String description) {
         this.name = name;
+        realName = name;
         this.spellMode = spellMode;
         this.isLimit = isLimit;
-        this.effect = effect;
         this.price = price;
         this.description = description;
+        spellCards.add(this);
+    }
+
+    public SpellCard(String realName, SpellMode spellMode, int price, String description, ArrayList<String> names) {
+        this.realName = realName;
+        this.spellMode = spellMode;
+        this.price = price;
+        this.description = description;
+        this.names = names;
         spellCards.add(this);
     }
 
