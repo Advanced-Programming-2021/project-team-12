@@ -34,6 +34,7 @@ public class User {
         this.password = "AI";
         score = 0;
         money = 180000;
+        avatar = 13;
     }
 
     public void increaseScore(int score) {

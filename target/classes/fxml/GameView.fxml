@@ -51,41 +51,46 @@
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font></Button>
-      <Button layoutX="7.0" layoutY="6.0" mnemonicParsing="false" onAction="#goToDrawPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Draw Phase">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
-      <Button layoutX="114.0" layoutY="6.0" mnemonicParsing="false" onAction="#goToDrawPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Standby Phase">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
-      <Button layoutX="7.0" layoutY="53.0" mnemonicParsing="false" onAction="#goToMainPhaseOne" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Main Phase 1">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
-      <Button layoutX="114.0" layoutY="53.0" mnemonicParsing="false" onAction="#goToBattlePhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Battle Phase">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
-      <Button layoutX="7.0" layoutY="102.0" mnemonicParsing="false" onAction="#goToMainPhaseTwo" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Main Phase 2">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
-      <Button layoutX="114.0" layoutY="102.0" mnemonicParsing="false" onAction="#goToEndPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="End Phase">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
-      <ImageView fitHeight="603.0" fitWidth="227.0" layoutX="828.0" pickOnBounds="true">
+      <ImageView fitHeight="600.0" fitWidth="227.0" layoutX="829.0" pickOnBounds="true">
          <image>
             <Image url="@../PNG/Textures/CardInfoBackground.png" />
          </image></ImageView>
       <ImageView fitHeight="100.0" fitWidth="74.0" layoutX="259.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fitHeight="296.0" fitWidth="205.0" layoutX="7.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imageViewInfo" fitHeight="296.0" fitWidth="205.0" layoutX="11.0" layoutY="152.0" pickOnBounds="true" />
+      <TextFlow prefHeight="200.0" prefWidth="200.0" />
+      <ProgressBar fx:id="turnProgress" layoutX="842.0" layoutY="571.0" prefWidth="200.0" progress="1.0" style="-fx-background-color: cornsilk;" styleClass="red-bar" stylesheets="@../CSS/Buttons.css" />
+      <ProgressBar fx:id="rivalProgress" layoutX="842.0" layoutY="5.0" prefWidth="200.0" progress="1.0" style="-fx-background-color: cornsilk;" styleClass="red-bar" stylesheets="@../CSS/Buttons.css" />
+      <ImageView fx:id="rivalAvatar" fitHeight="119.0" fitWidth="107.0" layoutX="889.0" layoutY="49.0" pickOnBounds="true" />
+      <Label fx:id="rivalLP" layoutX="896.0" layoutY="25.0" text="LP = 8000" textFill="#88001b">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="rivalName" layoutX="890.0" layoutY="176.0" textFill="#0e1466">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="turnLP" layoutX="896.0" layoutY="548.0" text="LP = 8000" textFill="#88001b">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="turnName" layoutX="887.0" layoutY="401.0" textFill="#0e1466">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="20.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="turnAvatar" fitHeight="119.0" fitWidth="107.0" layoutX="889.0" layoutY="425.0" pickOnBounds="true" />
+      <Button fx:id="messageBox" alignment="TOP_LEFT" cacheShape="false" cancelButton="true" disable="true" layoutX="16.0" layoutY="3.0" mnemonicParsing="false" prefHeight="93.0" prefWidth="196.0" wrapText="true">
+         <font>
+            <Font name="StoneSerif-Semibold" size="10.0" />
+         </font></Button>
+      <TextField fx:id="messageFromPlayer" layoutX="16.0" layoutY="96.0" prefHeight="25.0" prefWidth="139.0" />
+      <Button fx:id="submitButton" layoutX="155.0" layoutY="96.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="57.0" style="-fx-background-size: 58;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Submit">
+         <font>
+            <Font name="StoneSerif-Semibold" size="10.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

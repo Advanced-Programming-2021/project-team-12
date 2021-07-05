@@ -56,26 +56,26 @@ public class PhaseControl {
         }
     }
 
-    public String drawOneCard() {
+    public String drawOneCard() throws Exception {
         if (!canDraw) {
             canDraw = true;
-            return "you cant draw because of Time Seal";
+            return "You can't draw a card because of rival's Time Seal";
         }
         if (Game.playerTurn == PlayerTurn.FIRSTPLAYER) {
             String newAddedCard = Game.firstPlayer.addCardFromUnusedToHand();
             if (newAddedCard.equals("unused is empty")) {
                 Game.setWinner(Game.secondPlayer);
-                return "first player cannot draw a card, second player is the winner";
+                return "GAME OVER\n" + Game.whoseTurnPlayer() + " cannot draw a card, " + Game.whoseRivalPlayer() + " is the winner";
             } else if (!newAddedCard.equals("Hand is full")) {
-                return "new card added to the hand : " + newAddedCard;
+                return "A new card has been added to " + Game.whoseTurnPlayer().getNickName() + "'s hand : " + newAddedCard;
             }
         } else {
             String newAddedCard = Game.secondPlayer.addCardFromUnusedToHand();
             if (newAddedCard.equals("unused is empty")) {
                 Game.setWinner(Game.firstPlayer);
-                return "second player cannot draw a card, first player is the winner";
+                return "GAME OVER\n" + Game.whoseTurnPlayer() + " cannot draw a card, " + Game.whoseRivalPlayer() + " is the winner";
             } else if (!newAddedCard.equals("Hand is full")) {
-                return "new card added to the hand : " + newAddedCard;
+                return "A new card has been added to " + Game.whoseTurnPlayer().getNickName() + "'s hand : " + newAddedCard;
             }
         }
         return null;

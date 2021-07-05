@@ -5,7 +5,7 @@ import controllers.PhaseControl;
 import view.Main;
 
 public class AIDrawPhase {
-    public void run(){
+    public void run() throws Exception {
         System.out.println(PhaseControl.getInstance().drawOneCard());
         //Game.playTurn("StandByPhase");
     }

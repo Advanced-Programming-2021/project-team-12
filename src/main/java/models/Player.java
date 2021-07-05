@@ -696,4 +696,8 @@ public class Player {
         indexOfCard.put(add, indexOfCard.get(address));
         handCardNumbers.remove(address.getNumber());
     }
+
+    public User getUser() {
+        return user;
+    }
 }
