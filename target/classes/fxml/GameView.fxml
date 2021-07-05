@@ -51,41 +51,11 @@
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font></Button>
-      <Button layoutX="7.0" layoutY="6.0" mnemonicParsing="false" onAction="#goToDrawPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Draw Phase">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
-      <Button layoutX="114.0" layoutY="6.0" mnemonicParsing="false" onAction="#goToDrawPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Standby Phase">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
-      <Button layoutX="7.0" layoutY="53.0" mnemonicParsing="false" onAction="#goToMainPhaseOne" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Main Phase 1">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
-      <Button layoutX="114.0" layoutY="53.0" mnemonicParsing="false" onAction="#goToBattlePhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Battle Phase">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
-      <Button layoutX="7.0" layoutY="102.0" mnemonicParsing="false" onAction="#goToMainPhaseTwo" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Main Phase 2">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
-      <Button layoutX="114.0" layoutY="102.0" mnemonicParsing="false" onAction="#goToEndPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="End Phase">
-         <font>
-            <Font name="StoneSerif-Semibold" size="10.0" />
-         </font>
-      </Button>
       <ImageView fitHeight="603.0" fitWidth="227.0" layoutX="828.0" pickOnBounds="true">
          <image>
             <Image url="@../PNG/Textures/CardInfoBackground.png" />
          </image></ImageView>
       <ImageView fitHeight="100.0" fitWidth="74.0" layoutX="259.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fitHeight="296.0" fitWidth="205.0" layoutX="7.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+      <Button cancelButton="true" disable="true" layoutX="16.0" layoutY="25.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="196.0" fx:id="messageBox"/>
    </children>
 </Pane>

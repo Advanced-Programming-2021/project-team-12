@@ -56,7 +56,7 @@ public class PhaseControl {
         }
     }
 
-    public String drawOneCard() {
+    public String drawOneCard() throws Exception {
         if (!canDraw) {
             canDraw = true;
             return "you cant draw because of Time Seal";

@@ -17,5 +17,6 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <Button fx:id="back" layoutX="664.0" layoutY="597.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="42.0" prefWidth="40.0" style="-fx-background-size: 42;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
    </children>
 </Pane>
