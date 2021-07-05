@@ -3,16 +3,21 @@ package view;
 import controllers.Game;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import models.Card;
 import models.Player;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -32,6 +37,44 @@ public class GameView extends Application {
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    public void Initialize() {
+        setAvatar();
+        setLP();
+        setLineLP();
+    }
+
+    private void setLP() {
+
+    }
+
+    private void setAvatar() {
+        createAvatarImage(Game.whoseTurnPlayer(), false);
+        createAvatarImage(Game.whoseRivalPlayer(), true);
+    }
+
+    private Label createLPLabel(Player player, boolean isRival) {
+        Label label = new Label();
+        label.setText("LP: " + player.getLP());
+        label.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 16));
+        label.setLayoutX();
+        label.setLayoutY();
+    }
+
+    private ImageView createAvatarImage(Player player, boolean isRival) {
+        File file =  new File(player.getUser().getAvatarAddress());
+        String string = file.toURI().toString();
+        Image image = new Image(string);
+        ImageView imageView = new ImageView(image);
+        imageView.setLayoutX(880);
+        imageView.setLayoutY(385);
+        imageView.setFitWidth(120);
+        imageView.setFitHeight(130);
+        if (isRival)
+            imageView.setLayoutY(100);
+        return imageView;
     }
 
     private void setHand(Player player, Boolean isRival) {
