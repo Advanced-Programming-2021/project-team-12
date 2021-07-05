@@ -75,8 +75,17 @@ public class GameView extends Application {
         createImageView(turnSpells, 300, 420, 5);
         createImageView(rivalSpells, 300, 70, 5);
         setHand();
-        setMonsterOnMouseClicked(turnMonsters);
+//        setMonsterOnMouseClicked(turnMonsters);
         doDrawPhase(Game.whoseTurnPlayer());
+    }
+
+    public void reset() {
+        setHand();
+        setMonster();
+        setSpells();
+        setLP();
+        setAvatar();
+        setNickName();
     }
 
     private void createImageView(ImageView[] imageView, int X, int Y, int size) {
