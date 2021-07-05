@@ -71,6 +71,7 @@ public class GameView extends Application {
 
     @FXML
     public void initialize() throws Exception {
+        Game.setPhase("Draw Phase");
         setAvatar();
         setNickName();
         setLP();
@@ -82,6 +83,11 @@ public class GameView extends Application {
         createImageView(rivalSpells, 300, 70, 5);
         setHand();
         doDrawPhase(Game.whoseTurnPlayer());
+    }
+
+    private void setStateOfSubmit(boolean isDisable) {
+        submitButton.setDisable(isDisable);
+        messageFromPlayer.setDisable(isDisable);
     }
 
     public void reset() {
@@ -169,6 +175,7 @@ public class GameView extends Application {
     }
 
     private void doDrawPhase(Player player) throws Exception {
+        setStateOfSubmit(true);
         newMessageToLabel("Draw Phase");
         addMessageToLabel(Game.whoseTurnPlayer().getNickName() + "'s turn");
         Game.setDidWePassBattle(false);
@@ -181,24 +188,32 @@ public class GameView extends Application {
     }
 
     private void doStandByPhase() {
+        reset();
         newMessageToLabel("Standby Phase");
         if (SetSpell.doIHaveMessengerOfPeace()) {
             addMessageToLabel("Do you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?\nEnter 'yes' or 'no'");
+            setStateOfSubmit(false);
+            reset();
             submitButton.setOnMouseClicked(e -> {
                 newMessageToLabel("Standby Phase");
                 if (!messageFromPlayer.getText().equals("yes") && !messageFromPlayer.getText().equals("no")) {
                     addMessageToLabel("Incorrect input\nDo you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?\nEnter 'yes' or 'no'");
                 } else if (messageFromPlayer.getText().equals("yes")) {
                     addMessageToLabel("Messenger Of Peace was destroyed");
+                    setStateOfSubmit(true);
                 } else if (messageFromPlayer.getText().equals("no")) {
                     addMessageToLabel("You lost 100 LP because of Messenger Of Peace");
+                    setStateOfSubmit(true);
                 }
                 PhaseControl.getInstance().payMessengerOfPeaceSpellCardHarm(messageFromPlayer.getText());
                 messageFromPlayer.setText("");
+                reset();
             });
         }
+        reset();
         PhaseControl.getInstance().resetMoves();
         PhaseControl.getInstance().checkIfGameEnded();
+        reset();
     }
 
     private void setButtonsActivate(boolean activate) {
@@ -231,26 +246,45 @@ public class GameView extends Application {
     }
 
     private void doEndPhase() throws Exception {
+        reset();
         newMessageToLabel("End Phase");
         PhaseControl.getInstance().doEffectEndPhase();
         if (Game.whoseTurnPlayer().howManyCardIsInTheHandCard() == 6) {
+            reset();
             addMessageToLabel("Select a card to be deleted from your hand\nEnter a number from 1 to 6");
+            setStateOfSubmit(false);
             submitButton.setOnMouseClicked(e -> {
                 newMessageToLabel("Standby Phase");
                 if (!messageFromPlayer.getText().matches("[123456]")) {
                     newMessageToLabel("Incorrect input\nSelect a card to be deleted from your hand\nEnter a number from 1 to 6");
+                    messageFromPlayer.setText("");
+                    reset();
                 } else {
                     Address address = new Address(Integer.parseInt(messageFromPlayer.getText()), "hand", true);
                     Game.whoseTurnPlayer().removeCard(address);
                     setHand();
                     newMessageToLabel("Card has been successfully removed from hand");
+                    messageFromPlayer.setText("");
+                    reset();
+                    PhaseControl.getInstance().checkIfGameEnded();
+                    PhaseControl.getInstance().switchPlayerTurn();
+                    try {
+                        doDrawPhase(Game.whoseTurnPlayer());
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                    setStateOfSubmit(true);
+                    reset();
                 }
-                messageFromPlayer.setText("");
+                reset();
             });
+        } else {
+            reset();
+            PhaseControl.getInstance().checkIfGameEnded();
+            PhaseControl.getInstance().switchPlayerTurn();
+            doDrawPhase(Game.whoseTurnPlayer());
+            reset();
         }
-        PhaseControl.getInstance().checkIfGameEnded();
-        //PhaseControl.getInstance().switchPlayerTurn();
-        //doDrawPhase(Game.whoseTurnPlayer(), false);
     }
 
     private void drawCardFromDeckToHand(Player player, Boolean isRival) {
@@ -485,34 +519,33 @@ public class GameView extends Application {
     }
 
     public void goToStandByPhase(ActionEvent actionEvent) {
-        if (!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase"))) {
+        if (Game.getCurrentPhase().equals("Draw Phase")) {
             doStandByPhase();
         }
     }
 
     public void goToMainPhaseOne(ActionEvent actionEvent) {
-        if (!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")))) {
+        if (Game.getCurrentPhase().equals("Draw Phase") || Game.getCurrentPhase().equals("Standby Phase")) {
             doMainPhase1();
         }
     }
 
     public void goToBattlePhase(ActionEvent actionEvent) {
-        if (!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")
-                && !Game.getCurrentPhase().equals("BattlePhase")))) {
+        if (Game.getCurrentPhase().equals("Draw Phase") || Game.getCurrentPhase().equals("Standby Phase") || Game.getCurrentPhase().equals("Main Phas 1")) {
             doBattlePhase();
         }
     }
 
     public void goToMainPhaseTwo(ActionEvent actionEvent) {
-        if (!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")
-                && !Game.getCurrentPhase().equals("BattlePhase") && !Game.getCurrentPhase().equals("MainPhase2")))) {
+        if (Game.getCurrentPhase().equals("Draw Phase") || Game.getCurrentPhase().equals("Standby Phase") || Game.getCurrentPhase().equals("Main Phas 1")
+        || Game.getCurrentPhase().equals("Battle Phase")) {
             doMainPhase2();
         }
     }
 
     public void goToEndPhase(ActionEvent actionEvent) throws Exception {
-        if (!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")
-                && !Game.getCurrentPhase().equals("BattlePhase") && !Game.getCurrentPhase().equals("MainPhase2")))) {
+        if (Game.getCurrentPhase().equals("Draw Phase") || Game.getCurrentPhase().equals("Standby Phase") || Game.getCurrentPhase().equals("Main Phas 1")
+                || Game.getCurrentPhase().equals("Battle Phase") || Game.getCurrentPhase().equals("Main Phase 2")) {
             doEndPhase();
         }
     }
