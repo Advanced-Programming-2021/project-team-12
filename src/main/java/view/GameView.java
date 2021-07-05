@@ -38,10 +38,10 @@ public class GameView extends Application {
     public Label rivalName;
     public Label turnLP;
     public Label rivalLP;
-    public Address selectedCardAddress;
     public ImageView turnAvatar;
     public ImageView rivalAvatar;
     public ImageView imageViewInfo;
+    public Address selectedCardAddress;
     public ImageView[] turnHand = new ImageView[7];
     public ImageView[] turnMonsters = new ImageView[6];
     public ImageView[] turnSpells = new ImageView[6];
@@ -50,6 +50,12 @@ public class GameView extends Application {
     public ImageView[] rivalSpells = new ImageView[6];
     public Button submitButton;
     public TextField messageFromPlayer;
+    public Button drawPhase;
+    public Button standbyPhase;
+    public Button mainPhase1;
+    public Button battlePhase;
+    public Button mainPhase2;
+    public Button endPhase;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -210,6 +216,25 @@ public class GameView extends Application {
         PhaseControl.getInstance().resetMoves();
         PhaseControl.getInstance().checkIfGameEnded();
         reset();
+    }
+
+    private void setButtonsActivate(boolean activate) {
+        for (int i = 1; i <= 5; i++) {
+            turnMonsters[i].setDisable(activate);
+            rivalMonsters[i].setDisable(activate);
+            turnHand[i].setDisable(activate);
+            rivalHand[i].setDisable(activate);
+            turnSpells[i].setDisable(activate);
+            rivalSpells[i].setDisable(activate);
+        }
+        turnHand[6].setDisable(activate);
+        rivalHand[6].setDisable(activate);
+        battlePhase.setDisable(activate);
+        mainPhase1.setDisable(activate);
+        mainPhase2.setDisable(activate);
+        drawPhase.setDisable(activate);
+        endPhase.setDisable(activate);
+        standbyPhase.setDisable(activate);
     }
 
     private void doMainPhase1() {

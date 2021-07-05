@@ -35,10 +35,10 @@ public class MonsterCard {
         this.level = level;
         this.attack = attack;
         this.defence = defence;
-        this.effect = effect;
         this.monsterMode = monsterMode;
         this.isRitual = isRitual;
         this.name = name;
+        realName = name;
         this.price = price;
         this.attribute = attribute;
         this.description = description;

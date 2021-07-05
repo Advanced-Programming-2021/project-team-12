@@ -1,5 +1,6 @@
 package view;
 
+import controllers.CreateCardController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +18,6 @@ import models.card.monster.MonsterMode;
 import java.util.ArrayList;
 
 public class CreateMonsterCard extends Application {
-    private static ArrayList<MonsterCard> monsterCards;
     public Pane pane;
     private String name;
     private int level = 1;
@@ -55,7 +55,7 @@ public class CreateMonsterCard extends Application {
 
     @FXML
     public void initialize() {
-        monsterCards = MonsterCard.getMonsterCards();
+        ArrayList<MonsterCard> monsterCards = MonsterCard.getMonsterCards();
         int count = 0;
         for (MonsterCard monsterCard : monsterCards) {
             int x = count % 2;
@@ -94,27 +94,33 @@ public class CreateMonsterCard extends Application {
     }
 
     public void submit(MouseEvent mouseEvent) throws Exception {
-        try {
-            ArrayList<String> names = new ArrayList<>();
-            price = countThePrice();
-            level = Integer.parseInt(levelTextField.getText());
-            attack = Integer.parseInt(attackTextField.getText());
-            defence = Integer.parseInt(defenceTextField.getText());
-            name = nameTextField.getText();
-            boolean isRitual = false;
-            for (MonsterCard monster : monsters) {
-                description += monster.getDescription();
-                names.add(monster.getName());
-                if (monster.isRitual()) isRitual = true;
-            }
-            if (monsterMode != null && name != null) {
-                new MonsterCard(level, attack, defence, monsterMode, isRitual, name, price, description, names);
-            }
-        } catch (Exception e) {
-
-        }
+        CreateCardController.createMonsterCard(levelTextField.getText(), attackTextField.getText(), defenceTextField.getText(), monsterMode
+        ,name, countThePrice(), monsters);
         new MainMenu().start(stage);
     }
+
+//    private void createCard() {
+//        try {
+//            ArrayList<String> names = new ArrayList<>();
+//            price = countThePrice();
+//            level = Integer.parseInt(levelTextField.getText());
+//            attack = Integer.parseInt(attackTextField.getText());
+//            defence = Integer.parseInt(defenceTextField.getText());
+//            name = nameTextField.getText();
+//            boolean isRitual = false;
+//            for (MonsterCard monster : monsters) {
+//                description += monster.getDescription();
+//                names.add(monster.getName());
+//                if (monster.isRitual()) isRitual = true;
+//            }
+//            if (monsterMode != null && name != null) {
+//                new MonsterCard(level, attack, defence, monsterMode, isRitual, name, price, description, names);
+//            }
+//            MainMenu.user.decreaseMoney(price / 10);
+//        } catch (Exception e) {
+//
+//        }
+//    }
 
     private int countThePrice() {
         try {
