@@ -206,4 +206,8 @@ public class Game {
 
         return mainPhase2;
     }
+
+    public static String getCurrentPhase() {
+        return "EndPhase";
+    }
 }
