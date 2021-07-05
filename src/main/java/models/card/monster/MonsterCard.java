@@ -259,4 +259,8 @@ public class MonsterCard {
     public void setMonsterMode(MonsterMode monsterMode) {
         this.monsterMode = monsterMode;
     }
+
+    public static ArrayList<MonsterCard> getMonsterCards(){
+        return monsterCards;
+    }
 }
