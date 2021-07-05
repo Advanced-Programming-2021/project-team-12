@@ -61,8 +61,8 @@ public class CreateMonsterCard extends Application {
             int x = count % 2;
             int y = (count + x) / 2 - 1;
             Button button = new Button();
-            button.setLayoutX(x * 260);
-            button.setLayoutY(y * 50);
+            button.setLayoutX(x * 480 + 260);
+            button.setLayoutY(y * 25);
             button.setPrefWidth(480);
             button.setPrefHeight(25);
             button.setText(monsterCard.getDescription());
@@ -117,10 +117,17 @@ public class CreateMonsterCard extends Application {
     }
 
     private int countThePrice() {
-        int price = attack + defence;
-        price = price * (20 + level) / 20;
-        price = price * (10 + monsters.size()) / 10;
-        return price;
+        try {
+            level = Integer.parseInt(levelTextField.getText());
+            attack = Integer.parseInt(attackTextField.getText());
+            defence = Integer.parseInt(defenceTextField.getText());
+            int price = attack + defence;
+            price = price * (20 + level) / 20;
+            price = price * (10 + monsters.size()) / 10;
+            return price;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public void beSerpentSea(MouseEvent mouseEvent) {
