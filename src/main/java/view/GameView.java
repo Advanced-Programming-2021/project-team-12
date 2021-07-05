@@ -157,6 +157,7 @@ public class GameView extends Application {
     }
 
     private void doMainPhase1() {
+
     }
 
     private void doBattlePhase() {
