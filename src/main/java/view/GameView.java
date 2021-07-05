@@ -1,5 +1,6 @@
 package view;
 
+import Exceptions.MyException;
 import controllers.Game;
 import controllers.PhaseControl;
 import controllers.move.SetSpell;
@@ -14,12 +15,14 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import models.Address;
 import models.Card;
 import models.Player;
+import models.PositionOfCardInBoard;
 
 import java.io.File;
 import java.util.HashMap;
@@ -38,6 +41,7 @@ public class GameView extends Application {
     public ImageView turnAvatar;
     public ImageView rivalAvatar;
     public ImageView imageViewInfo;
+    public Address selectedCardAddress;
     public ImageView[] turnHand = new ImageView[7];
     public ImageView[] turnMonsters = new ImageView[6];
     public ImageView[] turnSpells = new ImageView[6];
@@ -46,6 +50,12 @@ public class GameView extends Application {
     public ImageView[] rivalSpells = new ImageView[6];
     public Button submitButton;
     public TextField messageFromPlayer;
+    public Button drawPhase;
+    public Button standbyPhase;
+    public Button mainPhase1;
+    public Button battlePhase;
+    public Button mainPhase2;
+    public Button endPhase;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -74,6 +84,15 @@ public class GameView extends Application {
         doDrawPhase(Game.whoseTurnPlayer());
     }
 
+    public void reset() {
+        setHand();
+        setMonster();
+        setSpells();
+        setLP();
+        setAvatar();
+        setNickName();
+    }
+
     private void createImageView(ImageView[] imageView, int X, int Y, int size) {
         for (int i = 1; i <= size; i++) {
             imageView[i] = new ImageView();
@@ -100,6 +119,32 @@ public class GameView extends Application {
         }
     }
 
+    private void setMonsterOnMouseClicked(ImageView monsterZoneCard, int i) {
+        if (!monsterZoneCard.isVisible()) {
+            monsterZoneCard.setOnMouseClicked(e -> {
+                if (selectedCardAddress == null) {
+                    setSelectedCard("monster", i, true);
+                } else if (selectedCardAddress.getKind().equals("Hand")) {
+                    if (e.getButton() == MouseButton.SECONDARY) {
+
+                    }
+                    if (monsterZoneCard.isVisible()) {
+                        selectedCardAddress = new Address(i, "Monster", true);
+                    } else {
+//                    Address address =
+//                            PhaseControl.getInstance().summonControl();
+                    }
+                }
+            });
+        } else {
+
+        }
+    }
+
+    private void setSelectedCard(String zone, int i, Boolean isMine) {
+        selectedCardAddress = new Address(i, zone, isMine);
+    }
+
     private void setNickName() {
         turnName.setText("Name: " + Game.whoseTurnPlayer().getNickName());
         rivalName.setText("Name: " + Game.whoseRivalPlayer().getNickName());
@@ -108,8 +153,8 @@ public class GameView extends Application {
     private void setLP() {
         turnLP.setText("LP: " + Game.whoseTurnPlayer().getLP());
         rivalLP.setText("LP: " + Game.whoseRivalPlayer().getLP());
-        turnProgress.setProgress((double)Game.whoseTurnPlayer().getLP() / 8000);
-        rivalProgress.setProgress((double)Game.whoseRivalPlayer().getLP() / 8000);
+        turnProgress.setProgress((double) Game.whoseTurnPlayer().getLP() / 8000);
+        rivalProgress.setProgress((double) Game.whoseRivalPlayer().getLP() / 8000);
     }
 
     private void setAvatar() {
@@ -129,9 +174,9 @@ public class GameView extends Application {
         Game.setDidWePassBattle(false);
         String drawCardMessage = PhaseControl.getInstance().drawOneCard();
         addMessageToLabel(drawCardMessage);
-        if(drawCardMessage.startsWith("GAME"))
+        if (drawCardMessage.startsWith("GAME"))
             Game.playTurn("EndGame");
-        else if(!drawCardMessage.equals("You can't draw a card because of rival's Time Seal"))
+        else if (!drawCardMessage.equals("You can't draw a card because of rival's Time Seal"))
             drawCardFromDeckToHand(player, false);
     }
 
@@ -139,13 +184,13 @@ public class GameView extends Application {
         newMessageToLabel("Standby Phase");
         if (SetSpell.doIHaveMessengerOfPeace()) {
             addMessageToLabel("Do you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?\nEnter 'yes' or 'no'");
-            submitButton.setOnMouseClicked(e ->{
+            submitButton.setOnMouseClicked(e -> {
                 newMessageToLabel("Standby Phase");
-                if(!messageFromPlayer.getText().equals("yes") && !messageFromPlayer.getText().equals("no")){
+                if (!messageFromPlayer.getText().equals("yes") && !messageFromPlayer.getText().equals("no")) {
                     addMessageToLabel("Incorrect input\nDo you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?\nEnter 'yes' or 'no'");
-                } else if(messageFromPlayer.getText().equals("yes")){
+                } else if (messageFromPlayer.getText().equals("yes")) {
                     addMessageToLabel("Messenger Of Peace was destroyed");
-                } else if(messageFromPlayer.getText().equals("no")){
+                } else if (messageFromPlayer.getText().equals("no")) {
                     addMessageToLabel("You lost 100 LP because of Messenger Of Peace");
                 }
                 PhaseControl.getInstance().payMessengerOfPeaceSpellCardHarm(messageFromPlayer.getText());
@@ -154,6 +199,25 @@ public class GameView extends Application {
         }
         PhaseControl.getInstance().resetMoves();
         PhaseControl.getInstance().checkIfGameEnded();
+    }
+
+    private void setButtonsActivate(boolean activate) {
+        for (int i = 1; i <= 5; i++) {
+            turnMonsters[i].setDisable(activate);
+            rivalMonsters[i].setDisable(activate);
+            turnHand[i].setDisable(activate);
+            rivalHand[i].setDisable(activate);
+            turnSpells[i].setDisable(activate);
+            rivalSpells[i].setDisable(activate);
+        }
+        turnHand[6].setDisable(activate);
+        rivalHand[6].setDisable(activate);
+        battlePhase.setDisable(activate);
+        mainPhase1.setDisable(activate);
+        mainPhase2.setDisable(activate);
+        drawPhase.setDisable(activate);
+        endPhase.setDisable(activate);
+        standbyPhase.setDisable(activate);
     }
 
     private void doMainPhase1() {
@@ -171,9 +235,9 @@ public class GameView extends Application {
         PhaseControl.getInstance().doEffectEndPhase();
         if (Game.whoseTurnPlayer().howManyCardIsInTheHandCard() == 6) {
             addMessageToLabel("Select a card to be deleted from your hand\nEnter a number from 1 to 6");
-            submitButton.setOnMouseClicked(e ->{
+            submitButton.setOnMouseClicked(e -> {
                 newMessageToLabel("Standby Phase");
-                if(!messageFromPlayer.getText().matches("[123456]")){
+                if (!messageFromPlayer.getText().matches("[123456]")) {
                     newMessageToLabel("Incorrect input\nSelect a card to be deleted from your hand\nEnter a number from 1 to 6");
                 } else {
                     Address address = new Address(Integer.parseInt(messageFromPlayer.getText()), "hand", true);
@@ -259,28 +323,95 @@ public class GameView extends Application {
 //    }
 
     public void setHand() {
-        for (int i = 1; i <= 6; i++) {
-            if (Game.whoseTurnPlayer().getHandCard().containsKey(i)) {
-                turnHand[i].setImage(createImage(Game.whoseTurnPlayer().getCardHand(i).getCardName()));
-                turnHand[i].setVisible(true);
-                turnHand[i].setDisable(false);
-            }
-            else {
-                turnHand[i].setVisible(false);
-                turnHand[i].setDisable(true);
-            }
+        for (int i = 1; i <= 6; i++){
+            handsImage(Game.whoseTurnPlayer(), turnHand, i);
+            setHandOnMouseClick(turnHand[i], i);
         }
-        for (int i = 1; i <=6; i++) {
-            if (Game.whoseRivalPlayer().getHandCard().containsKey(i)) {
-                rivalHand[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
-                rivalHand[i].setVisible(true);
-                rivalHand[i].setDisable(false);
-            }
-            else {
-                rivalHand[i].setVisible(false);
-                rivalHand[i].setDisable(true);
-            }
+        for (int i = 1; i <= 6; i++)
+            handsImage(Game.whoseRivalPlayer(), rivalHand, i);
+    }
+
+    public void setSpells() {
+        Player turnPlayer = Game.whoseTurnPlayer();
+        Player rivalPlayer = Game.whoseRivalPlayer();
+        for (int i = 1; i <= 5; i++)
+            spellsImage(turnPlayer, turnSpells, i);
+        for (int i = 1; i <= 5; i++)
+            spellsImage(rivalPlayer, rivalSpells, i);
+    }
+
+    public void setMonster() {
+        Player turnPlayer = Game.whoseTurnPlayer();
+        Player rivalPlayer = Game.whoseRivalPlayer();
+        for (int i = 1; i <= 5; i++)
+            monstersImage(turnPlayer, turnMonsters, i);
+        for (int i = 1; i <= 5; i++)
+            monstersImage(rivalPlayer, rivalMonsters, i);
+    }
+
+    private void handsImage(Player player, ImageView[] hand, int i) {
+        if (player.getHandCard().containsKey(i)) {
+            if (player.getName().equals(Game.whoseTurnPlayer().getName()))
+                hand[i].setImage(createImage(player.getCardHand(i).getCardName()));
+            else
+                hand[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
+
+            hand[i].setVisible(true);
+            hand[i].setDisable(false);
+        } else {
+            hand[i].setVisible(false);
+            hand[i].setDisable(true);
         }
+    }
+
+    private void monstersImage(Player player, ImageView[] monsters, int i) {
+        if (player.getMonsterZoneCard().containsKey(i)) {
+            monsters[i].setImage(createImage(player.getCardMonster(i).getCardName()));
+            if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.DH) && player.getName().equals(Game.whoseRivalPlayer().getName()))
+                monsters[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
+            monsters[i].setRotate(90);
+            if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.OO))
+                monsters[i].setRotate(0);
+            monsters[i].setVisible(true);
+            monsters[i].setDisable(false);
+        } else {
+            monsters[i].setVisible(false);
+            monsters[i].setDisable(true);
+        }
+    }
+
+    private void spellsImage(Player player, ImageView[] spells, int i) {
+        if (player.getSpellZoneCard().containsKey(i)) {
+            spells[i].setImage(createImage(player.getCardSpell(i).getCardName()));
+            if (!player.isSpellFaceUp(i) && player.getName().equals(Game.whoseRivalPlayer().getName()))
+                spells[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
+            spells[i].setVisible(true);
+            spells[i].setDisable(false);
+        } else {
+            spells[i].setVisible(false);
+            spells[i].setDisable(true);
+        }
+    }
+
+    private void setHandOnMouseClick(ImageView handCard, int i) {
+        handCard.setOnMouseClicked(e -> {
+            setSelectedCard("hand", i, true);
+            if (e.getButton() == MouseButton.SECONDARY) {
+                try {
+                    PhaseControl.getInstance().monsterSet(selectedCardAddress);
+                } catch (MyException myException) {
+                    newMessageToLabel(Game.getCurrentPhase());
+                    addMessageToLabel(myException.getMessage());
+                }
+            } else {
+                try {
+                    PhaseControl.getInstance().summonControl(selectedCardAddress);
+                } catch (MyException myException) {
+                    newMessageToLabel(Game.getCurrentPhase());
+                    addMessageToLabel(myException.getMessage());
+                }
+            }
+        });
     }
 
     private Image createImage(String cardName) {
@@ -289,7 +420,7 @@ public class GameView extends Application {
 
     private void removeCard(int layoutX, int layoutY) {
         for (int i = 0; i < pane.getChildren().size(); i++) {
-            if(pane.getChildren().get(i).getLayoutX() == layoutX && pane.getChildren().get(i).getLayoutY() == layoutY){
+            if (pane.getChildren().get(i).getLayoutX() == layoutX && pane.getChildren().get(i).getLayoutY() == layoutY) {
                 pane.getChildren().remove(i);
             }
         }
@@ -354,34 +485,34 @@ public class GameView extends Application {
     }
 
     public void goToStandByPhase(ActionEvent actionEvent) {
-        if(!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase"))){
+        if (!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase"))) {
             doStandByPhase();
         }
     }
 
     public void goToMainPhaseOne(ActionEvent actionEvent) {
-        if(!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")))){
+        if (!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")))) {
             doMainPhase1();
         }
     }
 
     public void goToBattlePhase(ActionEvent actionEvent) {
-        if(!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")
-                && !Game.getCurrentPhase().equals("BattlePhase")))){
+        if (!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")
+                && !Game.getCurrentPhase().equals("BattlePhase")))) {
             doBattlePhase();
         }
     }
 
     public void goToMainPhaseTwo(ActionEvent actionEvent) {
-        if(!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")
-        && !Game.getCurrentPhase().equals("BattlePhase") && !Game.getCurrentPhase().equals("MainPhase2")))){
+        if (!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")
+                && !Game.getCurrentPhase().equals("BattlePhase") && !Game.getCurrentPhase().equals("MainPhase2")))) {
             doMainPhase2();
         }
     }
 
     public void goToEndPhase(ActionEvent actionEvent) throws Exception {
-        if(!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")
-                && !Game.getCurrentPhase().equals("BattlePhase") && !Game.getCurrentPhase().equals("MainPhase2")))){
+        if (!Game.getCurrentPhase().equals("DrawPhase") && (!Game.getCurrentPhase().equals("StandByPhase") && (!Game.getCurrentPhase().equals("MainPhase1")
+                && !Game.getCurrentPhase().equals("BattlePhase") && !Game.getCurrentPhase().equals("MainPhase2")))) {
             doEndPhase();
         }
     }

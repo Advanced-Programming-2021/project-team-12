@@ -57,6 +57,7 @@ public class PhaseControl {
     }
 
     public String drawOneCard() throws Exception {
+        if (Game.getPhase().equals("BattlePhase"))
         if (!canDraw) {
             canDraw = true;
             return "You can't draw a card because of rival's Time Seal";
@@ -502,12 +503,12 @@ public class PhaseControl {
             Game.getMainPhase1().printMonsterAttributes(monsterCardForShow);
         } else if (kind.equals("Spell")) {
             SpellCard spellCardForShow = Game.whoseTurnPlayer().getSpellCardByAddress(address);
-            if (!Game.whoseTurnPlayer().getSpellPosition(address.getNumber()))
+            if (!Game.whoseTurnPlayer().isSpellFaceUp(address.getNumber()))
                 throw new MyException("card is not visible");
             Game.getMainPhase1().printSpellAttributes(spellCardForShow);
         } else if (kind.equals("Trap")) {
             TrapCard trapCardForShow = Game.whoseTurnPlayer().getTrapCardByAddress(address);
-            if (!Game.whoseTurnPlayer().getSpellPosition(address.getNumber()))
+            if (!Game.whoseTurnPlayer().isSpellFaceUp(address.getNumber()))
                 throw new MyException("card is not visible");
             Game.getMainPhase1().printTrapAttributes(trapCardForShow);
         }
