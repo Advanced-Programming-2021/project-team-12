@@ -35,7 +35,6 @@ public class Shop extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-     //   initialize();
         Shop.stage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Shop.fxml"));
         stage.setScene(new Scene(root));
@@ -47,14 +46,22 @@ public class Shop extends Application {
         user = MainMenu.user;
         allCards = Card.getAllCards();
         cards = user.getDeckAndAllCards();
-        for (Card card : cards) {
-            addCardAsImage(counter, card);
-            counter++;
-        }
+        showUserCard();
+        showAllCardsForBuy();
+    }
+
+    private void showAllCardsForBuy() {
         int counter1 = 0;
         for (Card allCard : allCards) {
             addCardAsButton(counter1, allCard);
             counter1++;
+        }
+    }
+
+    private void showUserCard() {
+        for (Card card : cards) {
+            addCardAsImage(counter, card);
+            counter++;
         }
     }
 
@@ -82,7 +89,6 @@ public class Shop extends Application {
         Image image = new Image(getClass().getResource("/PNG/Cards1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
         Button button = new Button();
         button.setText("buy");
-//        button.(VerticalDirection.UP);
         button.setLayoutX(x * scale(90) + scale(20) + 790);
         button.setLayoutY(y * scale(180) + scale(130));
         button.setPrefWidth(scale(80));

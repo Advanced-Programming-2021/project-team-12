@@ -50,4 +50,8 @@ public class MainMenu extends Application {
     public void goToScoreboard(ActionEvent mouseEvent) throws Exception {
         new Scoreboard().start(stage);
     }
+
+    public void goToCreateCard(ActionEvent actionEvent) throws Exception {
+        new CreateCardMenu().start(stage);
+    }
 }
