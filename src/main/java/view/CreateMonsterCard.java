@@ -55,6 +55,7 @@ public class CreateMonsterCard extends Application {
 
     @FXML
     public void initialize() {
+        monsterCards = MonsterCard.getMonsterCards();
         int count = 0;
         for (MonsterCard monsterCard : monsterCards) {
             int x = count % 2;
@@ -75,13 +76,13 @@ public class CreateMonsterCard extends Application {
     }
 
     private void setThisButton(Button button, MonsterCard monsterCard) {
-       if(monsters.contains(monsterCard)){
-           button.setStyle("-fx-background-color: gray");
-           monsters.remove(monsterCard);
-       }else{
-           button.setStyle("-fx-background-color: cyan");
-           monsters.add(monsterCard);
-       }
+        if (monsters.contains(monsterCard)) {
+            button.setStyle("-fx-background-color: gray");
+            monsters.remove(monsterCard);
+        } else {
+            button.setStyle("-fx-background-color: cyan");
+            monsters.add(monsterCard);
+        }
     }
 
     @Override
@@ -98,28 +99,28 @@ public class CreateMonsterCard extends Application {
             price = countThePrice();
             level = Integer.parseInt(levelTextField.getText());
             attack = Integer.parseInt(attackTextField.getText());
-            defence =Integer.parseInt(defenceTextField.getText());
+            defence = Integer.parseInt(defenceTextField.getText());
             name = nameTextField.getText();
             boolean isRitual = false;
             for (MonsterCard monster : monsters) {
                 description += monster.getDescription();
                 names.add(monster.getName());
-                if(monster.isRitual()) isRitual = true;
+                if (monster.isRitual()) isRitual = true;
             }
-            if(monsterMode != null && name != null){
+            if (monsterMode != null && name != null) {
                 new MonsterCard(level, attack, defence, monsterMode, isRitual, name, price, description, names);
             }
         } catch (Exception e) {
 
         }
-       new MainMenu().start(stage);
+        new MainMenu().start(stage);
     }
 
     private int countThePrice() {
-       int price = attack + defence;
-       price = price * (20 + level) / 20;
-       price = price * (10 + monsters.size()) / 10;
-       return price;
+        int price = attack + defence;
+        price = price * (20 + level) / 20;
+        price = price * (10 + monsters.size()) / 10;
+        return price;
     }
 
     public void beSerpentSea(MouseEvent mouseEvent) {
@@ -236,7 +237,7 @@ public class CreateMonsterCard extends Application {
     }
 
     public void countPrice(MouseEvent mouseEvent) {
-      priceLabel.setText(String.valueOf(countThePrice()));
+        priceLabel.setText(String.valueOf(countThePrice()));
     }
 
     public void back(MouseEvent mouseEvent) throws Exception {
