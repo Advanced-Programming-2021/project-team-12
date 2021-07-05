@@ -59,7 +59,7 @@ public class Attack {
     }
 
     public static boolean isDefenderFacedDown() {
-        return Game.whoseRivalPlayer().getSpellPosition(defenderAddress.getNumber());
+        return Game.whoseRivalPlayer().isSpellFaceUp(defenderAddress.getNumber());
     }
 
     public static Player whichPlayerIsAttacker() {
