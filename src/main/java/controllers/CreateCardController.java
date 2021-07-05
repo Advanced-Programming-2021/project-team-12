@@ -4,6 +4,7 @@ import models.card.monster.MonsterCard;
 import models.card.monster.MonsterMode;
 import models.card.spell.SpellCard;
 import models.card.spell.SpellMode;
+import models.card.trap.TrapCard;
 import view.MainMenu;
 
 import java.util.ArrayList;
@@ -46,6 +47,19 @@ public class CreateCardController {
             }
         }catch (Exception e){
 
+        }
+    }
+
+    public static void createTrapCard(String realName, ArrayList<TrapCard> trapCards, int price) {
+        if(realName != null){
+            String description = null;
+            ArrayList <String> names = new ArrayList<>();
+            for (TrapCard trapCard : trapCards) {
+                description += trapCard.getDescription();
+                names.add(trapCard.getName());
+            }
+            new TrapCard(realName, price, description, names);
+            MainMenu.user.decreaseMoney(price / 10);
         }
     }
 }
