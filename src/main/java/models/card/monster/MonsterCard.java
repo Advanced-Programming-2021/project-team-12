@@ -24,7 +24,7 @@ public class MonsterCard {
     private Attribute attribute;
     private static ArrayList<MonsterCard> monsterCards;
     private ArrayList<String> names = new ArrayList<>();
-    private String fakeName;
+    private String realName;
 
     static {
         monsterCards = new ArrayList<>();
@@ -46,14 +46,14 @@ public class MonsterCard {
     }
 
     public MonsterCard(int level, int attack, int defence, MonsterMode monsterMode,
-                       boolean isRitual, String fakeName, int price, String description, ArrayList<String> names) {
+                       boolean isRitual, String realName, int price, String description, ArrayList<String> names) {
         this.level = level;
         this.names = names;
         this.attack = attack;
         this.defence = defence;
         this.monsterMode = monsterMode;
         this.isRitual = isRitual;
-        this.fakeName = fakeName;
+        this.realName = realName;
         this.price = price;
         this.description = description;
         monsterCards.add(this);
