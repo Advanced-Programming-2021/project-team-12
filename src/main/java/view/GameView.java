@@ -105,24 +105,26 @@ public class GameView extends Application {
     }
 
     private void setMonsterOnMouseClicked(ImageView monsterZoneCard) {
-        monsterZoneCard.setOnMouseClicked(e -> {
-            if (selectedCard == null) {
-                setSelectedCard("Monster", monsterZoneCard);
-                selectedCardZone = "Monster";
-                selectedCard = monsterZoneCard;
-            } else if (selectedCardZone.equals("Hand")) {
-                if (e.getButton() == MouseButton.SECONDARY) {
-                    System.out.println("hhhhh");
-                }
-                if (monsterZoneCard.isVisible()) {
-                    selectedCardZone = "Monster";
-                    selectedCard = monsterZoneCard;
-                } else {
+        if(!monsterZoneCard.isVisible()){
+            monsterZoneCard.setOnMouseClicked(e -> {
+                if (selectedCard == null) {
+                    setSelectedCard("Monster", monsterZoneCard);
+                } else if (selectedCardZone.equals("Hand")) {
+                    if (e.getButton() == MouseButton.SECONDARY) {
+
+                    }
+                    if (monsterZoneCard.isVisible()) {
+                        selectedCardZone = "Monster";
+                        selectedCard = monsterZoneCard;
+                    } else {
 //                    Address address =
 //                            PhaseControl.getInstance().summonControl();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+
+        }
     }
 
     private void setSelectedCard(String zone, ImageView monsterZoneCard) {
