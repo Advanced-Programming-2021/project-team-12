@@ -193,24 +193,22 @@ public class GameView extends Application {
         if (SetSpell.doIHaveMessengerOfPeace()) {
             addMessageToLabel("Do you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?\nEnter 'yes' or 'no'");
             setStateOfSubmit(false);
-            System.out.println("3");
-            System.out.println(submitButton.isDisable());
             reset();
-//            submitButton.setOnMouseClicked(e -> {
-//                newMessageToLabel("Standby Phase");
-//                if (!messageFromPlayer.getText().equals("yes") && !messageFromPlayer.getText().equals("no")) {
-//                    addMessageToLabel("Incorrect input\nDo you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?\nEnter 'yes' or 'no'");
-//                } else if (messageFromPlayer.getText().equals("yes")) {
-//                    addMessageToLabel("Messenger Of Peace was destroyed");
-//                    setStateOfSubmit(true);
-//                } else if (messageFromPlayer.getText().equals("no")) {
-//                    addMessageToLabel("You lost 100 LP because of Messenger Of Peace");
-//                    setStateOfSubmit(true);
-//                }
-//                PhaseControl.getInstance().payMessengerOfPeaceSpellCardHarm(messageFromPlayer.getText());
-//                messageFromPlayer.setText("");
-//                reset();
-//            });
+            submitButton.setOnMouseClicked(e -> {
+                newMessageToLabel("Standby Phase");
+                if (!messageFromPlayer.getText().equals("yes") && !messageFromPlayer.getText().equals("no")) {
+                    addMessageToLabel("Incorrect input\nDo you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?\nEnter 'yes' or 'no'");
+                } else if (messageFromPlayer.getText().equals("yes")) {
+                    addMessageToLabel("Messenger Of Peace was destroyed");
+                    setStateOfSubmit(true);
+                } else if (messageFromPlayer.getText().equals("no")) {
+                    addMessageToLabel("You lost 100 LP because of Messenger Of Peace");
+                    setStateOfSubmit(true);
+                }
+                PhaseControl.getInstance().payMessengerOfPeaceSpellCardHarm(messageFromPlayer.getText());
+                messageFromPlayer.setText("");
+                reset();
+            });
         }
         reset();
         PhaseControl.getInstance().resetMoves();
@@ -359,7 +357,6 @@ public class GameView extends Application {
 //    }
 
     public void setHand() {
-        setStateOfSubmit(true);
         for (int i = 1; i <= 6; i++){
             handsImage(Game.whoseTurnPlayer(), turnHand, i);
             setHandOnMouseClick(turnHand[i], i);
