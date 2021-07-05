@@ -27,27 +27,27 @@
             <Image url="@../PNG/Textures/CardInfoBackground.png" />
          </image>
       </ImageView>
-      <Button layoutX="7.0" layoutY="456.0" mnemonicParsing="false" onAction="#goToDrawPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="Draw Phase">
+      <Button fx:id="drawPhase" layoutX="7.0" layoutY="456.0" mnemonicParsing="false" onAction="#goToDrawPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="Draw Phase">
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font></Button>
-      <Button layoutX="114.0" layoutY="456.0" mnemonicParsing="false" onAction="#goToStandByPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="Standby Phase">
+      <Button fx:id="standbyPhase" layoutX="114.0" layoutY="456.0" mnemonicParsing="false" onAction="#goToStandByPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="Standby Phase">
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font></Button>
-      <Button layoutX="7.0" layoutY="509.0" mnemonicParsing="false" onAction="#goToMainPhaseOne" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="Main Phase 1">
+      <Button fx:id="mainPhase1" layoutX="7.0" layoutY="509.0" mnemonicParsing="false" onAction="#goToMainPhaseOne" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="Main Phase 1">
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font></Button>
-      <Button layoutX="114.0" layoutY="509.0" mnemonicParsing="false" onAction="#goToBattlePhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="Battle Phase">
+      <Button fx:id="battlePhase" layoutX="114.0" layoutY="509.0" mnemonicParsing="false" onAction="#goToBattlePhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="Battle Phase">
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font></Button>
-      <Button layoutX="7.0" layoutY="560.0" mnemonicParsing="false" onAction="#goToMainPhaseTwo" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="Main Phase 2">
+      <Button fx:id="mainPhase2" layoutX="7.0" layoutY="560.0" mnemonicParsing="false" onAction="#goToMainPhaseTwo" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="Main Phase 2">
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font></Button>
-      <Button layoutX="114.0" layoutY="560.0" mnemonicParsing="false" onAction="#goToEndPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="End Phase">
+      <Button fx:id="endPhase" layoutX="114.0" layoutY="560.0" mnemonicParsing="false" onAction="#goToEndPhase" prefHeight="40.0" prefWidth="100.0" style="-fx-background-size: 100;" styleClass="buttonPhaseOur" stylesheets="@../CSS/Buttons.css" text="End Phase">
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font></Button>
@@ -87,7 +87,7 @@
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font></Button>
       <TextField fx:id="messageFromPlayer" layoutX="16.0" layoutY="96.0" prefHeight="25.0" prefWidth="139.0" />
-      <Button fx:id="submitButton" layoutX="155.0" layoutY="96.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="57.0" style="-fx-background-size: 58;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Submit">
+      <Button fx:id="submitButton" disable="true" layoutX="155.0" layoutY="96.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="57.0" style="-fx-background-size: 58;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Submit">
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font>
