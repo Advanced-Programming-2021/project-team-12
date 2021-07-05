@@ -61,9 +61,9 @@ public class CreateMonsterCard extends Application {
             int x = count % 2;
             int y = (count + x) / 2 - 1;
             Button button = new Button();
-            button.setLayoutX(x * 480 + 260);
-            button.setLayoutY(y * 25);
-            button.setPrefWidth(480);
+            button.setLayoutX(x * 655 + 260);
+            button.setLayoutY(y * 25 + 100);
+            button.setPrefWidth(650);
             button.setPrefHeight(25);
             button.setText(monsterCard.getDescription());
             button.setStyle("-fx-background-color: gray");
@@ -124,6 +124,7 @@ public class CreateMonsterCard extends Application {
             int price = attack + defence;
             price = price * (20 + level) / 20;
             price = price * (10 + monsters.size()) / 10;
+            price = price + 200 * monsters.size();
             return price;
         } catch (Exception e) {
             return 0;
