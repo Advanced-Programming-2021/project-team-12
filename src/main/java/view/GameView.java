@@ -104,25 +104,25 @@ public class GameView extends Application {
         }
     }
 
-    private void setMonsterOnMouseClicked(ImageView[] monsterZoneCard) {
-//        monsterZoneCard.setOnMouseClicked(e -> {
-//            if (selectedCard == null) {
-//                setSelectedCard("Monster", monsterZoneCard);
-//                selectedCardZone = "Monster";
-//                selectedCard = monsterZoneCard;
-//            } else if (selectedCardZone.equals("Hand")) {
-//                if (e.getButton() == MouseButton.SECONDARY) {
-//                    System.out.println("hhhhh");
-//                }
-//                if (monsterZoneCard.isVisible()) {
-//                    selectedCardZone = "Monster";
-//                    selectedCard = monsterZoneCard;
-//                } else {
-////                    Address address =
-////                            PhaseControl.getInstance().summonControl();
-//                }
-//            }
-//        });
+    private void setMonsterOnMouseClicked(ImageView monsterZoneCard) {
+        monsterZoneCard.setOnMouseClicked(e -> {
+            if (selectedCard == null) {
+                setSelectedCard("Monster", monsterZoneCard);
+                selectedCardZone = "Monster";
+                selectedCard = monsterZoneCard;
+            } else if (selectedCardZone.equals("Hand")) {
+                if (e.getButton() == MouseButton.SECONDARY) {
+                    System.out.println("hhhhh");
+                }
+                if (monsterZoneCard.isVisible()) {
+                    selectedCardZone = "Monster";
+                    selectedCard = monsterZoneCard;
+                } else {
+//                    Address address =
+//                            PhaseControl.getInstance().summonControl();
+                }
+            }
+        });
     }
 
     private void setSelectedCard(String zone, ImageView monsterZoneCard) {
@@ -293,7 +293,8 @@ public class GameView extends Application {
             if (Game.whoseTurnPlayer().getHandCard().containsKey(i)) {
                 turnHand[i].setImage(createImage(Game.whoseTurnPlayer().getCardHand(i).getCardName()));
                 turnHand[i].setVisible(true);
-                turnHand[i].setDisable(false); 
+                turnHand[i].setDisable(false);
+                setHandOnMouseClick(turnHand[i]);
             } else {
                 turnHand[i].setVisible(false);
                 turnHand[i].setDisable(true);
@@ -311,10 +312,9 @@ public class GameView extends Application {
         }
     }
 
-    private void setHandOnMouseClick(ImageView imageView) {
-        imageView.setOnMouseClicked(e -> {
-            selectedCard = imageView;
-            selectedCardZone = "Hand";
+    private void setHandOnMouseClick(ImageView handCard) {
+        handCard.setOnMouseClicked(e -> {
+            setSelectedCard("hand", handCard);
         });
     }
 
