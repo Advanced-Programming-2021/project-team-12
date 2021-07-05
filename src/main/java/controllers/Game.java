@@ -216,6 +216,6 @@ public class Game {
     }
 
     public static String getCurrentPhase() {
-        return "EndPhase";
+        return phase;
     }
 }
