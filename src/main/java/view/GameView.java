@@ -1,10 +1,12 @@
 package view;
 
 import controllers.Game;
+import controllers.PhaseControl;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -19,6 +21,7 @@ import java.util.Objects;
 public class GameView extends Application {
     private static Stage stage;
     public Pane pane;
+    public Button messageBox;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -29,9 +32,25 @@ public class GameView extends Application {
         setHand(Game.whoseTurnPlayer(), false);
         createBackgroundCards();
         createPlayers();
+        doDrawPhase();
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void doDrawPhase() throws Exception {
+        Game.setDidWePassBattle(false);
+        String drawCardMessage = PhaseControl.getInstance().drawOneCard();
+        addMessageToLabel(drawCardMessage);
+        if(drawCardMessage.equals("first player cannot draw a card, second player is the winner")){
+            Game.playTurn("EndGame");
+        } else if(drawCardMessage.equals("second player cannot draw a card, first player is the winner")){
+            Game.playTurn("EndGame");
+        }
+    }
+
+    private void addMessageToLabel(String message) {
+        messageBox.setText(message);
     }
 
     private void setHand(Player player, Boolean isRival) {
