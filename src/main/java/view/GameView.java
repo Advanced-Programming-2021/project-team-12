@@ -67,7 +67,6 @@ public class GameView extends Application {
 
     @FXML
     public void initialize() throws Exception {
-        doDrawPhase();
         setAvatar();
         setNickName();
         setProgresses();
@@ -184,7 +183,7 @@ public class GameView extends Application {
                 } else {
                     Address address = new Address(Integer.parseInt(messageFromPlayer.getText()), "hand", true);
                     Game.whoseTurnPlayer().removeCard(address);
-                    setHand(Game.whoseTurnPlayer(), false);
+                    setHand();
                     newMessageToLabel("Card has been successfully removed from hand");
                 }
                 PhaseControl.getInstance().payMessengerOfPeaceSpellCardHarm(messageFromPlayer.getText());
@@ -266,12 +265,28 @@ public class GameView extends Application {
 //    }
 
     public void setHand() {
-        for (int i = 1; i <= 6; i++)
-            if (Game.whoseTurnPlayer().getHandCard().containsKey(i))
+        for (int i = 1; i <= 6; i++) {
+            if (Game.whoseTurnPlayer().getHandCard().containsKey(i)) {
                 turnHand[i].setImage(createImage(Game.whoseTurnPlayer().getCardHand(i).getCardName()));
-        for (int i = 1; i <=6; i++)
-            if (Game.whoseRivalPlayer().getHandCard().containsKey(i))
+                turnHand[i].setVisible(true);
+                turnHand[i].setDisable(false);
+            }
+            else {
+                turnHand[i].setVisible(false);
+                turnHand[i].setDisable(true);
+            }
+        }
+        for (int i = 1; i <=6; i++) {
+            if (Game.whoseRivalPlayer().getHandCard().containsKey(i)) {
                 rivalHand[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
+                rivalHand[i].setVisible(true);
+                rivalHand[i].setDisable(false);
+            }
+            else {
+                rivalHand[i].setVisible(false);
+                rivalHand[i].setDisable(true);
+            }
+        }
     }
 
     private Image createImage(String cardName) {

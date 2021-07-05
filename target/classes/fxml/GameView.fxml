@@ -58,7 +58,6 @@
       <ImageView fitHeight="100.0" fitWidth="74.0" layoutX="259.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fitHeight="296.0" fitWidth="205.0" layoutX="7.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
       <TextFlow prefHeight="200.0" prefWidth="200.0" />
-      <Button fx:id="messageBox" cancelButton="true" disable="true" layoutX="16.0" layoutY="25.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="196.0" />
       <ProgressBar fx:id="turnProgress" layoutX="842.0" layoutY="571.0" prefWidth="200.0" progress="1.0" style="-fx-background-color: cornsilk;" styleClass="red-bar" stylesheets="@../CSS/Buttons.css" />
       <ProgressBar fx:id="rivalProgress" layoutX="842.0" layoutY="5.0" prefWidth="200.0" progress="1.0" style="-fx-background-color: cornsilk;" styleClass="red-bar" stylesheets="@../CSS/Buttons.css" />
       <ImageView fx:id="rivalAvatar" fitHeight="119.0" fitWidth="107.0" layoutX="889.0" layoutY="49.0" pickOnBounds="true" />
@@ -83,5 +82,15 @@
          </font>
       </Label>
       <ImageView fx:id="turnAvatar" fitHeight="119.0" fitWidth="107.0" layoutX="889.0" layoutY="425.0" pickOnBounds="true" />
+      <Button fx:id="messageBox" alignment="TOP_LEFT" cacheShape="false" cancelButton="true" disable="true" layoutX="16.0" layoutY="3.0" mnemonicParsing="false" prefHeight="93.0" prefWidth="196.0" wrapText="true">
+         <font>
+            <Font name="StoneSerif-Semibold" size="10.0" />
+         </font></Button>
+      <TextField fx:id="messageFromPlayer" layoutX="16.0" layoutY="96.0" prefHeight="25.0" prefWidth="139.0" />
+      <Button fx:id="submitButton" layoutX="155.0" layoutY="96.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="57.0" style="-fx-background-size: 58;" styleClass="buttonPhaseOpponent" stylesheets="@../CSS/Buttons.css" text="Submit">
+         <font>
+            <Font name="StoneSerif-Semibold" size="10.0" />
+         </font>
+      </Button>
    </children>
 </Pane>
