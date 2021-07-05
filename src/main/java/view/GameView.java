@@ -47,7 +47,6 @@ public class GameView extends Application {
     public void Initialize() {
         setAvatar();
         setLP();
-        setLineLP();
     }
 
     private void setLP() {
@@ -63,12 +62,11 @@ public class GameView extends Application {
         Label label = new Label();
         label.setText("LP: " + player.getLP());
         label.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 16));
-        label.setLayoutX();
-        label.setLayoutY();
+        return null;
     }
 
     private ImageView createAvatarImage(Player player, boolean isRival) {
-        File file =  new File(player.getUser().getAvatarAddress());
+        File file = new File(player.getUser().getAvatarAddress());
         String string = file.toURI().toString();
         Image image = new Image(string);
         ImageView imageView = new ImageView(image);
@@ -79,6 +77,8 @@ public class GameView extends Application {
         if (isRival)
             imageView.setLayoutY(100);
         return imageView;
+    }
+
     private void doDrawPhase() throws Exception {
         Game.setDidWePassBattle(false);
         String drawCardMessage = PhaseControl.getInstance().drawOneCard();
