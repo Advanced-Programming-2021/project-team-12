@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import models.Address;
 import models.Card;
 import models.Player;
+import models.PositionOfCardInBoard;
 
 import java.io.File;
 import java.util.HashMap;
@@ -258,27 +259,74 @@ public class GameView extends Application {
 //    }
 
     public void setHand() {
-        for (int i = 1; i <= 6; i++) {
-            if (Game.whoseTurnPlayer().getHandCard().containsKey(i)) {
-                turnHand[i].setImage(createImage(Game.whoseTurnPlayer().getCardHand(i).getCardName()));
-                turnHand[i].setVisible(true);
-                turnHand[i].setDisable(false);
-            }
-            else {
-                turnHand[i].setVisible(false);
-                turnHand[i].setDisable(true);
-            }
+        for (int i = 1; i <= 6; i++)
+            handsImage(Game.whoseTurnPlayer(), turnHand, i);
+        for (int i = 1; i <=6; i++)
+            handsImage(Game.whoseRivalPlayer(), rivalHand , i);
+    }
+
+    public void setSpells() {
+        Player turnPlayer = Game.whoseTurnPlayer();
+        Player rivalPlayer = Game.whoseRivalPlayer();
+        for (int i = 1; i <= 5; i++)
+            spellsImage(turnPlayer, turnSpells, i);
+        for (int i = 1; i <= 5; i++)
+            spellsImage(rivalPlayer, rivalSpells, i);
+    }
+
+    public void setMonster() {
+        Player turnPlayer = Game.whoseTurnPlayer();
+        Player rivalPlayer = Game.whoseRivalPlayer();
+        for (int i = 1; i <= 5; i++)
+            monstersImage(turnPlayer, turnMonsters, i);
+        for (int i = 1; i <= 5; i++)
+            monstersImage(rivalPlayer, rivalMonsters, i);
+    }
+
+    private void handsImage(Player player, ImageView[] hand , int i) {
+        if (player.getHandCard().containsKey(i)) {
+            if (player.getName().equals(Game.whoseTurnPlayer().getName()))
+                hand[i].setImage(createImage(player.getCardHand(i).getCardName()));
+            else
+                hand[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
+            
+            hand[i].setVisible(true);
+            hand[i].setDisable(false);
         }
-        for (int i = 1; i <=6; i++) {
-            if (Game.whoseRivalPlayer().getHandCard().containsKey(i)) {
-                rivalHand[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
-                rivalHand[i].setVisible(true);
-                rivalHand[i].setDisable(false);
-            }
-            else {
-                rivalHand[i].setVisible(false);
-                rivalHand[i].setDisable(true);
-            }
+        else {
+            hand[i].setVisible(false);
+            hand[i].setDisable(true);
+        }
+    }
+
+    private void monstersImage(Player player, ImageView[] monsters, int i) {
+        if (player.getMonsterZoneCard().containsKey(i)) {
+            monsters[i].setImage(createImage(player.getCardMonster(i).getCardName()));
+            if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.DH) && player.getName().equals(Game.whoseRivalPlayer().getName()))
+                monsters[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
+            monsters[i].setRotate(90);
+            if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.OO))
+                monsters[i].setRotate(0);
+            monsters[i].setVisible(true);
+            monsters[i].setDisable(false);
+        }
+        else {
+            monsters[i].setVisible(false);
+            monsters[i].setDisable(true);
+        }
+    }
+
+    private void spellsImage(Player player, ImageView[] spells, int i) {
+        if (player.getSpellZoneCard().containsKey(i)) {
+            spells[i].setImage(createImage(player.getCardSpell(i).getCardName()));
+            if (!player.isSpellFaceUp(i) && player.getName().equals(Game.whoseRivalPlayer().getName()))
+                spells[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
+            spells[i].setVisible(true);
+            spells[i].setDisable(false);
+        }
+        else {
+            spells[i].setVisible(false);
+            spells[i].setDisable(true);
         }
     }
 

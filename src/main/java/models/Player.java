@@ -520,7 +520,7 @@ public class Player {
         return unusedCards.size();
     }
 
-    public boolean getSpellPosition(int i) {
+    public boolean isSpellFaceUp(int i) {
         return isSpellFaceUp.get(i);
     }
 
@@ -699,5 +699,9 @@ public class Player {
 
     public User getUser() {
         return user;
+    }
+
+    public Card getCardSpell(int i) {
+        return spellZoneCardNumbers.get(i);
     }
 }
