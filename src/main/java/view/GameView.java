@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +21,7 @@ import models.Card;
 import models.Player;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -27,56 +29,96 @@ public class GameView extends Application {
     private static Stage stage;
     public Pane pane;
     public Button messageBox;
+    public ProgressBar turnProgress;
+    public ProgressBar rivalProgress;
+    public Label turnName;
+    public Label rivalName;
+    public Label turnLP;
+    public Label rivalLP;
+    public ImageView turnAvatar;
+    public ImageView rivalAvatar;
+    public ImageView[] turnHand = new ImageView[7];
+    public ImageView[] turnMonsters = new ImageView[6];
+    public ImageView[] turnSpells = new ImageView[6];
+    public ImageView[] rivalHand = new ImageView[7];
+    public ImageView[] rivalMonsters = new ImageView[6];
+    public ImageView[] rivalSpells = new ImageView[6];
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;
         pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/GameView.fxml")));
         createBackground("normal");
-        setHand(Game.whoseRivalPlayer(), true);
-        setHand(Game.whoseTurnPlayer(), false);
+//        setHand(Game.whoseRivalPlayer(), true);
+//        setHand(Game.whoseTurnPlayer(), false);
         createBackgroundCards();
         createPlayers();
-        doDrawPhase();
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
     }
 
     @FXML
-    public void Initialize() {
+    public void initialize() throws Exception {
+        doDrawPhase();
         setAvatar();
-        setLP();
+        setNickName();
+        setProgresses();
+        createHandImageView(turnHand, false);
+        createHandImageView(rivalHand, true);
+        setHand();
+    }
+
+    private void createHandImageView(ImageView[] imageView, boolean isRival) {
+        for (int i = 1; i <= 6; i++) {
+            imageView[i] = new ImageView();
+            imageView[i].setFitWidth(75);
+            imageView[i].setFitHeight(100);
+            imageView[i].setPreserveRatio(false);
+            imageView[i].setLayoutX(260 + 80 * (i - 1));
+            imageView[i].setLayoutY(535);
+            if (isRival)
+                imageView[i].setLayoutY(-50);
+            int finalI = i;
+            imageView[i].setOnMouseEntered(e -> {
+                ImageView imageViewInfo;
+                if (!isRival)
+                    imageViewInfo = createImage(Game.whoseTurnPlayer().getHandCard().get(finalI).getCardName(), 7, 152, 205, 296);
+                else
+                    imageViewInfo = createImage("Unknown", 7, 152, 205, 296);
+                pane.getChildren().add(imageViewInfo);
+            });
+            imageView[i].setOnMouseExited(e -> {
+                removeCard(7, 152);
+            });
+            pane.getChildren().add(imageView[i]);
+        }
+    }
+
+    private void setNickName() {
+        turnName.setText("Name: " + Game.whoseTurnPlayer().getNickName());
+        rivalName.setText("Name: " + Game.whoseRivalPlayer().getNickName());
+    }
+
+    private void setProgresses() {
+        turnProgress.setProgress(Game.whoseTurnPlayer().getLP() / 8000);
+        rivalProgress.setProgress(Game.whoseRivalPlayer().getLP() / 8000);
     }
 
     private void setLP() {
-
+        turnLP.setText("LP: " + Game.whoseTurnPlayer().getLP());
+        rivalLP.setText("LP: " + Game.whoseRivalPlayer().getLP());
     }
 
     private void setAvatar() {
-        createAvatarImage(Game.whoseTurnPlayer(), false);
-        createAvatarImage(Game.whoseRivalPlayer(), true);
+        turnAvatar.setImage(createAvatarImage(Game.whoseTurnPlayer()));
+        rivalAvatar.setImage(createAvatarImage(Game.whoseRivalPlayer()));
     }
 
-    private Label createLPLabel(Player player, boolean isRival) {
-        Label label = new Label();
-        label.setText("LP: " + player.getLP());
-        label.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 16));
-        return null;
-    }
-
-    private ImageView createAvatarImage(Player player, boolean isRival) {
+    private Image createAvatarImage(Player player) {
         File file = new File(player.getUser().getAvatarAddress());
         String string = file.toURI().toString();
-        Image image = new Image(string);
-        ImageView imageView = new ImageView(image);
-        imageView.setLayoutX(880);
-        imageView.setLayoutY(385);
-        imageView.setFitWidth(120);
-        imageView.setFitHeight(130);
-        if (isRival)
-            imageView.setLayoutY(100);
-        return imageView;
+        return new Image(string);
     }
 
     private void doDrawPhase() throws Exception {
@@ -94,32 +136,48 @@ public class GameView extends Application {
         messageBox.setText(message);
     }
 
-    private void setHand(Player player, Boolean isRival) {
-        for (int i = 1; i < 6; i++) {
-            HashMap<Integer, Card> handCards = player.getHandCard();
-            if (handCards.containsKey(i)) {
-                ImageView imageView;
-                if (!isRival) {
-                    imageView = createImage(handCards.get(i).getCardName(), 260 + 80 * (i - 1), 535, 75, 100);
-                } else {
-                    imageView = createImage("Unknown", 260 + 80 * (i - 1), -50, 75, 100);
-                }
-                int finalI = i;
-                imageView.setOnMouseEntered(e -> {
-                    ImageView imageViewInfo;
-                    if (!isRival) {
-                        imageViewInfo = createImage(handCards.get(finalI).getCardName(), 7, 152, 205, 296);
-                    } else {
-                        imageViewInfo = createImage("Unknown", 7, 152, 205, 296);
-                    }
-                    pane.getChildren().add(imageViewInfo);
-                });
-                imageView.setOnMouseExited(e -> {
-                    removeCard(7, 152);
-                });
-                pane.getChildren().add(imageView);
-            }
-        }
+//    private void setHand(Player player, Boolean isRival) {
+//        for (int i = 1; i <= 6; i++) {
+//            HashMap<Integer, Card> handCards = player.getHandCard();
+//            if (handCards.containsKey(i)) {
+//                ImageView imageView;
+//                if (!isRival) {
+//                    imageView = createImage(handCards.get(i).getCardName(), 260 + 80 * (i - 1), 535, 75, 100);
+//                } else {
+//                    imageView = createImage("Unknown", 260 + 80 * (i - 1), -50, 75, 100);
+//                }
+//                int finalI = i;
+//                imageView.setOnMouseEntered(e -> {
+//                    ImageView imageViewInfo;
+//                    if (!isRival) {
+//                        imageViewInfo = createImage(handCards.get(finalI).getCardName(), 7, 152, 205, 296);
+//                    } else {
+//                        imageViewInfo = createImage("Unknown", 7, 152, 205, 296);
+//                    }
+//                    pane.getChildren().add(imageViewInfo);
+//                });
+//                imageView.setOnMouseExited(e -> {
+//                    removeCard(7, 152);
+//                });
+//                if (isRival)
+//                    rivalHand[i] = imageView;
+//                else turnHand[i] = imageView;
+//                pane.getChildren().add(imageView);
+//            }
+//        }
+//    }
+
+    public void setHand() {
+        for (int i = 1; i <= 6; i++)
+            if (Game.whoseTurnPlayer().getHandCard().containsKey(i))
+                turnHand[i].setImage(createImage(Game.whoseTurnPlayer().getCardHand(i).getCardName()));
+        for (int i = 1; i <=6; i++)
+            if (Game.whoseRivalPlayer().getHandCard().containsKey(i))
+                rivalHand[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
+    }
+
+    private Image createImage(String cardName) {
+        return new Image(getClass().getResource("/PNG/Cards1/" + cardName + ".jpg").toExternalForm());
     }
 
     private void removeCard(int layoutX, int layoutY) {

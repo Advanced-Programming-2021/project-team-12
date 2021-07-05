@@ -51,11 +51,37 @@
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font></Button>
-      <ImageView fitHeight="603.0" fitWidth="227.0" layoutX="828.0" pickOnBounds="true">
+      <ImageView fitHeight="600.0" fitWidth="227.0" layoutX="829.0" pickOnBounds="true">
          <image>
             <Image url="@../PNG/Textures/CardInfoBackground.png" />
          </image></ImageView>
       <ImageView fitHeight="100.0" fitWidth="74.0" layoutX="259.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" />
-      <Button cancelButton="true" disable="true" layoutX="16.0" layoutY="25.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="196.0" fx:id="messageBox"/>
+      <ImageView fitHeight="296.0" fitWidth="205.0" layoutX="7.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+      <TextFlow prefHeight="200.0" prefWidth="200.0" />
+      <Button fx:id="messageBox" cancelButton="true" disable="true" layoutX="16.0" layoutY="25.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="196.0" />
+      <ProgressBar fx:id="turnProgress" layoutX="842.0" layoutY="571.0" prefWidth="200.0" progress="1.0" style="-fx-background-color: cornsilk;" styleClass="red-bar" stylesheets="@../CSS/Buttons.css" />
+      <ProgressBar fx:id="rivalProgress" layoutX="842.0" layoutY="5.0" prefWidth="200.0" progress="1.0" style="-fx-background-color: cornsilk;" styleClass="red-bar" stylesheets="@../CSS/Buttons.css" />
+      <ImageView fx:id="rivalAvatar" fitHeight="119.0" fitWidth="107.0" layoutX="889.0" layoutY="49.0" pickOnBounds="true" />
+      <Label fx:id="rivalLP" layoutX="896.0" layoutY="25.0" text="LP = 8000" textFill="#88001b">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="rivalName" layoutX="890.0" layoutY="176.0" textFill="#0e1466">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="turnLP" layoutX="896.0" layoutY="548.0" text="LP = 8000" textFill="#88001b">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="turnName" layoutX="887.0" layoutY="401.0" textFill="#0e1466">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="20.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="turnAvatar" fitHeight="119.0" fitWidth="107.0" layoutX="889.0" layoutY="425.0" pickOnBounds="true" />
    </children>
 </Pane>

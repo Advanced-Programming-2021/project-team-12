@@ -194,6 +194,10 @@
     -fx-border-color: #77772a;
 }
 
+.progress-bar { -fx-box-border: goldenrod; }
+
+.red-bar    { -fx-accent: red;    }
+
 .root {
     -fx-background-color: #ffae00;
 }
