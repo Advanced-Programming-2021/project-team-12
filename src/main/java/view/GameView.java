@@ -186,12 +186,11 @@ public class GameView extends Application {
                     setHand();
                     newMessageToLabel("Card has been successfully removed from hand");
                 }
-                PhaseControl.getInstance().payMessengerOfPeaceSpellCardHarm(messageFromPlayer.getText());
                 messageFromPlayer.setText("");
             });
         }
         PhaseControl.getInstance().checkIfGameEnded();
-        PhaseControl.getInstance().switchPlayerTurn();
+        //PhaseControl.getInstance().switchPlayerTurn();
         //doDrawPhase(Game.whoseTurnPlayer(), false);
     }
 
