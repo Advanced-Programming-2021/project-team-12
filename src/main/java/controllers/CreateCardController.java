@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class CreateCardController {
     public static void createMonsterCard(String level, String attack, String defence, MonsterMode monsterMode
-    , String realName, int price, ArrayList<MonsterCard> monsters){
+            , String realName, int price, ArrayList<MonsterCard> monsters) {
         try {
             String description = null;
             ArrayList<String> names = new ArrayList<>();
@@ -24,7 +24,7 @@ public class CreateCardController {
                 names.add(monster.getName());
                 if (monster.isRitual()) isRitual = true;
             }
-            if (monsterMode != null && realName != null) {
+            if (monsterMode != null && realName != null && MonsterCard.getMonsterCardByName(realName) == null) {
                 new MonsterCard(levelI, attackI, defenceI, monsterMode, isRitual, realName, price, description, names);
                 MainMenu.user.decreaseMoney(price / 10);
             }
@@ -35,9 +35,9 @@ public class CreateCardController {
 
     public static void createSpellCard(String realName, SpellMode spellMode, int price, ArrayList<SpellCard> spellCards) {
         try {
-            if(realName != null && spellMode != null){
+            if (realName != null && spellMode != null && SpellCard.getSpellCardByName(realName) == null) {
                 String description = null;
-                ArrayList <String> names = new ArrayList<>();
+                ArrayList<String> names = new ArrayList<>();
                 for (SpellCard spellCard : spellCards) {
                     description += spellCard.getDescription();
                     names.add(spellCard.getName());
@@ -45,15 +45,15 @@ public class CreateCardController {
                 new SpellCard(realName, spellMode, price, description, names);
                 MainMenu.user.decreaseMoney(price / 10);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
 
     public static void createTrapCard(String realName, ArrayList<TrapCard> trapCards, int price) {
-        if(realName != null){
+        if (realName != null && TrapCard.getTrapCardByName(realName) == null) {
             String description = null;
-            ArrayList <String> names = new ArrayList<>();
+            ArrayList<String> names = new ArrayList<>();
             for (TrapCard trapCard : trapCards) {
                 description += trapCard.getDescription();
                 names.add(trapCard.getName());

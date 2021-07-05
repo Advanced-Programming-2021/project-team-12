@@ -7,14 +7,14 @@
 
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1500.0" prefWidth="2000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CreateTrapCard">
    <children>
-      <ImageView fitHeight="1500.0" fitWidth="2500.0" onMouseClicked="#countPrice" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="1500.0" fitWidth="2500.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../PNG/NEW/background3.jpg" />
          </image>
       </ImageView>
-      <TextField fx:id="realName" layoutX="133.0" layoutY="90.0" promptText="name" />
+      <TextField fx:id="realName" layoutX="104.0" layoutY="90.0" promptText="name" />
       <Button layoutX="178.0" layoutY="431.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="41.0" prefWidth="42.0" style="-fx-background-size: 42;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
-      <Button layoutX="178.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: red;" text="price" textFill="#dceb10" />
+      <Button layoutX="178.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: red;" onMouseClicked="#countPrice" text="price" textFill="#dceb10" />
       <Button layoutX="133.0" layoutY="480.0" mnemonicParsing="false" onMouseClicked="#submit" prefHeight="48.0" prefWidth="132.0" style="-fx-background-size: 130;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="submit" textFill="#c7f801">
          <font>
             <Font size="18.0" />
