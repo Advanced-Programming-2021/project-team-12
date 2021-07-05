@@ -16,19 +16,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import models.Address;
 import models.Card;
 import models.Player;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.regex.Matcher;
 
 public class GameView extends Application {
     private static Stage stage;
@@ -42,6 +37,7 @@ public class GameView extends Application {
     public Label rivalLP;
     public ImageView turnAvatar;
     public ImageView rivalAvatar;
+    public ImageView imageViewInfo;
     public ImageView[] turnHand = new ImageView[7];
     public ImageView[] turnMonsters = new ImageView[6];
     public ImageView[] turnSpells = new ImageView[6];
@@ -56,8 +52,6 @@ public class GameView extends Application {
         stage = primaryStage;
         pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/GameView.fxml")));
         createBackground("normal");
-//        setHand(Game.whoseRivalPlayer(), true);
-//        setHand(Game.whoseTurnPlayer(), false);
         createBackgroundCards();
         createPlayers();
         Scene scene = new Scene(pane);
@@ -69,34 +63,38 @@ public class GameView extends Application {
     public void initialize() throws Exception {
         setAvatar();
         setNickName();
-        setProgresses();
-        createHandImageView(turnHand, false);
-        createHandImageView(rivalHand, true);
+        setLP();
+        createImageView(turnHand, 260, 535, 6);
+        createImageView(rivalHand, 260, -50, 6);
+        createImageView(turnMonsters, 300, 300, 5);
+        createImageView(rivalMonsters, 300, 190, 5);
+        createImageView(turnSpells, 300, 420, 5);
+        createImageView(rivalSpells, 300, 70, 5);
         setHand();
-        doDrawPhase(Game.whoseTurnPlayer(), false);
+        doDrawPhase(Game.whoseTurnPlayer());
     }
 
-    private void createHandImageView(ImageView[] imageView, boolean isRival) {
-        for (int i = 1; i <= 6; i++) {
+    private void createImageView(ImageView[] imageView, int X, int Y, int size) {
+        for (int i = 1; i <= size; i++) {
             imageView[i] = new ImageView();
             imageView[i].setFitWidth(75);
             imageView[i].setFitHeight(100);
             imageView[i].setPreserveRatio(false);
-            imageView[i].setLayoutX(260 + 80 * (i - 1));
-            imageView[i].setLayoutY(535);
-            if (isRival)
-                imageView[i].setLayoutY(-50);
+            imageView[i].setLayoutX(X + 80 * (i - 1));
+            imageView[i].setLayoutY(Y);
             int finalI = i;
             imageView[i].setOnMouseEntered(e -> {
-                ImageView imageViewInfo;
-                if (!isRival)
-                    imageViewInfo = createImage(Game.whoseTurnPlayer().getHandCard().get(finalI).getCardName(), 7, 152, 205, 296);
-                else
-                    imageViewInfo = createImage("Unknown", 7, 152, 205, 296);
-                pane.getChildren().add(imageViewInfo);
+                imageViewInfo.setImage(imageView[finalI].getImage());
+                imageViewInfo.setVisible(true);
+//                if (!isRival)
+//                    imageViewInfo = createImage(Game.whoseTurnPlayer().getHandCard().get(finalI).getCardName(), 7, 152, 205, 296);
+//                else
+//                    imageViewInfo = createImage("Unknown", 7, 152, 205, 296);
+//                pane.getChildren().add(imageViewInfo);
             });
             imageView[i].setOnMouseExited(e -> {
-                removeCard(7, 152);
+                imageViewInfo.setVisible(false);
+//                removeCard(7, 152);
             });
             pane.getChildren().add(imageView[i]);
         }
@@ -107,14 +105,11 @@ public class GameView extends Application {
         rivalName.setText("Name: " + Game.whoseRivalPlayer().getNickName());
     }
 
-    private void setProgresses() {
-        turnProgress.setProgress(Game.whoseTurnPlayer().getLP() / 8000);
-        rivalProgress.setProgress(Game.whoseRivalPlayer().getLP() / 8000);
-    }
-
     private void setLP() {
         turnLP.setText("LP: " + Game.whoseTurnPlayer().getLP());
         rivalLP.setText("LP: " + Game.whoseRivalPlayer().getLP());
+        turnProgress.setProgress((double)Game.whoseTurnPlayer().getLP() / 8000);
+        rivalProgress.setProgress((double)Game.whoseRivalPlayer().getLP() / 8000);
     }
 
     private void setAvatar() {
@@ -128,17 +123,16 @@ public class GameView extends Application {
         return new Image(string);
     }
 
-    private void doDrawPhase(Player player, Boolean isRival) throws Exception {
+    private void doDrawPhase(Player player) throws Exception {
         newMessageToLabel("Draw Phase");
         addMessageToLabel(Game.whoseTurnPlayer().getNickName() + "'s turn");
         Game.setDidWePassBattle(false);
         String drawCardMessage = PhaseControl.getInstance().drawOneCard();
         addMessageToLabel(drawCardMessage);
-        if(drawCardMessage.startsWith("GAME")){
+        if(drawCardMessage.startsWith("GAME"))
             Game.playTurn("EndGame");
-        } else if(!drawCardMessage.equals("You can't draw a card because of rival's Time Seal")){
-            drawCardFromDeckToHand(player, isRival);
-        }
+        else if(!drawCardMessage.equals("You can't draw a card because of rival's Time Seal"))
+            drawCardFromDeckToHand(player, false);
     }
 
     private void doStandByPhase() {
