@@ -82,7 +82,9 @@ public class Shop extends Application {
     }
 
     private Image getImage(Card card, String kind) {
-        return new Image(getClass().getResource("/PNG/Cards1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
+        if (card.isOriginal())
+            return new Image(getClass().getResource("/PNG/Cards1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
+        else return new Image(getClass().getResource("/PNG/NEW/" + kind + "/1.png").toExternalForm());
     }
 
     private void addCardAsButton(int counter1, Card card) {
@@ -134,8 +136,8 @@ public class Shop extends Application {
         }
     }
 
-    public double scale(double v){
-        return 3*v/5;
+    public double scale(double v) {
+        return 3 * v / 5;
     }
 
     public void back(MouseEvent mouseEvent) throws Exception {
