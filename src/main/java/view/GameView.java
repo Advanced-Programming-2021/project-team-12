@@ -1,6 +1,7 @@
 package view;
 
 import Exceptions.MyException;
+import controllers.BattlePhaseController;
 import controllers.Game;
 import controllers.PhaseControl;
 import controllers.move.SetSpell;
@@ -71,6 +72,7 @@ public class GameView extends Application {
     public String cardName;
     public String answere;
     public int i = 1;
+    public ImageView rivalDeck;
 
     public void summonForTribute(int numberOfTributes, Address address) throws MyException {
         newMessageToLabel(Game.getCurrentPhase());
@@ -88,21 +90,21 @@ public class GameView extends Application {
         if (Game.isAITurn()) {
             setStateOfSubmit(true);
             setButtonsActivate(false);
-            if(i == 1){
+            if (i == 1) {
                 tributeCard1 = scanForAITribute(i);
-            } else if(i == 2){
+            } else if (i == 2) {
                 tributeCard2 = scanForAITribute(i);
-            } else if(i == 3){
+            } else if (i == 3) {
                 tributeCard3 = scanForAITribute(i);
             }
         } else {
             addMessageToLabel("Select a monsters for tribute\nType a number from monster zone from 1 to 5\nType 'cancel' to cancel the tribute");
             Game.getGameView().messageFromPlayer.setText("");
-            if(i == 1){
+            if (i == 1) {
                 tributeCard1 = null;
-            } else if(i == 2){
+            } else if (i == 2) {
                 tributeCard2 = null;
-            } else if(i == 3){
+            } else if (i == 3) {
                 tributeCard3 = null;
             }
             setStateOfSubmit(false);
@@ -110,11 +112,11 @@ public class GameView extends Application {
             submitButton.setOnMouseClicked(e -> {
                 String currentTributeCard = null;
                 setTributeCard(i);
-                if(i == 1){
+                if (i == 1) {
                     currentTributeCard = tributeCard1;
-                } else if(i == 2){
+                } else if (i == 2) {
                     currentTributeCard = tributeCard2;
-                } else if(i == 3){
+                } else if (i == 3) {
                     currentTributeCard = tributeCard3;
                 }
                 assert currentTributeCard != null;
@@ -125,42 +127,42 @@ public class GameView extends Application {
                 } else {
                     setStateOfSubmit(true);
                     setButtonsActivate(false);
-                    if(size.equals("medium")){
+                    if (size.equals("medium")) {
                         try {
                             PhaseControl.getInstance().continueMediumLevelSummon(address, Game.whoseTurnPlayer(), monsterCard, currentTributeCard);
                         } catch (MyException myException) {
                             newMessageToLabel(Game.getCurrentPhase());
                             addMessageToLabel(myException.getMessage());
                         }
-                    } else if(size.equals("high1")){
+                    } else if (size.equals("high1")) {
                         try {
                             PhaseControl.getInstance().continueFirstHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1);
                         } catch (MyException myException) {
                             newMessageToLabel(Game.getCurrentPhase());
                             addMessageToLabel(myException.getMessage());
                         }
-                    } else if(size.equals("high2")){
+                    } else if (size.equals("high2")) {
                         try {
                             PhaseControl.getInstance().continueSecondHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1, tributeCard2);
                         } catch (MyException myException) {
                             newMessageToLabel(Game.getCurrentPhase());
                             addMessageToLabel(myException.getMessage());
                         }
-                    } else if(size.equals("superHigh1")){
+                    } else if (size.equals("superHigh1")) {
                         try {
                             PhaseControl.getInstance().continueFirstSuperHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1);
                         } catch (MyException myException) {
                             newMessageToLabel(Game.getCurrentPhase());
                             addMessageToLabel(myException.getMessage());
                         }
-                    } else if(size.equals("superHigh2")){
+                    } else if (size.equals("superHigh2")) {
                         try {
                             PhaseControl.getInstance().continueSecondSuperHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1, tributeCard2);
                         } catch (MyException myException) {
                             newMessageToLabel(Game.getCurrentPhase());
                             addMessageToLabel(myException.getMessage());
                         }
-                    } else if(size.equals("superHigh3")){
+                    } else if (size.equals("superHigh3")) {
                         try {
                             PhaseControl.getInstance().continueThirdSuperHigh(address, Game.whoseTurnPlayer(), tributeCard1, tributeCard2, tributeCard3);
                         } catch (MyException myException) {
@@ -174,11 +176,11 @@ public class GameView extends Application {
     }
 
     private void setTributeCard(int i) {
-        if(i == 1){
+        if (i == 1) {
             tributeCard1 = messageFromPlayer.getText();
-        } else if(i == 2){
+        } else if (i == 2) {
             tributeCard2 = messageFromPlayer.getText();
-        } else if(i == 3){
+        } else if (i == 3) {
             tributeCard3 = messageFromPlayer.getText();
         }
     }
@@ -367,8 +369,7 @@ public class GameView extends Application {
                     graveYardSmallImages[i][j].setImage(createImage(graveyardZone.get(6 * (i - 1) + j).getCardName()));
                     graveYardSmallImages[i][j].setVisible(true);
                     graveYardSmallImages[i][j].setDisable(false);
-                }
-                else {
+                } else {
                     graveYardSmallImages[i][j].setVisible(false);
                     graveYardSmallImages[i][j].setDisable(true);
                 }
@@ -407,8 +408,7 @@ public class GameView extends Application {
             imageView.setImage(createImage(zone.get(1).getCardName()));
             imageView.setDisable(false);
             imageView.setVisible(true);
-        }
-        else {
+        } else {
             imageView.setDisable(true);
             imageView.setVisible(false);
         }
@@ -454,11 +454,32 @@ public class GameView extends Application {
     }
 
     private void initializeMouseClick() {
+        setRivalDeckOnMouseClick(rivalDeck);
         for (int i = 1; i <= 6; i++) {
             setHandOnMouseClick(turnHand[i], i);
         }
         for (int i = 1; i <= 5; i++)
             setMonsterOnMouseClicked(turnMonsters[i], i);
+        for (int i = 1; i <= 5; i++)
+            setRivalMonsterOnMouseClicked(rivalMonsters[i], i);
+    }
+
+    private void setRivalDeckOnMouseClick(ImageView rivalDeck) {
+        rivalDeck.setOnMouseClicked(e -> {
+            if (Game.getCurrentPhase().equals("Battle Phase")) {
+                if (selectedCardAddress.getKind().equals("monster") && selectedCardAddress.checkIsMine()) {
+                    try {
+                        BattlePhaseController.getInstance().directAttack(selectedCardAddress);
+                        reset();
+                    } catch (MyException myException) {
+                        reset();
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
+                    }
+                    reset();
+                }
+            }
+        });
     }
 
     private void setSelectedCard(String zone, int i, Boolean isMine) {
@@ -975,22 +996,22 @@ public class GameView extends Application {
                     }
                 }
             } else if (Game.getCurrentPhase().equals("Battle Phase")) {
-                if (selectedCardAddress == null) {
-                    if (monsterZoneCard.isVisible()) {
-                        if (e.getButton() == MouseButton.SECONDARY) {
+                setSelectedCard("monster", i, true);
+            }
+            reset();
+        });
+    }
 
-                        }
-                        setSelectedCard("monster", i, true);
-                    }
-                } else if (selectedCardAddress.getKind().equals("Hand")) {
-                    if (e.getButton() == MouseButton.SECONDARY) {
-
-                    }
-                    if (monsterZoneCard.isVisible()) {
-                        selectedCardAddress = new Address(i, "Monster", true);
-                    } else {
-//                    Address address =
-//                            PhaseControl.getInstance().summonControl();
+    private void setRivalMonsterOnMouseClicked(ImageView monsterZoneCard, int i) {
+        monsterZoneCard.setOnMouseClicked(e -> {
+            if (Game.getCurrentPhase().equals("Battle Phase")) {
+                if (selectedCardAddress.getKind().equals("monster") && selectedCardAddress.checkIsMine()) {
+                    try {
+                        BattlePhaseController.getInstance().attack(new Address(i, "monster", false), selectedCardAddress);
+                        reset();
+                    } catch (MyException myException) {
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
                     }
                 }
             }

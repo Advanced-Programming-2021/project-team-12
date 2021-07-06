@@ -55,7 +55,7 @@ public class PhaseControl {
     }
 
     public String drawOneCard() throws Exception {
-        if (Game.getPhase().equals("BattlePhase"))
+        if (Game.getCurrentPhase().equals("Battle Phase"))
             if (!canDraw) {
                 canDraw = true;
                 return "You can't draw a card because of rival's Time Seal";
