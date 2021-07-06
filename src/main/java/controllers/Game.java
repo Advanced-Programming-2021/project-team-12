@@ -228,6 +228,10 @@ public class Game {
         return phase;
     }
 
+    public static void setGameView(GameView _gameView) {
+        gameView = _gameView;
+    }
+    
     public static void startGame() throws Exception {
         playerTurn = PlayerTurn.SECONDPLAYER;
         gameView.start(OnlineDuel.stage);
