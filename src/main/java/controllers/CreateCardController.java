@@ -21,11 +21,11 @@ public class CreateCardController {
             boolean isRitual = false;
             for (MonsterCard monster : monsters) {
                 description += monster.getDescription();
-                names.add(monster.getName());
+                names.add(monster.getRealName());
                 if (monster.isRitual()) isRitual = true;
             }
             if (monsterMode != null && realName != null && MonsterCard.getMonsterCardByName(realName) == null) {
-                new MonsterCard(levelI, attackI, defenceI, monsterMode, isRitual, realName, price, description, names);
+                new MonsterCard(levelI, attackI, defenceI, monsterMode, isRitual, realName, price, description, names, false);
                 MainMenu.user.decreaseMoney(price / 10);
             }
         } catch (Exception e) {
@@ -40,9 +40,9 @@ public class CreateCardController {
                 ArrayList<String> names = new ArrayList<>();
                 for (SpellCard spellCard : spellCards) {
                     description += spellCard.getDescription();
-                    names.add(spellCard.getName());
+                    names.add(spellCard.getRealName());
                 }
-                new SpellCard(realName, spellMode, price, description, names);
+                new SpellCard(realName, spellMode, price, description, names, false);
                 MainMenu.user.decreaseMoney(price / 10);
             }
         } catch (Exception e) {
@@ -56,9 +56,9 @@ public class CreateCardController {
             ArrayList<String> names = new ArrayList<>();
             for (TrapCard trapCard : trapCards) {
                 description += trapCard.getDescription();
-                names.add(trapCard.getName());
+                names.add(trapCard.getRealName());
             }
-            new TrapCard(realName, price, description, names);
+            new TrapCard(realName, price, description, names, false);
             MainMenu.user.decreaseMoney(price / 10);
         }
     }
