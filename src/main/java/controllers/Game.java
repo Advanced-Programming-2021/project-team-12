@@ -232,8 +232,12 @@ public class Game {
         gameView = _gameView;
     }
     
-    public static void startGame() throws Exception {
-        playerTurn = PlayerTurn.SECONDPLAYER;
+    public static void startGame(String firstOrSecond) throws Exception {
+        if(firstOrSecond.equals("First")){
+            playerTurn = PlayerTurn.FIRSTPLAYER;
+        } else {
+            playerTurn = PlayerTurn.SECONDPLAYER;
+        }
         gameView.start(OnlineDuel.stage);
     }
 }
