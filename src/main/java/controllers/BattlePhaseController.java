@@ -5,6 +5,7 @@ import Utility.CommandMatcher;
 import controllers.move.Attack;
 import controllers.move.SetSpell;
 import models.*;
+import view.GameView;
 import view.phase.BattlePhase;
 import models.card.monster.MonsterCard;
 import view.Main;
@@ -441,7 +442,7 @@ public class BattlePhaseController {
                             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Magic Cylinder");
                             throw new MyException("Rival has trap named Magic Cylinder so its effect get done.");
                         } else if (rivalMonsterCard.getName().equals("Texchanger")) {
-                            Game.getMainPhase1().summonCyberse();
+                            GameView.getInstance().summonCyberse();
                         } else {
                             if (Game.whoseRivalPlayer().positionOfCardInBoardByAddress(address).equals(PositionOfCardInBoard.OO)) {
                                 int damage = myMonsterCard.getAttack(myAddress) - rivalMonsterCard.getAttack(address);

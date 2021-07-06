@@ -110,7 +110,7 @@ public class SpellCard {
             currentPlayer.removeCard(address1);
         }
         if (name.equals("Monster Reborn")) {
-            MainPhase.summonAMonsterCardFromGraveyard();
+            GameView.getInstance().summonAMonsterCardFromGraveyard();
             currentPlayer.removeCard(address);
         }
         if (spellMode.equals(SpellMode.EQUIP)) {

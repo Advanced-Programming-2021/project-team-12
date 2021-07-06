@@ -11,11 +11,11 @@ import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
 import controllers.Game;
 import Exceptions.*;
+import view.GameView;
 import view.Main;
 
 public class MainPhase {
     public Boolean goToNextPhase = false;
-    public int howManyHeraldOfCreationDidWeUseEffect = 0;
     public int whatMainIsPhase;
 
     public void run() throws Exception {
@@ -24,7 +24,7 @@ public class MainPhase {
                 aiRun();
             else {
                 if (whatMainIsPhase == 1) {
-                    Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
+                    GameView.getInstance().setHowManyHeraldOfCreationDidWeUseEffect(0);
                     PhaseControl.getInstance().doEffectMainPhase();
                 }
                 System.out.println("phase: main phase " + whatMainIsPhase);
@@ -46,7 +46,7 @@ public class MainPhase {
         System.out.println("phase: main phase " + whatMainIsPhase);
         Board.showBoard();
         if (whatMainIsPhase == 1) {
-            Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
+            GameView.getInstance().setHowManyHeraldOfCreationDidWeUseEffect(0);
             PhaseControl.getInstance().doEffectMainPhase();
             getSelectedCard();
         } else if (whatMainIsPhase == 2)
@@ -528,100 +528,8 @@ public class MainPhase {
         }
     }
 
-    public void increaseHowManyHeraldOfCreationDidWeUseEffect() {
-        howManyHeraldOfCreationDidWeUseEffect++;
-    }
-
-    public void setHowManyHeraldOfCreationDidWeUseEffect(int i) {
-        howManyHeraldOfCreationDidWeUseEffect = i;
-    }
-
     public void setWhatMainIsPhase(int i) {
         whatMainIsPhase = i;
-    }
-
-    public void summonCyberse() {
-        if (permission()) {
-            System.out.println("Please select one Cyberse type monster from your hand or deck or graveyard to be summoned.");
-            System.out.println("which card do you want to special summon?\n1.Texchanger\n2.Leotron");
-            String monsterName = Main.scanner.nextLine();
-            Game.whoseTurnPlayer().specialSummonThisKindOfCardFromHandOrDeckOrGraveyard(monsterName);
-        }
-    }
-
-    public boolean permission() {
-        System.out.println("Do you want do the effect?(yes/no)");
-        return Main.scanner.nextLine().equals("yes");
-    }
-
-    public static void doMindCrushEffect() {
-        String cardName;
-        Player currentPlayer = Game.whoseTurnPlayer();
-        Player rivalPlayer = Game.whoseRivalPlayer();
-        if (!Game.isAITurn()) {
-            System.out.println("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly.");
-            cardName = Main.scanner.nextLine();
-        } else cardName = "Beast King Barbaros";
-        if (rivalPlayer.doIHaveCardWithThisNameInMyHand(cardName)) {
-            rivalPlayer.removeAllCardWithThisNameInMyHand(cardName);
-        } else currentPlayer.removeOneOfHandCard();
-    }
-
-    public static void summonAMonsterCardFromGraveyard() {
-        if (!Game.isAITurn()) {
-            System.out.println("whose graveyard you want to summon from?(yours/rival's)");
-//            Board.showGraveyard();
-            String input = Main.scanner.nextLine();
-            doCallOfTheHauntedEffect(input.equals("yours"));
-        }
-        else {
-            Player player1 = Game.whoseTurnPlayer();
-            Player player2 = Game.whoseRivalPlayer();
-            int place1 = getMaxAttackCard(player1.getGraveyardCard());
-            int place2 = getMaxAttackCard(player2.getGraveyardCard());
-            if (place1 == 0 && place2 == 0)
-                return;
-            if (place2 == 0)
-                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place1, "graveyard", true));
-            else if (place1 == 0)
-                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place2, "graveyard", false));
-            else if (player1.getCardGraveyard(place1).getAttack() >= player2.getCardGraveyard(place2).getAttack())
-                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place1, "graveyard", true));
-            else
-                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place2, "graveyard", false));
-        }
-    }
-
-    private static int getMaxAttackCard(HashMap<Integer, Card> graveyardCard) {
-        int place = 0;
-        int maxAttack = -1;
-        for (int i = 1; i <= graveyardCard.size(); i++) {
-            if (graveyardCard.containsKey(i) && graveyardCard.get(i).getKind().equals("Monster")
-                    && graveyardCard.get(i).getAttack() >= maxAttack) {
-                place = i;
-                maxAttack = graveyardCard.get(i).getAttack();
-            }
-        }
-        return place;
-    }
-
-    public static void doCallOfTheHauntedEffect(boolean isMine) {
-        if (isMine) System.out.println("choose a monster from your graveyard to be summoned!(only type number)");
-        else System.out.println("choose a monster from your rival's graveyard to be summoned!(only type number)");
-//        Board.showGraveyard();
-        Address address = new Address(Integer.parseInt(Main.scanner.nextLine()), "graveyard", isMine);
-        if (Game.whoseTurnPlayer().getMonsterCardByAddress(address) != null)
-            Board.summonThisCardFromGraveYardToMonsterZone(address);
-    }
-
-    public static boolean removeCardFromMyHand() {
-        System.out.println("choose card from your to be remove!(only type number)");
-        Address address = new Address(Integer.parseInt(Main.scanner.nextLine()), "hand", true);
-        if (Game.whoseTurnPlayer().getCardByAddress(address) != null) {
-            Game.whoseTurnPlayer().removeCard(address);
-            return true;
-        }
-        return false;
     }
 
     public static boolean doSolemnWarningEffect(Address address) {

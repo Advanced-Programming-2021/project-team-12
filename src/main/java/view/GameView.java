@@ -32,6 +32,7 @@ public class GameView extends Application {
     public Button messageBox;
     public ProgressBar turnProgress;
     public ProgressBar rivalProgress;
+    public int howManyHeraldOfCreationDidWeUseEffect = 0;
     public Label turnName;
     public Label rivalName;
     public Label turnLP;
@@ -40,6 +41,7 @@ public class GameView extends Application {
     public ImageView rivalAvatar;
     public ImageView imageViewInfo;
     public Address selectedCardAddress;
+    public Address submitedAddrees;
     public ImageView[] turnHand = new ImageView[7];
     public ImageView[] turnMonsters = new ImageView[6];
     public ImageView[] turnSpells = new ImageView[6];
@@ -59,6 +61,8 @@ public class GameView extends Application {
     public String secondInput;
     public String thirdInput;
     public String tributeCard;
+    public String cardName;
+
 
     public static GameView getInstance() {
         if (instance == null) {
@@ -244,7 +248,7 @@ public class GameView extends Application {
         setLP();
         createImageView(turnHand, 260, 535, 6);
         createImageView(rivalHand, 260, -50, 6);
-        createImageView(turnMonsters, 320, 300, 5);
+        createImageView(turnMonsters, 350, 300, 5);
         createImageView(rivalMonsters, 320, 190, 5);
         createImageView(turnSpells, 320, 420, 5);
         createImageView(rivalSpells, 320, 70, 5);
@@ -422,7 +426,7 @@ public class GameView extends Application {
         setButtonsActivate(false);
         Game.setPhase("Main Phase 1");
         newMessageToLabel(Game.getCurrentPhase());
-        Game.getMainPhase2().setHowManyHeraldOfCreationDidWeUseEffect(0);
+        GameView.getInstance().setHowManyHeraldOfCreationDidWeUseEffect(0);
         PhaseControl.getInstance().doEffectMainPhase();
         reset();
     }
@@ -433,6 +437,130 @@ public class GameView extends Application {
         Game.setPhase("Battle Phase");
         newMessageToLabel(Game.getCurrentPhase());
         reset();
+    }
+
+    public boolean permission() {
+        newMessageToLabel(Game.getCurrentPhase());
+        addMessageToLabel("Do you want do the effect?\nType 'yes' or 'no'");
+        submitButton.setOnMouseClicked(e ->{
+            setStateOfSubmit(true);
+            setButtonsActivate(false);
+
+        });
+        return Main.scanner.nextLine().equals("yes");
+    }
+
+    public void summonCyberse() {
+        if (permission()) {
+            setStateOfSubmit(false);
+            setButtonsActivate(true);
+            newMessageToLabel(Game.getCurrentPhase());
+            addMessageToLabel("Select a Cyberse type monster from your hand or deck or graveyard to be summoned.\nWhich card do you want to special summon?\n1.Texchanger\n2.Leotron");
+            submitButton.setOnMouseClicked(e ->{
+                setStateOfSubmit(true);
+                setButtonsActivate(false);
+                Game.whoseTurnPlayer().specialSummonThisKindOfCardFromHandOrDeckOrGraveyard(messageBox.getText());
+            });
+        }
+    }
+
+    public void doMindCrushEffect() {
+        setStateOfSubmit(false);
+        setButtonsActivate(true);
+        cardName = null;
+        Player currentPlayer = Game.whoseTurnPlayer();
+        Player rivalPlayer = Game.whoseRivalPlayer();
+        if (!Game.isAITurn()) {
+            newMessageToLabel(Game.getCurrentPhase());
+            addMessageToLabel("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly");
+            submitButton.setOnMouseClicked(e ->{
+                setCardName();
+                setStateOfSubmit(true);
+                setButtonsActivate(false);
+            });
+        } else cardName = "Beast King Barbaros";
+        setStateOfSubmit(true);
+        setButtonsActivate(false);
+        if (rivalPlayer.doIHaveCardWithThisNameInMyHand(cardName)) {
+            rivalPlayer.removeAllCardWithThisNameInMyHand(cardName);
+        } else currentPlayer.removeOneOfHandCard();
+    }
+
+    public void summonAMonsterCardFromGraveyard() {
+//        if (!Game.isAITurn()) {
+//            newMessageToLabel(Game.getCurrentPhase());
+//            addMessageToLabel("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly.");
+//            submitButton.setOnMouseClicked(e ->{
+//                setCardName();
+//            });
+//            System.out.println("whose graveyard you want to summon from?(yours/rival's)");
+////            Board.showGraveyard();
+//            String input = Main.scanner.nextLine();
+//            doCallOfTheHauntedEffect(input.equals("yours"));
+//        }
+//        else {
+//            Player player1 = Game.whoseTurnPlayer();
+//            Player player2 = Game.whoseRivalPlayer();
+//            int place1 = getMaxAttackCard(player1.getGraveyardCard());
+//            int place2 = getMaxAttackCard(player2.getGraveyardCard());
+//            if (place1 == 0 && place2 == 0)
+//                return;
+//            if (place2 == 0)
+//                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place1, "graveyard", true));
+//            else if (place1 == 0)
+//                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place2, "graveyard", false));
+//            else if (player1.getCardGraveyard(place1).getAttack() >= player2.getCardGraveyard(place2).getAttack())
+//                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place1, "graveyard", true));
+//            else
+//                Board.summonThisCardFromGraveYardToMonsterZone(new Address(place2, "graveyard", false));
+//        }
+    }
+
+    public boolean removeCardFromMyHand() {
+        setStateOfSubmit(false);
+        setButtonsActivate(true);
+        newMessageToLabel(Game.getCurrentPhase());
+        addMessageToLabel("choose a card from your hand to be removed\nType hand number from 1 to 6");
+        submitButton.setOnMouseClicked(e ->{
+            setSubmitedAddrees();
+            setStateOfSubmit(true);
+            setButtonsActivate(false);
+        });
+        if (Game.whoseTurnPlayer().getCardByAddress(submitedAddrees) != null) {
+            Game.whoseTurnPlayer().removeCard(submitedAddrees);
+            return true;
+        }
+        return false;
+    }
+
+    private void setSubmitedAddrees() {
+        submitedAddrees = new Address(Integer.parseInt(messageFromPlayer.getText()), "hand", true);;
+    }
+
+    private int getMaxAttackCard(HashMap<Integer, Card> graveyardCard) {
+        int place = 0;
+        int maxAttack = -1;
+        for (int i = 1; i <= graveyardCard.size(); i++) {
+            if (graveyardCard.containsKey(i) && graveyardCard.get(i).getKind().equals("Monster")
+                    && graveyardCard.get(i).getAttack() >= maxAttack) {
+                place = i;
+                maxAttack = graveyardCard.get(i).getAttack();
+            }
+        }
+        return place;
+    }
+
+    public void doCallOfTheHauntedEffect(boolean isMine) {
+        if (isMine) System.out.println("choose a monster from your graveyard to be summoned!(only type number)");
+        else System.out.println("choose a monster from your rival's graveyard to be summoned!(only type number)");
+//        Board.showGraveyard();
+        Address address = new Address(Integer.parseInt(Main.scanner.nextLine()), "graveyard", isMine);
+        if (Game.whoseTurnPlayer().getMonsterCardByAddress(address) != null)
+            Board.summonThisCardFromGraveYardToMonsterZone(address);
+    }
+
+    private void setCardName() {
+        cardName = messageFromPlayer.getText();
     }
 
     private void doMainPhase2() {
@@ -627,36 +755,49 @@ public class GameView extends Application {
 
     private void setHandOnMouseClick(ImageView handCard, int i) {
         handCard.setOnMouseClicked(e -> {
-            setSelectedCard("hand", i, true);
-            if (e.getButton() == MouseButton.SECONDARY) {
-                try {
-                    if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Spell"))
-                        PhaseControl.getInstance().spellSet(selectedCardAddress);
-                    else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster"))
-                        PhaseControl.getInstance().monsterSet(selectedCardAddress);
-                    else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
-                        PhaseControl.getInstance().trapSet(selectedCardAddress);
-                    reset();
-                } catch (MyException myException) {
-                    newMessageToLabel(Game.getCurrentPhase());
-                    addMessageToLabel(myException.getMessage());
+            if(Game.getCurrentPhase().equals("Main Phase 1") || Game.getCurrentPhase().equals("Main Phase 2")){
+                setSelectedCard("hand", i, true);
+                if (e.getButton() == MouseButton.SECONDARY) {
+                    try {
+                        if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Spell"))
+                            PhaseControl.getInstance().spellSet(selectedCardAddress);
+                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster"))
+                            PhaseControl.getInstance().monsterSet(selectedCardAddress);
+                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
+                            PhaseControl.getInstance().trapSet(selectedCardAddress);
+                        reset();
+                    } catch (MyException myException) {
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
+                    }
+                } else {
+                    try {
+                        if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Spell"))
+                            PhaseControl.getInstance().activeSpell(selectedCardAddress);
+                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster"))
+                            PhaseControl.getInstance().summonControl(selectedCardAddress);
+                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
+                            PhaseControl.getInstance().trapSet(selectedCardAddress);
+                        reset();
+                    } catch (MyException myException) {
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
+                    }
                 }
+                reset();
             } else {
-                try {
-                    if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Spell"))
-                        PhaseControl.getInstance().activeSpell(selectedCardAddress);
-                    else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster"))
-                        PhaseControl.getInstance().summonControl(selectedCardAddress);
-                    else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
-                        PhaseControl.getInstance().trapSet(selectedCardAddress);
-                    reset();
-                } catch (MyException myException) {
-                    newMessageToLabel(Game.getCurrentPhase());
-                    addMessageToLabel(myException.getMessage());
-                }
+                newMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("You can't set/summon cards at this phase");
             }
-            reset();
         });
+    }
+
+    public void increaseHowManyHeraldOfCreationDidWeUseEffect() {
+        howManyHeraldOfCreationDidWeUseEffect++;
+    }
+
+    public void setHowManyHeraldOfCreationDidWeUseEffect(int i) {
+        howManyHeraldOfCreationDidWeUseEffect = i;
     }
 
     private Image createImage(String cardName) {

@@ -148,7 +148,7 @@ public class PhaseControl {
         if (!Game.whoseRivalPlayer().doIHaveMirageDragonMonster()) {
             if (trapCard.getName().equals("Mind Crush")) {
                 if (BattlePhase.getInstance().getPermissionForTrap("Mind Crush", true)) {
-                    MainPhase.doMindCrushEffect();
+                    GameView.getInstance().doMindCrushEffect();
                     currentPlayer.removeCard(address);
                 }
             }
@@ -163,7 +163,7 @@ public class PhaseControl {
                     if (Game.isAITurn())
                         AISummonFromGraveyard();
                     else
-                        MainPhase.doCallOfTheHauntedEffect(true);
+                        GameView.getInstance().doCallOfTheHauntedEffect(true);
                     currentPlayer.removeCard(address);
                 }
             }
@@ -432,7 +432,7 @@ public class PhaseControl {
             if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Jammer")
                     && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
                     && BattlePhase.getInstance().getPermissionForTrap("Magic Jammer", false)) {
-                if (MainPhase.removeCardFromMyHand()) Game.whoseTurnPlayer().removeCard(address);
+                if (GameView.getInstance().removeCardFromMyHand()) Game.whoseTurnPlayer().removeCard(address);
             } else {
                 currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
                 currentPlayer.setIsThisSpellActivated(true, index);
@@ -447,7 +447,7 @@ public class PhaseControl {
         if (Game.whoseTurnPlayer().doIHaveMonsterCardInMonsterZone("Herald of Creation")) {
             int count = Integer.parseInt(GameView.getInstance().runEffect("Herald of Creation1"));
             int numberOfHeraldOfCreation = Game.whoseTurnPlayer().howManyHeraldOfCreationDoWeHave();
-            for (int i = 0; i < minOfTwoNumber(numberOfHeraldOfCreation, count) - Game.getMainPhase1().howManyHeraldOfCreationDidWeUseEffect; i++) {
+            for (int i = 0; i < minOfTwoNumber(numberOfHeraldOfCreation, count) - GameView.getInstance().howManyHeraldOfCreationDidWeUseEffect; i++) {
                 Address shouldBeRemoved = new Address(Integer.parseInt(GameView.getInstance().runEffect("Herald of Creation2")), "monster", true);
                 if (!Board.isAddressEmpty(shouldBeRemoved)) {
                     Address comeBackFromGraveyard = new Address(Integer.parseInt(GameView.getInstance().runEffect("Herald of Creation3")), "graveyard", true);
@@ -457,7 +457,7 @@ public class PhaseControl {
                             currentPlayer.removeCard(shouldBeRemoved);
                             currentPlayer.setCardFromGraveyardToHand(comeBackFromGraveyard);
                             if (Game.getMainPhase1().whatMainIsPhase == 1)
-                                Game.getMainPhase2().increaseHowManyHeraldOfCreationDidWeUseEffect();
+                                GameView.getInstance().increaseHowManyHeraldOfCreationDidWeUseEffect();
                         }
                     }
                 }
