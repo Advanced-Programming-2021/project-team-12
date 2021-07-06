@@ -19,7 +19,6 @@ public class SpellCard {
     private int price;
     private SpellMode spellMode;
     private boolean isLimit;
-    private String name;
     private String realName;
     private ArrayList<String> namesForEffect = new ArrayList<>();
     private static ArrayList<SpellCard> spellCards;
@@ -29,7 +28,6 @@ public class SpellCard {
     }
 
     public SpellCard(String name, SpellMode spellMode, boolean isLimit, int price, String description) {
-        this.name = name;
         realName = name;
         this.spellMode = spellMode;
         this.isLimit = isLimit;
@@ -184,10 +182,6 @@ public class SpellCard {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setEffect(String effect) {
