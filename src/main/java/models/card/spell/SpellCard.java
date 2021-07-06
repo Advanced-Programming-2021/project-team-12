@@ -5,6 +5,7 @@ import models.Address;
 import models.Player;
 import view.Effect;
 import controllers.Game;
+import view.GameView;
 import view.Main;
 import view.phase.BattlePhase;
 import view.phase.MainPhase;
@@ -84,7 +85,7 @@ public class SpellCard {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (namesForEffect.contains("Terraforming")) {
             if ((currentPlayer.isThereAnyFieldSpellInDeck()) && (!currentPlayer.isHandFull())) {
-                String fieldSpellName = Effect.run("Terraforming");
+                String fieldSpellName = GameView.getInstance().runEffect("Terraforming");
                 SpellCard spellCard = SpellCard.getSpellCardByName(fieldSpellName);
                 if ((spellCard != null) && (spellCard.spellMode == SpellMode.FIELD) && (currentPlayer.isThisCardInDeck("Terraforming"))) {
                     currentPlayer.bringCardFromDeckToHand("Terraforming");
@@ -114,7 +115,7 @@ public class SpellCard {
             currentPlayer.removeCard(address);
         }
         if (namesForEffect.contains("Twin Twisters")) {
-            String[] input = Effect.run("Twin Twisters").split(",");
+            String[] input = GameView.getInstance().runEffect("Twin Twisters").split(",");
             Address address1 = new Address(Integer.parseInt(input[0]), "hand", true);
             Address address2 = new Address(Integer.parseInt(input[1]), "spell", false);
             Address address3 = new Address(Integer.parseInt(input[2]), "spell", false);
@@ -123,7 +124,7 @@ public class SpellCard {
             currentPlayer.removeCard(address3);
         }
         if (namesForEffect.contains("Mystical space typhoon")) {
-            String input = Effect.run("Mystical space typhoon");
+            String input = GameView.getInstance().runEffect("Mystical space typhoon");
             Address address1 = new Address(Integer.parseInt(input), "spell", false);
             currentPlayer.removeCard(address1);
         }

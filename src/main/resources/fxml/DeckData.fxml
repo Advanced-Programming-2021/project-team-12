@@ -13,8 +13,8 @@
             <Image url="@../PNG/NEW/111.jpg" />
          </image>
       </ImageView>
-      <Button layoutX="339.0" layoutY="4.0" mnemonicParsing="false" opacity="0.91" prefHeight="475.0" prefWidth="603.0" style="-fx-background-color: #e5bf9e;" textFill="#e5bf9e" />
-      <Button layoutX="339.0" layoutY="482.0" mnemonicParsing="false" opacity="0.91" prefHeight="225.0" prefWidth="603.0" style="-fx-background-color: #e5bf9e;">
+      <Button layoutX="339.0" layoutY="4.0" mnemonicParsing="false" onDragDropped="#mainHandlerDrop" onDragOver="#dragOverHandler" opacity="0.91" prefHeight="475.0" prefWidth="603.0" style="-fx-background-color: #e5bf9e;" textFill="#e5bf9e" />
+      <Button layoutX="339.0" layoutY="482.0" mnemonicParsing="false" onDragDropped="#sideHandlerDrop" onDragOver="#dragOverHandler" opacity="0.91" prefHeight="225.0" prefWidth="603.0" style="-fx-background-color: #e5bf9e;">
          <textFill>
             <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                <stops>
@@ -32,7 +32,7 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <Button layoutX="11.0" layoutY="3.0" mnemonicParsing="false" opacity="0.91" prefHeight="586.0" prefWidth="322.0" style="-fx-background-color: #e5bf9e;" />
+      <Button layoutX="11.0" layoutY="3.0" mnemonicParsing="false" onDragDropped="#handHandlerDrop" onDragOver="#dragOverHandler" opacity="0.91" prefHeight="586.0" prefWidth="322.0" style="-fx-background-color: #e5bf9e;" />
       <Button layoutX="346.0" layoutY="660.0" mnemonicParsing="false" onMouseClicked="#addSideToMain" prefHeight="46.0" prefWidth="119.0" style="-fx-background-size: 120;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Add To Main" textFill="#ffed78">
          <font>
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="12.0" />
@@ -58,7 +58,7 @@
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="612.0" layoutY="485.0" text="Side Cards">
+      <Label layoutX="616.0" layoutY="485.0" text="Side Cards">
          <font>
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
          </font>
@@ -92,6 +92,16 @@
       <Label fx:id="msg" alignment="TOP_LEFT" layoutX="19.0" layoutY="649.0" prefHeight="54.0" prefWidth="304.0" textFill="#9a0000">
          <font>
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="mainNumber" layoutX="630.0" layoutY="445.0" text="Label" textFill="#043e2a">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="sideNumber" layoutX="626.0" layoutY="673.0" text="Label" textFill="#043e2a">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="15.0" />
          </font>
       </Label>
    </children>

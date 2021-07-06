@@ -324,14 +324,6 @@ public class MainPhase {
         }
     }
 
-    public void summonForTribute(int numberOfTributes, Address address) throws MyException {
-        if (!Game.isAITurn())
-            System.out.println("select" + numberOfTributes + "monsters for tribute(write in different lines.)");
-        if (numberOfTributes == 1) PhaseControl.getInstance().summonAMediumLevelMonster(address);
-        else if (numberOfTributes == 2) PhaseControl.getInstance().summonAHighLevelMonster(address);
-        else if (numberOfTributes == 3) PhaseControl.getInstance().summonASuperHighLevelMonster(address);
-    }
-
     public void ritualSummon(Address monsterCardAddress, int monsterLevel) {
         Address ritualSpellCardAddress = Game.whoseTurnPlayer().getOneOfRitualSpellCardAddress();
         if (ritualSpellCardAddress != null) {
@@ -380,85 +372,36 @@ public class MainPhase {
         }
     }
 
-    public String scanForTribute(int i) {
-        if (Game.isAITurn())
-            return scanForAITribute(i);
-        else {
-            System.out.println("Please select a monsters for tribute!(type monster address or cancel)");
-            String tributeCard = Main.scanner.nextLine();
-            while (!(tributeCard.matches("[12345]{1}"))) {
-                System.out.println("invalid command!");
-                tributeCard = Main.scanner.nextLine();
-            }
-            return tributeCard;
-        }
-    }
-
-    private String scanForAITribute(int number) {
-        Player player = Game.whoseTurnPlayer();
-        int minAttack = 1000000;
-        int place1 = 0;
-        int place2 = 0;
-        int place3 = 0;
-        for (int i = 1; i < 6; i++) {
-            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() < minAttack) {
-                minAttack = player.getCardMonster(i).getAttack();
-                place1 = i;
-            }
-        }
-        minAttack = 1000000;
-        for (int i = 1; i < 6; i++) {
-            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() < minAttack && i != place1) {
-                minAttack = player.getCardMonster(i).getAttack();
-                place2 = i;
-            }
-        }
-        minAttack = 1000000;
-        for (int i = 1; i < 6; i++) {
-            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() < minAttack && i != place1 && i != place2) {
-                minAttack = player.getCardMonster(i).getAttack();
-                place3 = i;
-            }
-        }
-        if (number == 1)
-            return String.valueOf(place1);
-        if (number == 2)
-            return String.valueOf(place2);
-        else
-            return String.valueOf(place3);
-    }
-
-
     public boolean isCancelled(String input) {
         return input.equals("cancel");
     }
 
-    public String getTributeCard() {
-        if (Game.isAITurn())
-            return getAITributeCard();
-        else {
-            System.out.println("Please select a monster for tribute!(type monster address or cancel)");
-            String tributeCard = Main.scanner.nextLine();
-            while (!(tributeCard.matches("[12345]") || tributeCard.matches("cancel"))) {
-                System.out.println("invalid command!");
-                tributeCard = Main.scanner.nextLine();
-            }
-            return tributeCard;
-        }
-    }
-
-    private String getAITributeCard() {
-        Player player = Game.whoseTurnPlayer();
-        int minAttack = 10000;
-        int place = 0;
-        for (int i = 1; i < 6; i++) {
-            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() < minAttack) {
-                minAttack = player.getCardMonster(i).getAttack();
-                place = i;
-            }
-        }
-        return String.valueOf(place);
-    }
+//    public String getTributeCard() {
+//        if (Game.isAITurn())
+//            return getAITributeCard();
+//        else {
+//            System.out.println("Please select a monster for tribute!(type monster address or cancel)");
+//            String tributeCard = Main.scanner.nextLine();
+//            while (!(tributeCard.matches("[12345]") || tributeCard.matches("cancel"))) {
+//                System.out.println("invalid command!");
+//                tributeCard = Main.scanner.nextLine();
+//            }
+//            return tributeCard;
+//        }
+//    }
+//
+//    private String getAITributeCard() {
+//        Player player = Game.whoseTurnPlayer();
+//        int minAttack = 10000;
+//        int place = 0;
+//        for (int i = 1; i < 6; i++) {
+//            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() < minAttack) {
+//                minAttack = player.getCardMonster(i).getAttack();
+//                place = i;
+//            }
+//        }
+//        return String.valueOf(place);
+//    }
 
     public void setMonster(Address address) {
         try {
