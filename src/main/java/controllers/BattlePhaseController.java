@@ -407,8 +407,8 @@ public class BattlePhaseController {
         }
     }
 
-    private void attack(Address address, Address myAddress) throws MyException {
-        if (Game.getPhase().equals("BattlePhase")) {
+    public void attack(Address address, Address myAddress) throws MyException {
+        if (Game.getCurrentPhase().equals("Battle Phase")) {
             Player currentPlayer = Game.whoseTurnPlayer();
             Attack.setAddress(myAddress, true);
             Attack.setAddress(address, false);
@@ -467,15 +467,15 @@ public class BattlePhaseController {
     }
 
     private void attackOO(Address myAddress, Address address, Player currentPlayer, int damage) throws MyException {
-        if (Game.getPhase().equals("BattlePhase")) {
+        if (Game.getCurrentPhase().equals("Battle Phase")) {
             if (damage == 0) {
                 removeForAttack(address, myAddress);
                 removeForAttack(myAddress, address);
-                throw new MyException("both you and your opponent monster cards are destroyed and no one receives damage");
+                throw new MyException("Both you and your opponent monster cards are destroyed and no one receives damage");
             } else if (damage > 0) {
                 removeForAttack(address, myAddress);
                 decreaseLP(address, Game.whoseRivalPlayer(), damage);
-                throw new MyException("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
+                throw new MyException("Your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
             } else {
                 damage = (-1) * damage;
                 currentPlayer.decreaseLP(damage);
@@ -486,31 +486,31 @@ public class BattlePhaseController {
     }
 
     private void attackDO(Address myAddress, Address address, Player currentPlayer, int damage) throws MyException {
-        if (Game.getPhase().equals("BattlePhase")) {
-            if (damage == 0) throw new MyException("no card is destroyed");
+        if (Game.getCurrentPhase().equals("Battle Phase")) {
+            if (damage == 0) throw new MyException("No card is destroyed");
             else if (damage > 0) {
                 removeForAttack(address, myAddress);
-                throw new MyException("the defense position monster is destroyed");
+                throw new MyException("The defense position monster is destroyed");
             } else {
                 damage = (-1) * damage;
                 decreaseLP(address, currentPlayer, damage);
-                throw new MyException("no card is destroyed and you received " + damage + " battle damage");
+                throw new MyException("No card is destroyed and you received " + damage + " battle damage");
             }
         }
     }
 
-    private void attackDH(Address myAddress, Address address, Player currentPlayer, MonsterCard rivalMonsterCard, int damage) throws MyException {
-        if (Game.getPhase().equals("BattlePhase")) {
+    public void attackDH(Address myAddress, Address address, Player currentPlayer, MonsterCard rivalMonsterCard, int damage) throws MyException {
+        if (Game.getCurrentPhase().equals("Battle Phase")) {
             String shouldBePrinted;
             if (damage == 0)
-                shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getRealName() + " and no card is destroyed";
+                shouldBePrinted = "Opponent’s monster card was " + rivalMonsterCard.getRealName() + " and no card is destroyed";
             else if (damage > 0) {
                 removeForAttack(address, myAddress);
-                shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getRealName() + " and " + "the defense position monster is destroyed";
+                shouldBePrinted = "Opponent’s monster card was " + rivalMonsterCard.getRealName() + " and " + "the defense position monster is destroyed";
             } else {
                 damage = (-1) * damage;
                 decreaseLP(address, currentPlayer, damage);
-                shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getRealName() + " and " + "no card is destroyed and you received " + damage + " battle damage";
+                shouldBePrinted = "Opponent’s monster card was " + rivalMonsterCard.getRealName() + " and " + "no card is destroyed and you received " + damage + " battle damage";
             }
             currentPlayer.setPositionOfCardInBoardByAddress(address, PositionOfCardInBoard.DO);
             throw new MyException(shouldBePrinted);
@@ -524,7 +524,7 @@ public class BattlePhaseController {
     }
 
     private void removeForAttack(Address destroyedAddress, Address theOtherAddress) {
-        if (Game.getPhase().equals("BattlePhase")) {
+        if (Game.getCurrentPhase().equals("Battle Phase")) {
             if (Board.getCardByAddress(theOtherAddress) != null &&
                     Board.getCardByAddress(destroyedAddress).getCardName().equals("Exploder Dragon"))
                 Board.removeCardByAddress(theOtherAddress);
@@ -533,8 +533,8 @@ public class BattlePhaseController {
         }
     }
 
-    private void directAttack(Address address) throws MyException {
-        if (Game.getPhase().equals("BattlePhase")) {
+    public void directAttack(Address address) throws MyException {
+        if (Game.getCurrentPhase().equals("Battle Phase")) {
             PhaseControl.getInstance().checkIfGameEnded();
             Player currentPlayer = Game.whoseTurnPlayer();
             Player rivalPlayer = Game.whoseRivalPlayer();

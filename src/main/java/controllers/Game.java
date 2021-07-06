@@ -216,10 +216,6 @@ public class Game {
         return mainPhase2;
     }
 
-    public static String getPhase() {
-        return phase;
-    }
-
     public static void setPhase(String phase) {
         Game.phase = phase;
     }

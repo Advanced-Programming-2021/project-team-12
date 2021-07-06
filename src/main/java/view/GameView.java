@@ -1,6 +1,7 @@
 package view;
 
 import Exceptions.MyException;
+import controllers.BattlePhaseController;
 import controllers.Game;
 import controllers.PhaseControl;
 import controllers.move.SetSpell;
@@ -460,10 +461,14 @@ public class GameView extends Application {
         }
         for (int i = 1; i <= 5; i++)
             setMonsterOnMouseClicked(turnMonsters[i], i);
+        for (int i = 1; i <= 5; i++)
+            setRivalMonsterOnMouseClicked(rivalMonsters[i], i);
     }
 
     private void setSelectedCard(String zone, int i, Boolean isMine) {
         selectedCardAddress = new Address(i, zone, isMine);
+        System.out.println(selectedCardAddress.getKind());
+        System.out.println(selectedCardAddress.getNumber());
     }
 
     private void setNickName() {
@@ -976,22 +981,22 @@ public class GameView extends Application {
                     }
                 }
             } else if (Game.getCurrentPhase().equals("Battle Phase")) {
-                if (selectedCardAddress == null) {
-                    if (monsterZoneCard.isVisible()) {
-                        if (e.getButton() == MouseButton.SECONDARY) {
+                setSelectedCard("monster", i, true);
+            }
+            reset();
+        });
+    }
 
-                        }
-                        setSelectedCard("monster", i, true);
-                    }
-                } else if (selectedCardAddress.getKind().equals("Hand")) {
-                    if (e.getButton() == MouseButton.SECONDARY) {
-
-                    }
-                    if (monsterZoneCard.isVisible()) {
-                        selectedCardAddress = new Address(i, "Monster", true);
-                    } else {
-//                    Address address =
-//                            PhaseControl.getInstance().summonControl();
+    private void setRivalMonsterOnMouseClicked(ImageView monsterZoneCard, int i) {
+        monsterZoneCard.setOnMouseClicked(e -> {
+            if (Game.getCurrentPhase().equals("Battle Phase")) {
+                if (selectedCardAddress.getKind().equals("monster") && selectedCardAddress.checkIsMine()) {
+                    try {
+                        BattlePhaseController.getInstance().attack(new Address(i, "monster", false),selectedCardAddress);
+                        reset();
+                    } catch (MyException myException) {
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
                     }
                 }
             }
