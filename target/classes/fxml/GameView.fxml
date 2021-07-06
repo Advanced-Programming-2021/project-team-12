@@ -51,13 +51,12 @@
          <font>
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font></Button>
-      <ImageView fitHeight="600.0" fitWidth="227.0" layoutX="829.0" pickOnBounds="true">
+      <ImageView fitHeight="600.0" fitWidth="227.0" layoutX="828.0" pickOnBounds="true">
          <image>
             <Image url="@../PNG/Textures/CardInfoBackground.png" />
          </image></ImageView>
       <ImageView fitHeight="100.0" fitWidth="74.0" layoutX="259.0" layoutY="536.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="imageViewInfo" fitHeight="296.0" fitWidth="205.0" layoutX="12.0" layoutY="152.0" pickOnBounds="true" />
-      <TextFlow prefHeight="200.0" prefWidth="200.0" />
       <ProgressBar fx:id="turnProgress" layoutX="842.0" layoutY="571.0" prefWidth="200.0" progress="1.0" style="-fx-background-color: cornsilk;" styleClass="red-bar" stylesheets="@../CSS/Buttons.css" />
       <ProgressBar fx:id="rivalProgress" layoutX="842.0" layoutY="5.0" prefWidth="200.0" progress="1.0" style="-fx-background-color: cornsilk;" styleClass="red-bar" stylesheets="@../CSS/Buttons.css" />
       <ImageView fx:id="rivalAvatar" fitHeight="119.0" fitWidth="107.0" layoutX="889.0" layoutY="49.0" pickOnBounds="true" />
@@ -92,5 +91,9 @@
             <Font name="StoneSerif-Semibold" size="10.0" />
          </font>
       </Button>
+      <ImageView fx:id="turnField" fitHeight="93.0" fitWidth="65.0" layoutX="252.0" layoutY="310.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="turnGraveyard" fitHeight="93.0" fitWidth="65.0" layoutX="756.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="rivalField" fitHeight="93.0" fitWidth="65.0" layoutX="756.0" layoutY="194.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="rivalGraveyard" fitHeight="93.0" fitWidth="65.0" layoutX="259.0" layoutY="194.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </Pane>

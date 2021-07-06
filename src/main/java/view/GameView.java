@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 import models.*;
 import models.card.monster.MonsterCard;
 
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Objects;
@@ -332,7 +331,7 @@ public class GameView extends Application {
         createImageView(rivalSpells, 338, 90, 5);
         createFieldsEvent(turnField);
         createFieldsEvent(rivalField);
-        setGraveYardSmallImages();
+        createGraveYardSmallImages();
         createGraveYardEvents(turnGraveyard, Game.whoseTurnPlayer().getGraveyardCard());
         createGraveYardEvents(rivalGraveyard, Game.whoseRivalPlayer().getGraveyardCard());
         setHand();
@@ -340,7 +339,7 @@ public class GameView extends Application {
         doDrawPhase(Game.whoseTurnPlayer());
     }
 
-    private void setGraveYardSmallImages() {
+    private void createGraveYardSmallImages() {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 6; j++) {
                 graveYardSmallImages[i][j] = new ImageView();
@@ -354,14 +353,16 @@ public class GameView extends Application {
 
     private void createGraveYardEvents(ImageView graveyard, HashMap<Integer, Card> graveyardZone) {
         graveyard.setOnMouseEntered(e -> {
-            setGraveYardButtons(graveyardZone);
+            setGraveYardImages(graveyardZone);
         });
         graveyard.setOnMouseExited(e -> {
             removeGraveYardButtons();
         });
     }
 
-    private void setGraveYardButtons(HashMap<Integer, Card> graveyardZone) {
+    private void setGraveYardImages(HashMap<Integer, Card> graveyardZone) {
+        imageViewInfo.setVisible(false);
+        imageViewInfo.setDisable(true);
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 6; j++) {
                 if (graveyardZone.containsKey(6 * (i - 1) + j)) {
