@@ -421,12 +421,12 @@ public class BattlePhaseController {
                         currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
                         if (Game.whoseRivalPlayer().doIHaveSpellCard("Negate Attack")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
-                                && BattlePhase.getInstance().getPermissionForTrap("Negate Attack", false)) {
+                                && Game.getGameView().getPermissionForTrap("Negate Attack", false)) {
                             BattlePhase.getInstance().goToNextPhase = true;
                             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Negate Attack");
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Mirror Force")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
-                                && BattlePhase.getInstance().getPermissionForTrap("Mirror Force", false)) {
+                                && Game.getGameView().getPermissionForTrap("Mirror Force", false)) {
                             Board.destroyAllAttackerMonster(Game.whoseRivalPlayer());
                             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Mirror Force");
                         } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
@@ -435,14 +435,14 @@ public class BattlePhaseController {
                                     "because of Messenger of peace.");
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Cylinder")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
-                                && BattlePhase.getInstance().getPermissionForTrap("Magic Cylinder", false)) {
+                                && Game.getGameView().getPermissionForTrap("Magic Cylinder", false)) {
                             if (!currentPlayer.doIHaveSpellCard("Ring of defense")) {
                                 currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
                             }
                             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Magic Cylinder");
                             throw new MyException("Rival has trap named Magic Cylinder so its effect get done.");
                         } else if (rivalMonsterCard.getNamesForEffect().contains("Texchanger")) {
-                            GameView.getInstance().summonCyberse();
+                            Game.getGameView().summonCyberse();
                         } else {
                             if (Game.whoseRivalPlayer().positionOfCardInBoardByAddress(address).equals(PositionOfCardInBoard.OO)) {
                                 int damage = myMonsterCard.getAttack(myAddress) - rivalMonsterCard.getAttack(address);

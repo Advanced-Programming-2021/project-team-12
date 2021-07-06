@@ -77,17 +77,4 @@ public class BattlePhase {
         }
         return place;
     }
-
-    public boolean getPermissionForTrap(String cardName, boolean isMine) {
-        if (!isMine && (!Game.getIsAI() || Game.isAITurn())) {
-            System.out.print("Dear " + Game.whoseRivalPlayer().getNickName() + ",");
-            System.out.println("do you want to activate " + cardName + "trap?(yes/no)");
-            return (Main.scanner.nextLine().equals("yes"));
-        }
-        else if (!Game.isAITurn() && isMine) {
-            System.out.print("Dear " + Game.whoseTurnPlayer().getNickName() + ",");
-            System.out.println("do you want to activate " + cardName + "trap?(yes/no)");
-            return (Main.scanner.nextLine().equals("yes"));
-        } else return (!cardName.equals("Solemn Warning"));
-    }
 }

@@ -1,6 +1,5 @@
 package view.phase;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.*;
 import java.util.regex.Matcher;
 
@@ -24,7 +23,7 @@ public class MainPhase {
                 aiRun();
             else {
                 if (whatMainIsPhase == 1) {
-                    GameView.getInstance().setHowManyHeraldOfCreationDidWeUseEffect(0);
+                    Game.getGameView().setHowManyHeraldOfCreationDidWeUseEffect(0);
                     PhaseControl.getInstance().doEffectMainPhase();
                 }
                 System.out.println("phase: main phase " + whatMainIsPhase);
@@ -46,7 +45,7 @@ public class MainPhase {
         System.out.println("phase: main phase " + whatMainIsPhase);
         Board.showBoard();
         if (whatMainIsPhase == 1) {
-            GameView.getInstance().setHowManyHeraldOfCreationDidWeUseEffect(0);
+            Game.getGameView().setHowManyHeraldOfCreationDidWeUseEffect(0);
             PhaseControl.getInstance().doEffectMainPhase();
             getSelectedCard();
         } else if (whatMainIsPhase == 2)
@@ -530,22 +529,5 @@ public class MainPhase {
 
     public void setWhatMainIsPhase(int i) {
         whatMainIsPhase = i;
-    }
-
-    public static boolean doSolemnWarningEffect(Address address) {
-        if (Game.whoseRivalPlayer().doIHaveSpellCard("Solemn Warning")) {
-            if (!Game.isAITurn()) {
-                if (BattlePhase.getInstance().getPermissionForTrap("Solemn Warning", false)) {
-                    Game.whoseRivalPlayer().decreaseLP(2000);
-                    Game.whoseTurnPlayer().removeCard(address);
-                    return true;
-                }
-                return false;
-            } else {
-                Player currentPlayer = Game.whoseTurnPlayer();
-                MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
-                return ((monsterCard.getNormalAttack() >= 2000) && (currentPlayer.getLP() > 5000));
-            }
-        } return false;
     }
 }
