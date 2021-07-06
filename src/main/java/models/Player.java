@@ -329,7 +329,7 @@ public class Player {
     }
 
     public boolean isThisMonsterOnAttackPosition(Address address) {
-        if (!positionOfCardInBoardByAddress.get(address).equals(PositionOfCardInBoard.DH))
+        if (positionOfCardInBoardByAddress.get(address).equals(PositionOfCardInBoard.OO))
             return true;
         else return false;
     }
