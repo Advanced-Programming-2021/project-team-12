@@ -235,6 +235,7 @@ public class GameView extends Application {
 
     @FXML
     public void initialize() throws Exception {
+        Game.setGameView(this);
         Game.setPhase("Draw Phase");
         setAvatar();
         setNickName();

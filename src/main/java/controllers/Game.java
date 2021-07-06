@@ -223,4 +223,8 @@ public class Game {
     public static String getCurrentPhase() {
         return phase;
     }
+
+    public static void setGameView(GameView _gameView) {
+        gameView = _gameView;
+    }
 }
