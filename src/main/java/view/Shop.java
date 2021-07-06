@@ -70,7 +70,7 @@ public class Shop extends Application {
         int y = counter1 / 10;
         String kind = "SpellTrap";
         if (card.getKind().equals("Monster")) kind = "Monsters";
-        Image image = new Image(getClass().getResource("/PNG/Cards1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
+        Image image = getImage(card, kind);
         ImageView imageView = new ImageView();
         imageView.setImage(image);
         imageView.setLayoutX(x * scale(90));
@@ -81,12 +81,18 @@ public class Shop extends Application {
         label.setText("money: " + String.valueOf(user.getMoney()));
     }
 
+    private Image getImage(Card card, String kind) {
+        if (card.isOriginal())
+            return new Image(getClass().getResource("/PNG/Cards1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
+        else return new Image(getClass().getResource("/PNG/NEW/" + kind + "/1.png").toExternalForm());
+    }
+
     private void addCardAsButton(int counter1, Card card) {
         int x = counter1 % 11;
         int y = counter1 / 11;
         String kind = "SpellTrap";
         if (card.getKind().equals("Monster")) kind = "Monsters";
-        Image image = new Image(getClass().getResource("/PNG/Cards1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
+        Image image = getImage(card, kind);
         Button button = new Button();
         button.setText("buy");
         button.setLayoutX(x * scale(90) + scale(20) + 790);
@@ -130,8 +136,8 @@ public class Shop extends Application {
         }
     }
 
-    public double scale(double v){
-        return 3*v/5;
+    public double scale(double v) {
+        return 3 * v / 5;
     }
 
     public void back(MouseEvent mouseEvent) throws Exception {

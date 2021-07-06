@@ -123,4 +123,10 @@ public class Card {
         return card.getLevel();
     }
 
+    public boolean isOriginal() {
+        if (kind.equals("Monster")) return !MonsterCard.getMonsterCardByName(name).isNew();
+        else if (kind.equals("Spell")) return !SpellCard.getSpellCardByName(name).isNew();
+        else return !TrapCard.getTrapCardByName(name).isNew();
+    }
+
 }

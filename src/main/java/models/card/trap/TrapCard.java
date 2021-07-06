@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class TrapCard {
     private boolean isOriginal;
     private String description;
-    private String name;
     private String realName;
     private String effect;
     private ArrayList<String> namesForEffect = new ArrayList<>();
@@ -20,7 +19,6 @@ public class TrapCard {
     public TrapCard(String name, boolean isLimit, int price, String description) {
         this.isLimit = isLimit;
         this.price = price;
-        this.name = name;
         realName = name;
         this.description = description;
         trapCards.add(this);
@@ -71,10 +69,6 @@ public class TrapCard {
 
     public void setEffect(String effect) {
         this.effect = effect;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setPrice(int price) {

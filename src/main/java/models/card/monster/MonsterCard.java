@@ -20,7 +20,6 @@ public class MonsterCard {
     private String effect;
     private MonsterMode monsterMode;
     private boolean isRitual;
-    private String name;
     private int price;
     private Attribute attribute;
     private static ArrayList<MonsterCard> monsterCards;
@@ -38,7 +37,6 @@ public class MonsterCard {
         this.defence = defence;
         this.monsterMode = monsterMode;
         this.isRitual = isRitual;
-        this.name = name;
         realName = name;
         this.price = price;
         this.attribute = attribute;
@@ -260,10 +258,6 @@ public class MonsterCard {
 
     public String getRealName() {
         return realName;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setPrice(int price) {
