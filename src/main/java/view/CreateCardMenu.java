@@ -30,4 +30,8 @@ public class CreateCardMenu extends Application {
     public void createTrapCard(MouseEvent mouseEvent) throws Exception {
         new CreateTrapCard().start(stage);
     }
+
+    public void back(MouseEvent mouseEvent) throws Exception {
+        new MainMenu().start(stage);
+    }
 }

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 public class TrapCard {
     private String description;
     private String name;
+    private String realName;
     private String effect;
+    private ArrayList<String> names = new ArrayList<>();
     private boolean isLimit;
     private int price;
     private static ArrayList<TrapCard> trapCards;
@@ -18,6 +20,15 @@ public class TrapCard {
         this.isLimit = isLimit;
         this.price = price;
         this.name = name;
+        realName = name;
+        this.description = description;
+        trapCards.add(this);
+    }
+
+    public TrapCard(String realName, int price, String description, ArrayList<String> names) {
+        this.price = price;
+        this.realName = realName;
+        this.names = names;
         this.description = description;
         trapCards.add(this);
     }
@@ -67,4 +78,9 @@ public class TrapCard {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    public static ArrayList<TrapCard> getTrapCards() {
+        return trapCards;
+    }
+
 }

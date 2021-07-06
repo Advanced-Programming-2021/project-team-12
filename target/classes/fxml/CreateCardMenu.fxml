@@ -5,7 +5,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
 <AnchorPane prefHeight="336.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CreateCardMenu">
    <children>
       <ImageView fitHeight="389.0" fitWidth="600.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true">
@@ -28,5 +27,6 @@
             <Font size="18.0" />
          </font>
       </Button>
+      <Button layoutX="14.0" layoutY="297.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="30.0" prefWidth="30.0" style="-fx-background-size: 30;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
    </children>
 </AnchorPane>
