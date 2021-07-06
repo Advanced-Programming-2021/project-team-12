@@ -42,12 +42,12 @@ public class GameView extends Application {
     public ImageView imageViewInfo;
     public Address selectedCardAddress;
     public Address submitedAddrees;
-    public ImageView[] turnHand = new ImageView[7];
-    public ImageView[] turnMonsters = new ImageView[6];
-    public ImageView[] turnSpells = new ImageView[6];
-    public ImageView[] rivalHand = new ImageView[7];
-    public ImageView[] rivalMonsters = new ImageView[6];
-    public ImageView[] rivalSpells = new ImageView[6];
+    public ImageView[] turnHand = new ImageView[8];
+    public ImageView[] turnMonsters = new ImageView[7];
+    public ImageView[] turnSpells = new ImageView[7];
+    public ImageView[] rivalHand = new ImageView[8];
+    public ImageView[] rivalMonsters = new ImageView[7];
+    public ImageView[] rivalSpells = new ImageView[7];
     public Button submitButton;
     public TextField messageFromPlayer;
     public Button drawPhase;
@@ -358,8 +358,7 @@ public class GameView extends Application {
         addMessageToLabel(drawCardMessage);
         if (drawCardMessage.startsWith("GAME"))
             Game.playTurn("EndGame");
-        else if (!drawCardMessage.equals("You can't draw a card because of rival's Time Seal"))
-            drawCardFromDeckToHand(player, false);
+        reset();
     }
 
     private void doStandByPhase() {
@@ -487,7 +486,6 @@ public class GameView extends Application {
     }
 
     public boolean doSolemnWarningEffect(Address address) {
-        System.out.println("yes");
         if (Game.whoseRivalPlayer().doIHaveSpellCard("Solemn Warning")) {
             if (!Game.isAITurn()) {
                 if (Game.getGameView().getPermissionForTrap("Solemn Warning", false)) {
