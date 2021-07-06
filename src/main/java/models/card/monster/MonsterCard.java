@@ -8,6 +8,7 @@ import models.PositionOfCardInBoard;
 import models.card.spell.SpellCard;
 import view.Effect;
 import controllers.Game;
+import view.GameView;
 
 import java.util.ArrayList;
 
@@ -167,7 +168,7 @@ public class MonsterCard {
     public boolean whenSuijinIsDefending() {
         int index = Attack.whatIndexOfDefender();
         if (!Attack.whichPlayerIsAttacker().doIndexExistInSuijin(index)) {
-            if (Effect.run("Suijin").equals("yes")) {
+            if (GameView.getInstance().runEffect("Suijin").equals("yes")) {
                 Attack.whichPlayerIsAttacker().addIndexToSuijin(index);
                 return true;
             }
