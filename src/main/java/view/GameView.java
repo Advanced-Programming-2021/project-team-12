@@ -459,6 +459,9 @@ public class GameView extends Application {
         for (int i = 1; i <= 6; i++) {
             setHandOnMouseClick(turnHand[i], i);
         }
+        for (int i = 1; i <= 6; i++) {
+            setRivalHandOnMouseClick(rivalHand[i], i);
+        }
         for (int i = 1; i <= 5; i++)
             setMonsterOnMouseClicked(turnMonsters[i], i);
         for (int i = 1; i <= 5; i++)
@@ -467,8 +470,6 @@ public class GameView extends Application {
 
     private void setSelectedCard(String zone, int i, Boolean isMine) {
         selectedCardAddress = new Address(i, zone, isMine);
-        System.out.println(selectedCardAddress.getKind());
-        System.out.println(selectedCardAddress.getNumber());
     }
 
     private void setNickName() {
@@ -1039,6 +1040,22 @@ public class GameView extends Application {
             } else {
                 newMessageToLabel(Game.getCurrentPhase());
                 addMessageToLabel("You can't set/summon cards at this phase");
+            }
+        });
+    }
+
+    private void setRivalHandOnMouseClick(ImageView handCard, int i) {
+        handCard.setOnMouseClicked(e -> {
+            if(Game.getCurrentPhase().equals("Battle Phase")) {
+                if (selectedCardAddress.getKind().equals("monster") && selectedCardAddress.checkIsMine()) {
+                    try {
+                        BattlePhaseController.getInstance().directAttack(selectedCardAddress);
+                        reset();
+                    } catch (MyException myException) {
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
+                    }
+                }
             }
         });
     }
