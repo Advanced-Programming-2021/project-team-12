@@ -28,7 +28,11 @@ public class Game {
     private static MainPhase mainPhase1;
     private static MainPhase mainPhase2;
     private static String phase;
-    public static GameView gameView;
+    private static GameView gameView;
+
+    static {
+        gameView = new GameView();
+    }
 
     public static GameView getGameView() {
         return gameView;
@@ -226,5 +230,10 @@ public class Game {
 
     public static void setGameView(GameView _gameView) {
         gameView = _gameView;
+    }
+    
+    public static void startGame() throws Exception {
+        playerTurn = PlayerTurn.SECONDPLAYER;
+        gameView.start(OnlineDuel.stage);
     }
 }
