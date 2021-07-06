@@ -55,7 +55,7 @@ public class CreateMonsterCard extends Application {
 
     @FXML
     public void initialize() {
-        ArrayList<MonsterCard> monsterCards = MonsterCard.getMonsterCards();
+        ArrayList<MonsterCard> monsterCards = MonsterCard.getOriginalMonsterCards();
         int count = 0;
         for (MonsterCard monsterCard : monsterCards) {
             int x = count % 2;

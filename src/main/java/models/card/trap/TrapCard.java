@@ -3,11 +3,11 @@ package models.card.trap;
 import java.util.ArrayList;
 
 public class TrapCard {
+    private boolean isOriginal;
     private String description;
-    private String name;
     private String realName;
     private String effect;
-    private ArrayList<String> names = new ArrayList<>();
+    private ArrayList<String> namesForEffect = new ArrayList<>();
     private boolean isLimit;
     private int price;
     private static ArrayList<TrapCard> trapCards;
@@ -19,22 +19,22 @@ public class TrapCard {
     public TrapCard(String name, boolean isLimit, int price, String description) {
         this.isLimit = isLimit;
         this.price = price;
-        this.name = name;
         realName = name;
         this.description = description;
         trapCards.add(this);
     }
 
-    public TrapCard(String realName, int price, String description, ArrayList<String> names) {
+    public TrapCard(String realName, int price, String description, ArrayList<String> names, boolean isOriginal) {
         this.price = price;
         this.realName = realName;
-        this.names = names;
+        this.namesForEffect = names;
         this.description = description;
+        this.isOriginal = isOriginal;
         trapCards.add(this);
     }
 
-    public String getName() {
-        return name;
+    public ArrayList<String> getNamesForEffect() {
+        return namesForEffect;
     }
 
     public String getEffect() {
@@ -51,7 +51,7 @@ public class TrapCard {
 
     public static TrapCard getTrapCardByName(String name) {
         for (TrapCard trapCard : trapCards)
-            if (trapCard.getName().equals(name)) return trapCard;
+            if (trapCard.realName.equals(name)) return trapCard;
         return null;
     }
 
@@ -71,16 +71,26 @@ public class TrapCard {
         this.effect = effect;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setPrice(int price) {
         this.price = price;
     }
 
-    public static ArrayList<TrapCard> getTrapCards() {
-        return trapCards;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
+    public String getRealName() {
+        return realName;
+    }
+
+    public boolean isNew() {
+        return !isOriginal;
+    }
+
+    public static ArrayList<TrapCard> getOriginalTrapCards() {
+        ArrayList<TrapCard> originalTrapCards= new ArrayList<>();
+        for (TrapCard trapCard : trapCards)
+            if(!trapCard.isNew()) originalTrapCards.add(trapCard);
+        return originalTrapCards;
+    }
 }

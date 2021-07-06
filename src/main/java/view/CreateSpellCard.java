@@ -12,7 +12,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.spell.SpellMode;
 
@@ -34,7 +33,7 @@ public class CreateSpellCard extends Application {
 
     @FXML
     public void initialize() {
-        ArrayList<SpellCard> spellCards = SpellCard.getSpellCards();
+        ArrayList<SpellCard> spellCards = SpellCard.getOriginalSpellCards();
         int count = 0;
         for (SpellCard spellCard : spellCards) {
             int x = count % 2;

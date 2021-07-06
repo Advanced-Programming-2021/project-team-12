@@ -79,7 +79,7 @@ public class SaveFile {
         TrapCard trap = TrapCard.getTrapCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
         obj.put("description", trap.getDescription());
-        obj.put("name", trap.getName());
+        obj.put("name", trap.getRealName());
         obj.put("isLimit", trap.checkIsLimit());
         obj.put("price", trap.getPrice());
         try {
@@ -98,7 +98,7 @@ public class SaveFile {
         obj.put("price", spell.getPrice());
         obj.put("spellMode", spell.getSpellMode());
         obj.put("isLimit", spell.checkIsLimit());
-        obj.put("name", spell.getName());
+        obj.put("name", spell.getRealName());
         try {
             FileWriter writer = new FileWriter(file.getAbsolutePath() + "//" + card.getCardName() + ".json");
             writer.write(obj.toJSONString());
@@ -111,7 +111,7 @@ public class SaveFile {
     private static void exportMonster(Card card, File file) {
         MonsterCard monster = MonsterCard.getMonsterCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
-        obj.put("name", monster.getName());
+        obj.put("name", monster.getRealName());
         obj.put("monsterMode", monster.getMonsterMode().toString());
         obj.put("attack", monster.getNormalAttack());
         obj.put("defence", monster.getDefenceNumber());
@@ -157,7 +157,7 @@ public class SaveFile {
     private static void saveMonster(Card card) {
         MonsterCard monster = MonsterCard.getMonsterCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
-        obj.put("name", monster.getName());
+        obj.put("name", monster.getRealName());
         obj.put("monsterMode", monster.getMonsterMode().toString());
         obj.put("attack", monster.getNormalAttack());
         obj.put("defence", monster.getDefenceNumber());
@@ -167,7 +167,7 @@ public class SaveFile {
         obj.put("price", monster.getPrice());
         obj.put("isRitual", monster.isRitual());
         try {
-            FileWriter writer = new FileWriter("data//monsterCards//" + monster.getName() + ".json");
+            FileWriter writer = new FileWriter("data//monsterCards//" + monster.getRealName() + ".json");
             writer.write(obj.toJSONString());
             writer.close();
         } catch (IOException e) {
@@ -182,9 +182,9 @@ public class SaveFile {
         obj.put("price", spell.getPrice());
         obj.put("spellMode", spell.getSpellMode());
         obj.put("isLimit", spell.checkIsLimit());
-        obj.put("name", spell.getName());
+        obj.put("name", spell.getRealName());
         try {
-            FileWriter writer = new FileWriter("data//spellCards//" + spell.getName() + ".json");
+            FileWriter writer = new FileWriter("data//spellCards//" + spell.getRealName() + ".json");
             writer.write(obj.toJSONString());
             writer.close();
         } catch (IOException e) {
@@ -196,11 +196,11 @@ public class SaveFile {
         TrapCard trap = TrapCard.getTrapCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
         obj.put("description", trap.getDescription());
-        obj.put("name", trap.getName());
+        obj.put("name", trap.getRealName());
         obj.put("isLimit", trap.checkIsLimit());
         obj.put("price", trap.getPrice());
         try {
-            FileWriter writer = new FileWriter("data//trapCards//" + trap.getName() + ".json");
+            FileWriter writer = new FileWriter("data//trapCards//" + trap.getRealName() + ".json");
             writer.write(obj.toJSONString());
             writer.close();
         } catch (IOException e) {

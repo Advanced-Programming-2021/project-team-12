@@ -9,17 +9,19 @@ import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
 
+import java.util.ArrayList;
+
 public class Attack {
     public static Address defenderAddress;
     public static Address attackerAddress;
-    public static String defenderMonsterName;
+    public static ArrayList<String> defenderMonsterName = new ArrayList<>();
 
     public static void setAddress(Address address, boolean isAttacker) {
         if (isAttacker)
             attackerAddress = address;
         else {
             defenderAddress = address;
-            defenderMonsterName = Game.whoseRivalPlayer().getMonsterCardByAddress(defenderAddress).getName();
+            defenderMonsterName = Game.whoseRivalPlayer().getMonsterCardByAddress(defenderAddress).getNamesForEffect();
         }
     }
 

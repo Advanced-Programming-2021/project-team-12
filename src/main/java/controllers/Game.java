@@ -28,6 +28,11 @@ public class Game {
     private static MainPhase mainPhase1;
     private static MainPhase mainPhase2;
     private static String phase;
+    public static GameView gameView;
+
+    public static GameView getGameView() {
+        return gameView;
+    }
 
     static {
         mainPhase1 = new MainPhase();
