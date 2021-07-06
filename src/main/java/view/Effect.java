@@ -16,8 +16,10 @@ public class Effect {
            return "2";
         if(cardName.equals("Herald of Creation1"))
             return "0";
-        if(cardName.equals("Herald of Creation2"))
-            Game.getGameView().scanForTribute(1);
+        if(cardName.equals("Herald of Creation2")){
+            Game.getGameView().scanForTribute(1, null, null, null);
+            return Game.getGameView().tributeCard1;
+        }
         if(cardName.equals("Herald of Creation3"))
             return "0";
         if(cardName.equals("Terratiger, the Empowered Warrior"))

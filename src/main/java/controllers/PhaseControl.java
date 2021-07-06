@@ -56,10 +56,10 @@ public class PhaseControl {
 
     public String drawOneCard() throws Exception {
         if (Game.getPhase().equals("BattlePhase"))
-        if (!canDraw) {
-            canDraw = true;
-            return "You can't draw a card because of rival's Time Seal";
-        }
+            if (!canDraw) {
+                canDraw = true;
+                return "You can't draw a card because of rival's Time Seal";
+            }
         if (Game.playerTurn == PlayerTurn.FIRSTPLAYER) {
             String newAddedCard = Game.firstPlayer.addCardFromUnusedToHand();
             if (newAddedCard.equals("unused is empty")) {
@@ -257,99 +257,118 @@ public class PhaseControl {
         Player currentPlayer = Game.whoseTurnPlayer();
         MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
         if (currentPlayer.isThereAnyCardInMonsterZone()) {
-            String tributeCard = Game.getGameView().scanForTribute(1);
-            if (tributeCard.equals("cancel")) {
-                throw new MyException("Canceled successfully");
-            } else {
-                if (currentPlayer.isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard))) {
-                    currentPlayer.setHeSummonedOrSet(true);
-                    currentPlayer.removeMonsterByInt(Integer.parseInt(tributeCard));
-                    currentPlayer.summonCardToMonsterZone(address);
-                    if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                        if (monsterCard.getNormalAttack() >= 1000) {
-                            currentPlayer.removeCard(address);
-                            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
-                        }
-                    }
-                    if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                        Attack.destroyAllMonstersInTheBoard();
-                        Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
-                    }
-                } else throw new MyException("There is no monster in this address!");
-            }
+            Game.getGameView().scanForTribute(1, address, monsterCard, "medium");
         } else throw new MyException("There are not enough cards for tribute");
+    }
+
+    public void continueMediumLevelSummon(Address address, Player currentPlayer, MonsterCard monsterCard, String tributeCard) throws MyException {
+        if (tributeCard.equals("cancel")) {
+            throw new MyException("Canceled successfully");
+        } else {
+            if (currentPlayer.isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard))) {
+                currentPlayer.setHeSummonedOrSet(true);
+                currentPlayer.removeMonsterByInt(Integer.parseInt(tributeCard));
+                currentPlayer.summonCardToMonsterZone(address);
+                if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                    if (monsterCard.getNormalAttack() >= 1000) {
+                        currentPlayer.removeCard(address);
+                        Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
+                    }
+                }
+                if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                    Attack.destroyAllMonstersInTheBoard();
+                    Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
+                }
+            } else throw new MyException("There is no monster in this address!");
+        }
     }
 
     public void summonAHighLevelMonster(Address address) throws MyException {
         Player currentPlayer = Game.whoseTurnPlayer();
         MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
         if (Game.whoseTurnPlayer().isThereTwoCardInMonsterZone()) {
-            String tributeCard1 = Game.getGameView().scanForTribute(1);
-            if (tributeCard1.equals("cancel")) {
-                throw new MyException("Canceled successfully!");
-            } else {
-                String tributeCard2 = Game.getGameView().scanForTribute(2);
-                if (tributeCard2.equals("cancel")) {
-                    throw new MyException("Canceled successfully!");
-                } else {
-                    if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard1))
-                            && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))) {
-                        Game.whoseTurnPlayer().setHeSummonedOrSet(true);
-                        Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard1));
-                        Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard2));
-                        Game.whoseTurnPlayer().summonCardToMonsterZone(address);
-                        if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                            if (monsterCard.getNormalAttack() >= 1000) {
-                                currentPlayer.removeCard(address);
-                                Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
-                            }
-                        }
-                        if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                            Attack.destroyAllMonstersInTheBoard();
-                            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
-                        }
-                    } else throw new MyException("There is no monster in this address!");
-                }
-            }
+            Game.getGameView().scanForTribute(1, address, monsterCard, "high1");
         } else throw new MyException("There are not enough cards for tribute");
+    }
+
+    public void continueFirstHigh(Address address, Player currentPlayer, MonsterCard monsterCard, String tributeCard1) throws MyException {
+        if (tributeCard1.equals("cancel")) {
+            throw new MyException("Canceled successfully!");
+        } else {
+            Game.getGameView().scanForTribute(2, address, monsterCard, "high2");
+        }
+    }
+
+    public void continueSecondHigh(Address address, Player currentPlayer, MonsterCard monsterCard, String tributeCard1, String tributeCard2) throws MyException {
+        if (tributeCard2.equals("cancel")) {
+            throw new MyException("Canceled successfully!");
+        } else {
+            if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard1))
+                    && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))) {
+                Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+                Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard1));
+                Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard2));
+                Game.whoseTurnPlayer().summonCardToMonsterZone(address);
+                if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                    if (monsterCard.getNormalAttack() >= 1000) {
+                        currentPlayer.removeCard(address);
+                        Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
+                    }
+                }
+                if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                    Attack.destroyAllMonstersInTheBoard();
+                    Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
+                }
+            } else throw new MyException("There is no monster in this address!");
+        }
     }
 
     public void summonASuperHighLevelMonster(Address address) throws MyException {
         Player currentPlayer = Game.whoseTurnPlayer();
+        MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
         if (Game.whoseTurnPlayer().isThereThreeCardInMonsterZone()) {
-            String tributeCard1 = Game.getGameView().scanForTribute(1);
-            if (Game.getMainPhase1().isCancelled(tributeCard1)) {
-                throw new MyException("Canceled successfully!");
-            } else {
-                String tributeCard2 = Game.getGameView().scanForTribute(2);
-                if (Game.getMainPhase1().isCancelled(tributeCard2)) {
-                    throw new MyException("Canceled successfully!");
-                } else {
-                    String tributeCard3 = Game.getGameView().scanForTribute(3);
-                    if (Game.getMainPhase1().isCancelled(tributeCard3)) {
-                        throw new MyException("Canceled successfully!");
-                    } else {
-                        if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard1))
-                                && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))
-                                && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard3))) {
-                            Game.whoseTurnPlayer().setHeSummonedOrSet(true);
-                            Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard1));
-                            Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard2));
-                            Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard3));
-                            Game.whoseTurnPlayer().summonCardToMonsterZone(address);
-                            if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                                currentPlayer.removeCard(address);
-                                Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
-                            }
-                            if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                                Attack.destroyAllMonstersInTheBoard();
-                                Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
-                            }
-                        } else throw new MyException("There is no monster in this address!");
-                    }
-                }
-            }
+            Game.getGameView().scanForTribute(1, address, monsterCard, "superHigh1");
         } else throw new MyException("There are not enough cards for tribute");
+    }
+
+    public void continueFirstSuperHigh(Address address, Player currentPlayer, MonsterCard monsterCard, String tributeCard1) throws MyException {
+        if (Game.getMainPhase1().isCancelled(tributeCard1)) {
+            throw new MyException("Canceled successfully!");
+        } else {
+            Game.getGameView().scanForTribute(2, address, monsterCard, "superHigh2");
+        }
+    }
+
+    public void continueSecondSuperHigh(Address address, Player currentPlayer, MonsterCard monsterCard, String tributeCard1, String tributeCard2) throws MyException {
+        if (Game.getMainPhase1().isCancelled(tributeCard2)) {
+            throw new MyException("Canceled successfully!");
+        } else {
+            Game.getGameView().scanForTribute(3, address, monsterCard, "superHigh3");
+        }
+    }
+
+    public void continueThirdSuperHigh(Address address, Player currentPlayer, String tributeCard1, String tributeCard2, String tributeCard3) throws MyException {
+        if (Game.getMainPhase1().isCancelled(tributeCard3)) {
+            throw new MyException("Canceled successfully!");
+        } else {
+            if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard1))
+                    && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))
+                    && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard3))) {
+                Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+                Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard1));
+                Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard2));
+                Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard3));
+                Game.whoseTurnPlayer().summonCardToMonsterZone(address);
+                if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                    currentPlayer.removeCard(address);
+                    Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
+                }
+                if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                    Attack.destroyAllMonstersInTheBoard();
+                    Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
+                }
+            } else throw new MyException("There is no monster in this address!");
+        }
     }
 
     public void showSelectedCard(Address address) {
@@ -367,45 +386,42 @@ public class PhaseControl {
     }
 
     public void flipSummon(Address address) throws MyException {
-            Player currentPlayer = Game.whoseTurnPlayer();
-            if (currentPlayer.isThisMonsterOnDHPosition(address)) {
-                currentPlayer.convertThisMonsterFromDHToOO(address);
-                MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
-                if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Man-Eater Bug")) {
-                    doManEaterBugEffect();
+        Player currentPlayer = Game.whoseTurnPlayer();
+        if (currentPlayer.isThisMonsterOnDHPosition(address)) {
+            currentPlayer.convertThisMonsterFromDHToOO(address);
+            MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
+            if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Man-Eater Bug")) {
+                doManEaterBugEffect();
+            }
+            if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole")) {
+                if (monsterCard.getNormalAttack() >= 1000) {
+                    currentPlayer.removeCard(address);
+                    Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
                 }
-                if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole")) {
-                    if (monsterCard.getNormalAttack() >= 1000) {
-                        currentPlayer.removeCard(address);
-                        Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
-                    }
-                }
-            } else throw new MyException("You cant do this action in this phase!");
+            }
+        } else throw new MyException("You cant do this action in this phase!");
     }
 
     public void setPosition(String input, Address address) throws MyException {
         Player currentPlayer = Game.whoseTurnPlayer();
-            int index = currentPlayer.getIndexOfThisCardByAddress(address);
-            Matcher matcher1 = CommandMatcher.getCommandMatcher(input, "^[ ]*set -- position (attack|defense)[ ]*$");
-            if (matcher1.find()) {
-                if (matcher1.group(1).equals("attack")) {
-                    if (!currentPlayer.isThisMonsterOnAttackPosition(address)) {
-                        if (!currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
-                            currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
-                            currentPlayer.convertThisMonsterFromDefenceToAttack(address);
-                        } else
-                            throw new MyException("you already changed this card position in this turn");
-                    } else throw new MyException("This card is already in the wanted position!");
-                } else {
-                    if (currentPlayer.isThisMonsterOnAttackPosition(address)) {
-                        if (!currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
-                            currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
-                            currentPlayer.convertThisMonsterFromAttackToDefence(address);
-                        } else
-                            throw new MyException("you already changed this card position in this turn");
-                    } else throw new MyException("This card is already in the wanted position!");
-                }
-            }
+        int index = currentPlayer.getIndexOfThisCardByAddress(address);
+        if (input.equals("attack")) {
+            if (!currentPlayer.isThisMonsterOnAttackPosition(address)) {
+                if (!currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
+                    currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
+                    currentPlayer.convertThisMonsterFromDefenceToAttack(address);
+                } else
+                    throw new MyException("you already changed this card position in this turn");
+            } else throw new MyException("This card is already in the wanted position!");
+        } else {
+            if (currentPlayer.isThisMonsterOnAttackPosition(address)) {
+                if (!currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
+                    currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
+                    currentPlayer.convertThisMonsterFromAttackToDefence(address);
+                } else
+                    throw new MyException("you already changed this card position in this turn");
+            } else throw new MyException("This card is already in the wanted position!");
+        }
     }
 
     public void activeSpell(Address address) throws MyException {

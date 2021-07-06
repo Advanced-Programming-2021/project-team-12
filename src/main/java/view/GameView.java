@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import models.*;
 import models.card.monster.MonsterCard;
 
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Objects;
@@ -60,9 +61,12 @@ public class GameView extends Application {
     public String firstInput;
     public String secondInput;
     public String thirdInput;
-    public String tributeCard;
+    public String tributeCard1;
+    public String tributeCard2;
+    public String tributeCard3;
     public String cardName;
     public String answere;
+    public int i = 1;
 
     public void summonForTribute(int numberOfTributes, Address address) throws MyException {
         newMessageToLabel(Game.getCurrentPhase());
@@ -73,37 +77,107 @@ public class GameView extends Application {
         else if (numberOfTributes == 3) PhaseControl.getInstance().summonASuperHighLevelMonster(address);
     }
 
-    public String scanForTribute(int i) {
+    public void scanForTribute(int i, Address address, MonsterCard monsterCard, String size) {
         setStateOfSubmit(false);
         setButtonsActivate(true);
         newMessageToLabel(Game.getCurrentPhase());
-        if (Game.isAITurn()){
+        if (Game.isAITurn()) {
             setStateOfSubmit(true);
             setButtonsActivate(false);
-            return scanForAITribute(i);
-        }
-        else {
-            addMessageToLabel("Select a monsters for tribute\nType a number from monster zone from 1 to 5\nType 'cancel' to cancel the tribute");
-            tributeCard = null;
-            submitButton.setOnMouseClicked(e ->{
-                setTributeCard();
-            });
-            while (!(tributeCard.matches("[12345]{1}") && !(tributeCard.matches("cancel")))) {
-                newMessageToLabel(Game.getCurrentPhase());
-                addMessageToLabel("Incorrect input");
-                addMessageToLabel("Select a monsters for tribute\nType a number from monster zone from 1 to 5\nType 'cancel' to cancel the tribute");
-                submitButton.setOnMouseClicked(e ->{
-                    setTributeCard();
-                });
+            if(i == 1){
+                tributeCard1 = scanForAITribute(i);
+            } else if(i == 2){
+                tributeCard2 = scanForAITribute(i);
+            } else if(i == 3){
+                tributeCard3 = scanForAITribute(i);
             }
-            setStateOfSubmit(true);
-            setButtonsActivate(false);
-            return tributeCard;
+        } else {
+            addMessageToLabel("Select a monsters for tribute\nType a number from monster zone from 1 to 5\nType 'cancel' to cancel the tribute");
+            if(i == 1){
+                tributeCard1 = null;
+            } else if(i == 2){
+                tributeCard2 = null;
+            } else if(i == 3){
+                tributeCard3 = null;
+            }
+            sendData = false;
+            setStateOfSubmit(false);
+            setButtonsActivate(true);
+            submitButton.setOnMouseClicked(e -> {
+                String currentTributeCard = null;
+                sendDataTrue();
+                setTributeCard(i);
+                if(i == 1){
+                    currentTributeCard = tributeCard1;
+                } else if(i == 2){
+                    currentTributeCard = tributeCard2;
+                } else if(i == 3){
+                    currentTributeCard = tributeCard3;
+                }
+                assert currentTributeCard != null;
+                if (!(currentTributeCard.matches("[12345]{1}") && !(currentTributeCard.matches("cancel")))) {
+                    newMessageToLabel(Game.getCurrentPhase());
+                    addMessageToLabel("Incorrect input");
+                    addMessageToLabel("Select a monsters for tribute\nType a number from monster zone from 1 to 5\nType 'cancel' to cancel the tribute");
+                } else {
+                    setStateOfSubmit(true);
+                    setButtonsActivate(false);
+                    if(size.equals("medium")){
+                        try {
+                            PhaseControl.getInstance().continueMediumLevelSummon(address, Game.whoseTurnPlayer(), monsterCard, currentTributeCard);
+                        } catch (MyException myException) {
+                            newMessageToLabel(Game.getCurrentPhase());
+                            addMessageToLabel(myException.getMessage());
+                        }
+                    } else if(size.equals("high1")){
+                        try {
+                            PhaseControl.getInstance().continueFirstHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1);
+                        } catch (MyException myException) {
+                            newMessageToLabel(Game.getCurrentPhase());
+                            addMessageToLabel(myException.getMessage());
+                        }
+                    } else if(size.equals("high2")){
+                        try {
+                            PhaseControl.getInstance().continueSecondHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1, tributeCard2);
+                        } catch (MyException myException) {
+                            newMessageToLabel(Game.getCurrentPhase());
+                            addMessageToLabel(myException.getMessage());
+                        }
+                    } else if(size.equals("superHigh1")){
+                        try {
+                            PhaseControl.getInstance().continueFirstSuperHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1);
+                        } catch (MyException myException) {
+                            newMessageToLabel(Game.getCurrentPhase());
+                            addMessageToLabel(myException.getMessage());
+                        }
+                    } else if(size.equals("superHigh2")){
+                        try {
+                            PhaseControl.getInstance().continueSecondSuperHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1, tributeCard2);
+                        } catch (MyException myException) {
+                            newMessageToLabel(Game.getCurrentPhase());
+                            addMessageToLabel(myException.getMessage());
+                        }
+                    } else if(size.equals("superHigh3")){
+                        try {
+                            PhaseControl.getInstance().continueThirdSuperHigh(address, Game.whoseTurnPlayer(), tributeCard1, tributeCard2, tributeCard3);
+                        } catch (MyException myException) {
+                            newMessageToLabel(Game.getCurrentPhase());
+                            addMessageToLabel(myException.getMessage());
+                        }
+                    }
+                }
+            });
         }
     }
 
-    private void setTributeCard() {
-        tributeCard = messageFromPlayer.getText();
+    private void setTributeCard(int i) {
+        if(i == 1){
+            tributeCard1 = messageFromPlayer.getText();
+        } else if(i == 2){
+            tributeCard2 = messageFromPlayer.getText();
+        } else if(i == 3){
+            tributeCard3 = messageFromPlayer.getText();
+        }
     }
 
     private String scanForAITribute(int number) {
@@ -144,7 +218,7 @@ public class GameView extends Application {
         setButtonsActivate(true);
         setStateOfSubmit(false);
         Game.getGameView().newMessageToLabel(Game.getCurrentPhase());
-        if (Game.isAITurn()){
+        if (Game.isAITurn()) {
             setButtonsActivate(false);
             setStateOfSubmit(true);
             return Effect.AIEffect(cardName);
@@ -173,7 +247,6 @@ public class GameView extends Application {
         if (cardName.equals("Mystical space typhoon"))
             addMessageToLabel("Choose one of rival's spell or trap to be destroyed\ntype a spell zone number from 1 to 5");
         if (!cardName.equals("Twin Twisters")) {
-            int i = 1;
             while (i <= 3) {
                 int finalI = i;
                 submitButton.setOnMouseClicked(e -> {
@@ -187,22 +260,28 @@ public class GameView extends Application {
                         setButtonsActivate(false);
                         setStateOfSubmit(true);
                     }
+                    increaseCount();
                 });
-                i++;
             }
             return firstInput + "," + secondInput + "," + thirdInput;
         } else {
-            submitButton.setOnMouseClicked(e -> {
-                sendDataTrue();
-                setButtonsActivate(false);
-                setStateOfSubmit(true);
-            });
+            while (!sendData) {
+                submitButton.setOnMouseClicked(e -> {
+                    sendDataTrue();
+                    setButtonsActivate(false);
+                    setStateOfSubmit(true);
+                });
+            }
         }
         if (sendData = true) {
             sendData = false;
             return messageFromPlayer.getText();
         }
         return null;
+    }
+
+    private void increaseCount() {
+        i++;
     }
 
     private void setFirstInput() {
@@ -295,28 +374,6 @@ public class GameView extends Application {
         }
         for (int i = 1; i <= 5; i++)
             setMonsterOnMouseClicked(turnMonsters[i], i);
-    }
-
-    private void setMonsterOnMouseClicked(ImageView monsterZoneCard, int i) {
-        if (!monsterZoneCard.isVisible()) {
-            monsterZoneCard.setOnMouseClicked(e -> {
-                if (selectedCardAddress == null) {
-                    setSelectedCard("monster", i, true);
-                } else if (selectedCardAddress.getKind().equals("Hand")) {
-                    if (e.getButton() == MouseButton.SECONDARY) {
-
-                    }
-                    if (monsterZoneCard.isVisible()) {
-                        selectedCardAddress = new Address(i, "Monster", true);
-                    } else {
-//                    Address address =
-//                            PhaseControl.getInstance().summonControl();
-                    }
-                }
-            });
-        } else {
-
-        }
     }
 
     private void setSelectedCard(String zone, int i, Boolean isMine) {
@@ -438,7 +495,7 @@ public class GameView extends Application {
         setButtonsActivate(true);
         newMessageToLabel(Game.getCurrentPhase());
         addMessageToLabel("Do you want do the effect?\nType 'yes' or 'no'");
-        submitButton.setOnMouseClicked(e ->{
+        submitButton.setOnMouseClicked(e -> {
             setStateOfSubmit(true);
             setButtonsActivate(false);
             setAnswere();
@@ -456,7 +513,7 @@ public class GameView extends Application {
             setButtonsActivate(true);
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Select a Cyberse type monster from your hand or deck or graveyard to be summoned.\nWhich card do you want to special summon?\n1.Texchanger\n2.Leotron");
-            submitButton.setOnMouseClicked(e ->{
+            submitButton.setOnMouseClicked(e -> {
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
                 Game.whoseTurnPlayer().specialSummonThisKindOfCardFromHandOrDeckOrGraveyard(messageBox.getText());
@@ -473,7 +530,7 @@ public class GameView extends Application {
         if (!Game.isAITurn()) {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly");
-            submitButton.setOnMouseClicked(e ->{
+            submitButton.setOnMouseClicked(e -> {
                 setCardName();
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
@@ -500,35 +557,46 @@ public class GameView extends Application {
                 MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
                 return ((monsterCard.getNormalAttack() >= 2000) && (currentPlayer.getLP() > 5000));
             }
-        } return false;
+        }
+        return false;
     }
 
     public boolean getPermissionForTrap(String cardName, boolean isMine) {
-        System.out.println(submitButton.isDisable());
+        System.out.println("here");
         setStateOfSubmit(false);
         setButtonsActivate(true);
         if (!isMine && (!Game.getIsAI() || Game.isAITurn())) {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Dear " + Game.whoseRivalPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
             answere = null;
-            submitButton.setOnMouseClicked(e ->{
-                setAnswere();
+            sendData = false;
+            while (!sendData) {
+                submitButton.setOnMouseClicked(e -> {
+                    setAnswere();
+                    sendDataTrue();
+                });
+            }
+            if (sendData) {
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
-            });
-            return (answere.equals("yes"));
-        }
-        else if (!Game.isAITurn() && isMine) {
+                return (answere.equals("yes"));
+            }
+        } else if (!Game.isAITurn() && isMine) {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Dear " + Game.whoseTurnPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
             answere = null;
-            submitButton.setOnMouseClicked(e ->{
+            sendData = false;
+            submitButton.setOnMouseClicked(e -> {
                 setAnswere();
+                sendDataTrue();
+            });
+            if (sendData) {
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
-            });
-            return (answere.equals("yes"));
+                return (answere.equals("yes"));
+            }
         } else return (!cardName.equals("Solemn Warning"));
+        return false;
     }
 
     public void summonAMonsterCardFromGraveyard() {
@@ -566,7 +634,7 @@ public class GameView extends Application {
         setButtonsActivate(true);
         newMessageToLabel(Game.getCurrentPhase());
         addMessageToLabel("choose a card from your hand to be removed\nType hand number from 1 to 6");
-        submitButton.setOnMouseClicked(e ->{
+        submitButton.setOnMouseClicked(e -> {
             setSubmitedAddrees();
             setStateOfSubmit(true);
             setButtonsActivate(false);
@@ -579,7 +647,8 @@ public class GameView extends Application {
     }
 
     private void setSubmitedAddrees() {
-        submitedAddrees = new Address(Integer.parseInt(messageFromPlayer.getText()), "hand", true);;
+        submitedAddrees = new Address(Integer.parseInt(messageFromPlayer.getText()), "hand", true);
+        ;
     }
 
     private int getMaxAttackCard(HashMap<Integer, Card> graveyardCard) {
@@ -798,9 +867,56 @@ public class GameView extends Application {
         }
     }
 
+    private void setMonsterOnMouseClicked(ImageView monsterZoneCard, int i) {
+        monsterZoneCard.setOnMouseClicked(e -> {
+            if (Game.getCurrentPhase().equals("Main Phase 1") || Game.getCurrentPhase().equals("Main Phase 2")) {
+                setSelectedCard("monster", i, true);
+                if (Game.whoseTurnPlayer().isThisMonsterOnAttackPosition(selectedCardAddress)) {
+                    try {
+                        PhaseControl.getInstance().setPosition("defence", selectedCardAddress);
+                        reset();
+                    } catch (MyException myException) {
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
+                        reset();
+                    }
+                } else {
+                    try {
+                        PhaseControl.getInstance().setPosition("attack", selectedCardAddress);
+                        reset();
+                    } catch (MyException myException) {
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
+                        reset();
+                    }
+                }
+            } else if (Game.getCurrentPhase().equals("Battle Phase")) {
+                if (selectedCardAddress == null) {
+                    if (monsterZoneCard.isVisible()) {
+                        if (e.getButton() == MouseButton.SECONDARY) {
+
+                        }
+                        setSelectedCard("monster", i, true);
+                    }
+                } else if (selectedCardAddress.getKind().equals("Hand")) {
+                    if (e.getButton() == MouseButton.SECONDARY) {
+
+                    }
+                    if (monsterZoneCard.isVisible()) {
+                        selectedCardAddress = new Address(i, "Monster", true);
+                    } else {
+//                    Address address =
+//                            PhaseControl.getInstance().summonControl();
+                    }
+                }
+            }
+            reset();
+        });
+    }
+
     private void setHandOnMouseClick(ImageView handCard, int i) {
         handCard.setOnMouseClicked(e -> {
-            if(Game.getCurrentPhase().equals("Main Phase 1") || Game.getCurrentPhase().equals("Main Phase 2")){
+            if (Game.getCurrentPhase().equals("Main Phase 1") || Game.getCurrentPhase().equals("Main Phase 2")) {
                 setSelectedCard("hand", i, true);
                 if (e.getButton() == MouseButton.SECONDARY) {
                     try {
