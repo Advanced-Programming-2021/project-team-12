@@ -48,6 +48,7 @@ public class GameView extends Application {
     public ImageView[] rivalHand = new ImageView[8];
     public ImageView[] rivalMonsters = new ImageView[7];
     public ImageView[] rivalSpells = new ImageView[7];
+    public ImageView[][] graveYardSmallImages = new ImageView[11][7];
     public Button submitButton;
     public TextField messageFromPlayer;
     public Button drawPhase;
@@ -56,6 +57,10 @@ public class GameView extends Application {
     public Button battlePhase;
     public Button mainPhase2;
     public Button endPhase;
+    public ImageView turnGraveyard;
+    public ImageView rivalGraveyard;
+    public ImageView turnField;
+    public ImageView rivalField;
     public Boolean sendData = false;
     public String firstInput;
     public String secondInput;
@@ -246,9 +251,89 @@ public class GameView extends Application {
         createImageView(rivalMonsters, 338, 190, 5);
         createImageView(turnSpells, 338, 420, 5);
         createImageView(rivalSpells, 338, 90, 5);
+        createFieldsEvent(turnField);
+        createFieldsEvent(rivalField);
+        setGraveYardSmallImages();
+        createGraveYardEvents(turnGraveyard, Game.whoseTurnPlayer().getGraveyardCard());
+        createGraveYardEvents(rivalGraveyard, Game.whoseRivalPlayer().getGraveyardCard());
         setHand();
         initializeMouseClick();
         doDrawPhase(Game.whoseTurnPlayer());
+    }
+
+    private void setGraveYardSmallImages() {
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 6; j++) {
+                graveYardSmallImages[i][j] = new ImageView();
+                graveYardSmallImages[i][j].setLayoutX(15 + 40 * (j - 1));
+                graveYardSmallImages[i][j].setLayoutY(130 + 50 * (i - 1));
+                graveYardSmallImages[i][j].setFitWidth(55);
+                graveYardSmallImages[i][j].setFitHeight(70);
+            }
+        }
+    }
+
+    private void createGraveYardEvents(ImageView graveyard, HashMap<Integer, Card> graveyardZone) {
+        graveyard.setOnMouseEntered(e -> {
+            setGraveYardButtons(graveyardZone);
+        });
+        graveyard.setOnMouseExited(e -> {
+            removeGraveYardButtons();
+        });
+    }
+
+    private void setGraveYardButtons(HashMap<Integer, Card> graveyardZone) {
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 6; j++) {
+                if (graveyardZone.containsKey(6 * (i - 1) + j)) {
+                    graveYardSmallImages[i][j].setImage(createImage(graveyardZone.get(i).getCardName()));
+                    graveYardSmallImages[i][j].setVisible(true);
+                    graveYardSmallImages[i][j].setDisable(false);
+                }
+                else {
+                    graveYardSmallImages[i][j].setVisible(false);
+                    graveYardSmallImages[i][j].setDisable(true);
+                }
+            }
+        }
+    }
+
+    private void removeGraveYardButtons() {
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 6; j++) {
+                graveYardSmallImages[i][j].setVisible(false);
+                graveYardSmallImages[i][j].setDisable(true);
+            }
+        }
+    }
+
+    private void createFieldsEvent(ImageView field) {
+        field.setOnMouseEntered(e -> {
+            imageViewInfo.setImage(field.getImage());
+            imageViewInfo.setVisible(true);
+        });
+        field.setOnMouseExited(e -> {
+            imageViewInfo.setVisible(false);
+        });
+    }
+
+    private void setFieldAndGraveYard() {
+        filedAndGraveyardSet(Game.whoseTurnPlayer().getFieldCard(), turnField);
+        filedAndGraveyardSet(Game.whoseRivalPlayer().getFieldCard(), rivalField);
+        filedAndGraveyardSet(Game.whoseTurnPlayer().getGraveyardCard(), turnGraveyard);
+        filedAndGraveyardSet(Game.whoseRivalPlayer().getGraveyardCard(), rivalGraveyard);
+    }
+
+    private void filedAndGraveyardSet(HashMap<Integer, Card> zone, ImageView imageView) {
+        if (zone.containsKey(1)) {
+            imageView.setImage(createImage(zone.get(1).getCardName()));
+            imageView.setDisable(false);
+            imageView.setVisible(true);
+        }
+        else {
+            imageView.setDisable(true);
+            imageView.setVisible(false);
+        }
     }
 
     private void setStateOfSubmit(boolean isDisable) {
@@ -263,13 +348,14 @@ public class GameView extends Application {
         setLP();
         setAvatar();
         setNickName();
+        setFieldAndGraveYard();
     }
 
     private void createImageView(ImageView[] imageView, int X, int Y, int size) {
         for (int i = 1; i <= size; i++) {
             imageView[i] = new ImageView();
-            imageView[i].setFitWidth(75);
-            imageView[i].setFitHeight(100);
+            imageView[i].setFitWidth(70);
+            imageView[i].setFitHeight(85);
             imageView[i].setPreserveRatio(false);
             imageView[i].setLayoutX(X + 80 * (i - 1));
             imageView[i].setLayoutY(Y);
@@ -731,31 +817,31 @@ public class GameView extends Application {
 
     public void setHand() {
         for (int i = 1; i <= 6; i++) {
-            handsImage(Game.whoseTurnPlayer(), turnHand, i);
+            handsImageSet(Game.whoseTurnPlayer(), turnHand, i);
         }
         for (int i = 1; i <= 6; i++)
-            handsImage(Game.whoseRivalPlayer(), rivalHand, i);
+            handsImageSet(Game.whoseRivalPlayer(), rivalHand, i);
     }
 
     public void setSpells() {
         Player turnPlayer = Game.whoseTurnPlayer();
         Player rivalPlayer = Game.whoseRivalPlayer();
         for (int i = 1; i <= 5; i++)
-            spellsImage(turnPlayer, turnSpells, i);
+            spellsImageSet(turnPlayer, turnSpells, i);
         for (int i = 1; i <= 5; i++)
-            spellsImage(rivalPlayer, rivalSpells, i);
+            spellsImageSet(rivalPlayer, rivalSpells, i);
     }
 
     public void setMonster() {
         Player turnPlayer = Game.whoseTurnPlayer();
         Player rivalPlayer = Game.whoseRivalPlayer();
         for (int i = 1; i <= 5; i++)
-            monstersImage(turnPlayer, turnMonsters, i);
+            monstersImageSet(turnPlayer, turnMonsters, i);
         for (int i = 1; i <= 5; i++)
-            monstersImage(rivalPlayer, rivalMonsters, i);
+            monstersImageSet(rivalPlayer, rivalMonsters, i);
     }
 
-    private void handsImage(Player player, ImageView[] hand, int i) {
+    private void handsImageSet(Player player, ImageView[] hand, int i) {
         if (player.getHandCard().containsKey(i)) {
             if (player.getName().equals(Game.whoseTurnPlayer().getName()))
                 hand[i].setImage(createImage(player.getCardHand(i).getCardName()));
@@ -769,7 +855,7 @@ public class GameView extends Application {
         }
     }
 
-    private void monstersImage(Player player, ImageView[] monsters, int i) {
+    private void monstersImageSet(Player player, ImageView[] monsters, int i) {
         if (player.getMonsterZoneCard().containsKey(i)) {
             monsters[i].setImage(createImage(player.getCardMonster(i).getCardName()));
             if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.DH))
@@ -785,7 +871,7 @@ public class GameView extends Application {
         }
     }
 
-    private void spellsImage(Player player, ImageView[] spells, int i) {
+    private void spellsImageSet(Player player, ImageView[] spells, int i) {
         if (player.getSpellZoneCard().containsKey(i)) {
             spells[i].setImage(createImage(player.getCardSpell(i).getCardName()));
             if (!player.isSpellFaceUp(i))
@@ -946,4 +1032,5 @@ public class GameView extends Application {
             doEndPhase();
         }
     }
+
 }
