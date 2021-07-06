@@ -97,6 +97,7 @@ public class GameView extends Application {
             }
         } else {
             addMessageToLabel("Select a monsters for tribute\nType a number from monster zone from 1 to 5\nType 'cancel' to cancel the tribute");
+            Game.getGameView().messageFromPlayer.setText("");
             if(i == 1){
                 tributeCard1 = null;
             } else if(i == 2){
@@ -104,12 +105,10 @@ public class GameView extends Application {
             } else if(i == 3){
                 tributeCard3 = null;
             }
-            sendData = false;
             setStateOfSubmit(false);
             setButtonsActivate(true);
             submitButton.setOnMouseClicked(e -> {
                 String currentTributeCard = null;
-                sendDataTrue();
                 setTributeCard(i);
                 if(i == 1){
                     currentTributeCard = tributeCard1;
@@ -366,7 +365,7 @@ public class GameView extends Application {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 6; j++) {
                 if (graveyardZone.containsKey(6 * (i - 1) + j)) {
-                    graveYardSmallImages[i][j].setImage(createImage(graveyardZone.get(i).getCardName()));
+                    graveYardSmallImages[i][j].setImage(createImage(graveyardZone.get(6 * (i - 1) + j).getCardName()));
                     graveYardSmallImages[i][j].setVisible(true);
                     graveYardSmallImages[i][j].setDisable(false);
                 }
@@ -649,7 +648,6 @@ public class GameView extends Application {
     }
 
     public boolean getPermissionForTrap(String cardName, boolean isMine) {
-        System.out.println("here");
         setStateOfSubmit(false);
         setButtonsActivate(true);
         if (!isMine && (!Game.getIsAI() || Game.isAITurn())) {
