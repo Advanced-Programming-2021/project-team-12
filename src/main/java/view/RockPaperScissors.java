@@ -125,7 +125,7 @@ public class RockPaperScissors extends Application {
         Scene scene = new Scene(selfWinnerPane);
         selfWinnerPane.setOnMouseClicked(e ->{
             try {
-                Game.startGame();
+                Game.startGame("First");
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -141,7 +141,7 @@ public class RockPaperScissors extends Application {
         Scene scene = new Scene(opponentWinnerPane);
         opponentWinnerPane.setOnMouseClicked(e ->{
             try {
-                Game.startGame();
+                Game.startGame("Second");
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
