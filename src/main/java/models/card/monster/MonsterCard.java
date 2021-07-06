@@ -13,6 +13,7 @@ import view.GameView;
 import java.util.ArrayList;
 
 public class MonsterCard {
+    private boolean isOriginal;
     private String description;
     private int level;
     private int attack;
@@ -24,7 +25,7 @@ public class MonsterCard {
     private int price;
     private Attribute attribute;
     private static ArrayList<MonsterCard> monsterCards;
-    private ArrayList<String> names = new ArrayList<>();
+    private ArrayList<String> namesForEffect = new ArrayList<>();
     private String realName;
 
     static {
@@ -47,9 +48,9 @@ public class MonsterCard {
     }
 
     public MonsterCard(int level, int attack, int defence, MonsterMode monsterMode,
-                       boolean isRitual, String realName, int price, String description, ArrayList<String> names) {
+                       boolean isRitual, String realName, int price, String description, ArrayList<String> names, boolean isOriginal) {
         this.level = level;
-        this.names = names;
+        this.namesForEffect = names;
         this.attack = attack;
         this.defence = defence;
         this.monsterMode = monsterMode;
@@ -57,11 +58,16 @@ public class MonsterCard {
         this.realName = realName;
         this.price = price;
         this.description = description;
+        this.isOriginal = isOriginal;
         monsterCards.add(this);
     }
 
     public int getLevel() {
         return level;
+    }
+
+    public boolean isNew() {
+        return !isOriginal;
     }
 
     public int getAttack(Address address) {
@@ -73,7 +79,7 @@ public class MonsterCard {
             Address spellAddress = new Address(spellPlace, "spell", true);
             attack = doEquipSpellEffect(attack, currentPlayer.getSpellCardByAddress(spellAddress), false, address);
         }
-        if (name.equals("Beast King Barbaros"))
+        if (namesForEffect.contains("Beast King Barbaros"))
             if (!currentPlayer.didBeastKingBarbarosSummonedSuperHighLevel(indexOfAttacker)) attack -= 1900;
         if (Attack.whatKindOfCardIsDefenderNow() != null && Attack.whatKindOfCardIsDefenderNow().equals("Suijin") && !Attack.isDefenderFacedDown()) {
             if (whenSuijinIsDefending())
@@ -98,7 +104,7 @@ public class MonsterCard {
             if (monsterMode == MonsterMode.FAIRY) attack -= 200;
         }
         if (Board.doThisMonsterExistFacedUp("Command Knight")) attack = +400;
-        if (name.equals("Calculator")) return 300 * Board.sumOfLevelOfFacedUpMonsters();//doubt
+        if (namesForEffect.contains("Calculator")) return 300 * Board.sumOfLevelOfFacedUpMonsters();//doubt
         if (attack < 0)
             return 0;
         return attack;
@@ -106,11 +112,11 @@ public class MonsterCard {
 
     private int doEquipSpellEffect(int attackOrDefence, SpellCard spellCard, boolean isItDefence, Address address) {
         if (isItDefence) {
-            if (spellCard.getName().equals("Sword of dark destruction")) {
+            if (spellCard.getNamesForEffect().contains("Sword of dark destruction")) {
                 if (monsterMode.equals(MonsterMode.SPELLCASTER) || monsterMode.equals(MonsterMode.FIEND))
                     attackOrDefence -= 200;
             }
-            if (spellCard.getName().equals("Magnum Shield")) {
+            if (spellCard.getNamesForEffect().contains("Magnum Shield")) {
                 if (monsterMode.equals(MonsterMode.WARRIOR)) {
                     PositionOfCardInBoard positionOfCardInBoard = Game.whoseTurnPlayer().getMonsterPosition(address.getNumber());
                     if (positionOfCardInBoard.equals(PositionOfCardInBoard.DH) || positionOfCardInBoard.equals(PositionOfCardInBoard.DO))
@@ -118,19 +124,19 @@ public class MonsterCard {
                 }
             }
         } else {
-            if (spellCard.getName().equals("Sword of dark destruction")) {
+            if (spellCard.getNamesForEffect().contains("Sword of dark destruction")) {
                 if (monsterMode.equals(MonsterMode.SPELLCASTER) || monsterMode.equals(MonsterMode.FIEND))
                     attackOrDefence += 400;
             }
-            if (spellCard.getName().equals("Black Pendant")) attackOrDefence += 500;
-            if (spellCard.getName().equals("Magnum Shield")) {
+            if (spellCard.getNamesForEffect().contains("Black Pendant")) attackOrDefence += 500;
+            if (spellCard.getNamesForEffect().contains("Magnum Shield")) {
                 if (monsterMode.equals(MonsterMode.WARRIOR)) {
                     if (Game.whoseTurnPlayer().getMonsterPosition(address.getNumber()).equals(PositionOfCardInBoard.OO))
                         attackOrDefence += defence;
                 }
             }
         }
-        if (spellCard.getName().equals("United We Stand"))
+        if (spellCard.getNamesForEffect().contains("United We Stand"))
             attackOrDefence += (800 * Game.whoseTurnPlayer().getMonsterZoneCard().size());
 
         return attackOrDefence;
@@ -161,7 +167,7 @@ public class MonsterCard {
             if (monsterMode == MonsterMode.SPELLCASTER || monsterMode == MonsterMode.FIEND) defence += 200;
             if (monsterMode == MonsterMode.FAIRY) defence -= 200;
         }
-        if ((name.equals("Command Knight")) && (Board.howManyMonsterIsOnTheBoard() > 1) && isFacedUp) return -1;
+        if ((namesForEffect.contains("Command Knight")) && (Board.howManyMonsterIsOnTheBoard() > 1) && isFacedUp) return -1;
         return defence;
     }
 
@@ -184,8 +190,8 @@ public class MonsterCard {
         return effect;
     }
 
-    public String getName() {
-        return name;
+    public ArrayList<String> getNamesForEffect() {
+        return namesForEffect;
     }
 
     public MonsterMode getMonsterMode() {
@@ -202,14 +208,14 @@ public class MonsterCard {
 
     public static MonsterCard getMonsterCardByName(String name) {
         for (MonsterCard monsterCard : monsterCards)
-            if (monsterCard.name.equals(name)) return monsterCard;
+            if (monsterCard.realName.equals(name)) return monsterCard;
         return null;
     }
 
     public static void welcomeToEffect() {
         if (Game.whoseRivalPlayer().getMonsterCardByAddress(Attack.defenderAddress) == null)
-            if (Attack.defenderMonsterName.equals("Yomi Ship")) Attack.destroyThisAddress(Attack.attackerAddress);
-        if (Attack.defenderMonsterName.equals("Marshmallon"))
+            if (Attack.defenderMonsterName.contains("Yomi Ship")) Attack.destroyThisAddress(Attack.attackerAddress);
+        if (Attack.defenderMonsterName.contains("Marshmallon"))
             if (Attack.isDefenderFacedDown()) Attack.whichPlayerIsAttacker().decreaseLP(1000);
     }
 
@@ -249,6 +255,14 @@ public class MonsterCard {
         this.level = level;
     }
 
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -261,7 +275,10 @@ public class MonsterCard {
         this.monsterMode = monsterMode;
     }
 
-    public static ArrayList<MonsterCard> getMonsterCards(){
-        return monsterCards;
+    public static ArrayList<MonsterCard> getOriginalMonsterCards() {
+        ArrayList<MonsterCard> originalMonsterCards = new ArrayList<>();
+        for (MonsterCard monsterCard : monsterCards)
+            if (!monsterCard.isNew()) originalMonsterCards.add(monsterCard);
+        return originalMonsterCards;
     }
 }

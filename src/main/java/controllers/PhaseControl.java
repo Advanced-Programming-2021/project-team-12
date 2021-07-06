@@ -124,7 +124,7 @@ public class PhaseControl {
     public void monsterSet(Address address) throws MyException {
         if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
             if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
-                if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Scanner")) {
+                if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getNamesForEffect().contains("Scanner")) {
                     Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address).setIsScanner(true);
                 } else Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address);
                 Game.whoseTurnPlayer().setHeSummonedOrSet(true);
@@ -146,19 +146,19 @@ public class PhaseControl {
 
     private void activateSomeOfTraps(Address address, TrapCard trapCard, Player currentPlayer) {
         if (!Game.whoseRivalPlayer().doIHaveMirageDragonMonster()) {
-            if (trapCard.getName().equals("Mind Crush")) {
+            if (trapCard.getNamesForEffect().contains("Mind Crush")) {
                 if (BattlePhase.getInstance().getPermissionForTrap("Mind Crush", true)) {
                     GameView.getInstance().doMindCrushEffect();
                     currentPlayer.removeCard(address);
                 }
             }
-            if (trapCard.getName().equals("Time Seal")) {
+            if (trapCard.getNamesForEffect().contains("Time Seal")) {
                 if (BattlePhase.getInstance().getPermissionForTrap("Time Seal", true)) {
                     PhaseControl.getInstance().setCanDraw(false);
                     currentPlayer.removeCard(address);
                 }
             }
-            if (trapCard.getName().equals("Call of The Haunted")) {
+            if (trapCard.getNamesForEffect().contains("Call of The Haunted")) {
                 if (BattlePhase.getInstance().getPermissionForTrap("Call of The Haunted", true)) {
                     if (Game.isAITurn())
                         AISummonFromGraveyard();
@@ -210,7 +210,7 @@ public class PhaseControl {
                 MonsterCard monsterCard = Game.whoseTurnPlayer().getMonsterCardByStringAddress(address);
                 int level = monsterCard.getLevel();
                 if (!currentPlayer.getMonsterCardByStringAddress(address).isRitual()) {
-                    if (monsterCard.getName().equals("Gate Guardian")) {
+                    if (monsterCard.getNamesForEffect().contains("Gate Guardian")) {
                         if (!MainPhase.doSolemnWarningEffect(address))
                             GameView.getInstance().summonForTribute(3, address);
                     } else if (!MainPhase.doSolemnWarningEffect(address)) {
@@ -218,7 +218,7 @@ public class PhaseControl {
                         else if (level <= 6) GameView.getInstance().summonForTribute(1, address);
                         else {
                             int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
-                            if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Beast King Barbaros")
+                            if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getNamesForEffect().contains("Beast King Barbaros")
                                     && (Integer.parseInt(GameView.getInstance().runEffect("Beast King Barbaros")) == 3)) {
                                 Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
                                 GameView.getInstance().summonForTribute(3, address);
@@ -232,9 +232,9 @@ public class PhaseControl {
 
     public void summonALowLevelMonster(Player currentPlayer, Address address) {
         MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
-        if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Scanner")) {
+        if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Scanner")) {
             currentPlayer.summonCardToMonsterZone(address).setIsScanner(true);
-        } else if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Terratiger, the Empowered Warrior")) {
+        } else if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Terratiger, the Empowered Warrior")) {
             if (Integer.parseInt(GameView.getInstance().runEffect("Terratiger, the Empowered Warrior")) != 0) {
                 Address address1 = new Address(Integer.parseInt(GameView.getInstance().runEffect("Terratiger, the Empowered Warrior")), "hand", true);
                 if ((currentPlayer.getMonsterCardByAddress(address1) != null)
@@ -374,7 +374,7 @@ public class PhaseControl {
             if (currentPlayer.isThisMonsterOnDHPosition(address)) {
                 currentPlayer.convertThisMonsterFromDHToOO(address);
                 MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
-                if (currentPlayer.getMonsterCardByAddress(address).getName().equals("Man-Eater Bug")) {
+                if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Man-Eater Bug")) {
                     doManEaterBugEffect();
                 }
                 if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole")) {

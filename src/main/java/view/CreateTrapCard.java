@@ -26,7 +26,7 @@ public class CreateTrapCard extends Application {
 
     @FXML
     public void initialize() {
-        ArrayList<TrapCard> trapCards = TrapCard.getTrapCards();
+        ArrayList<TrapCard> trapCards = TrapCard.getOriginalTrapCards();
         int count = 0;
         for (TrapCard trapCard : trapCards) {
             int x = count % 2;

@@ -455,21 +455,21 @@ public class MainPhase {
     }
 
     public void printTrapAttributes(TrapCard trapCardForShow) {
-        System.out.println("Name: " + trapCardForShow.getName());
+        System.out.println("Name: " + trapCardForShow.getRealName());
         System.out.println("Trap");
         System.out.println("Type: Normal");
         System.out.println("Description: " + trapCardForShow.getDescription());
     }
 
     public void printSpellAttributes(SpellCard spellCardForShow) {
-        System.out.println("Name: " + spellCardForShow.getName());
+        System.out.println("Name: " + spellCardForShow.getRealName());
         System.out.println("Spell");
         System.out.println("Type: " + spellCardForShow.getSpellMode());
         System.out.println("Description: " + spellCardForShow.getDescription());
     }
 
     public void printMonsterAttributes(MonsterCard monsterCardForShow) {
-        System.out.println("Name: " + monsterCardForShow.getName());
+        System.out.println("Name: " + monsterCardForShow.getRealName());
         System.out.println("Level: " + monsterCardForShow.getLevel());
         System.out.println("Type: " + monsterCardForShow.getMonsterMode());
         System.out.println("ATK: " + monsterCardForShow.getNormalAttack());

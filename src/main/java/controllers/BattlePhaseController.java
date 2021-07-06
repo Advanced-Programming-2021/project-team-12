@@ -441,7 +441,7 @@ public class BattlePhaseController {
                             }
                             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Magic Cylinder");
                             throw new MyException("Rival has trap named Magic Cylinder so its effect get done.");
-                        } else if (rivalMonsterCard.getName().equals("Texchanger")) {
+                        } else if (rivalMonsterCard.getNamesForEffect().contains("Texchanger")) {
                             GameView.getInstance().summonCyberse();
                         } else {
                             if (Game.whoseRivalPlayer().positionOfCardInBoardByAddress(address).equals(PositionOfCardInBoard.OO)) {
@@ -503,14 +503,14 @@ public class BattlePhaseController {
         if (Game.getPhase().equals("BattlePhase")) {
             String shouldBePrinted;
             if (damage == 0)
-                shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getName() + " and no card is destroyed";
+                shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getRealName() + " and no card is destroyed";
             else if (damage > 0) {
                 removeForAttack(address, myAddress);
-                shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "the defense position monster is destroyed";
+                shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getRealName() + " and " + "the defense position monster is destroyed";
             } else {
                 damage = (-1) * damage;
                 decreaseLP(address, currentPlayer, damage);
-                shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getName() + " and " + "no card is destroyed and you received " + damage + " battle damage";
+                shouldBePrinted = "opponent’s monster card was " + rivalMonsterCard.getRealName() + " and " + "no card is destroyed and you received " + damage + " battle damage";
             }
             currentPlayer.setPositionOfCardInBoardByAddress(address, PositionOfCardInBoard.DO);
             throw new MyException(shouldBePrinted);
@@ -518,7 +518,7 @@ public class BattlePhaseController {
     }
 
     private void decreaseLP(Address address, Player player, int damage) {
-        if (!(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getName().equals("Exploder Dragon")))
+        if (!(Game.whoseTurnPlayer().getMonsterCardByAddress(address).getNamesForEffect().contains("Exploder Dragon")))
             player.decreaseLP(damage);
         PhaseControl.getInstance().checkIfGameEnded();
     }
