@@ -344,8 +344,9 @@ public class GameView extends Application {
                 graveYardSmallImages[i][j] = new ImageView();
                 graveYardSmallImages[i][j].setLayoutX(15 + 40 * (j - 1));
                 graveYardSmallImages[i][j].setLayoutY(130 + 50 * (i - 1));
-                graveYardSmallImages[i][j].setFitWidth(55);
-                graveYardSmallImages[i][j].setFitHeight(70);
+                graveYardSmallImages[i][j].setFitWidth(50);
+                graveYardSmallImages[i][j].setFitHeight(65);
+                pane.getChildren().add(graveYardSmallImages[i][j]);
             }
         }
     }
@@ -360,8 +361,6 @@ public class GameView extends Application {
     }
 
     private void setGraveYardImages(HashMap<Integer, Card> graveyardZone) {
-        imageViewInfo.setVisible(false);
-        imageViewInfo.setDisable(true);
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 6; j++) {
                 if (graveyardZone.containsKey(6 * (i - 1) + j)) {
