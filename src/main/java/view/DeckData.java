@@ -3,6 +3,7 @@ package view;
 import Exceptions.MyException;
 import controllers.DeckControllers;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,9 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import models.Address;
 import models.Card;
 import models.Deck;
 
@@ -29,12 +31,15 @@ public class DeckData extends Application {
     public Integer selectedSide ;
     public Label msg;
     public Label deckName;
+    public Label mainNumber;
+    public Label sideNumber;
     private ArrayList<Card> handCards;
     private ArrayList<Card> mainCards;
     private ArrayList<Card> sideCards;
     private Button[][] handButtons = new Button[10][8];
     private Button[][] mainButtons = new Button[40][25];
     private Button[][] sideButtons = new Button[10][25];
+    private Address dragAddress;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -96,7 +101,12 @@ public class DeckData extends Application {
         imageView.setFitWidth(70);
         imageView.setFitHeight(90);
         buttons[row][column].setGraphic(imageView);
-        buttons[row][column].setOnMouseClicked(e ->{
+        setEvents(number, max, cards, buttons, flag, buttons[row][column], imageView);
+        pane.getChildren().add(buttons[row][column]);
+    }
+
+    private void setEvents(int number, int max, ArrayList<Card> cards, Button[][] buttons, String flag, Button button, ImageView imageView) {
+        button.setOnMouseClicked(e ->{
             switch (flag) {
                 case "m":
                     selectedMain = number;
@@ -110,7 +120,24 @@ public class DeckData extends Application {
             }
             setStyle(cards, number, buttons, max);
         });
-        pane.getChildren().add(buttons[row][column]);
+        button.setOnDragDetected(event -> {
+            switch (flag) {
+                case "m":
+                    dragAddress = new Address(number, "main", true);
+                    break;
+                case "s":
+                    dragAddress = new Address(number, "side", true);
+                    break;
+                case "h":
+                    dragAddress = new Address(number, "hand", true);
+                    break;
+            }
+            Dragboard db = button.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putImage(imageView.getImage());
+            db.setContent(content);
+            event.consume();
+        });
     }
 
     private void setStyle(ArrayList<Card> cards, int selected, Button[][] handButtons, int maxColumn) {
@@ -124,7 +151,11 @@ public class DeckData extends Application {
     }
 
     private void setDeckName() {
-        deckName.setText("Deck Name: " + deck.getName());
+        if (deck.isValid())
+            deckName.setText("Deck Name: " + deck.getName() + ", VALID");
+        else deckName.setText("Deck Name: " + deck.getName() + ", INVALID");
+        sideNumber.setText(String.valueOf(deck.getNumberOfCard("s")));
+        mainNumber.setText(String.valueOf(deck.getNumberOfCard("m")));
     }
 
     public static void setDeck(Deck _deck) {
@@ -223,6 +254,7 @@ public class DeckData extends Application {
         setMain();
         setSide();
         setAllStyle();
+        setDeckName();
     }
 
     private void removeAll() {
@@ -233,5 +265,49 @@ public class DeckData extends Application {
             pane.getChildren().remove(sideButtons[i / 12][i % 12]);
         for (int i = 0; i < mainCards.size(); i++)
             pane.getChildren().remove(mainButtons[i / 12][i % 12]);
+    }
+
+    public void mainHandlerDrop(DragEvent dragEvent) {
+        if (dragAddress.getKind().equals("hand"))
+            moveCardFromHand(dragAddress.getNumber(), handCards, false);
+        else if (dragAddress.getKind().equals("side")) {
+            try {
+                removeAll();
+                Card card = sideCards.get(dragAddress.getNumber());
+                new DeckControllers().removeCard(card.getCardName(), deck.getName(), true);
+                new DeckControllers().addCard(card.getCardName(), deck.getName(), false);
+            } catch (MyException e) {
+                msg.setText(e.getMessage());
+            }
+            resetAll();
+        }
+    }
+
+    public void dragOverHandler(DragEvent dragEvent) {
+        if (dragEvent.getDragboard().hasImage())
+            dragEvent.acceptTransferModes(TransferMode.ANY);
+    }
+
+    public void sideHandlerDrop(DragEvent dragEvent) {
+        if (dragAddress.getKind().equals("hand"))
+            moveCardFromHand(dragAddress.getNumber(), handCards, true);
+        else if (dragAddress.getKind().equals("main")) {
+            try {
+                removeAll();
+                Card card = mainCards.get(dragAddress.getNumber());
+                new DeckControllers().removeCard(card.getCardName(), deck.getName(), false);
+                new DeckControllers().addCard(card.getCardName(), deck.getName(), true);
+            } catch (MyException e) {
+                msg.setText(e.getMessage());
+            }
+            resetAll();
+        }
+    }
+
+    public void handHandlerDrop(DragEvent dragEvent) {
+        if (dragAddress.getKind().equals("side"))
+            removeCard(dragAddress.getNumber(),  sideCards, true);
+        else if (dragAddress.getKind().equals("main"))
+            removeCard(dragAddress.getNumber(),  mainCards, false);
     }
 }

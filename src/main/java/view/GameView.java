@@ -77,10 +77,10 @@ public class GameView extends Application {
         setLP();
         createImageView(turnHand, 260, 535, 6);
         createImageView(rivalHand, 260, -50, 6);
-        createImageView(turnMonsters, 300, 300, 5);
-        createImageView(rivalMonsters, 300, 190, 5);
-        createImageView(turnSpells, 300, 420, 5);
-        createImageView(rivalSpells, 300, 70, 5);
+        createImageView(turnMonsters, 320, 300, 5);
+        createImageView(rivalMonsters, 320, 190, 5);
+        createImageView(turnSpells, 320, 420, 5);
+        createImageView(rivalSpells, 320, 70, 5);
         setHand();
         doDrawPhase(Game.whoseTurnPlayer());
     }
@@ -109,17 +109,15 @@ public class GameView extends Application {
             imageView[i].setLayoutY(Y);
             int finalI = i;
             imageView[i].setOnMouseEntered(e -> {
-                imageViewInfo.setImage(imageView[finalI].getImage());
+                if (Y < 200 || Y > 450)
+                    imageViewInfo.setImage(imageView[finalI].getImage());
+                else if (Y < 350)
+                    imageViewInfo.setImage(createImage(Game.whoseTurnPlayer().getCardMonster(finalI).getCardName()));
+                else imageViewInfo.setImage(createImage(Game.whoseTurnPlayer().getCardSpell(finalI).getCardName()));
                 imageViewInfo.setVisible(true);
-//                if (!isRival)
-//                    imageViewInfo = createImage(Game.whoseTurnPlayer().getHandCard().get(finalI).getCardName(), 7, 152, 205, 296);
-//                else
-//                    imageViewInfo = createImage("Unknown", 7, 152, 205, 296);
-//                pane.getChildren().add(imageViewInfo);
             });
             imageView[i].setOnMouseExited(e -> {
                 imageViewInfo.setVisible(false);
-//                removeCard(7, 152);
             });
             pane.getChildren().add(imageView[i]);
         }
@@ -389,7 +387,6 @@ public class GameView extends Application {
                 hand[i].setImage(createImage(player.getCardHand(i).getCardName()));
             else
                 hand[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
-
             hand[i].setVisible(true);
             hand[i].setDisable(false);
         } else {
@@ -401,7 +398,7 @@ public class GameView extends Application {
     private void monstersImage(Player player, ImageView[] monsters, int i) {
         if (player.getMonsterZoneCard().containsKey(i)) {
             monsters[i].setImage(createImage(player.getCardMonster(i).getCardName()));
-            if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.DH) && player.getName().equals(Game.whoseRivalPlayer().getName()))
+            if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.DH))
                 monsters[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
             monsters[i].setRotate(90);
             if (player.getMonsterPosition(i).equals(PositionOfCardInBoard.OO))
@@ -417,7 +414,7 @@ public class GameView extends Application {
     private void spellsImage(Player player, ImageView[] spells, int i) {
         if (player.getSpellZoneCard().containsKey(i)) {
             spells[i].setImage(createImage(player.getCardSpell(i).getCardName()));
-            if (!player.isSpellFaceUp(i) && player.getName().equals(Game.whoseRivalPlayer().getName()))
+            if (!player.isSpellFaceUp(i))
                 spells[i].setImage(new Image(getClass().getResource("/PNG/Cards1/Unknown.jpg").toExternalForm()));
             spells[i].setVisible(true);
             spells[i].setDisable(false);
