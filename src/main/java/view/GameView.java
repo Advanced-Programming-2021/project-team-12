@@ -72,7 +72,7 @@ public class GameView extends Application {
     public String tributeCard2;
     public String tributeCard3;
     public String cardName;
-    public String answere;
+    public String answer;
     public Boolean yesOrNo;
     public int i = 1;
     public ImageView rivalDeck;
@@ -688,35 +688,57 @@ public class GameView extends Application {
         reset();
     }
 
-    public boolean permission() {
-        setStateOfSubmit(false);
-        setButtonsActivate(true);
+    public void permission() {
         newMessageToLabel(Game.getCurrentPhase());
         addMessageToLabel("Do you want do the effect?\nType 'yes' or 'no'");
-        submitButton.setOnMouseClicked(e -> {
-            setStateOfSubmit(true);
-            setButtonsActivate(false);
-            setAnswere();
-        });
-        return answere.equals("yes");
+        setStateOfSubmit(false);
+        setButtonsActivate(true);
+        checkAnswer();
     }
 
-    private void setAnswere() {
-        answere = messageFromPlayer.getText();
+    private void checkAnswer() {
+        submitButton.setOnMouseClicked(e -> {
+            if(!messageFromPlayer.getText().equals("no") || !messageFromPlayer.getText().equals("yes")){
+                newMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("Incorrect input");
+                addMessageToLabel("Do you want do the effect?\nType 'yes' or 'no'");
+                checkAnswer();
+            } else {
+                answer = messageFromPlayer.getText();
+                setStateOfSubmit(true);
+                setButtonsActivate(false);
+            }
+        });
+    }
+
+    private void setAnswer() {
+        answer = messageFromPlayer.getText();
     }
 
     public void summonCyberse() {
-        if (permission()) {
+        permission();
+        if (answer.equals("yes")) {
             setStateOfSubmit(false);
             setButtonsActivate(true);
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Select a Cyberse type monster from your hand or deck or graveyard to be summoned.\nWhich card do you want to special summon?\n1.Texchanger\n2.Leotron");
-            submitButton.setOnMouseClicked(e -> {
+            checkCyberseInput();
+        }
+    }
+
+    private void checkCyberseInput() {
+        submitButton.setOnMouseClicked(e -> {
+            if(messageFromPlayer.getText().equals("1") || messageFromPlayer.getText().equals("2")){
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
                 Game.whoseTurnPlayer().specialSummonThisKindOfCardFromHandOrDeckOrGraveyard(messageBox.getText());
-            });
-        }
+            } else {
+                newMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("Incorrect input");
+                addMessageToLabel("Select a Cyberse type monster from your hand or deck or graveyard to be summoned.\nWhich card do you want to special summon?\n1.Texchanger\n2.Leotron");
+                checkCyberseInput();
+            }
+        });
     }
 
     public void doMindCrushEffect() {
@@ -766,30 +788,30 @@ public class GameView extends Application {
         if (!isMine && (!Game.getIsAI() || Game.isAITurn())) {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Dear " + Game.whoseRivalPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
-            getAnswere(cardName);
+            getAnswer(cardName);
         } else if (!Game.isAITurn() && isMine) {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Dear " + Game.whoseTurnPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
-            getAnswere(cardName);
+            getAnswer(cardName);
         } else {
             yesOrNo = !cardName.equals("Solemn Warning");
         }
     }
 
-    private void getAnswere(String cardName) {
-        answere = null;
+    private void getAnswer(String cardName) {
+        answer = null;
         sendData = false;
         submitButton.setOnMouseClicked(e -> {
             if(!messageFromPlayer.equals("yes") && !messageFromPlayer.equals("no")){
                 newMessageToLabel("Incorrect input");
                 addMessageToLabel(Game.getCurrentPhase());
                 addMessageToLabel("Dear " + Game.whoseRivalPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
-                getAnswere(cardName);
-            } else if(answere.equals("yes")){
+                getAnswer(cardName);
+            } else if(answer.equals("yes")){
                 yesOrNo = true;
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
-            } else if(answere.equals("no")){
+            } else if(answer.equals("no")){
                 yesOrNo = false;
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
