@@ -778,6 +778,7 @@ public class GameView extends Application {
                 }
             }
         } else {
+            yesOrNo = false;
             if(number == 1){
                 PhaseControl.getInstance().doSolemnWarningEffect1(address);
             } else if(number == 2){
