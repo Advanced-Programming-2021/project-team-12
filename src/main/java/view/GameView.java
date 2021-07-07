@@ -452,9 +452,11 @@ public class GameView extends Application {
 
     private void createGraveYardEvents(ImageView graveyard, HashMap<Integer, Card> graveyardZone) {
         graveyard.setOnMouseEntered(e -> {
+            imageViewInfo.setVisible(false);
             setGraveYardImages(graveyardZone);
         });
         graveyard.setOnMouseExited(e -> {
+            imageViewInfo.setVisible(true);
             removeGraveYardButtons();
         });
     }
