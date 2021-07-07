@@ -1,1 +1,1 @@
-{"monsterMode":"THUNDER","defence":0,"level":2,"attack":0,"price":8000,"name":"The Calculator","description":"The ATK of this card is the combined Levels of all face-up monsters you control x 300.","attribute":"LIGHT","isRitual":false}
+{"isOriginal":true,"monsterMode":"THUNDER","defence":0,"level":2,"attack":0,"price":8000,"name":"The Calculator","description":"The ATK of this card is the combined Levels of all face-up monsters you control x 300.","namesForEffect":[],"attribute":"LIGHT","isRitual":false}

@@ -1,1 +1,1 @@
-{"monsterMode":"THUNDER","defence":0,"level":3,"attack":1000,"price":1300,"name":"Wattkid","description":"A creature that electrocutes opponents with bolts of lightning.","attribute":"LIGHT","isRitual":false}
+{"isOriginal":true,"monsterMode":"THUNDER","defence":500,"level":3,"attack":1000,"price":1300,"name":"Wattkid","description":"A creature that electrocutes opponents with bolts of lightning.","namesForEffect":[],"attribute":"LIGHT","isRitual":false}

@@ -95,5 +95,31 @@
       <ImageView fx:id="turnGraveyard" fitHeight="93.0" fitWidth="65.0" layoutX="756.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="rivalField" fitHeight="93.0" fitWidth="65.0" layoutX="756.0" layoutY="194.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="rivalGraveyard" fitHeight="93.0" fitWidth="65.0" layoutX="259.0" layoutY="194.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="pauseButton" fitHeight="47.0" fitWidth="57.0" layoutX="765.0" layoutY="537.0" onMouseClicked="#pauseGame" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../PNG/NEW/Pause.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="turnUserName" alignment="CENTER" layoutX="875.0" layoutY="377.0" prefHeight="23.0" prefWidth="150.0" textFill="#004f2c">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="rivalUserName" alignment="CENTER" layoutX="875.0" layoutY="200.0" prefHeight="23.0" prefWidth="150.0" textFill="#004f2c">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="pauseBackground" disable="true" layoutX="420.0" layoutY="198.0" mnemonicParsing="false" opacity="0.72" prefHeight="201.0" prefWidth="235.0" style="-fx-background-color: #f8b090;" visible="false" />
+      <Button fx:id="resumeButton" disable="true" layoutX="469.0" layoutY="241.0" mnemonicParsing="false" onMouseClicked="#resumeGame" prefHeight="47.0" prefWidth="139.0" style="-fx-background-size: 139;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Resume" visible="false">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="exitButton" disable="true" layoutX="469.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#exit" prefHeight="47.0" prefWidth="139.0" style="-fx-background-size: 138;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Exit" visible="false">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="18.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

@@ -3,7 +3,6 @@ package view;
 import Exceptions.MyException;
 import controllers.DeckControllers;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -74,26 +73,24 @@ public class DeckData extends Application {
 
     private void setSide() {
         for (int i = 0; i < sideCards.size(); i++)
-            setButton(i, 12, selectedSide , sideCards, sideButtons, "s", 500, 350);
+            setButton(i, 12, sideCards, sideButtons, "s", 500, 350);
     }
 
     private void setMain() {
         for (int i = 0; i < mainCards.size(); i++)
-            setButton(i, 12, selectedMain , mainCards, mainButtons, "m", 27, 350);
+            setButton(i, 12, mainCards, mainButtons, "m", 27, 350);
     }
 
     private void setHand() {
         for (int i = 0; i < handCards.size(); i++)
-            setButton(i, 6, selectedHand , handCards, handButtons, "h", 27, 20);
+            setButton(i, 6, handCards, handButtons, "h", 27, 20);
     }
 
-    private void setButton(int number, int max, int selected, ArrayList<Card> cards, Button[][] buttons, String flag, int x, int y) {
+    private void setButton(int number, int max, ArrayList<Card> cards, Button[][] buttons, String flag, int x, int y) {
         int row = number / max;
         int column = number % max;
         Card card = cards.get(number);
-        File pictureFile = new File("src//main//resources//PNG//Cards1//" + card.getCardName() + ".jpg");
-        String string = pictureFile.toURI().toString();
-        Image image = new Image(string);
+        Image image = new Image(getClass().getResource("/PNG/Cards1/" + card.getCardName() + ".jpg").toExternalForm());
         ImageView imageView = new ImageView(image);
         buttons[row][column] = new Button();
         buttons[row][column].setLayoutY(x + row * 64);

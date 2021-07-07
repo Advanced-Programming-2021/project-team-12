@@ -53,8 +53,16 @@ public class LoadFile {
         int level = json.getInt("level");
         int price = json.getInt("price");
         Boolean isRitual = json.getBoolean("isRitual");
-        new MonsterCard(level, attack, defence, MonsterMode.valueOf(monsterMode)
-                , isRitual, name, price, Attribute.valueOf(attribute), description);
+        JSONArray jsonArrayCards = json.getJSONArray("namesForEffect");
+        ArrayList<String> namesForEffect = new ArrayList<>();
+        for (int i = 0; i < jsonArrayCards.length(); i++)
+            namesForEffect.add((String) jsonArrayCards.get(i));
+        boolean isOriginal = json.getBoolean("isOriginal");
+        if (isOriginal)
+            new MonsterCard(level, attack, defence, MonsterMode.valueOf(monsterMode)
+                    , isRitual, name, price, Attribute.valueOf(attribute), description);
+        else new MonsterCard(level, attack, defence, MonsterMode.valueOf(monsterMode)
+                , isRitual, name, price, description, namesForEffect, false);
         return new Card(name, "Monster");
     }
 
@@ -99,7 +107,14 @@ public class LoadFile {
         int price = json.getInt("price");
         String spellMode = json.getString("spellMode");
         Boolean isLimit = json.getBoolean("isLimit");
-        new SpellCard(name, SpellMode.valueOf(spellMode), isLimit, price, description);
+        JSONArray jsonArrayCards = json.getJSONArray("namesForEffect");
+        ArrayList<String> namesForEffect = new ArrayList<>();
+        for (int i = 0; i < jsonArrayCards.length(); i++)
+            namesForEffect.add((String) jsonArrayCards.get(i));
+        boolean isOriginal = json.getBoolean("isOriginal");
+        if (isOriginal)
+            new SpellCard(name, SpellMode.valueOf(spellMode), isLimit, price, description);
+        else new SpellCard(name, SpellMode.valueOf(spellMode), price, description, namesForEffect, false);
         return new Card(name, "Spell");
     }
 
@@ -124,7 +139,14 @@ public class LoadFile {
         String name = json.getString("name");
         Boolean isLimit = json.getBoolean("isLimit");
         int price = json.getInt("price");
-        new TrapCard(name, isLimit, price, description);
+        JSONArray jsonArrayCards = json.getJSONArray("namesForEffect");
+        ArrayList<String> namesForEffect = new ArrayList<>();
+        for (int i = 0; i < jsonArrayCards.length(); i++)
+            namesForEffect.add((String) jsonArrayCards.get(i));
+        boolean isOriginal = json.getBoolean("isOriginal");
+        if (isOriginal)
+            new TrapCard(name, isLimit, price, description);
+        else new TrapCard(name, price, description, namesForEffect, false);
         return new Card(name, "Trap");
     }
 

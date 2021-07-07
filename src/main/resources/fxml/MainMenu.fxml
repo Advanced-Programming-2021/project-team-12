@@ -7,43 +7,43 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainMenu">
    <children>
-      <Pane layoutY="-8.0" prefHeight="414.0" prefWidth="601.0">
+      <Pane layoutY="-8.0" prefHeight="446.0" prefWidth="602.0">
          <children>
-            <ImageView fitHeight="414.0" fitWidth="602.0" layoutY="4.0" pickOnBounds="true">
+            <ImageView fitHeight="442.0" fitWidth="602.0" layoutY="4.0" pickOnBounds="true">
                <image>
                   <Image url="@../PNG/NEW/background2.jpg" />
                </image>
             </ImageView>
-            <Button layoutX="225.0" layoutY="14.0" mnemonicParsing="false" onAction="#playGame" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="PLay Game" textFill="#ffed78">
+            <Button layoutX="225.0" layoutY="32.0" mnemonicParsing="false" onAction="#playGame" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="PLay Game" textFill="#ffed78">
                <font>
                   <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
                </font></Button>
-            <Button layoutX="225.0" layoutY="69.0" mnemonicParsing="false" onAction="#goToShop" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Shop" textFill="#ffed78">
+            <Button layoutX="226.0" layoutY="87.0" mnemonicParsing="false" onAction="#goToShop" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Shop" textFill="#ffed78">
                <font>
                   <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
                </font>
             </Button>
-            <Button layoutX="225.0" layoutY="124.0" mnemonicParsing="false" onAction="#goToImportExport" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Import And Export" textFill="#ffed78">
+            <Button layoutX="225.0" layoutY="142.0" mnemonicParsing="false" onAction="#goToImportExport" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Import And Export" textFill="#ffed78">
                <font>
                   <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
                </font>
             </Button>
-            <Button layoutX="225.0" layoutY="180.0" mnemonicParsing="false" onAction="#goToDeckMenu" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Deck Menu" textFill="#ffed78">
+            <Button layoutX="226.0" layoutY="197.0" mnemonicParsing="false" onAction="#goToDeckMenu" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Deck Menu" textFill="#ffed78">
                <font>
                   <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
                </font>
             </Button>
-            <Button layoutX="226.0" layoutY="235.0" mnemonicParsing="false" onAction="#goToChangeProfile" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Change Profile" textFill="#ffed78">
+            <Button layoutX="226.0" layoutY="250.0" mnemonicParsing="false" onAction="#goToChangeProfile" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Change Profile" textFill="#ffed78">
                <font>
                   <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
                </font>
             </Button>
-            <Button layoutX="225.0" layoutY="290.0" mnemonicParsing="false" onAction="#goToScoreboard" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Scoreboard" textFill="#ffed78">
+            <Button layoutX="226.0" layoutY="305.0" mnemonicParsing="false" onAction="#goToScoreboard" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Scoreboard" textFill="#ffed78">
                <font>
                   <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
                </font></Button>
-            <Button layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onAction="#logout" prefHeight="30.0" prefWidth="30.0" style="-fx-background-size: 30;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
-            <Button layoutX="225.0" layoutY="345.0" mnemonicParsing="false" onAction="#goToCreateCard" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Create Card" textFill="#ffed78">
+            <Button layoutX="14.0" layoutY="400.0" mnemonicParsing="false" onAction="#logout" prefHeight="30.0" prefWidth="30.0" style="-fx-background-size: 30;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
+            <Button layoutX="225.0" layoutY="360.0" mnemonicParsing="false" onAction="#goToCreateCard" prefHeight="55.0" prefWidth="151.0" style="-fx-background-size: 150;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Create Card" textFill="#ffed78">
                <font>
                   <Font name="Yu-Gi-Oh! Matrix Small Caps 1" size="20.0" />
                </font>

@@ -89,11 +89,9 @@ public class DeckMenu extends Application {
     private void setButton() {
         ArrayList<Deck> decks = Deck.getDecksOfUser(user);
         for (int i = 0; i < decks.size(); i++) {
-            File pictureFile = new File("src//main//resources//PNG//NEW//deck.png");
+            Image image = new Image(getClass().getResource("/PNG/NEW/deck.png").toExternalForm());
             if (decks.get(i).checkIsActive())
-                pictureFile = new File("src//main//resources//PNG//NEW//ActiveDeck.png");
-            String string = pictureFile.toURI().toString();
-            Image image = new Image(string);
+                image = new Image(getClass().getResource("/PNG/NEW/ActiveDeck.png").toExternalForm());
             ImageView imageView = new ImageView(image);
             decksButton[i] = new Button();
             decksButton[i].setLayoutY(50);

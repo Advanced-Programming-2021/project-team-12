@@ -32,6 +32,7 @@ public class MonsterCard {
 
     public MonsterCard(int level, int attack, int defence, MonsterMode monsterMode,
                        boolean isRitual, String name, int price, Attribute attribute, String description) {
+        isOriginal = true;
         this.level = level;
         this.attack = attack;
         this.defence = defence;
@@ -54,6 +55,7 @@ public class MonsterCard {
         this.isRitual = isRitual;
         this.realName = realName;
         this.price = price;
+        this.attribute = Attribute.EARTH;
         this.description = description;
         this.isOriginal = isOriginal;
         monsterCards.add(this);

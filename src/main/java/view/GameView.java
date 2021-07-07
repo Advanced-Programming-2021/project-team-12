@@ -41,6 +41,9 @@ public class GameView extends Application {
     public ImageView turnAvatar;
     public ImageView rivalAvatar;
     public ImageView imageViewInfo;
+    public Button exitButton;
+    public Button resumeButton;
+    public Button pauseBackground;
     public Address selectedCardAddress;
     public Address submitedAddrees;
     public ImageView[] turnHand = new ImageView[8];
@@ -49,6 +52,7 @@ public class GameView extends Application {
     public ImageView[] rivalHand = new ImageView[8];
     public ImageView[] rivalMonsters = new ImageView[7];
     public ImageView[] rivalSpells = new ImageView[7];
+    public boolean[] wasDisable = new boolean[4];
     public ImageView[][] graveYardSmallImages = new ImageView[11][7];
     public Button submitButton;
     public TextField messageFromPlayer;
@@ -58,10 +62,13 @@ public class GameView extends Application {
     public Button battlePhase;
     public Button mainPhase2;
     public Button endPhase;
+    public ImageView pauseButton;
     public ImageView turnGraveyard;
     public ImageView rivalGraveyard;
     public ImageView turnField;
     public ImageView rivalField;
+    public Label turnUserName;
+    public Label rivalUserName;
     public Boolean sendData = false;
     public String firstInput;
     public String secondInput;
@@ -322,7 +329,7 @@ public class GameView extends Application {
         Game.setGameView(this);
         Game.setPhase("Draw Phase");
         setAvatar();
-        setNickName();
+        setNames();
         setLP();
         createImageView(turnHand, 260, 535, 6);
         createImageView(rivalHand, 260, -50, 6);
@@ -344,7 +351,7 @@ public class GameView extends Application {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 6; j++) {
                 graveYardSmallImages[i][j] = new ImageView();
-                graveYardSmallImages[i][j].setLayoutX(15 + 40 * (j - 1));
+                graveYardSmallImages[i][j].setLayoutX(15 + 35 * (j - 1));
                 graveYardSmallImages[i][j].setLayoutY(130 + 50 * (i - 1));
                 graveYardSmallImages[i][j].setFitWidth(50);
                 graveYardSmallImages[i][j].setFitHeight(65);
@@ -425,7 +432,7 @@ public class GameView extends Application {
         setSpells();
         setLP();
         setAvatar();
-        setNickName();
+        setNames();
         setFieldAndGraveYard();
     }
 
@@ -486,9 +493,11 @@ public class GameView extends Application {
         selectedCardAddress = new Address(i, zone, isMine);
     }
 
-    private void setNickName() {
+    private void setNames() {
         turnName.setText("Name: " + Game.whoseTurnPlayer().getNickName());
         rivalName.setText("Name: " + Game.whoseRivalPlayer().getNickName());
+        turnUserName.setText("User Name: " + Game.whoseTurnPlayer().getName());
+        rivalUserName.setText("User Name: " + Game.whoseRivalPlayer().getName());
     }
 
     private void setLP() {
@@ -1168,4 +1177,39 @@ public class GameView extends Application {
         }
     }
 
+    public void pauseGame(MouseEvent mouseEvent) {
+        wasDisable[0] = battlePhase.isDisable();
+        wasDisable[1] = turnGraveyard.isDisable();
+        wasDisable[2] = submitButton.isDisable();
+        setButtonsActivate(true);
+        submitButton.setDisable(true);
+        turnGraveyard.setDisable(true);
+        rivalGraveyard.setDisable(true);
+        pauseBackground.setVisible(true);
+        exitButton.setVisible(true);
+        exitButton.setDisable(false);
+        resumeButton.setVisible(true);
+        resumeButton.setDisable(false);
+    }
+
+    public void resumeGame(MouseEvent mouseEvent) {
+        setButtonsActivate(wasDisable[0]);
+        submitButton.setDisable(wasDisable[2]);
+        turnGraveyard.setDisable(wasDisable[1]);
+        rivalGraveyard.setDisable(wasDisable[1]);
+        pauseBackground.setVisible(false);
+        exitButton.setVisible(false);
+        exitButton.setDisable(true);
+        resumeButton.setVisible(false);
+        resumeButton.setDisable(true);
+        pauseButton.setDisable(false);
+    }
+
+    public void exit(MouseEvent mouseEvent) {
+        try {
+            new MainMenu().start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
