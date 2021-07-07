@@ -1,1 +1,1 @@
-{"isOriginal":true,"monsterMode":"WARRIOR","defence":1150,"level":4,"attack":1700,"price":3100,"name":"Axe Raider","description":"An axe-wielding monster of tremendous strength and agility.","namesForEffect":[],"attribute":"EARTH","isRitual":false}
+{"isOriginal":true,"monsterMode":"WARRIOR","defence":1150,"level":4,"attack":1700,"price":3100,"name":"Axe Raider","description":"An axe-wielding monster of tremendous strength and agility.","namesForEffect":["Axe Raider"],"attribute":"EARTH","isRitual":false}

@@ -1,1 +1,1 @@
-{"isOriginal":true,"monsterMode":"ROCK","defence":500,"level":2,"attack":500,"price":600,"name":"Haniwa","description":"An earthen figure that protects the tomb of an ancient ruler.","namesForEffect":[],"attribute":"EARTH","isRitual":false}
+{"isOriginal":true,"monsterMode":"ROCK","defence":500,"level":2,"attack":500,"price":600,"name":"Haniwa","description":"An earthen figure that protects the tomb of an ancient ruler.","namesForEffect":["Haniwa"],"attribute":"EARTH","isRitual":false}

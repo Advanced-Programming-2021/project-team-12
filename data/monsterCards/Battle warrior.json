@@ -1,1 +1,1 @@
-{"isOriginal":true,"monsterMode":"WARRIOR","defence":1000,"level":3,"attack":700,"price":1300,"name":"Battle warrior","description":"A warrior that fights with his bare hands!!!","namesForEffect":[],"attribute":"EARTH","isRitual":false}
+{"isOriginal":true,"monsterMode":"WARRIOR","defence":1000,"level":3,"attack":700,"price":1300,"name":"Battle warrior","description":"A warrior that fights with his bare hands!!!","namesForEffect":["Battle warrior"],"attribute":"EARTH","isRitual":false}

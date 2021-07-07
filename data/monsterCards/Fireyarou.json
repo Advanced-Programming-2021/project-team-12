@@ -1,1 +1,1 @@
-{"isOriginal":true,"monsterMode":"PYRO","defence":1000,"level":4,"attack":1300,"price":2500,"name":"Fireyarou","description":"A malevolent creature wrapped in flames that attacks enemies with intense fire.","namesForEffect":[],"attribute":"FIRE","isRitual":false}
+{"isOriginal":true,"monsterMode":"PYRO","defence":1000,"level":4,"attack":1300,"price":2500,"name":"Fireyarou","description":"A malevolent creature wrapped in flames that attacks enemies with intense fire.","namesForEffect":["Fireyarou"],"attribute":"FIRE","isRitual":false}

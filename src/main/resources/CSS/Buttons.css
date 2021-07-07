@@ -17,6 +17,26 @@
     -fx-border-color: #77772a;
 }
 
+#pauseButton {
+    -fx-background-color: transparent;
+    -fx-background-image: url('../PNG/NEW/Button.png');
+    -fx-background-size: 139;
+}
+
+#pauseButton:hover {
+    -fx-background-color: #ffae00;
+    -fx-background-radius:0;
+    -fx-border-color:black;
+    -fx-border-width: 0 2 2 0;
+    -fx-background-insets: 0;
+    -fx-cursor: hand;
+}
+
+#pauseButton:pressed {
+    -fx-translate-y: +2;
+    -fx-border-color: #77772a;
+}
+
 #nonSelected {
     -fx-background-color: transparent;
 }
