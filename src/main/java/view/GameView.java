@@ -224,6 +224,7 @@ public class GameView extends Application {
         setStateOfSubmit(false);
         setButtonsActivate(true);
         submitButton.setOnMouseClicked(e -> {
+            submitButton.setText("");
             if (sumOfLevel < monsterLevel && Game.whoseTurnPlayer().canIContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress)) {
                 Address address = new Address(messageFromPlayer.getText());
                 MonsterCard monsterCard1 = Board.whatKindaMonsterIsHere(address);
@@ -352,6 +353,7 @@ public class GameView extends Application {
             while (i <= 3) {
                 int finalI = i;
                 submitButton.setOnMouseClicked(e -> {
+                    submitButton.setText("");
                     if (finalI == 1) {
                         setFirstInput();
                     } else if (finalI == 2) {
@@ -369,6 +371,7 @@ public class GameView extends Application {
         } else {
             while (!sendData) {
                 submitButton.setOnMouseClicked(e -> {
+                    submitButton.setText("");
                     sendDataTrue();
                     setButtonsActivate(false);
                     setStateOfSubmit(true);
@@ -637,6 +640,7 @@ public class GameView extends Application {
             setStateOfSubmit(false);
             setButtonsActivate(true);
             submitButton.setOnMouseClicked(e -> {
+                submitButton.setText("");
                 newMessageToLabel("Standby Phase");
                 if (!messageFromPlayer.getText().equals("yes") && !messageFromPlayer.getText().equals("no")) {
                     addMessageToLabel("Incorrect input\nDo you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?\nEnter 'yes' or 'no'");
@@ -709,6 +713,7 @@ public class GameView extends Application {
 
     private void checkAnswer() {
         submitButton.setOnMouseClicked(e -> {
+            submitButton.setText("");
             if (!messageFromPlayer.getText().equals("no") || !messageFromPlayer.getText().equals("yes")) {
                 newMessageToLabel(Game.getCurrentPhase());
                 addMessageToLabel("Incorrect input");
@@ -739,6 +744,7 @@ public class GameView extends Application {
 
     private void checkCyberseInput() {
         submitButton.setOnMouseClicked(e -> {
+            submitButton.setText("");
             if (messageFromPlayer.getText().equals("1") || messageFromPlayer.getText().equals("2")) {
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
@@ -762,6 +768,7 @@ public class GameView extends Application {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly");
             submitButton.setOnMouseClicked(e -> {
+                submitButton.setText("");
                 setCardName();
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
@@ -840,6 +847,7 @@ public class GameView extends Application {
         answer = null;
         sendData = false;
         submitButton.setOnMouseClicked(e -> {
+            submitButton.setText("");
             if (!messageFromPlayer.getText().equals("yes") && !messageFromPlayer.getText().equals("no")) {
                 newMessageToLabel("Incorrect input");
                 addMessageToLabel(Game.getCurrentPhase());
@@ -918,6 +926,7 @@ public class GameView extends Application {
         newMessageToLabel(Game.getCurrentPhase());
         addMessageToLabel("choose a card from your hand to be removed\nType hand number from 1 to 6");
         submitButton.setOnMouseClicked(e -> {
+            submitButton.setText("");
             setSubmitedAddrees();
             setStateOfSubmit(true);
             setButtonsActivate(false);
@@ -979,6 +988,7 @@ public class GameView extends Application {
             setStateOfSubmit(false);
             setButtonsActivate(true);
             submitButton.setOnMouseClicked(e -> {
+                submitButton.setText("");
                 if (!messageFromPlayer.getText().matches("[123456]")) {
                     newMessageToLabel("Incorrect input\nSelect a card to be deleted from your hand\nEnter a number from 1 to 6");
                     messageFromPlayer.setText("");
