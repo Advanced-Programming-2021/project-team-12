@@ -34,6 +34,7 @@ public class SpellCard {
         isOriginal = true;
         namesForEffect.add(realName);
         spellCards.add(this);
+        namesForEffect.add(name);
     }
 
     public SpellCard(String realName, SpellMode spellMode, int price, String description, ArrayList<String> names, boolean isOriginal) {

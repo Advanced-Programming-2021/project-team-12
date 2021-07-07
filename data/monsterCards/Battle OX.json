@@ -1,1 +1,1 @@
-{"isOriginal":true,"monsterMode":"BEAST_WARRIOR","defence":1000,"level":4,"attack":1700,"price":2900,"name":"Battle OX","description":"A monster with tremendous power, it destroys enemies with a swing of its axe.","namesForEffect":[],"attribute":"EARTH","isRitual":false}
+{"isOriginal":true,"monsterMode":"BEAST_WARRIOR","defence":1000,"level":4,"attack":1700,"price":2900,"name":"Battle OX","description":"A monster with tremendous power, it destroys enemies with a swing of its axe.","namesForEffect":["Battle OX"],"attribute":"EARTH","isRitual":false}

@@ -1,1 +1,1 @@
-{"isOriginal":true,"monsterMode":"FIEND","defence":1400,"level":4,"attack":1300,"price":2800,"name":"Feral Imp","description":"A playful little fiend that lurks in the dark, waiting to attack an unwary enemy.","namesForEffect":[],"attribute":"DARK","isRitual":false}
+{"isOriginal":true,"monsterMode":"FIEND","defence":1400,"level":4,"attack":1300,"price":2800,"name":"Feral Imp","description":"A playful little fiend that lurks in the dark, waiting to attack an unwary enemy.","namesForEffect":["Feral Imp"],"attribute":"DARK","isRitual":false}

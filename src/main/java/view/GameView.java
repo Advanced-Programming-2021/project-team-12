@@ -1,6 +1,7 @@
 package view;
 
 import Exceptions.MyException;
+import Utility.Sounds;
 import controllers.BattlePhaseController;
 import controllers.Game;
 import controllers.PhaseControl;
@@ -19,6 +20,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import models.*;
 import models.card.monster.MonsterCard;
@@ -416,6 +419,7 @@ public class GameView extends Application {
 
     @FXML
     public void initialize() throws Exception {
+        setClassStyle();
         Game.setGameView(this);
         Game.setPhase("Draw Phase");
         setAvatar();
@@ -430,11 +434,68 @@ public class GameView extends Application {
         createFieldsEvent(turnField);
         createFieldsEvent(rivalField);
         createGraveYardSmallImages();
-        createGraveYardEvents(turnGraveyard, Game.whoseTurnPlayer().getGraveyardCard());
-        createGraveYardEvents(rivalGraveyard, Game.whoseRivalPlayer().getGraveyardCard());
+        createGraveYardEvents(turnGraveyard, false);
+        createGraveYardEvents(rivalGraveyard, true);
+        createPauseButtons();
         setHand();
         initializeMouseClick();
         doDrawPhase(Game.whoseTurnPlayer());
+    }
+
+    private void setClassStyle() {
+        File file = new File ("src//main//resources//CSS//Buttons.css");
+        pane.getStylesheets().add(file.toURI().toString());
+    }
+
+    private void createPauseButtons() {
+        setPauseBackground();
+        createResume();
+        createExit();
+    }
+
+    private void createExit() {
+        exitButton = new Button();
+        exitButton.setLayoutX(470);
+        exitButton.setLayoutY(310);
+        exitButton.setText("Exit");
+        resumeAndExitCreate(exitButton);
+        exitButton.setOnMouseClicked(e -> {
+            exit();
+        });
+    }
+
+    private void resumeAndExitCreate(Button button) {
+        button.setPrefWidth(140);
+        button.setPrefHeight(47);
+        button.setDisable(true);
+        button.setVisible(false);
+        button.setFont(Font.font("Yu-Gi-Oh! StoneSerif LT", FontWeight.BOLD, 19));
+        button.setId("pauseButton");
+        pane.getChildren().add(button);
+    }
+
+    private void createResume() {
+        resumeButton = new Button();
+        resumeButton.setLayoutX(470);
+        resumeButton.setLayoutY(240);
+        resumeButton.setText("Resume");
+        resumeAndExitCreate(resumeButton);
+        resumeButton.setOnMouseClicked(e -> {
+            resumeGame();
+        });
+    }
+
+    private void setPauseBackground() {
+        pauseBackground = new Button();
+        pauseBackground.setLayoutX(420);
+        pauseBackground.setLayoutY(200);
+        pauseBackground.setDisable(true);
+        pauseBackground.setVisible(false);
+        pauseBackground.setPrefWidth(235);
+        pauseBackground.setPrefHeight(200);
+        pauseBackground.setOpacity(0.75);
+        pauseBackground.setStyle("-fx-background-color: #f8b090");
+        pane.getChildren().add(pauseBackground);
     }
 
     private void createGraveYardSmallImages() {
@@ -450,10 +511,10 @@ public class GameView extends Application {
         }
     }
 
-    private void createGraveYardEvents(ImageView graveyard, HashMap<Integer, Card> graveyardZone) {
+    private void createGraveYardEvents(ImageView graveyard, boolean isRival) {
         graveyard.setOnMouseEntered(e -> {
             imageViewInfo.setVisible(false);
-            setGraveYardImages(graveyardZone);
+            setGraveYardImages(isRival);
         });
         graveyard.setOnMouseExited(e -> {
             imageViewInfo.setVisible(true);
@@ -461,7 +522,10 @@ public class GameView extends Application {
         });
     }
 
-    private void setGraveYardImages(HashMap<Integer, Card> graveyardZone) {
+    private void setGraveYardImages(boolean isRival) {
+        HashMap<Integer, Card> graveyardZone = Game.whoseTurnPlayer().getGraveyardCard();
+        if (isRival)
+            graveyardZone = Game.whoseRivalPlayer().getGraveyardCard();
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 6; j++) {
                 if (graveyardZone.containsKey(6 * (i - 1) + j)) {
@@ -570,6 +634,7 @@ public class GameView extends Application {
             if (Game.getCurrentPhase().equals("Battle Phase")) {
                 if (selectedCardAddress.getKind().equals("monster") && selectedCardAddress.checkIsMine()) {
                     try {
+                        soundEffect(3);
                         BattlePhaseController.getInstance().directAttack(selectedCardAddress);
                         reset();
                     } catch (MyException myException) {
@@ -1213,8 +1278,9 @@ public class GameView extends Application {
     private void setRivalMonsterOnMouseClicked(ImageView monsterZoneCard, int i) {
         monsterZoneCard.setOnMouseClicked(e -> {
             if (Game.getCurrentPhase().equals("Battle Phase")) {
-                if (selectedCardAddress.getKind().equals("monster") && selectedCardAddress.checkIsMine()) {
+                if (selectedCardAddress != null && selectedCardAddress.getKind().equals("monster") && selectedCardAddress.checkIsMine()) {
                     try {
+                        soundEffect(2);
                         BattlePhaseController.getInstance().attack(new Address(i, "monster", false), selectedCardAddress);
                         reset();
                     } catch (MyException myException) {
@@ -1239,8 +1305,10 @@ public class GameView extends Application {
                             PhaseControl.getInstance().monsterSet(selectedCardAddress);
                         } else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
                             PhaseControl.getInstance().trapSet(selectedCardAddress);
+                        soundEffect(0);
                         reset();
                     } catch (MyException myException) {
+                        soundEffect(1);
                         newMessageToLabel(Game.getCurrentPhase());
                         addMessageToLabel(myException.getMessage());
                     }
@@ -1252,18 +1320,36 @@ public class GameView extends Application {
                             PhaseControl.getInstance().summonControl(selectedCardAddress);
                         } else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
                             PhaseControl.getInstance().trapSet(selectedCardAddress);
+                        soundEffect(0);
                         reset();
                     } catch (MyException myException) {
+                        soundEffect(1);
                         newMessageToLabel(Game.getCurrentPhase());
                         addMessageToLabel(myException.getMessage());
                     }
                 }
                 reset();
             } else {
+                soundEffect(1);
                 newMessageToLabel(Game.getCurrentPhase());
                 addMessageToLabel("You can't set/summon cards at this phase");
             }
         });
+    }
+
+    private void soundEffect(int number) {
+        try {
+            if (number == 0)
+                Sounds.play("src//main//resources//Sound//CARD_MOVE_1.wav", 1).start();
+            if (number == 1)
+                Sounds.play("src//main//resources//Sound//Cancel.wav", 1).start();
+            if (number == 2)
+                Sounds.play("src//main//resources//Sound//sfx_winged_beast_type.wav", 1).start();
+            if (number == 3)
+                Sounds.play("src//main//resources//Sound//sfx_small_attack.wav", 1).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void increaseHowManyHeraldOfCreationDidWeUseEffect() {
@@ -1391,7 +1477,7 @@ public class GameView extends Application {
         resumeButton.setDisable(false);
     }
 
-    public void resumeGame(MouseEvent mouseEvent) {
+    public void resumeGame() {
         setButtonsActivate(wasDisable[0]);
         submitButton.setDisable(wasDisable[2]);
         turnGraveyard.setDisable(wasDisable[1]);
@@ -1404,7 +1490,7 @@ public class GameView extends Application {
         pauseButton.setDisable(false);
     }
 
-    public void exit(MouseEvent mouseEvent) {
+    public void exit() {
         try {
             new MainMenu().start(stage);
         } catch (Exception e) {

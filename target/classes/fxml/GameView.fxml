@@ -110,16 +110,5 @@
             <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="pauseBackground" disable="true" layoutX="420.0" layoutY="198.0" mnemonicParsing="false" opacity="0.72" prefHeight="201.0" prefWidth="235.0" style="-fx-background-color: #f8b090;" visible="false" />
-      <Button fx:id="resumeButton" disable="true" layoutX="469.0" layoutY="241.0" mnemonicParsing="false" onMouseClicked="#resumeGame" prefHeight="47.0" prefWidth="139.0" style="-fx-background-size: 139;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Resume" visible="false">
-         <font>
-            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="18.0" />
-         </font>
-      </Button>
-      <Button fx:id="exitButton" disable="true" layoutX="469.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#exit" prefHeight="47.0" prefWidth="139.0" style="-fx-background-size: 138;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Exit" visible="false">
-         <font>
-            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="18.0" />
-         </font>
-      </Button>
    </children>
 </Pane>

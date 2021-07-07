@@ -28,6 +28,7 @@ public class RegistrationMenu extends Application {
             try {
                 clip = Sounds.play("src//main//resources//Sound//Menu.wav", 0);
                 clip.start();
+//                clip.stop();
             } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
                 e.printStackTrace();
             }

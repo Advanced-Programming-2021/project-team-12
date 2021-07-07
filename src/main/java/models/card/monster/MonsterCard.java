@@ -43,6 +43,7 @@ public class MonsterCard {
         this.attribute = attribute;
         this.description = description;
         monsterCards.add(this);
+        namesForEffect.add(name);
     }
 
     public MonsterCard(int level, int attack, int defence, MonsterMode monsterMode,

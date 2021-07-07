@@ -22,6 +22,7 @@ public class TrapCard {
         realName = name;
         this.description = description;
         trapCards.add(this);
+        namesForEffect.add(name);
     }
 
     public TrapCard(String realName, int price, String description, ArrayList<String> names, boolean isOriginal) {
