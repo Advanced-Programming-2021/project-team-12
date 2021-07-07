@@ -1,5 +1,6 @@
 package models.card.spell;
 
+import Exceptions.MyException;
 import controllers.move.Attack;
 import models.Address;
 import models.Player;
@@ -57,6 +58,61 @@ public class SpellCard {
         return originalSpellCards;
     }
 
+    public void doEffect(Address address) throws MyException {
+        Player currentPlayer = Game.whoseTurnPlayer();
+        if (namesForEffect.contains("Terraforming")) {
+            if ((currentPlayer.isThereAnyFieldSpellInDeck()) && (!currentPlayer.isHandFull())) {
+                Game.getGameView().runEffect("Terraforming", null, null);
+            } else if (!Game.isAITurn()) throw new MyException("This effect can't be done.");
+            currentPlayer.removeCard(address);
+        }
+        if (namesForEffect.contains("Pot of Greed")) {
+            if (!currentPlayer.isHandFull()) {
+                currentPlayer.addCardFromUnusedToHand();
+                if (!currentPlayer.isHandFull()) {
+                    currentPlayer.addCardFromUnusedToHand();
+                } else if (!Game.isAITurn()) throw new MyException("This effect can't be done completely.");
+            } else if (!Game.isAITurn()) throw new MyException("This effect can't be done.");
+            currentPlayer.removeCard(address);
+        }
+        if (namesForEffect.contains("Raigeki")) {
+            Attack.destroyAllRivalMonstersInTheBoard();
+            currentPlayer.removeCard(address);
+        }
+        if (namesForEffect.contains("Harpie's Feather Duster")) {
+            Attack.destroyAllRivalMonstersAndTrapInTheBoard();
+            currentPlayer.removeCard(address);
+        }
+        if (namesForEffect.contains("Dark Hole")) {
+            Attack.destroyAllMonstersInTheBoard();
+            currentPlayer.removeCard(address);
+        }
+        if (namesForEffect.contains("Twin Twisters")) {
+            Game.getGameView().runEffect("Twin Twisters", null, null);
+        }
+        if (namesForEffect.contains("Mystical space typhoon")) {
+            System.out.println("here");
+            Game.getGameView().runEffect("Mystical space typhoon", null, null);
+        }
+        if (namesForEffect.contains("Monster Reborn")) {
+            Game.getGameView().summonAMonsterCardFromGraveyard();
+            currentPlayer.removeCard(address);
+        }
+        if (spellMode.equals(SpellMode.EQUIP)) {
+            String input;
+            if (!Game.isAITurn()) {
+                Game.getGameView().getMonsterForEquip(address);
+            } else{
+                input = Integer.toString(BattlePhase.getInstance().getStrongestMonster(Game.whoseTurnPlayer()));
+                Game.whoseTurnPlayer().setFromMonsterToSpellEquip(address.getNumber(), Integer.parseInt(input));
+            }
+        }
+    }
+
+    public static void doEquipSpellEffect(Address address) {
+        Game.whoseTurnPlayer().setFromMonsterToSpellEquip(address.getNumber(), Integer.parseInt(Game.getGameView().answer));
+    }
+
     public void setRealName(String realName) {
         this.realName = realName;
     }
@@ -77,67 +133,27 @@ public class SpellCard {
             Game.secondPlayer.increaseLP(500);
     }
 
-    public void doEffect(Address address) {
-        Player currentPlayer = Game.whoseTurnPlayer();
-        if (namesForEffect.contains("Terraforming")) {
-            if ((currentPlayer.isThereAnyFieldSpellInDeck()) && (!currentPlayer.isHandFull())) {
-                String fieldSpellName = Game.getGameView().runEffect("Terraforming");
-                SpellCard spellCard = SpellCard.getSpellCardByName(fieldSpellName);
-                if ((spellCard != null) && (spellCard.spellMode == SpellMode.FIELD) && (currentPlayer.isThisCardInDeck("Terraforming"))) {
-                    currentPlayer.bringCardFromDeckToHand("Terraforming");
-                } else if (!Game.isAITurn()) System.out.println("you chose the wrong card.");
-            } else if (!Game.isAITurn()) System.out.println("This effect can't be done.");
-            currentPlayer.removeCard(address);
-        }
-        if (namesForEffect.contains("Pot of Greed")) {
-            if (!currentPlayer.isHandFull()) {
-                currentPlayer.addCardFromUnusedToHand();
-                if (!currentPlayer.isHandFull()) {
-                    currentPlayer.addCardFromUnusedToHand();
-                } else if (!Game.isAITurn()) System.out.println("This effect can't be done completely.");
-            } else if (!Game.isAITurn()) System.out.println("This effect can't be done.");
-            currentPlayer.removeCard(address);
-        }
-        if (namesForEffect.contains("Raigeki")) {
-            Attack.destroyAllRivalMonstersInTheBoard();
-            currentPlayer.removeCard(address);
-        }
-        if (namesForEffect.contains("Harpie's Feather Duster")) {
-            Attack.destroyAllRivalMonstersAndTrapInTheBoard();
-            currentPlayer.removeCard(address);
-        }
-        if (namesForEffect.contains("Dark Hole")) {
-            Attack.destroyAllMonstersInTheBoard();
-            currentPlayer.removeCard(address);
-        }
-        if (namesForEffect.contains("Twin Twisters")) {
-            String[] input = Game.getGameView().runEffect("Twin Twisters").split(",");
-            Address address1 = new Address(Integer.parseInt(input[0]), "hand", true);
-            Address address2 = new Address(Integer.parseInt(input[1]), "spell", false);
-            Address address3 = new Address(Integer.parseInt(input[2]), "spell", false);
-            currentPlayer.removeCard(address1);
-            currentPlayer.removeCard(address2);
-            currentPlayer.removeCard(address3);
-        }
-        if (namesForEffect.contains("Mystical space typhoon")) {
-            String input = Game.getGameView().runEffect("Mystical space typhoon");
-            Address address1 = new Address(Integer.parseInt(input), "spell", false);
-            currentPlayer.removeCard(address1);
-        }
-        if (namesForEffect.contains("Monster Reborn")) {
-            Game.getGameView().summonAMonsterCardFromGraveyard();
-            currentPlayer.removeCard(address);
-        }
-        if (spellMode.equals(SpellMode.EQUIP)) {
-            String input;
-            if (!Game.isAITurn()) {
-                System.out.println("choose a faced up monster to be equipped with this spell!(type number in monster zone)");
-                input = Main.scanner.nextLine();
-            }
-            else
-                input = Integer.toString(BattlePhase.getInstance().getStrongestMonster(Game.whoseTurnPlayer()));
-            Game.whoseTurnPlayer().setFromMonsterToSpellEquip(address.getNumber(), Integer.parseInt(input));
-        }
+    public static void doMysticalSpaceTyphoonEffect(Player currentPlayer) {
+        String input = Game.getGameView().answer;
+        Address address1 = new Address(Integer.parseInt(input), "spell", false);
+        currentPlayer.removeCard(address1);
+    }
+
+    public static void doTwinTwistersEffect(Player currentPlayer) {
+        Address address1 = new Address(Integer.parseInt(Game.getGameView().twinTwister1), "hand", true);
+        Address address2 = new Address(Integer.parseInt(Game.getGameView().twinTwister2), "spell", false);
+        Address address3 = new Address(Integer.parseInt(Game.getGameView().twinTwister3), "spell", false);
+        currentPlayer.removeCard(address1);
+        currentPlayer.removeCard(address2);
+        currentPlayer.removeCard(address3);
+    }
+
+    public static void doTerraformingEffect(Player currentPlayer) throws MyException {
+        String fieldSpellName = Game.getGameView().answer;
+        SpellCard spellCard = SpellCard.getSpellCardByName(fieldSpellName);
+        if ((spellCard != null) && (spellCard.spellMode == SpellMode.FIELD) && (currentPlayer.isThisCardInDeck("Terraforming"))) {
+            currentPlayer.bringCardFromDeckToHand("Terraforming");
+        } else if (!Game.isAITurn()) throw new MyException("you chose the wrong card.");
     }
 
     public SpellMode getSpellMode() {

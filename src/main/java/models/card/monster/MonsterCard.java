@@ -81,7 +81,8 @@ public class MonsterCard {
         if (namesForEffect.contains("Beast King Barbaros"))
             if (!currentPlayer.didBeastKingBarbarosSummonedSuperHighLevel(indexOfAttacker)) attack -= 1900;
         if (Attack.whatKindOfCardIsDefenderNow() != null && Attack.whatKindOfCardIsDefenderNow().equals("Suijin") && !Attack.isDefenderFacedDown()) {
-            if (whenSuijinIsDefending())
+            //whenSuijinIsDefending();
+            if (false)
                 return 0;
         }
         if (currentPlayer.doIHaveSpellCard("Umiiruka")) {
@@ -170,15 +171,18 @@ public class MonsterCard {
         return defence;
     }
 
-    public boolean whenSuijinIsDefending() {
+    public void whenSuijinIsDefending() {
         int index = Attack.whatIndexOfDefender();
         if (!Attack.whichPlayerIsAttacker().doIndexExistInSuijin(index)) {
-            if (Game.getGameView().runEffect("Suijin").equals("yes")) {
-                Attack.whichPlayerIsAttacker().addIndexToSuijin(index);
-                return true;
-            }
+            Game.getGameView().runEffect("Suijin", null, null);
         }
-        return false;
+    }
+
+    public static void doSuijinEffect(){
+        int index = Attack.whatIndexOfDefender();
+        if (Game.getGameView().answer.equals("yes")) {
+            Attack.whichPlayerIsAttacker().addIndexToSuijin(index);
+        }
     }
 
     public int getPrice() {

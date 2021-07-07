@@ -4,6 +4,7 @@ import Exceptions.MyException;
 import controllers.BattlePhaseController;
 import controllers.Game;
 import controllers.PhaseControl;
+import controllers.move.Attack;
 import controllers.move.SetSpell;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -22,6 +23,9 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import models.*;
 import models.card.monster.MonsterCard;
+import models.card.spell.SpellCard;
+import models.card.spell.SpellMode;
+import view.phase.BattlePhase;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -85,6 +89,10 @@ public class GameView extends Application {
     public ImageView rivalDeck;
     public int sumOfLevel = 0;
     public List<Address> monsterCardsAddress = new ArrayList<>();
+    public int counterTwinTwister = 0;
+    public String twinTwister1;
+    public String twinTwister2;
+    public String twinTwister3;
 
     public void summonForTribute(int numberOfTributes, Address address) throws MyException {
         newMessageToLabel(Game.getCurrentPhase());
@@ -224,7 +232,7 @@ public class GameView extends Application {
         setStateOfSubmit(false);
         setButtonsActivate(true);
         submitButton.setOnMouseClicked(e -> {
-            submitButton.setText("");
+            messageFromPlayer.setText("");
             if (sumOfLevel < monsterLevel && Game.whoseTurnPlayer().canIContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress)) {
                 Address address = new Address(messageFromPlayer.getText());
                 MonsterCard monsterCard1 = Board.whatKindaMonsterIsHere(address);
@@ -317,14 +325,46 @@ public class GameView extends Application {
             return String.valueOf(place3);
     }
 
-    public String runEffect(String cardName) {
+    public void AIEffect(String cardName) {
+        if (cardName.equals("Suijin"))
+            answer = "yes";
+        if (cardName.equals("Man-Eater Bug"))
+            answer = Integer.toString(BattlePhase.getInstance().getStrongestMonster(Game.whoseRivalPlayer()));
+        if (cardName.equals("Scanner"))
+            answer = "1";
+        if (cardName.equals("Beast King Barbaros"))
+            answer = "2";
+        if (cardName.equals("Herald of Creation1"))
+            answer = "0";
+        if (cardName.equals("Herald of Creation2")) {
+            Game.getGameView().scanForTribute(1, null, null, null);
+            answer = Game.getGameView().tributeCard1;
+        }
+        if (cardName.equals("Herald of Creation3"))
+            answer = "0";
+        if (cardName.equals("Terratiger, the Empowered Warrior"))
+            answer = "0";
+        if (cardName.equals("Terraforming"))
+            answer = "Umiiruka";
+        if (cardName.equals("Twin Twisters")) {
+            twinTwister1 = "1";
+            twinTwister3 = "1";
+            twinTwister3 = "2";
+        }
+        if (cardName.equals("Mystical space typhoon"))
+            answer = "1";
+        else answer = "0";
+    }
+
+    public void runEffect(String cardName, Address address, Address shouldBeRemoved) {
+        newMessageToLabel(Game.getCurrentPhase());
         setButtonsActivate(true);
         setStateOfSubmit(false);
         Game.getGameView().newMessageToLabel(Game.getCurrentPhase());
         if (Game.isAITurn()) {
             setButtonsActivate(false);
             setStateOfSubmit(true);
-            return Effect.AIEffect(cardName);
+            AIEffect(cardName);
         }
         if (cardName.equals("Suijin"))
             addMessageToLabel("Do you want to use Suijin's effect?\nType 'yes' or 'no'");
@@ -344,45 +384,223 @@ public class GameView extends Application {
             addMessageToLabel("Choose a monster card with level 4 or less from your hand!\nType a hand zone number from 1 to 6 or 0 if you want to cancel");
         if (cardName.equals("Terraforming"))
             addMessageToLabel("Type the name of the field spell card from your deck to come to your hand");
-        if (cardName.equals("Twin Twisters")) {
+        if (cardName.equals("Twin Twisters"))
             addMessageToLabel("Choose a card from your hand to remove and choose two of rival's trap or trap to be destroyed!\ntype 3 numbers and submit them separately");
-        }
         if (cardName.equals("Mystical space typhoon"))
             addMessageToLabel("Choose one of rival's spell or trap to be destroyed\ntype a spell zone number from 1 to 5");
-        if (!cardName.equals("Twin Twisters")) {
-            while (i <= 3) {
-                int finalI = i;
-                submitButton.setOnMouseClicked(e -> {
-                    submitButton.setText("");
-                    if (finalI == 1) {
-                        setFirstInput();
-                    } else if (finalI == 2) {
-                        setSecondInput();
-                    } else if (finalI == 3) {
-                        setThirdInput();
-                        sendDataTrue();
-                        setButtonsActivate(false);
-                        setStateOfSubmit(true);
-                    }
-                    increaseCount();
-                });
+        checkSpellInput(cardName, address, shouldBeRemoved);
+    }
+
+    private void checkSpellInput(String cardName, Address address, Address shouldBeRemoved) {
+        submitButton.setOnMouseClicked(e -> {
+            messageFromPlayer.setText("");
+            if (cardName.equals("Suijin"))
+                checkSuijinInput(cardName, address, shouldBeRemoved);
+            if (cardName.equals("Man-Eater Bug"))
+                checkManEaterBugInput(cardName, address, shouldBeRemoved);
+            if (cardName.equals("Scanner"))
+                checkScannerInput(cardName, address, shouldBeRemoved);
+            if (cardName.equals("Beast King Barbaros")) {
+                try {
+                    checkBeastKingBarbarosInput(cardName, address, shouldBeRemoved);
+                } catch (MyException myException) {
+                    newMessageToLabel(Game.getCurrentPhase());
+                    addMessageToLabel(myException.getMessage());
+                    reset();
+                }
             }
-            return firstInput + "," + secondInput + "," + thirdInput;
+            if (cardName.equals("Herald of Creation1"))
+                checkHeraldOfCreation1Input(cardName, address, shouldBeRemoved);
+            if (cardName.equals("Herald of Creation2"))
+                checkHeraldOfCreation2Input(cardName, address, shouldBeRemoved);
+            if (cardName.equals("Herald of Creation3"))
+                checkHeraldOfCreation3Input(cardName, address, shouldBeRemoved);
+            if (cardName.equals("Terratiger, the Empowered Warrior"))
+                checkTerratigerInput(cardName, address, shouldBeRemoved);
+            if (cardName.equals("Terraforming")) {
+                try {
+                    checkTerraformingInput(cardName, address, shouldBeRemoved);
+                } catch (MyException myException) {
+                    newMessageToLabel(Game.getCurrentPhase());
+                    addMessageToLabel(myException.getMessage());
+                    reset();
+                }
+            }
+            if (cardName.equals("Twin Twisters"))
+                checkTwinTwistersInput(cardName, address, shouldBeRemoved);
+            if (cardName.equals("Mystical space typhoon"))
+                checkMysticSpaceTyphoonInput(cardName, address, shouldBeRemoved);
+        });
+    }
+
+    private void checkMysticSpaceTyphoonInput(String cardName, Address address, Address shouldBeRemoved) {
+        if (messageFromPlayer.getText().matches("[012345]{1}")) {
+            answer = messageFromPlayer.getText();
+            SpellCard.doMysticalSpaceTyphoonEffect(Game.whoseTurnPlayer());
         } else {
-            while (!sendData) {
-                submitButton.setOnMouseClicked(e -> {
-                    submitButton.setText("");
-                    sendDataTrue();
-                    setButtonsActivate(false);
-                    setStateOfSubmit(true);
-                });
+            newMessageToLabel(Game.getCurrentPhase());
+            addMessageToLabel("Incorrect input");
+            addMessageToLabel("Choose one of rival's spell or trap to be destroyed\ntype a spell zone number from 1 to 5");
+            checkSpellInput(cardName, address, shouldBeRemoved);
+        }
+    }
+
+    private void checkTwinTwistersInput(String cardName, Address address, Address shouldBeRemoved) {
+        if (counterTwinTwister == 0) {
+            if (messageFromPlayer.getText().matches("[123456]{1}")) {
+                twinTwister1 = messageFromPlayer.getText();
+                counterTwinTwister++;
+                checkTwinTwistersInput(cardName, address, shouldBeRemoved);
+            } else {
+                newMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("Incorrect input");
+                addMessageToLabel("Choose a card from your hand to remove and choose two of rival's spell or trap to be destroyed!\ntype 3 numbers and submit them separately");
+                checkSpellInput(cardName, address, shouldBeRemoved);
+            }
+        } else if (counterTwinTwister == 1) {
+            if (messageFromPlayer.getText().matches("[12345]{1}")) {
+                twinTwister2 = messageFromPlayer.getText();
+                counterTwinTwister++;
+                checkTwinTwistersInput(cardName, address, shouldBeRemoved);
+            } else {
+                newMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("Incorrect input");
+                addMessageToLabel("Choose a card from your hand to remove and choose two of rival's spell or trap to be destroyed!\ntype 3 numbers and submit them separately");
+                checkSpellInput(cardName, address, shouldBeRemoved);
+            }
+        } else if (counterTwinTwister == 2) {
+            if (messageFromPlayer.getText().matches("[123456]{1}")) {
+                twinTwister3 = messageFromPlayer.getText();
+                counterTwinTwister = 0;
+                SpellCard.doTwinTwistersEffect(Game.whoseTurnPlayer());
+            } else {
+                newMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("Incorrect input");
+                addMessageToLabel("Choose a card from your hand to remove and choose two of rival's spell or trap to be destroyed!\ntype 3 numbers and submit them separately");
+                checkSpellInput(cardName, address, shouldBeRemoved);
             }
         }
-        if (sendData = true) {
-            sendData = false;
-            return messageFromPlayer.getText();
+    }
+
+    private void checkTerraformingInput(String cardName, Address address, Address shouldBeRemoved) throws MyException {
+        answer = messageFromPlayer.getText();
+        SpellCard.doTerraformingEffect(Game.whoseTurnPlayer());
+    }
+
+    private void checkTerratigerInput(String cardName, Address address, Address shouldBeRemoved) {
+        if (messageFromPlayer.getText().matches("[0123456]{1}")) {
+            answer = messageFromPlayer.getText();
+            PhaseControl.getInstance().doTerratigerEffect(Game.whoseTurnPlayer());
+        } else {
+            newMessageToLabel(Game.getCurrentPhase());
+            addMessageToLabel("Incorrect input");
+            addMessageToLabel("Choose a monster card with level 4 or less from your hand!\nType a hand zone number from 1 to 6 or 0 if you want to cancel");
+            checkSpellInput(cardName, address, shouldBeRemoved);
         }
-        return null;
+    }
+
+    private void checkHeraldOfCreation3Input(String cardName, Address address, Address shouldBeRemoved) {
+        if (messageFromPlayer.getText().matches("[\\d]+")) {
+            answer = messageFromPlayer.getText();
+            PhaseControl.getInstance().doHeraldOfCreation3Effect(Game.whoseTurnPlayer(), shouldBeRemoved);
+        } else {
+            newMessageToLabel(Game.getCurrentPhase());
+            addMessageToLabel("Incorrect input");
+            addMessageToLabel("Choose a monster card with level 7 or more from your graveyard\ntype number");
+            checkSpellInput(cardName, address, shouldBeRemoved);
+        }
+    }
+
+    private void checkHeraldOfCreation2Input(String cardName, Address address, Address shouldBeRemoved) {
+        if (messageFromPlayer.getText().matches("[12345]{1}")) {
+            answer = messageFromPlayer.getText();
+            PhaseControl.getInstance().doHeraldOfCreation2Effect(Game.whoseTurnPlayer());
+        } else {
+            newMessageToLabel(Game.getCurrentPhase());
+            addMessageToLabel("Incorrect input");
+            addMessageToLabel("Choose a card for tribute\nType monster zone number from 1 to 5");
+            checkSpellInput(cardName, address, shouldBeRemoved);
+        }
+    }
+
+    private void checkHeraldOfCreation1Input(String cardName, Address address, Address shouldBeRemoved) {
+        if (messageFromPlayer.getText().matches("[\\d]+")) {
+            answer = messageFromPlayer.getText();
+            PhaseControl.getInstance().doHeraldOfCreation1Effect(Game.whoseTurnPlayer());
+        } else {
+            newMessageToLabel(Game.getCurrentPhase());
+            addMessageToLabel("Incorrect input");
+            addMessageToLabel("How many Herald Of Creation cards do you want to use?");
+            checkSpellInput(cardName, address, shouldBeRemoved);
+        }
+    }
+
+    private void checkBeastKingBarbarosInput(String cardName, Address address, Address shouldBeRemoved) throws MyException {
+        if (messageFromPlayer.getText().matches("[23]{1}")) {
+            answer = messageFromPlayer.getText();
+            PhaseControl.getInstance().doBeastKingBarbarosEffect(address);
+        } else {
+            newMessageToLabel(Game.getCurrentPhase());
+            addMessageToLabel("Incorrect input");
+            addMessageToLabel("How many monsters do you want to tribute for Beast King Barbaros?\nType 2 or 3");
+            checkSpellInput(cardName, address, shouldBeRemoved);
+        }
+    }
+
+    private void checkScannerInput(String cardName, Address address, Address shouldBeRemoved) {
+        if (messageFromPlayer.getText().matches("[\\d]+")) {
+            answer = messageFromPlayer.getText();
+        } else {
+            newMessageToLabel(Game.getCurrentPhase());
+            addMessageToLabel("Incorrect input");
+            addMessageToLabel("Which card do you want to be scanned from rival's graveyard for Scanner?\nType graveyard number");
+            checkSpellInput(cardName, address, shouldBeRemoved);
+        }
+    }
+
+    private void checkManEaterBugInput(String cardName, Address address, Address shouldBeRemoved) {
+        if (messageFromPlayer.getText().matches("^[12345]{1}$")) {
+            answer = messageFromPlayer.getText();
+            PhaseControl.getInstance().doManEaterBugEffect();
+        } else {
+            newMessageToLabel(Game.getCurrentPhase());
+            addMessageToLabel("Incorrect input");
+            addMessageToLabel("Which rival's monster card you want to be destroyed because of the effect of Man Eater Bug?\nType monster zone number from 1 to 5");
+            checkSpellInput(cardName, address, shouldBeRemoved);
+        }
+    }
+
+    private void checkSuijinInput(String cardName, Address address, Address shouldBeRemoved) {
+        if (messageFromPlayer.getText().matches("^(yes|no)$")) {
+            answer = messageFromPlayer.getText();
+            MonsterCard.doSuijinEffect();
+        } else {
+            newMessageToLabel(Game.getCurrentPhase());
+            addMessageToLabel("Incorrect input");
+            addMessageToLabel("Do you want to use Suijin's effect?\nType 'yes' or 'no'");
+            checkSpellInput(cardName, address, shouldBeRemoved);
+        }
+    }
+
+    public void getMonsterForEquip(Address address) {
+        newMessageToLabel(Game.getCurrentPhase());
+        addMessageToLabel("Choose a faced up monster to be equipped with this spell\nType a number from 1 to 5 in monster zone");
+        checkInputEquip(address);
+    }
+
+    private void checkInputEquip(Address address) {
+        submitButton.setOnMouseClicked(e -> {
+            messageFromPlayer.setText("");
+            if(messageFromPlayer.getText().matches("^[12345]{1}$")){
+                answer = messageFromPlayer.getText();
+                SpellCard.doEquipSpellEffect(address);
+            } else {
+                newMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("Incorrect input");
+                addMessageToLabel("Choose a faced up monster to be equipped with this spell\nType a number from 1 to 5 in monster zone");
+                checkInputEquip(address);
+            }
+        });
     }
 
     private void increaseCount() {
@@ -564,7 +782,7 @@ public class GameView extends Application {
             setMonsterOnMouseClicked(turnMonsters[i], i);
         for (int i = 1; i <= 5; i++)
             setRivalMonsterOnMouseClicked(rivalMonsters[i], i);
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j <= 5; j++)
             setSpellOrTrapOnMouseClicked(turnSpells[i], i);
     }
 
@@ -576,9 +794,9 @@ public class GameView extends Application {
                         BattlePhaseController.getInstance().directAttack(selectedCardAddress);
                         reset();
                     } catch (MyException myException) {
-                        reset();
                         newMessageToLabel(Game.getCurrentPhase());
                         addMessageToLabel(myException.getMessage());
+                        reset();
                     }
                     reset();
                 }
@@ -640,7 +858,7 @@ public class GameView extends Application {
             setStateOfSubmit(false);
             setButtonsActivate(true);
             submitButton.setOnMouseClicked(e -> {
-                submitButton.setText("");
+                messageFromPlayer.setText("");
                 newMessageToLabel("Standby Phase");
                 if (!messageFromPlayer.getText().equals("yes") && !messageFromPlayer.getText().equals("no")) {
                     addMessageToLabel("Incorrect input\nDo you want to destroy Messenger Of Peace(If not you'll lose 100 LP)?\nEnter 'yes' or 'no'");
@@ -713,7 +931,7 @@ public class GameView extends Application {
 
     private void checkAnswer() {
         submitButton.setOnMouseClicked(e -> {
-            submitButton.setText("");
+            messageFromPlayer.setText("");
             if (!messageFromPlayer.getText().equals("no") || !messageFromPlayer.getText().equals("yes")) {
                 newMessageToLabel(Game.getCurrentPhase());
                 addMessageToLabel("Incorrect input");
@@ -744,7 +962,7 @@ public class GameView extends Application {
 
     private void checkCyberseInput() {
         submitButton.setOnMouseClicked(e -> {
-            submitButton.setText("");
+            messageFromPlayer.setText("");
             if (messageFromPlayer.getText().equals("1") || messageFromPlayer.getText().equals("2")) {
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
@@ -768,7 +986,7 @@ public class GameView extends Application {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly");
             submitButton.setOnMouseClicked(e -> {
-                submitButton.setText("");
+                messageFromPlayer.setText("");
                 setCardName();
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
@@ -788,18 +1006,18 @@ public class GameView extends Application {
             } else {
                 Player currentPlayer = Game.whoseTurnPlayer();
                 yesOrNo = (monsterCard.getNormalAttack() >= 2000) && (currentPlayer.getLP() > 5000);
-                if(number == 1){
+                if (number == 1) {
                     PhaseControl.getInstance().doSolemnWarningEffect1(address);
-                } else if(number == 2){
-                    PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer(), monsterCard);
+                } else if (number == 2) {
+                    PhaseControl.getInstance().doSolemnWarningEffect2(address, Game.whoseTurnPlayer(), monsterCard);
                 }
             }
         } else {
             yesOrNo = false;
-            if(number == 1){
+            if (number == 1) {
                 PhaseControl.getInstance().doSolemnWarningEffect1(address);
-            } else if(number == 2){
-                PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer(), monsterCard);
+            } else if (number == 2) {
+                PhaseControl.getInstance().doSolemnWarningEffect2(address, Game.whoseTurnPlayer(), monsterCard);
             }
         }
     }
@@ -808,15 +1026,15 @@ public class GameView extends Application {
         if (yesOrNo) {
             Game.whoseRivalPlayer().decreaseLP(2000);
             Game.whoseTurnPlayer().removeCard(address);
-            if(number == 1){
+            if (number == 1) {
                 PhaseControl.getInstance().doSolemnWarningEffect1(address);
-            } else if(number == 2){
+            } else if (number == 2) {
                 PhaseControl.getInstance().doSolemnWarningEffect2(address, Game.whoseTurnPlayer(), monsterCard);
             }
         } else {
-            if(number == 1){
+            if (number == 1) {
                 PhaseControl.getInstance().doSolemnWarningEffect1(address);
-            } else if(number == 2){
+            } else if (number == 2) {
                 PhaseControl.getInstance().doSolemnWarningEffect2(address, Game.whoseTurnPlayer(), monsterCard);
             }
         }
@@ -835,10 +1053,10 @@ public class GameView extends Application {
             getAnswer(cardName, myMonsterCard, address, number, monsterCard);
         } else {
             yesOrNo = !cardName.equals("Solemn Warning");
-            if(number == 1){
+            if (number == 1) {
                 PhaseControl.getInstance().doSolemnWarningEffect1(address);
-            } else if(number == 2){
-                PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer(), monsterCard);
+            } else if (number == 2) {
+                PhaseControl.getInstance().doSolemnWarningEffect2(address, Game.whoseTurnPlayer(), monsterCard);
             }
         }
     }
@@ -847,7 +1065,7 @@ public class GameView extends Application {
         answer = null;
         sendData = false;
         submitButton.setOnMouseClicked(e -> {
-            submitButton.setText("");
+            messageFromPlayer.setText("");
             if (!messageFromPlayer.getText().equals("yes") && !messageFromPlayer.getText().equals("no")) {
                 newMessageToLabel("Incorrect input");
                 addMessageToLabel(Game.getCurrentPhase());
@@ -926,7 +1144,7 @@ public class GameView extends Application {
         newMessageToLabel(Game.getCurrentPhase());
         addMessageToLabel("choose a card from your hand to be removed\nType hand number from 1 to 6");
         submitButton.setOnMouseClicked(e -> {
-            submitButton.setText("");
+            messageFromPlayer.setText("");
             setSubmitedAddrees();
             setStateOfSubmit(true);
             setButtonsActivate(false);
@@ -988,7 +1206,7 @@ public class GameView extends Application {
             setStateOfSubmit(false);
             setButtonsActivate(true);
             submitButton.setOnMouseClicked(e -> {
-                submitButton.setText("");
+                messageFromPlayer.setText("");
                 if (!messageFromPlayer.getText().matches("[123456]")) {
                     newMessageToLabel("Incorrect input\nSelect a card to be deleted from your hand\nEnter a number from 1 to 6");
                     messageFromPlayer.setText("");

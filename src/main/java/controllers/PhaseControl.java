@@ -235,15 +235,24 @@ public class PhaseControl {
             if (level <= 4) summonALowLevelMonster(currentPlayer, address);
             else if (level <= 6) Game.getGameView().summonForTribute(1, address);
             else {
-                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
-                if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getNamesForEffect().contains("Beast King Barbaros")
-                        && (Integer.parseInt(Game.getGameView().runEffect("Beast King Barbaros")) == 3)) {
-                    Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
-                    Game.getGameView().summonForTribute(3, address);
-                } else Game.getGameView().summonForTribute(2, address);
+                if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getNamesForEffect().contains("Beast King Barbaros")) {
+                    Game.getGameView().runEffect("Beast King Barbaros", address, null);
+                }
             }
         } else {
             throw new MyException("Opponent solemn destroyed your monster");
+        }
+    }
+
+    public void doBeastKingBarbarosEffect(Address address) throws MyException {
+        if(Game.getGameView().answer.equals("2")){
+            int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+            Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
+            Game.getGameView().summonForTribute(2, address);
+        } else if(Game.getGameView().answer.equals("3")){
+            int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+            Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
+            Game.getGameView().summonForTribute(3, address);
         }
     }
 
@@ -257,13 +266,8 @@ public class PhaseControl {
         if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Scanner")) {
             currentPlayer.summonCardToMonsterZone(address).setIsScanner(true);
         } else if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Terratiger, the Empowered Warrior")) {
-            if (Integer.parseInt(Game.getGameView().runEffect("Terratiger, the Empowered Warrior")) != 0) {
-                Address address1 = new Address(Integer.parseInt(Game.getGameView().runEffect("Terratiger, the Empowered Warrior")), "hand", true);
-                if ((currentPlayer.getMonsterCardByAddress(address1) != null)
-                        && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
-                        && (!currentPlayer.isMonsterZoneFull()))
-                    currentPlayer.setCardFromHandToMonsterZone(address1);
-            }
+            Game.getGameView().runEffect("Terratiger, the Empowered Warrior", null, null);
+            doTerratigerEffect(currentPlayer);
         } else currentPlayer.summonCardToMonsterZone(address);
         if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
             if (monsterCard.getNormalAttack() >= 1000) {
@@ -278,6 +282,16 @@ public class PhaseControl {
         currentPlayer.setHeSummonedOrSet(true);
         int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
         Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
+    }
+
+    public void doTerratigerEffect(Player currentPlayer) {
+        if (Integer.parseInt(Game.getGameView().answer) != 0) {
+            Address address1 = new Address(Integer.parseInt(Game.getGameView().answer), "hand", true);
+            if ((currentPlayer.getMonsterCardByAddress(address1) != null)
+                    && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
+                    && (!currentPlayer.isMonsterZoneFull()))
+                currentPlayer.setCardFromHandToMonsterZone(address1);
+        }
     }
 
     public void summonAMediumLevelMonster(Address address) throws MyException {
@@ -430,7 +444,7 @@ public class PhaseControl {
                 currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
                 MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
                 if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Man-Eater Bug")) {
-                    doManEaterBugEffect();
+                    Game.getGameView().runEffect("Man-Eater Bug", null, null);
                 }
                 if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole")) {
                     if (monsterCard.getNormalAttack() >= 1000) {
@@ -489,7 +503,11 @@ public class PhaseControl {
                 currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
                 currentPlayer.setIsThisSpellActivated(true, index);
                 SpellCard.doSpellAbsorptionEffect();
-                currentPlayer.getSpellCardByStringAddress(address).doEffect(address);
+                try {
+                    currentPlayer.getSpellCardByStringAddress(address).doEffect(address);
+                } catch (MyException myException){
+                    throw new MyException(myException.getMessage());
+                }
             }
         } else throw new MyException("Preparations of this spell are not done yet");
     }
@@ -503,28 +521,40 @@ public class PhaseControl {
     public void doEffectMainPhase() {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (Game.whoseTurnPlayer().doIHaveMonsterCardInMonsterZone("Herald of Creation")) {
-            int count = Integer.parseInt(Game.getGameView().runEffect("Herald of Creation1"));
-            int numberOfHeraldOfCreation = Game.whoseTurnPlayer().howManyHeraldOfCreationDoWeHave();
-            for (int i = 0; i < minOfTwoNumber(numberOfHeraldOfCreation, count) - Game.getGameView().howManyHeraldOfCreationDidWeUseEffect; i++) {
-                Address shouldBeRemoved = new Address(Integer.parseInt(Game.getGameView().runEffect("Herald of Creation2")), "monster", true);
-                if (!Board.isAddressEmpty(shouldBeRemoved)) {
-                    Address comeBackFromGraveyard = new Address(Integer.parseInt(Game.getGameView().runEffect("Herald of Creation3")), "graveyard", true);
-                    MonsterCard monsterCardForHeraldOfCreation = Board.whatKindaMonsterIsHere(comeBackFromGraveyard);
-                    if (monsterCardForHeraldOfCreation != null) {
-                        if (monsterCardForHeraldOfCreation.getLevel() >= 7) {
-                            currentPlayer.removeCard(shouldBeRemoved);
-                            currentPlayer.setCardFromGraveyardToHand(comeBackFromGraveyard);
-                            if (Game.getMainPhase1().whatMainIsPhase == 1)
-                                Game.getGameView().increaseHowManyHeraldOfCreationDidWeUseEffect();
-                        }
-                    }
-                }
+            Game.getGameView().runEffect("Herald of Creation1", null, null);
+        }
+    }
+
+    public void doHeraldOfCreation1Effect(Player currentPlayer) {
+        int count = Integer.parseInt(Game.getGameView().answer);
+        int numberOfHeraldOfCreation = Game.whoseTurnPlayer().howManyHeraldOfCreationDoWeHave();
+        for (int i = 0; i < minOfTwoNumber(numberOfHeraldOfCreation, count) - Game.getGameView().howManyHeraldOfCreationDidWeUseEffect; i++) {
+            Game.getGameView().runEffect("Herald of Creation2", null, null);
+        }
+    }
+
+    public void doHeraldOfCreation2Effect(Player currentPlayer) {
+        Address shouldBeRemoved = new Address(Integer.parseInt(Game.getGameView().answer), "monster", true);
+        if (!Board.isAddressEmpty(shouldBeRemoved)) {
+            Game.getGameView().runEffect("Herald of Creation3", null, shouldBeRemoved);
+        }
+    }
+
+    public void doHeraldOfCreation3Effect(Player currentPlayer, Address shouldBeRemoved) {
+        Address comeBackFromGraveyard = new Address(Integer.parseInt(Game.getGameView().answer), "graveyard", true);
+        MonsterCard monsterCardForHeraldOfCreation = Board.whatKindaMonsterIsHere(comeBackFromGraveyard);
+        if (monsterCardForHeraldOfCreation != null) {
+            if (monsterCardForHeraldOfCreation.getLevel() >= 7) {
+                currentPlayer.removeCard(shouldBeRemoved);
+                currentPlayer.setCardFromGraveyardToHand(comeBackFromGraveyard);
+                if (Game.getCurrentPhase().equals("Main Phase 1"))
+                    Game.getGameView().increaseHowManyHeraldOfCreationDidWeUseEffect();
             }
         }
     }
 
     public void doManEaterBugEffect() {
-        int monsterZoneNumber = Integer.parseInt(Game.getGameView().runEffect("Man-Eater Bug"));
+        int monsterZoneNumber = Integer.parseInt(Game.getGameView().answer);
         if (monsterZoneNumber <= 5 && monsterZoneNumber >= 1) {
             Address address1 = new Address(monsterZoneNumber, "monster", false);
             if (!Board.isAddressEmpty(address1)) {
