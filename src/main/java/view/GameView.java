@@ -24,7 +24,9 @@ import models.*;
 import models.card.monster.MonsterCard;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class GameView extends Application {
@@ -73,6 +75,8 @@ public class GameView extends Application {
     public String answere;
     public int i = 1;
     public ImageView rivalDeck;
+    public int sumOfLevel = 0;
+    public List<Address> monsterCardsAddress = new ArrayList<>();
 
     public void summonForTribute(int numberOfTributes, Address address) throws MyException {
         newMessageToLabel(Game.getCurrentPhase());
@@ -128,6 +132,7 @@ public class GameView extends Application {
                     setStateOfSubmit(true);
                     setButtonsActivate(false);
                     if (size.equals("medium")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueMediumLevelSummon(address, Game.whoseTurnPlayer(), monsterCard, currentTributeCard);
                         } catch (MyException myException) {
@@ -135,6 +140,7 @@ public class GameView extends Application {
                             addMessageToLabel(myException.getMessage());
                         }
                     } else if (size.equals("high1")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueFirstHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1);
                         } catch (MyException myException) {
@@ -142,6 +148,7 @@ public class GameView extends Application {
                             addMessageToLabel(myException.getMessage());
                         }
                     } else if (size.equals("high2")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueSecondHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1, tributeCard2);
                         } catch (MyException myException) {
@@ -149,6 +156,7 @@ public class GameView extends Application {
                             addMessageToLabel(myException.getMessage());
                         }
                     } else if (size.equals("superHigh1")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueFirstSuperHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1);
                         } catch (MyException myException) {
@@ -156,6 +164,7 @@ public class GameView extends Application {
                             addMessageToLabel(myException.getMessage());
                         }
                     } else if (size.equals("superHigh2")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueSecondSuperHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1, tributeCard2);
                         } catch (MyException myException) {
@@ -163,6 +172,7 @@ public class GameView extends Application {
                             addMessageToLabel(myException.getMessage());
                         }
                     } else if (size.equals("superHigh3")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueThirdSuperHigh(address, Game.whoseTurnPlayer(), tributeCard1, tributeCard2, tributeCard3);
                         } catch (MyException myException) {
@@ -175,6 +185,79 @@ public class GameView extends Application {
         }
     }
 
+    public void ritualSummon(Address monsterCardAddress, int monsterLevel) {
+        sumOfLevel = 0;
+        setStateOfSubmit(false);
+        setButtonsActivate(true);
+        newMessageToLabel(Game.getCurrentPhase());
+        Address ritualSpellCardAddress = Game.whoseTurnPlayer().getOneOfRitualSpellCardAddress();
+        if (ritualSpellCardAddress != null) {
+            if (Game.whoseTurnPlayer().canIContinueTribute(monsterLevel, monsterCardsAddress)) {
+                if (Game.isAITurn())
+                    monsterCardsAddress = selectAIRitual(monsterCardsAddress, sumOfLevel, monsterLevel);
+                else {
+                    getMonsterForRitual(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
+                }
+            } else if(!Game.isAITurn()) {
+                newMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("You do not have the requirements to Summon this card");
+                setStateOfSubmit(true);
+                setButtonsActivate(false);
+                Game.getGameView().messageFromPlayer.setText("");
+            }
+        }
+    }
+
+    private void getMonsterForRitual(int monsterLevel, Address ritualSpellCardAddress, Address monsterCardAddress) {
+        addMessageToLabel("Please choose some monsters from your hand or on the board for tribute!\n" +
+                "Sum of the chosen monsters' level should be equal to level the monster you want to summon ritually" +
+                "\nSubmit them separately");
+        Game.getGameView().messageFromPlayer.setText("");
+        setStateOfSubmit(false);
+        setButtonsActivate(true);
+        submitButton.setOnMouseClicked(e -> {
+            if (sumOfLevel < monsterLevel && Game.whoseTurnPlayer().canIContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress)) {
+                Address address = new Address(messageFromPlayer.getText());
+                MonsterCard monsterCard1 = Board.whatKindaMonsterIsHere(address);
+                monsterCardsAddress.add(address);
+                sumOfLevel += monsterCard1.getLevel();
+                getMonsterForRitual(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
+            } else if(sumOfLevel == monsterLevel){
+                tributeThisCards(monsterCardsAddress);
+                for (Address cardsAddress : monsterCardsAddress) Game.whoseTurnPlayer().removeCard(cardsAddress);
+                Game.whoseTurnPlayer().removeCard(ritualSpellCardAddress);
+                Game.whoseTurnPlayer().summonCardToMonsterZone(monsterCardAddress);
+                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(monsterCardAddress);
+                Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
+                Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+            } else {
+                giveError(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
+            }
+        });
+    }
+
+    private void giveError(int monsterLevel, Address ritualSpellCardAddress, Address monsterCardAddress) {
+        newMessageToLabel(Game.getCurrentPhase());
+        addMessageToLabel("You can't tribute this card");
+        getMonsterForRitual(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
+    }
+
+    private List<Address> selectAIRitual(List<Address> monsterCardsAddress, int sumOfLevel, int monsterLevel) {
+        for (int i = 1; i <= 5; i++) {
+            Address address = new Address(i, "monster", true);
+            if (Game.whoseTurnPlayer().getCardByAddress(address) == null)
+                continue;
+            monsterCardsAddress.add(address);
+            MonsterCard monsterCard1 = Board.whatKindaMonsterIsHere(address);
+            sumOfLevel += monsterCard1.getLevel();
+            if (!(sumOfLevel < monsterLevel && Game.whoseTurnPlayer().canIContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress))) {
+                monsterCardsAddress.remove(address);
+                sumOfLevel -= monsterCard1.getLevel();
+            }
+        }
+        return monsterCardsAddress;
+    }
+
     private void setTributeCard(int i) {
         if (i == 1) {
             tributeCard1 = messageFromPlayer.getText();
@@ -182,6 +265,12 @@ public class GameView extends Application {
             tributeCard2 = messageFromPlayer.getText();
         } else if (i == 3) {
             tributeCard3 = messageFromPlayer.getText();
+        }
+    }
+
+    private void tributeThisCards(List<Address> monsterCardsAddress) {
+        for (Address cardsAddress : monsterCardsAddress) {
+            Game.whoseTurnPlayer().removeCard(cardsAddress);
         }
     }
 
@@ -985,9 +1074,18 @@ public class GameView extends Application {
                         addMessageToLabel(myException.getMessage());
                         reset();
                     }
-                } else {
+                } else if (!Game.whoseTurnPlayer().isThisMonsterOnDHPosition(selectedCardAddress)) {
                     try {
                         PhaseControl.getInstance().setPosition("attack", selectedCardAddress);
+                        reset();
+                    } catch (MyException myException) {
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
+                        reset();
+                    }
+                } else {
+                    try {
+                        PhaseControl.getInstance().flipSummon(selectedCardAddress);
                         reset();
                     } catch (MyException myException) {
                         newMessageToLabel(Game.getCurrentPhase());
@@ -1027,9 +1125,9 @@ public class GameView extends Application {
                     try {
                         if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Spell"))
                             PhaseControl.getInstance().spellSet(selectedCardAddress);
-                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster"))
+                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster")) {
                             PhaseControl.getInstance().monsterSet(selectedCardAddress);
-                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
+                        } else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
                             PhaseControl.getInstance().trapSet(selectedCardAddress);
                         reset();
                     } catch (MyException myException) {
@@ -1040,9 +1138,9 @@ public class GameView extends Application {
                     try {
                         if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Spell"))
                             PhaseControl.getInstance().spellSet(selectedCardAddress);
-                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster"))
+                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster")) {
                             PhaseControl.getInstance().summonControl(selectedCardAddress);
-                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
+                        } else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
                             PhaseControl.getInstance().trapSet(selectedCardAddress);
                         reset();
                     } catch (MyException myException) {

@@ -121,10 +121,12 @@ public class PhaseControl {
     public void monsterSet(Address address) throws MyException {
         if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
             if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
+                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
                 if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getNamesForEffect().contains("Scanner")) {
                     Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address).setIsScanner(true);
                 } else Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address);
                 Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+                Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
             } else {
                 throw new MyException("you already summoned/set on this turn!");
             }
@@ -222,7 +224,7 @@ public class PhaseControl {
                             } else Game.getGameView().summonForTribute(2, address);
                         }
                     } else throw new MyException("Opponent solemn destroyed your monster");
-                } else Game.getMainPhase1().ritualSummon(address, level);
+                } else Game.getGameView().ritualSummon(address, level);
             } else throw new MyException("you already summoned/set on this turn!");
         } else throw new MyException("Monster card zone is full!");
     }
@@ -251,6 +253,8 @@ public class PhaseControl {
             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
         }
         currentPlayer.setHeSummonedOrSet(true);
+        int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+        Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
     }
 
     public void summonAMediumLevelMonster(Address address) throws MyException {
@@ -267,6 +271,8 @@ public class PhaseControl {
         } else {
             if (currentPlayer.isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard))) {
                 currentPlayer.setHeSummonedOrSet(true);
+                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+                Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
                 currentPlayer.removeMonsterByInt(Integer.parseInt(tributeCard));
                 currentPlayer.summonCardToMonsterZone(address);
                 if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
@@ -308,6 +314,8 @@ public class PhaseControl {
             if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard1))
                     && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))) {
                 Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+                Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
                 Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard1));
                 Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard2));
                 Game.whoseTurnPlayer().summonCardToMonsterZone(address);
@@ -358,6 +366,8 @@ public class PhaseControl {
                     && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))
                     && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard3))) {
                 Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+                Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
                 Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard1));
                 Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard2));
                 Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard3));
@@ -390,8 +400,10 @@ public class PhaseControl {
 
     public void flipSummon(Address address) throws MyException {
         Player currentPlayer = Game.whoseTurnPlayer();
+        int index = currentPlayer.getIndexOfThisCardByAddress(address);
         if (currentPlayer.isThisMonsterOnDHPosition(address)) {
             currentPlayer.convertThisMonsterFromDHToOO(address);
+            currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
             MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
             if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Man-Eater Bug")) {
                 doManEaterBugEffect();

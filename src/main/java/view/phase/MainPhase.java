@@ -323,54 +323,6 @@ public class MainPhase {
         }
     }
 
-    public void ritualSummon(Address monsterCardAddress, int monsterLevel) {
-        Address ritualSpellCardAddress = Game.whoseTurnPlayer().getOneOfRitualSpellCardAddress();
-        if (ritualSpellCardAddress != null) {
-            if (!Game.isAITurn())
-                System.out.println("Please choose some monsters from your hand or on the board for tribute!" +
-                    "(sum of the chosen monsters' level should be equal to level the monster you want to summon ritually)" +
-                    "\nplease type them in different lines!");
-            int sumOfLevel = 0;
-            List<Address> monsterCardsAddress = new ArrayList<>();
-            if (Game.isAITurn())
-                monsterCardsAddress = selectAIRitual(monsterCardsAddress,sumOfLevel, monsterLevel);
-            else while (sumOfLevel < monsterLevel && Game.whoseTurnPlayer().canIContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress)) {
-                Address address = new Address(Main.scanner.nextLine());
-                MonsterCard monsterCard1 = Board.whatKindaMonsterIsHere(address);
-                monsterCardsAddress.add(address);
-                sumOfLevel += monsterCard1.getLevel();
-            }
-            if (sumOfLevel == monsterLevel) {
-                tributeThisCards(monsterCardsAddress);
-                for (Address cardsAddress : monsterCardsAddress) Game.whoseTurnPlayer().removeCard(cardsAddress);
-                Game.whoseTurnPlayer().removeCard(ritualSpellCardAddress);
-                Game.whoseTurnPlayer().summonCardToMonsterZone(monsterCardAddress);
-            } else if (!Game.isAITurn()) System.out.println("You chose the wrong cards.");
-        }
-    }
-
-    private List<Address> selectAIRitual(List<Address> monsterCardsAddress, int sumOfLevel, int monsterLevel) {
-        for (int i = 1; i <= 5; i++) {
-            Address address = new Address(i, "monster", true);
-            if (Game.whoseTurnPlayer().getCardByAddress(address) == null)
-                continue;
-            monsterCardsAddress.add(address);
-            MonsterCard monsterCard1 = Board.whatKindaMonsterIsHere(address);
-            sumOfLevel += monsterCard1.getLevel();
-            if (!(sumOfLevel < monsterLevel && Game.whoseTurnPlayer().canIContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress))) {
-                monsterCardsAddress.remove(address);
-                sumOfLevel -= monsterCard1.getLevel();
-            }
-        }
-        return monsterCardsAddress;
-    }
-
-    private void tributeThisCards(List<Address> monsterCardsAddress) {
-        for (Address cardsAddress : monsterCardsAddress) {
-            Game.whoseTurnPlayer().removeCard(cardsAddress);
-        }
-    }
-
     public boolean isCancelled(String input) {
         return input.equals("cancel");
     }
