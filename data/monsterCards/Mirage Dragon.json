@@ -1,1 +1,1 @@
-{"monsterMode":"DRAGON","defence":0,"level":4,"attack":1600,"price":2500,"name":"Mirage Dragon","description":"Your opponent cannot activate Trap Cards during the Battle Phase.","attribute":"LIGHT","isRitual":false}
+{"isOriginal":true,"monsterMode":"DRAGON","defence":600,"level":4,"attack":1600,"price":2500,"name":"Mirage Dragon","description":"Your opponent cannot activate Trap Cards during the Battle Phase.","namesForEffect":[],"attribute":"LIGHT","isRitual":false}

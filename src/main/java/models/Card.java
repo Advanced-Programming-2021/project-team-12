@@ -20,6 +20,20 @@ public class Card {
         cards.add(this);
     }
 
+    public ArrayList<String> getNamesForEffect() {
+        if (kind.equals("Monster")) {
+            MonsterCard card = MonsterCard.getMonsterCardByName(name);
+            return card.getNamesForEffect();
+        }
+        if (kind.equals("Spell")) {
+            SpellCard card = SpellCard.getSpellCardByName(name);
+            return card.getNamesForEffect();
+        } else {
+            TrapCard card = TrapCard.getTrapCardByName(name);
+            return card.getNamesForEffect();
+        }
+    }
+
     public static ArrayList<Card> getAllCards() {
         return cards;
     }

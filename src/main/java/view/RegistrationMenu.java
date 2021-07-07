@@ -1,37 +1,23 @@
 package view;
-import Exceptions.MyException;
-import Utility.CommandMatcher;
 import controllers.LoadFile;
-import controllers.LogInController;
-import controllers.SignInController;
+import controllers.SaveFile;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import models.Card;
-import models.User;
+import Utility.Sounds;
 
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.regex.Matcher;
 
 public class RegistrationMenu extends Application {
-    public static Boolean isMute = false;
     private static Stage stage;
-    private static Clip clip;
+    public static Clip clip;
     private static boolean startLoad;
 
     @Override
@@ -39,6 +25,12 @@ public class RegistrationMenu extends Application {
         if (!startLoad) {
             LoadFile.loadData();
             startLoad = true;
+            try {
+                clip = Sounds.play("src//main//resources//Sound//Menu.wav", 0);
+                clip.start();
+            } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+                e.printStackTrace();
+            }
         }
         stage = primaryStage;
         Pane pane =  FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/RegistrationMenu.fxml")));

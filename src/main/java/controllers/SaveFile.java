@@ -78,6 +78,9 @@ public class SaveFile {
     private static void exportTrap(Card card, File file) {
         TrapCard trap = TrapCard.getTrapCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
+        if (card.getNamesForEffect() != null)
+            obj.put("namesForEffect", card.getNamesForEffect());
+        else obj.put("namesForEffect", new ArrayList<String>());
         obj.put("description", trap.getDescription());
         obj.put("name", trap.getRealName());
         obj.put("isLimit", trap.checkIsLimit());
@@ -94,6 +97,9 @@ public class SaveFile {
     private static void exportSpell(Card card, File file) {
         SpellCard spell = SpellCard.getSpellCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
+        if (card.getNamesForEffect() != null)
+            obj.put("namesForEffect", card.getNamesForEffect());
+        else obj.put("namesForEffect", new ArrayList<String>());
         obj.put("desctiption", spell.getDescription());
         obj.put("price", spell.getPrice());
         obj.put("spellMode", spell.getSpellMode());
@@ -111,6 +117,9 @@ public class SaveFile {
     private static void exportMonster(Card card, File file) {
         MonsterCard monster = MonsterCard.getMonsterCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
+        if (card.getNamesForEffect() != null)
+            obj.put("namesForEffect", card.getNamesForEffect());
+        else obj.put("namesForEffect", new ArrayList<String>());
         obj.put("name", monster.getRealName());
         obj.put("monsterMode", monster.getMonsterMode().toString());
         obj.put("attack", monster.getNormalAttack());
@@ -157,6 +166,9 @@ public class SaveFile {
     private static void saveMonster(Card card) {
         MonsterCard monster = MonsterCard.getMonsterCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
+        if (card.getNamesForEffect() != null)
+            obj.put("namesForEffect", card.getNamesForEffect());
+        else obj.put("namesForEffect", new ArrayList<String>());
         obj.put("name", monster.getRealName());
         obj.put("monsterMode", monster.getMonsterMode().toString());
         obj.put("attack", monster.getNormalAttack());
@@ -166,6 +178,7 @@ public class SaveFile {
         obj.put("level", monster.getLevel());
         obj.put("price", monster.getPrice());
         obj.put("isRitual", monster.isRitual());
+        obj.put("isOriginal", !monster.isNew());
         try {
             FileWriter writer = new FileWriter("data//monsterCards//" + monster.getRealName() + ".json");
             writer.write(obj.toJSONString());
@@ -178,11 +191,15 @@ public class SaveFile {
     private static void saveSpell(Card card) {
         SpellCard spell = SpellCard.getSpellCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
+        if (card.getNamesForEffect() != null)
+            obj.put("namesForEffect", card.getNamesForEffect());
+        else obj.put("namesForEffect", new ArrayList<String>());
         obj.put("desctiption", spell.getDescription());
         obj.put("price", spell.getPrice());
         obj.put("spellMode", spell.getSpellMode());
         obj.put("isLimit", spell.checkIsLimit());
         obj.put("name", spell.getRealName());
+        obj.put("isOriginal", !spell.isNew());
         try {
             FileWriter writer = new FileWriter("data//spellCards//" + spell.getRealName() + ".json");
             writer.write(obj.toJSONString());
@@ -195,10 +212,14 @@ public class SaveFile {
     private static void saveTrap(Card card) {
         TrapCard trap = TrapCard.getTrapCardByName(card.getCardName());
         JSONObject obj = new JSONObject();
+        if (card.getNamesForEffect() != null)
+            obj.put("namesForEffect", card.getNamesForEffect());
+        else obj.put("namesForEffect", new ArrayList<String>());
         obj.put("description", trap.getDescription());
         obj.put("name", trap.getRealName());
         obj.put("isLimit", trap.checkIsLimit());
         obj.put("price", trap.getPrice());
+        obj.put("isOriginal", !trap.isNew());
         try {
             FileWriter writer = new FileWriter("data//trapCards//" + trap.getRealName() + ".json");
             writer.write(obj.toJSONString());
