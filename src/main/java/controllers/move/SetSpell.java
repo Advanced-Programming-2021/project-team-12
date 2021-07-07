@@ -5,8 +5,7 @@ import controllers.Game;
 
 public class SetSpell {
     public static boolean doIHaveMessengerOfPeace() {
-        return true;
-        //return Game.whoseTurnPlayer().doIHaveSpellCard("Messenger of peace");
+        return Game.whoseTurnPlayer().doIHaveSpellCard("Messenger of peace");
     }
 
     public static void destroyMessengerOfPeace() {
