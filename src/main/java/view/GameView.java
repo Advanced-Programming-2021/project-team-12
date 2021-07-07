@@ -24,7 +24,9 @@ import models.*;
 import models.card.monster.MonsterCard;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class GameView extends Application {
@@ -77,9 +79,12 @@ public class GameView extends Application {
     public String tributeCard2;
     public String tributeCard3;
     public String cardName;
-    public String answere;
+    public String answer;
+    public Boolean yesOrNo;
     public int i = 1;
     public ImageView rivalDeck;
+    public int sumOfLevel = 0;
+    public List<Address> monsterCardsAddress = new ArrayList<>();
 
     public void summonForTribute(int numberOfTributes, Address address) throws MyException {
         newMessageToLabel(Game.getCurrentPhase());
@@ -135,6 +140,7 @@ public class GameView extends Application {
                     setStateOfSubmit(true);
                     setButtonsActivate(false);
                     if (size.equals("medium")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueMediumLevelSummon(address, Game.whoseTurnPlayer(), monsterCard, currentTributeCard);
                         } catch (MyException myException) {
@@ -142,6 +148,7 @@ public class GameView extends Application {
                             addMessageToLabel(myException.getMessage());
                         }
                     } else if (size.equals("high1")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueFirstHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1);
                         } catch (MyException myException) {
@@ -149,6 +156,7 @@ public class GameView extends Application {
                             addMessageToLabel(myException.getMessage());
                         }
                     } else if (size.equals("high2")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueSecondHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1, tributeCard2);
                         } catch (MyException myException) {
@@ -156,6 +164,7 @@ public class GameView extends Application {
                             addMessageToLabel(myException.getMessage());
                         }
                     } else if (size.equals("superHigh1")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueFirstSuperHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1);
                         } catch (MyException myException) {
@@ -163,6 +172,7 @@ public class GameView extends Application {
                             addMessageToLabel(myException.getMessage());
                         }
                     } else if (size.equals("superHigh2")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueSecondSuperHigh(address, Game.whoseTurnPlayer(), monsterCard, tributeCard1, tributeCard2);
                         } catch (MyException myException) {
@@ -170,6 +180,7 @@ public class GameView extends Application {
                             addMessageToLabel(myException.getMessage());
                         }
                     } else if (size.equals("superHigh3")) {
+                        Game.getGameView().messageFromPlayer.setText("");
                         try {
                             PhaseControl.getInstance().continueThirdSuperHigh(address, Game.whoseTurnPlayer(), tributeCard1, tributeCard2, tributeCard3);
                         } catch (MyException myException) {
@@ -182,6 +193,79 @@ public class GameView extends Application {
         }
     }
 
+    public void ritualSummon(Address monsterCardAddress, int monsterLevel) {
+        sumOfLevel = 0;
+        setStateOfSubmit(false);
+        setButtonsActivate(true);
+        newMessageToLabel(Game.getCurrentPhase());
+        Address ritualSpellCardAddress = Game.whoseTurnPlayer().getOneOfRitualSpellCardAddress();
+        if (ritualSpellCardAddress != null) {
+            if (Game.whoseTurnPlayer().canIContinueTribute(monsterLevel, monsterCardsAddress)) {
+                if (Game.isAITurn())
+                    monsterCardsAddress = selectAIRitual(monsterCardsAddress, sumOfLevel, monsterLevel);
+                else {
+                    getMonsterForRitual(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
+                }
+            } else if (!Game.isAITurn()) {
+                newMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("You do not have the requirements to Summon this card");
+                setStateOfSubmit(true);
+                setButtonsActivate(false);
+                Game.getGameView().messageFromPlayer.setText("");
+            }
+        }
+    }
+
+    private void getMonsterForRitual(int monsterLevel, Address ritualSpellCardAddress, Address monsterCardAddress) {
+        addMessageToLabel("Please choose some monsters from your hand or on the board for tribute!\n" +
+                "Sum of the chosen monsters' level should be equal to level the monster you want to summon ritually" +
+                "\nSubmit them separately");
+        Game.getGameView().messageFromPlayer.setText("");
+        setStateOfSubmit(false);
+        setButtonsActivate(true);
+        submitButton.setOnMouseClicked(e -> {
+            if (sumOfLevel < monsterLevel && Game.whoseTurnPlayer().canIContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress)) {
+                Address address = new Address(messageFromPlayer.getText());
+                MonsterCard monsterCard1 = Board.whatKindaMonsterIsHere(address);
+                monsterCardsAddress.add(address);
+                sumOfLevel += monsterCard1.getLevel();
+                getMonsterForRitual(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
+            } else if (sumOfLevel == monsterLevel) {
+                tributeThisCards(monsterCardsAddress);
+                for (Address cardsAddress : monsterCardsAddress) Game.whoseTurnPlayer().removeCard(cardsAddress);
+                Game.whoseTurnPlayer().removeCard(ritualSpellCardAddress);
+                Game.whoseTurnPlayer().summonCardToMonsterZone(monsterCardAddress);
+                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(monsterCardAddress);
+                Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
+                Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+            } else {
+                giveError(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
+            }
+        });
+    }
+
+    private void giveError(int monsterLevel, Address ritualSpellCardAddress, Address monsterCardAddress) {
+        newMessageToLabel(Game.getCurrentPhase());
+        addMessageToLabel("You can't tribute this card");
+        getMonsterForRitual(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
+    }
+
+    private List<Address> selectAIRitual(List<Address> monsterCardsAddress, int sumOfLevel, int monsterLevel) {
+        for (int i = 1; i <= 5; i++) {
+            Address address = new Address(i, "monster", true);
+            if (Game.whoseTurnPlayer().getCardByAddress(address) == null)
+                continue;
+            monsterCardsAddress.add(address);
+            MonsterCard monsterCard1 = Board.whatKindaMonsterIsHere(address);
+            sumOfLevel += monsterCard1.getLevel();
+            if (!(sumOfLevel < monsterLevel && Game.whoseTurnPlayer().canIContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress))) {
+                monsterCardsAddress.remove(address);
+                sumOfLevel -= monsterCard1.getLevel();
+            }
+        }
+        return monsterCardsAddress;
+    }
+
     private void setTributeCard(int i) {
         if (i == 1) {
             tributeCard1 = messageFromPlayer.getText();
@@ -189,6 +273,12 @@ public class GameView extends Application {
             tributeCard2 = messageFromPlayer.getText();
         } else if (i == 3) {
             tributeCard3 = messageFromPlayer.getText();
+        }
+    }
+
+    private void tributeThisCards(List<Address> monsterCardsAddress) {
+        for (Address cardsAddress : monsterCardsAddress) {
+            Game.whoseTurnPlayer().removeCard(cardsAddress);
         }
     }
 
@@ -469,6 +559,8 @@ public class GameView extends Application {
             setMonsterOnMouseClicked(turnMonsters[i], i);
         for (int i = 1; i <= 5; i++)
             setRivalMonsterOnMouseClicked(rivalMonsters[i], i);
+        for (int j = 0; j < 5; j++)
+            setSpellOrTrapOnMouseClicked(turnSpells[i], i);
     }
 
     private void setRivalDeckOnMouseClick(ImageView rivalDeck) {
@@ -605,35 +697,57 @@ public class GameView extends Application {
         reset();
     }
 
-    public boolean permission() {
-        setStateOfSubmit(false);
-        setButtonsActivate(true);
+    public void permission() {
         newMessageToLabel(Game.getCurrentPhase());
         addMessageToLabel("Do you want do the effect?\nType 'yes' or 'no'");
-        submitButton.setOnMouseClicked(e -> {
-            setStateOfSubmit(true);
-            setButtonsActivate(false);
-            setAnswere();
-        });
-        return answere.equals("yes");
+        setStateOfSubmit(false);
+        setButtonsActivate(true);
+        checkAnswer();
     }
 
-    private void setAnswere() {
-        answere = messageFromPlayer.getText();
+    private void checkAnswer() {
+        submitButton.setOnMouseClicked(e -> {
+            if (!messageFromPlayer.getText().equals("no") || !messageFromPlayer.getText().equals("yes")) {
+                newMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("Incorrect input");
+                addMessageToLabel("Do you want do the effect?\nType 'yes' or 'no'");
+                checkAnswer();
+            } else {
+                answer = messageFromPlayer.getText();
+                setStateOfSubmit(true);
+                setButtonsActivate(false);
+            }
+        });
+    }
+
+    private void setAnswer() {
+        answer = messageFromPlayer.getText();
     }
 
     public void summonCyberse() {
-        if (permission()) {
+        permission();
+        if (answer.equals("yes")) {
             setStateOfSubmit(false);
             setButtonsActivate(true);
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Select a Cyberse type monster from your hand or deck or graveyard to be summoned.\nWhich card do you want to special summon?\n1.Texchanger\n2.Leotron");
-            submitButton.setOnMouseClicked(e -> {
+            checkCyberseInput();
+        }
+    }
+
+    private void checkCyberseInput() {
+        submitButton.setOnMouseClicked(e -> {
+            if (messageFromPlayer.getText().equals("1") || messageFromPlayer.getText().equals("2")) {
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
                 Game.whoseTurnPlayer().specialSummonThisKindOfCardFromHandOrDeckOrGraveyard(messageBox.getText());
-            });
-        }
+            } else {
+                newMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("Incorrect input");
+                addMessageToLabel("Select a Cyberse type monster from your hand or deck or graveyard to be summoned.\nWhich card do you want to special summon?\n1.Texchanger\n2.Leotron");
+                checkCyberseInput();
+            }
+        });
     }
 
     public void doMindCrushEffect() {
@@ -658,59 +772,113 @@ public class GameView extends Application {
         } else currentPlayer.removeOneOfHandCard();
     }
 
-    public boolean doSolemnWarningEffect(Address address) {
+    public void doSolemnWarningEffect(Address address, int number) throws MyException {
         if (Game.whoseRivalPlayer().doIHaveSpellCard("Solemn Warning")) {
             if (!Game.isAITurn()) {
-                if (Game.getGameView().getPermissionForTrap("Solemn Warning", false)) {
-                    Game.whoseRivalPlayer().decreaseLP(2000);
-                    Game.whoseTurnPlayer().removeCard(address);
-                    return true;
-                }
-                return false;
+                getPermissionForTrap("Solemn Warning", false, null, address, number);
             } else {
                 Player currentPlayer = Game.whoseTurnPlayer();
                 MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
-                return ((monsterCard.getNormalAttack() >= 2000) && (currentPlayer.getLP() > 5000));
+                yesOrNo = (monsterCard.getNormalAttack() >= 2000) && (currentPlayer.getLP() > 5000);
+                if(number == 1){
+                    PhaseControl.getInstance().doSolemnWarningEffect1(address);
+                } else if(number == 2){
+                    PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer());
+                }
+            }
+        } else {
+            yesOrNo = false;
+            if(number == 1){
+                PhaseControl.getInstance().doSolemnWarningEffect1(address);
+            } else if(number == 2){
+                PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer());
             }
         }
-        return false;
     }
 
-    public boolean getPermissionForTrap(String cardName, boolean isMine) {
+    private void doSolemnWarningGameView1(Address address, int number) throws MyException {
+        if (yesOrNo) {
+            Game.whoseRivalPlayer().decreaseLP(2000);
+            Game.whoseTurnPlayer().removeCard(address);
+            if(number == 1){
+                PhaseControl.getInstance().doSolemnWarningEffect1(address);
+            } else if(number == 2){
+                PhaseControl.getInstance().doSolemnWarningEffect2(address, Game.whoseTurnPlayer());
+            }
+        } else {
+            if(number == 1){
+                PhaseControl.getInstance().doSolemnWarningEffect1(address);
+            } else if(number == 2){
+                PhaseControl.getInstance().doSolemnWarningEffect2(address, Game.whoseTurnPlayer());
+            }
+        }
+    }
+
+    public void getPermissionForTrap(String cardName, boolean isMine, MonsterCard myMonsterCard, Address address, int number) throws MyException {
         setStateOfSubmit(false);
         setButtonsActivate(true);
         if (!isMine && (!Game.getIsAI() || Game.isAITurn())) {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Dear " + Game.whoseRivalPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
-            answere = null;
-            sendData = false;
-            while (!sendData) {
-                submitButton.setOnMouseClicked(e -> {
-                    setAnswere();
-                    sendDataTrue();
-                });
-            }
-            if (sendData) {
-                setStateOfSubmit(true);
-                setButtonsActivate(false);
-                return (answere.equals("yes"));
-            }
+            getAnswer(cardName, myMonsterCard, address, number);
         } else if (!Game.isAITurn() && isMine) {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Dear " + Game.whoseTurnPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
-            answere = null;
-            sendData = false;
-            submitButton.setOnMouseClicked(e -> {
-                setAnswere();
-                sendDataTrue();
-            });
-            if (sendData) {
+            getAnswer(cardName, myMonsterCard, address, number);
+        } else {
+            yesOrNo = !cardName.equals("Solemn Warning");
+            if(number == 1){
+                PhaseControl.getInstance().doSolemnWarningEffect1(address);
+            } else if(number == 2){
+                PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer());
+            }
+        }
+    }
+
+    private void getAnswer(String cardName, MonsterCard myMonsterCard, Address address, int number) {
+        answer = null;
+        sendData = false;
+        submitButton.setOnMouseClicked(e -> {
+            if (!messageFromPlayer.getText().equals("yes") && !messageFromPlayer.getText().equals("no")) {
+                newMessageToLabel("Incorrect input");
+                addMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("Dear " + Game.whoseRivalPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
+                getAnswer(cardName, myMonsterCard, address, number);
+            } else {
+                yesOrNo = messageFromPlayer.getText().equals("yes");
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
-                return (answere.equals("yes"));
+                if (cardName.equals("Negate Attack")) {
+                    BattlePhaseController.getInstance().doNegateAttack();
+                } else if (cardName.equals("Mirror Force")) {
+                    BattlePhaseController.getInstance().doMirrorForce();
+                } else if (cardName.equals("Magic Cylinder")) {
+                    try {
+                        BattlePhaseController.getInstance().doMagicCylinder(Game.whoseTurnPlayer(), myMonsterCard);
+                    } catch (MyException myException) {
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
+                        reset();
+                    }
+                } else if (cardName.equals("Mind Crush")) {
+                    PhaseControl.getInstance().doMindCrush(address, Game.whoseTurnPlayer());
+                } else if (cardName.equals("Time Seal")) {
+                    PhaseControl.getInstance().doTimeSeal(address, Game.whoseTurnPlayer());
+                } else if (cardName.equals("Call of The Haunted")) {
+                    PhaseControl.getInstance().doCallOfTheHaunted(address, Game.whoseTurnPlayer());
+                } else if (cardName.equals("Magic Jammer")) {
+                    PhaseControl.getInstance().doMagicJammer(address);
+                } else if (cardName.equals("Solemn Warning")) {
+                    try {
+                        doSolemnWarningGameView1(address, number);
+                    } catch (MyException myException) {
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
+                        reset();
+                    }
+                }
             }
-        } else return (!cardName.equals("Solemn Warning"));
-        return false;
+        });
     }
 
     public void summonAMonsterCardFromGraveyard() {
@@ -981,6 +1149,27 @@ public class GameView extends Application {
         }
     }
 
+    private void setSpellOrTrapOnMouseClicked(ImageView spellZoneCard, int i) {
+        spellZoneCard.setOnMouseClicked(e -> {
+            if (Game.getCurrentPhase().equals("Main Phase 1") || Game.getCurrentPhase().equals("Main Phase 2") || Game.getCurrentPhase().equals("Battle Phase")) {
+                setSelectedCard("spell", i, true);
+                if (Game.whoseTurnPlayer().getCardByAddress(selectedCardAddress).getKind().equals("Spell")) {
+                    if (!Game.whoseTurnPlayer().isSpellFaceUp(i)) {
+                        try {
+                            PhaseControl.getInstance().activeSpell(selectedCardAddress);
+                            reset();
+                        } catch (MyException myException) {
+                            newMessageToLabel(Game.getCurrentPhase());
+                            addMessageToLabel(myException.getMessage());
+                            reset();
+                        }
+                    }
+                }
+            }
+            reset();
+        });
+    }
+
     private void setMonsterOnMouseClicked(ImageView monsterZoneCard, int i) {
         monsterZoneCard.setOnMouseClicked(e -> {
             if (Game.getCurrentPhase().equals("Main Phase 1") || Game.getCurrentPhase().equals("Main Phase 2")) {
@@ -994,9 +1183,18 @@ public class GameView extends Application {
                         addMessageToLabel(myException.getMessage());
                         reset();
                     }
-                } else {
+                } else if (!Game.whoseTurnPlayer().isThisMonsterOnDHPosition(selectedCardAddress)) {
                     try {
                         PhaseControl.getInstance().setPosition("attack", selectedCardAddress);
+                        reset();
+                    } catch (MyException myException) {
+                        newMessageToLabel(Game.getCurrentPhase());
+                        addMessageToLabel(myException.getMessage());
+                        reset();
+                    }
+                } else {
+                    try {
+                        PhaseControl.getInstance().flipSummon(selectedCardAddress);
                         reset();
                     } catch (MyException myException) {
                         newMessageToLabel(Game.getCurrentPhase());
@@ -1036,9 +1234,9 @@ public class GameView extends Application {
                     try {
                         if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Spell"))
                             PhaseControl.getInstance().spellSet(selectedCardAddress);
-                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster"))
+                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster")) {
                             PhaseControl.getInstance().monsterSet(selectedCardAddress);
-                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
+                        } else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
                             PhaseControl.getInstance().trapSet(selectedCardAddress);
                         reset();
                     } catch (MyException myException) {
@@ -1049,9 +1247,9 @@ public class GameView extends Application {
                     try {
                         if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Spell"))
                             PhaseControl.getInstance().spellSet(selectedCardAddress);
-                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster"))
+                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Monster")) {
                             PhaseControl.getInstance().summonControl(selectedCardAddress);
-                        else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
+                        } else if (Board.getCardByAddress(selectedCardAddress).getKind().equals("Trap"))
                             PhaseControl.getInstance().trapSet(selectedCardAddress);
                         reset();
                     } catch (MyException myException) {

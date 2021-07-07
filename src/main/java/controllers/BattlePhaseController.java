@@ -420,27 +420,18 @@ public class BattlePhaseController {
                         MonsterCard rivalMonsterCard = Game.whoseRivalPlayer().getMonsterCardByAddress(address);
                         currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
                         if (Game.whoseRivalPlayer().doIHaveSpellCard("Negate Attack")
-                                && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
-                                && Game.getGameView().getPermissionForTrap("Negate Attack", false)) {
-                            BattlePhase.getInstance().goToNextPhase = true;
-                            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Negate Attack");
+                                && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                            Game.getGameView().getPermissionForTrap("Negate Attack", false, null, null, 1);
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Mirror Force")
-                                && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
-                                && Game.getGameView().getPermissionForTrap("Mirror Force", false)) {
-                            Board.destroyAllAttackerMonster(Game.whoseRivalPlayer());
-                            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Mirror Force");
+                                && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                            Game.getGameView().getPermissionForTrap("Mirror Force", false, null, null, 1);
                         } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                             throw new MyException("You can't attack by monster with attack equal or more than 1500 " +
                                     "because of Messenger of peace.");
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Cylinder")
-                                && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
-                                && Game.getGameView().getPermissionForTrap("Magic Cylinder", false)) {
-                            if (!currentPlayer.doIHaveSpellCard("Ring of defense")) {
-                                currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
-                            }
-                            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Magic Cylinder");
-                            throw new MyException("Rival has trap named Magic Cylinder so its effect get done.");
+                                && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                            Game.getGameView().getPermissionForTrap("Magic Cylinder", false, myMonsterCard, null, 1);
                         } else if (rivalMonsterCard.getNamesForEffect().contains("Texchanger")) {
                             Game.getGameView().summonCyberse();
                         } else {
@@ -463,6 +454,30 @@ public class BattlePhaseController {
                     } else throw new MyException("there is no card to attack here");
                 } else throw new MyException("this card already attacked");
             } else throw new MyException("you cant attack with this card");
+        }
+    }
+
+    public void doMagicCylinder(Player currentPlayer, MonsterCard myMonsterCard) throws MyException {
+        if(Game.getGameView().yesOrNo){
+            if (!currentPlayer.doIHaveSpellCard("Ring of defense")) {
+                currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
+            }
+            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Magic Cylinder");
+            throw new MyException("Rival has trap named Magic Cylinder so its effect get done.");
+        }
+    }
+
+    public void doMirrorForce() {
+        if(Game.getGameView().yesOrNo){
+            Board.destroyAllAttackerMonster(Game.whoseRivalPlayer());
+            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Mirror Force");
+        }
+    }
+
+    public void doNegateAttack() {
+        if(Game.getGameView().yesOrNo){
+            BattlePhase.getInstance().goToNextPhase = true;
+            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Negate Attack");
         }
     }
 

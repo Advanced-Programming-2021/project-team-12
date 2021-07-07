@@ -171,6 +171,8 @@ public class Player {
         indexOfCard.put(add, indexOfCard.get(address));
         handCardNumbers.remove(address.getNumber());
         positionOfCardInBoardByAddress.put(add, PositionOfCardInBoard.DH);
+        int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(add);
+        Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
         return add;
     }
 
@@ -612,8 +614,10 @@ public class Player {
         for (int i = 1; i <= 5; i++)
             if (monsterZoneCardNumbers.containsKey(i))
                 monsters.put(i, monsterZoneCardNumbers.get(i));
-        for (Address cardsAddress : monsterCardsAddress)
-            monsters.remove(cardsAddress.getNumber());
+        if(monsterCardsAddress != null){
+            for (Address cardsAddress : monsterCardsAddress)
+                monsters.remove(cardsAddress.getNumber());
+        }
         ArrayList<Integer> subLevels = sumOfLevelOfAllSubsetsOfMonsterZone(monsters);
         return subLevels.contains(number);
     }
