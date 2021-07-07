@@ -121,12 +121,10 @@ public class PhaseControl {
     public void monsterSet(Address address) throws MyException {
         if (!Game.whoseTurnPlayer().isMonsterZoneFull()) {
             if (!Game.whoseTurnPlayer().isHeSummonedOrSet()) {
-                int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
                 if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getNamesForEffect().contains("Scanner")) {
                     Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address).setIsScanner(true);
                 } else Game.whoseTurnPlayer().setCardFromHandToMonsterZone(address);
                 Game.whoseTurnPlayer().setHeSummonedOrSet(true);
-                Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
             } else {
                 throw new MyException("you already summoned/set on this turn!");
             }
@@ -400,20 +398,22 @@ public class PhaseControl {
 
     public void flipSummon(Address address) throws MyException {
         Player currentPlayer = Game.whoseTurnPlayer();
-        int index = currentPlayer.getIndexOfThisCardByAddress(address);
         if (currentPlayer.isThisMonsterOnDHPosition(address)) {
-            currentPlayer.convertThisMonsterFromDHToOO(address);
-            currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
-            MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
-            if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Man-Eater Bug")) {
-                doManEaterBugEffect();
-            }
-            if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole")) {
-                if (monsterCard.getNormalAttack() >= 1000) {
-                    currentPlayer.removeCard(address);
-                    Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
+            int index = currentPlayer.getIndexOfThisCardByAddress(address);
+            if(!currentPlayer.didWeChangePositionThisCardInThisTurn(index)){
+                currentPlayer.convertThisMonsterFromDHToOO(address);
+                currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
+                MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
+                if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Man-Eater Bug")) {
+                    doManEaterBugEffect();
                 }
-            }
+                if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole")) {
+                    if (monsterCard.getNormalAttack() >= 1000) {
+                        currentPlayer.removeCard(address);
+                        Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
+                    }
+                }
+            } else throw new MyException("You have changed this cards position in this turn");
         } else throw new MyException("You cant do this action in this phase!");
     }
 
@@ -426,7 +426,7 @@ public class PhaseControl {
                     currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
                     currentPlayer.convertThisMonsterFromDefenceToAttack(address);
                 } else
-                    throw new MyException("you already changed this card position in this turn");
+                    throw new MyException("you already changed this cards position in this turn");
             } else throw new MyException("This card is already in the wanted position!");
         } else {
             if (currentPlayer.isThisMonsterOnAttackPosition(address)) {
@@ -467,7 +467,7 @@ public class PhaseControl {
                 SpellCard.doSpellAbsorptionEffect();
                 currentPlayer.getSpellCardByStringAddress(address).doEffect(address);
             }
-        } else throw new MyException("preparations of this spell are not done yet");
+        } else throw new MyException("Preparations of this spell are not done yet");
     }
 
     public void doEffectMainPhase() {

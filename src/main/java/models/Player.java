@@ -171,6 +171,8 @@ public class Player {
         indexOfCard.put(add, indexOfCard.get(address));
         handCardNumbers.remove(address.getNumber());
         positionOfCardInBoardByAddress.put(add, PositionOfCardInBoard.DH);
+        int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(add);
+        Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
         return add;
     }
 

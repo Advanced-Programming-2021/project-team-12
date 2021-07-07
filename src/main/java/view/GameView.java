@@ -73,6 +73,7 @@ public class GameView extends Application {
     public String tributeCard3;
     public String cardName;
     public String answere;
+    public Boolean yesOrNo;
     public int i = 1;
     public ImageView rivalDeck;
     public int sumOfLevel = 0;
@@ -198,7 +199,7 @@ public class GameView extends Application {
                 else {
                     getMonsterForRitual(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
                 }
-            } else if(!Game.isAITurn()) {
+            } else if (!Game.isAITurn()) {
                 newMessageToLabel(Game.getCurrentPhase());
                 addMessageToLabel("You do not have the requirements to Summon this card");
                 setStateOfSubmit(true);
@@ -222,7 +223,7 @@ public class GameView extends Application {
                 monsterCardsAddress.add(address);
                 sumOfLevel += monsterCard1.getLevel();
                 getMonsterForRitual(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
-            } else if(sumOfLevel == monsterLevel){
+            } else if (sumOfLevel == monsterLevel) {
                 tributeThisCards(monsterCardsAddress);
                 for (Address cardsAddress : monsterCardsAddress) Game.whoseTurnPlayer().removeCard(cardsAddress);
                 Game.whoseTurnPlayer().removeCard(ritualSpellCardAddress);
@@ -551,6 +552,8 @@ public class GameView extends Application {
             setMonsterOnMouseClicked(turnMonsters[i], i);
         for (int i = 1; i <= 5; i++)
             setRivalMonsterOnMouseClicked(rivalMonsters[i], i);
+        for (int j = 0; j < 5; j++)
+            setSpellOrTrapOnMouseClicked(turnSpells[i], i);
     }
 
     private void setRivalDeckOnMouseClick(ImageView rivalDeck) {
@@ -756,41 +759,41 @@ public class GameView extends Application {
         return false;
     }
 
-    public boolean getPermissionForTrap(String cardName, boolean isMine) {
+    public void getPermissionForTrap(String cardName, boolean isMine) {
         setStateOfSubmit(false);
         setButtonsActivate(true);
         if (!isMine && (!Game.getIsAI() || Game.isAITurn())) {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Dear " + Game.whoseRivalPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
-            answere = null;
-            sendData = false;
-            while (!sendData) {
-                submitButton.setOnMouseClicked(e -> {
-                    setAnswere();
-                    sendDataTrue();
-                });
-            }
-            if (sendData) {
-                setStateOfSubmit(true);
-                setButtonsActivate(false);
-                return (answere.equals("yes"));
-            }
+            getAnswere(cardName);
         } else if (!Game.isAITurn() && isMine) {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Dear " + Game.whoseTurnPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
-            answere = null;
-            sendData = false;
-            submitButton.setOnMouseClicked(e -> {
-                setAnswere();
-                sendDataTrue();
-            });
-            if (sendData) {
+            getAnswere(cardName);
+        } else {
+            yesOrNo = !cardName.equals("Solemn Warning");
+        }
+    }
+
+    private void getAnswere(String cardName) {
+        answere = null;
+        sendData = false;
+        submitButton.setOnMouseClicked(e -> {
+            if(!messageFromPlayer.equals("yes") && !messageFromPlayer.equals("no")){
+                newMessageToLabel("Incorrect input");
+                addMessageToLabel(Game.getCurrentPhase());
+                addMessageToLabel("Dear " + Game.whoseRivalPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
+                getAnswere(cardName);
+            } else if(answere.equals("yes")){
+                yesOrNo = true;
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
-                return (answere.equals("yes"));
+            } else if(answere.equals("no")){
+                yesOrNo = false;
+                setStateOfSubmit(true);
+                setButtonsActivate(false);
             }
-        } else return (!cardName.equals("Solemn Warning"));
-        return false;
+        });
     }
 
     public void summonAMonsterCardFromGraveyard() {
@@ -1059,6 +1062,27 @@ public class GameView extends Application {
             spells[i].setVisible(false);
             spells[i].setDisable(true);
         }
+    }
+
+    private void setSpellOrTrapOnMouseClicked(ImageView spellZoneCard, int i) {
+        spellZoneCard.setOnMouseClicked(e -> {
+            if (Game.getCurrentPhase().equals("Main Phase 1") || Game.getCurrentPhase().equals("Main Phase 2") || Game.getCurrentPhase().equals("Battle Phase")) {
+                setSelectedCard("spell", i, true);
+                if (Game.whoseTurnPlayer().getCardByAddress(selectedCardAddress).getKind().equals("Spell")) {
+                    if (!Game.whoseTurnPlayer().isSpellFaceUp(i)) {
+                        try {
+                            PhaseControl.getInstance().activeSpell(selectedCardAddress);
+                            reset();
+                        } catch (MyException myException) {
+                            newMessageToLabel(Game.getCurrentPhase());
+                            addMessageToLabel(myException.getMessage());
+                            reset();
+                        }
+                    }
+                }
+            }
+            reset();
+        });
     }
 
     private void setMonsterOnMouseClicked(ImageView monsterZoneCard, int i) {
