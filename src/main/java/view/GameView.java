@@ -744,7 +744,8 @@ public class GameView extends Application {
     public boolean doSolemnWarningEffect(Address address) {
         if (Game.whoseRivalPlayer().doIHaveSpellCard("Solemn Warning")) {
             if (!Game.isAITurn()) {
-                if (Game.getGameView().getPermissionForTrap("Solemn Warning", false)) {
+                getPermissionForTrap("Solemn Warning", false);
+                if (yesOrNo) {
                     Game.whoseRivalPlayer().decreaseLP(2000);
                     Game.whoseTurnPlayer().removeCard(address);
                     return true;

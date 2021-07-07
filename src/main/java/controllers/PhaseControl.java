@@ -144,19 +144,22 @@ public class PhaseControl {
     private void activateSomeOfTraps(Address address, TrapCard trapCard, Player currentPlayer) {
         if (!Game.whoseRivalPlayer().doIHaveMirageDragonMonster()) {
             if (trapCard.getNamesForEffect().contains("Mind Crush")) {
-                if (Game.getGameView().getPermissionForTrap("Mind Crush", true)) {
+                Game.getGameView().getPermissionForTrap("Mind Crush", true);
+                if (Game.getGameView().yesOrNo) {
                     Game.getGameView().doMindCrushEffect();
                     currentPlayer.removeCard(address);
                 }
             }
             if (trapCard.getNamesForEffect().contains("Time Seal")) {
-                if (Game.getGameView().getPermissionForTrap("Time Seal", true)) {
+                Game.getGameView().getPermissionForTrap("Time Seal", true);
+                if (Game.getGameView().yesOrNo) {
                     PhaseControl.getInstance().setCanDraw(false);
                     currentPlayer.removeCard(address);
                 }
             }
             if (trapCard.getNamesForEffect().contains("Call of The Haunted")) {
-                if (Game.getGameView().getPermissionForTrap("Call of The Haunted", true)) {
+                Game.getGameView().getPermissionForTrap("Call of The Haunted", true);
+                if (Game.getGameView().yesOrNo) {
                     if (Game.isAITurn())
                         AISummonFromGraveyard();
                     else
@@ -458,9 +461,11 @@ public class PhaseControl {
     private void activateThisKindOfAddress(Address address, Player currentPlayer, int index) throws MyException {
         if (SpellCard.canWeActivateThisSpell(address)) {
             if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Jammer")
-                    && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()
-                    && Game.getGameView().getPermissionForTrap("Magic Jammer", false)) {
-                if (Game.getGameView().removeCardFromMyHand()) Game.whoseTurnPlayer().removeCard(address);
+                    && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
+                Game.getGameView().getPermissionForTrap("Magic Jammer", false);
+                if(Game.getGameView().yesOrNo){
+                    if (Game.getGameView().removeCardFromMyHand()) Game.whoseTurnPlayer().removeCard(address);
+                }
             } else {
                 currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
                 currentPlayer.setIsThisSpellActivated(true, index);
