@@ -144,13 +144,13 @@ public class PhaseControl {
     private void activateSomeOfTraps(Address address, TrapCard trapCard, Player currentPlayer) throws MyException {
         if (!Game.whoseRivalPlayer().doIHaveMirageDragonMonster()) {
             if (trapCard.getNamesForEffect().contains("Mind Crush")) {
-                Game.getGameView().getPermissionForTrap("Mind Crush", true, null, address, 1);
+                Game.getGameView().getPermissionForTrap("Mind Crush", true, null, address, 1, null);
             }
             if (trapCard.getNamesForEffect().contains("Time Seal")) {
-                Game.getGameView().getPermissionForTrap("Time Seal", true, null, address, 1);
+                Game.getGameView().getPermissionForTrap("Time Seal", true, null, address, 1, null);
             }
             if (trapCard.getNamesForEffect().contains("Call of The Haunted")) {
-                Game.getGameView().getPermissionForTrap("Call of The Haunted", true, null, address, 1);
+                Game.getGameView().getPermissionForTrap("Call of The Haunted", true, null, address, 1, null);
             }
         }
     }
@@ -220,17 +220,16 @@ public class PhaseControl {
                 int level = monsterCard.getLevel();
                 if (!currentPlayer.getMonsterCardByStringAddress(address).isRitual()) {
                     if (monsterCard.getNamesForEffect().contains("Gate Guardian")) {
-                        Game.getGameView().doSolemnWarningEffect(address, 1);
+                        Game.getGameView().doSolemnWarningEffect(address, 1, monsterCard);
                     } else {
-                        Game.getGameView().doSolemnWarningEffect(address, 2);
+                        Game.getGameView().doSolemnWarningEffect(address, 2, monsterCard);
                     }
                 } else Game.getGameView().ritualSummon(address, level);
             } else throw new MyException("you already summoned/set on this turn!");
         } else throw new MyException("Monster card zone is full!");
     }
 
-    public void doSolemnWarningEffect2(Address address, Player currentPlayer) throws MyException {
-        MonsterCard monsterCard = Game.whoseTurnPlayer().getMonsterCardByStringAddress(address);
+    public void doSolemnWarningEffect2(Address address, Player currentPlayer, MonsterCard monsterCard) throws MyException {
         int level = monsterCard.getLevel();
         if(!Game.getGameView().yesOrNo){
             if (level <= 4) summonALowLevelMonster(currentPlayer, address);
@@ -485,7 +484,7 @@ public class PhaseControl {
         if (SpellCard.canWeActivateThisSpell(address)) {
             if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Jammer")
                     && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                Game.getGameView().getPermissionForTrap("Magic Jammer", false, null, address, 1);
+                Game.getGameView().getPermissionForTrap("Magic Jammer", false, null, address, 1, null);
             } else {
                 currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
                 currentPlayer.setIsThisSpellActivated(true, index);

@@ -763,18 +763,17 @@ public class GameView extends Application {
         } else currentPlayer.removeOneOfHandCard();
     }
 
-    public void doSolemnWarningEffect(Address address, int number) throws MyException {
+    public void doSolemnWarningEffect(Address address, int number, MonsterCard monsterCard) throws MyException {
         if (Game.whoseRivalPlayer().doIHaveSpellCard("Solemn Warning")) {
             if (!Game.isAITurn()) {
-                getPermissionForTrap("Solemn Warning", false, null, address, number);
+                getPermissionForTrap("Solemn Warning", false, null, address, number, monsterCard);
             } else {
                 Player currentPlayer = Game.whoseTurnPlayer();
-                MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
                 yesOrNo = (monsterCard.getNormalAttack() >= 2000) && (currentPlayer.getLP() > 5000);
                 if(number == 1){
                     PhaseControl.getInstance().doSolemnWarningEffect1(address);
                 } else if(number == 2){
-                    PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer());
+                    PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer(), monsterCard);
                 }
             }
         } else {
@@ -782,51 +781,51 @@ public class GameView extends Application {
             if(number == 1){
                 PhaseControl.getInstance().doSolemnWarningEffect1(address);
             } else if(number == 2){
-                PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer());
+                PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer(), monsterCard);
             }
         }
     }
 
-    private void doSolemnWarningGameView1(Address address, int number) throws MyException {
+    private void doSolemnWarningGameView1(Address address, int number, MonsterCard monsterCard) throws MyException {
         if (yesOrNo) {
             Game.whoseRivalPlayer().decreaseLP(2000);
             Game.whoseTurnPlayer().removeCard(address);
             if(number == 1){
                 PhaseControl.getInstance().doSolemnWarningEffect1(address);
             } else if(number == 2){
-                PhaseControl.getInstance().doSolemnWarningEffect2(address, Game.whoseTurnPlayer());
+                PhaseControl.getInstance().doSolemnWarningEffect2(address, Game.whoseTurnPlayer(), monsterCard);
             }
         } else {
             if(number == 1){
                 PhaseControl.getInstance().doSolemnWarningEffect1(address);
             } else if(number == 2){
-                PhaseControl.getInstance().doSolemnWarningEffect2(address, Game.whoseTurnPlayer());
+                PhaseControl.getInstance().doSolemnWarningEffect2(address, Game.whoseTurnPlayer(), monsterCard);
             }
         }
     }
 
-    public void getPermissionForTrap(String cardName, boolean isMine, MonsterCard myMonsterCard, Address address, int number) throws MyException {
+    public void getPermissionForTrap(String cardName, boolean isMine, MonsterCard myMonsterCard, Address address, int number, MonsterCard monsterCard) throws MyException {
         setStateOfSubmit(false);
         setButtonsActivate(true);
         if (!isMine && (!Game.getIsAI() || Game.isAITurn())) {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Dear " + Game.whoseRivalPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
-            getAnswer(cardName, myMonsterCard, address, number);
+            getAnswer(cardName, myMonsterCard, address, number, monsterCard);
         } else if (!Game.isAITurn() && isMine) {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Dear " + Game.whoseTurnPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
-            getAnswer(cardName, myMonsterCard, address, number);
+            getAnswer(cardName, myMonsterCard, address, number, monsterCard);
         } else {
             yesOrNo = !cardName.equals("Solemn Warning");
             if(number == 1){
                 PhaseControl.getInstance().doSolemnWarningEffect1(address);
             } else if(number == 2){
-                PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer());
+                PhaseControl.getInstance().doSolemnWarningEffect2(address ,Game.whoseTurnPlayer(), monsterCard);
             }
         }
     }
 
-    private void getAnswer(String cardName, MonsterCard myMonsterCard, Address address, int number) {
+    private void getAnswer(String cardName, MonsterCard myMonsterCard, Address address, int number, MonsterCard monsterCard) {
         answer = null;
         sendData = false;
         submitButton.setOnMouseClicked(e -> {
@@ -834,7 +833,7 @@ public class GameView extends Application {
                 newMessageToLabel("Incorrect input");
                 addMessageToLabel(Game.getCurrentPhase());
                 addMessageToLabel("Dear " + Game.whoseRivalPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
-                getAnswer(cardName, myMonsterCard, address, number);
+                getAnswer(cardName, myMonsterCard, address, number, monsterCard);
             } else {
                 yesOrNo = messageFromPlayer.getText().equals("yes");
                 setStateOfSubmit(true);
@@ -861,7 +860,7 @@ public class GameView extends Application {
                     PhaseControl.getInstance().doMagicJammer(address);
                 } else if (cardName.equals("Solemn Warning")) {
                     try {
-                        doSolemnWarningGameView1(address, number);
+                        doSolemnWarningGameView1(address, number, monsterCard);
                     } catch (MyException myException) {
                         newMessageToLabel(Game.getCurrentPhase());
                         addMessageToLabel(myException.getMessage());

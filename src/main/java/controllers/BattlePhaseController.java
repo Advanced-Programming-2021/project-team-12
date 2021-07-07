@@ -92,8 +92,7 @@ public class BattlePhaseController {
                         input = Main.scanner.nextLine().trim();
                     else input = getAIAttack(matcher.group(2));
                     if (input.matches("^[ ]*next phase[ ]*$")) {
-                        BattlePhase.getInstance().goToNextPhase = true;
-                        //Game.playTurn("MainPhase2");
+                        Game.getGameView().goToMainPhaseTwo(null);
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -166,8 +165,7 @@ public class BattlePhaseController {
                     PhaseControl.getInstance().checkIfGameEnded();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
-                        BattlePhase.getInstance().goToNextPhase = true;
-                        //Game.playTurn("MainPhase2");
+                        Game.getGameView().goToMainPhaseTwo(null);
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -210,8 +208,7 @@ public class BattlePhaseController {
                     PhaseControl.getInstance().checkIfGameEnded();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
-                        BattlePhase.getInstance().goToNextPhase = true;
-                        //Game.playTurn("MainPhase2");
+                        Game.getGameView().goToMainPhaseTwo(null);
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -254,8 +251,7 @@ public class BattlePhaseController {
                     Board.showBoard();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
-                        BattlePhase.getInstance().goToNextPhase = true;
-                        //Game.playTurn("MainPhase2");
+                        Game.getGameView().goToMainPhaseTwo(null);
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -294,8 +290,7 @@ public class BattlePhaseController {
             Board.showBoard();
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
-                BattlePhase.getInstance().goToNextPhase = true;
-                //Game.playTurn("MainPhase2");
+                Game.getGameView().goToMainPhaseTwo(null);
             } else if (input.matches("^[ ]*select -d[ ]*$"))
                 BattlePhase.getInstance().selectCard();
             else if (input.matches("^[ ]*select .*$"))
@@ -332,8 +327,7 @@ public class BattlePhaseController {
             Board.showBoard();
             input = Main.scanner.nextLine().trim();
             if (input.matches("^[ ]*next phase[ ]*$")) {
-                BattlePhase.getInstance().goToNextPhase = true;
-                //Game.playTurn("MainPhase2");
+                Game.getGameView().goToMainPhaseTwo(null);
             } else if (input.matches("^[ ]*select -d[ ]*$"))
                 BattlePhase.getInstance().selectCard();
             else if (input.matches("^[ ]*select .*$"))
@@ -373,8 +367,7 @@ public class BattlePhaseController {
                     PhaseControl.getInstance().checkIfGameEnded();
                     input = Main.scanner.nextLine().trim();
                     if (input.matches("^[ ]*next phase[ ]*$")) {
-                        BattlePhase.getInstance().goToNextPhase = true;
-                        //Game.playTurn("MainPhase2");
+                        Game.getGameView().goToMainPhaseTwo(null);
                     } else if (input.matches("^[ ]*select -d[ ]*$"))
                         BattlePhase.getInstance().selectCard();
                     else if (input.matches("^[ ]*select .*$"))
@@ -421,17 +414,17 @@ public class BattlePhaseController {
                         currentPlayer.setDidWeAttackByThisCardInThisCardInThisTurn(index);
                         if (Game.whoseRivalPlayer().doIHaveSpellCard("Negate Attack")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                            Game.getGameView().getPermissionForTrap("Negate Attack", false, null, null, 1);
+                            Game.getGameView().getPermissionForTrap("Negate Attack", false, null, null, 1, null);
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Mirror Force")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                            Game.getGameView().getPermissionForTrap("Mirror Force", false, null, null, 1);
+                            Game.getGameView().getPermissionForTrap("Mirror Force", false, null, null, 1, null);
                         } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                             throw new MyException("You can't attack by monster with attack equal or more than 1500 " +
                                     "because of Messenger of peace.");
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Cylinder")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                            Game.getGameView().getPermissionForTrap("Magic Cylinder", false, myMonsterCard, null, 1);
+                            Game.getGameView().getPermissionForTrap("Magic Cylinder", false, myMonsterCard, null, 1, null);
                         } else if (rivalMonsterCard.getNamesForEffect().contains("Texchanger")) {
                             Game.getGameView().summonCyberse();
                         } else {
@@ -476,8 +469,8 @@ public class BattlePhaseController {
 
     public void doNegateAttack() {
         if(Game.getGameView().yesOrNo){
-            BattlePhase.getInstance().goToNextPhase = true;
             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Negate Attack");
+            Game.getGameView().goToMainPhaseTwo(null);
         }
     }
 
