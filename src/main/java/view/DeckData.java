@@ -93,7 +93,7 @@ public class DeckData extends Application {
         Card card = cards.get(number);
         if (card.isOriginal())
             image = new Image(getClass().getResource("/PNG/Cards1/" + card.getCardName() + ".jpg").toExternalForm());
-        else image = new Image(getClass().getResource("/PNG/Cards1/" + card.getKind() + ".jpg").toExternalForm());
+        else image = new Image(getClass().getResource("/PNG/Cards1/" + card.getKind() + ".png").toExternalForm());
         ImageView imageView = new ImageView(image);
         buttons[row][column] = new Button();
         buttons[row][column].setLayoutY(x + row * 64);
