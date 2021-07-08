@@ -453,7 +453,7 @@ public class GameView extends Application {
             if (messageFromPlayer.getText().matches("[123456]{1}")) {
                 twinTwister1 = messageFromPlayer.getText();
                 counterTwinTwister++;
-                checkTwinTwistersInput(cardName, address, shouldBeRemoved);
+                checkSpellInput(cardName, address, shouldBeRemoved);
             } else {
                 newMessageToLabel(Game.getCurrentPhase());
                 addMessageToLabel("Incorrect input");
@@ -462,11 +462,9 @@ public class GameView extends Application {
             }
         } else if (counterTwinTwister == 1) {
             if (messageFromPlayer.getText().matches("[12345]{1}")) {
-                setButtonsActivate(false);
-                setStateOfSubmit(true);
                 twinTwister2 = messageFromPlayer.getText();
                 counterTwinTwister++;
-                checkTwinTwistersInput(cardName, address, shouldBeRemoved);
+                checkSpellInput(cardName, address, shouldBeRemoved);
             } else {
                 newMessageToLabel(Game.getCurrentPhase());
                 addMessageToLabel("Incorrect input");
@@ -475,6 +473,8 @@ public class GameView extends Application {
             }
         } else if (counterTwinTwister == 2) {
             if (messageFromPlayer.getText().matches("[123456]{1}")) {
+                setButtonsActivate(false);
+                setStateOfSubmit(true);
                 twinTwister3 = messageFromPlayer.getText();
                 counterTwinTwister = 0;
                 SpellCard.doTwinTwistersEffect(Game.whoseTurnPlayer());

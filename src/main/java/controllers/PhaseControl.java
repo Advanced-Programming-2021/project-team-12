@@ -277,11 +277,10 @@ public class PhaseControl {
 
     public void summonALowLevelMonster(Player currentPlayer, Address address) {
         MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
-        if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Scanner")) {
-            currentPlayer.summonCardToMonsterZone(address).setIsScanner(true);
-        } else if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Terratiger, the Empowered Warrior")) {
+        if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Terratiger, the Empowered Warrior")) {
             Game.getGameView().runEffect("Terratiger, the Empowered Warrior", null, null);
-        } else currentPlayer.summonCardToMonsterZone(address);
+        }
+        currentPlayer.summonCardToMonsterZone(address);
         if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
             if (monsterCard.getNormalAttack() >= 1000) {
                 currentPlayer.removeCard(address);
@@ -303,8 +302,11 @@ public class PhaseControl {
             Address address1 = new Address(Integer.parseInt(Game.getGameView().answer), "hand", true);
             if ((currentPlayer.getMonsterCardByAddress(address1) != null)
                     && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
-                    && (!currentPlayer.isMonsterZoneFull()))
+                    && (!currentPlayer.isMonsterZoneFull())){
                 currentPlayer.setCardFromHandToMonsterZone(address1);
+
+                Game.getGameView().reset();
+            }
             else throw new MyException("Conditions are not met");
         } else throw new MyException("Canceled");
     }
@@ -574,7 +576,8 @@ public class PhaseControl {
         if (monsterZoneNumber <= 5 && monsterZoneNumber >= 1) {
             Address address1 = new Address(monsterZoneNumber, "monster", false);
             if (!Board.isAddressEmpty(address1)) {
-                Attack.destroyThisAddress(address1);
+                Game.whoseRivalPlayer().removeCard(address1);
+                Game.getGameView().reset();
             }
         }
     }

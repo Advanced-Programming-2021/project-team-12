@@ -517,7 +517,7 @@ public class Player {
                         || isThisSpellActivated[indexOfCard.get(new Address(i, "spell", true))])
                     return true;
         if (fieldCardNumbers.containsKey(1) && fieldCardNumbers.get(1).getCardName().equals(cardName))
-            return false;
+            return true;
         return false;
     }
 

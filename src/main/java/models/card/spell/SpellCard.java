@@ -145,8 +145,9 @@ public class SpellCard {
         Address address2 = new Address(Integer.parseInt(Game.getGameView().twinTwister2), "spell", false);
         Address address3 = new Address(Integer.parseInt(Game.getGameView().twinTwister3), "spell", false);
         currentPlayer.removeCard(address1);
-        currentPlayer.removeCard(address2);
-        currentPlayer.removeCard(address3);
+        Game.whoseRivalPlayer().removeCard(address2);
+        Game.whoseRivalPlayer().removeCard(address3);
+        Game.getGameView().reset();
     }
 
     public static void doTerraformingEffect(Player currentPlayer) throws MyException {
