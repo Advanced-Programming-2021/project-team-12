@@ -1610,7 +1610,11 @@ public class GameView extends Application {
     }
 
     private Image createImage(String cardName) {
-        return new Image(getClass().getResource("/PNG/Cards1/" + cardName + ".jpg").toExternalForm());
+        Card card = Card.getCardByName(cardName);
+        if (card.isOriginal())
+            return new Image(getClass().getResource("/PNG/Cards1/" + cardName + ".jpg").toExternalForm());
+        else
+            return new Image(getClass().getResource("/PNG/Cards1/" + card.getKind() + ".jpg").toExternalForm());
     }
 
     private void removeCard(int layoutX, int layoutY) {
