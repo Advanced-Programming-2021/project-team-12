@@ -209,9 +209,11 @@ public class Player {
     }
 
     public void removeCard(Address address) {
+        int spellPlace = -1;
         if (getCardByAddress(address) == null)
             return;
         if (getMonsterCardByAddress(address) != null) {
+            spellPlace = getFromMonsterToSpellEquip(address.getNumber());
             unSetFromMonsterToSpellEquip(address.getNumber());
             setOneHisMonstersDestroyedInThisRound(true);
         }
@@ -226,12 +228,14 @@ public class Player {
             indexOfCard.put(new Address(graveyardCardNumbers.size(), "graveyard", true), indexOfCard.get(new Address(1, "field", true)));
             fieldCardNumbers.remove(1);
         } else {
-            System.out.println("hi");
             int place = address.getNumber();
             HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
             graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, removeCardHashMap.get(place));
             indexOfCard.put(new Address(graveyardCardNumbers.size(), "graveyard", true), indexOfCard.get(address));
             removeCardHashMap.remove(place);
+        }
+        if(spellPlace != -1){
+            removeCard(new Address(spellPlace, "spell", true));
         }
     }
 
@@ -641,6 +645,8 @@ public class Player {
     }
 
     public void setFromMonsterToSpellEquip(int spellPlace, int monsterPlace) {
+        System.out.println("spell place" + spellPlace);
+        System.out.println("monster Place" + monsterPlace);
         fromMonsterToSpellEquip[monsterPlace] = spellPlace;
     }
 
