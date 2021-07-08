@@ -184,7 +184,7 @@ public class PhaseControl {
         }
     }
 
-    public void doMindCrushEffect(Address address){
+    public void doMindCrushEffect(Address address) {
         Player currentPlayer = Game.whoseTurnPlayer();
         Player rivalPlayer = Game.whoseRivalPlayer();
         if (rivalPlayer.doIHaveCardWithThisNameInMyHand(Game.getGameView().cardName)) {
@@ -245,13 +245,13 @@ public class PhaseControl {
 
     public void doSolemnWarningEffect2(Address address, Player currentPlayer, MonsterCard monsterCard) throws MyException {
         int level = monsterCard.getLevel();
-        if(!Game.getGameView().yesOrNo){
+        if (!Game.getGameView().yesOrNo) {
             if (level <= 4) summonALowLevelMonster(currentPlayer, address);
             else if (level <= 6) Game.getGameView().summonForTribute(1, address);
             else {
                 if (Game.whoseTurnPlayer().getMonsterCardByAddress(address).getNamesForEffect().contains("Beast King Barbaros")) {
                     Game.getGameView().runEffect("Beast King Barbaros", address, null);
-                }
+                } else Game.getGameView().summonForTribute(2, address);
             }
         } else {
             throw new MyException("Opponent solemn destroyed your monster");
@@ -259,11 +259,11 @@ public class PhaseControl {
     }
 
     public void doBeastKingBarbarosEffect(Address address) throws MyException {
-        if(Game.getGameView().answer.equals("2")){
+        if (Game.getGameView().answer.equals("2")) {
             int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
             Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
             Game.getGameView().summonForTribute(2, address);
-        } else if(Game.getGameView().answer.equals("3")){
+        } else if (Game.getGameView().answer.equals("3")) {
             int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
             Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
             Game.getGameView().summonForTribute(3, address);
@@ -302,12 +302,11 @@ public class PhaseControl {
             Address address1 = new Address(Integer.parseInt(Game.getGameView().answer), "hand", true);
             if ((currentPlayer.getMonsterCardByAddress(address1) != null)
                     && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
-                    && (!currentPlayer.isMonsterZoneFull())){
+                    && (!currentPlayer.isMonsterZoneFull())) {
                 currentPlayer.setCardFromHandToMonsterZone(address1);
 
                 Game.getGameView().reset();
-            }
-            else throw new MyException("Conditions are not met");
+            } else throw new MyException("Conditions are not met");
         } else throw new MyException("Canceled");
     }
 
@@ -435,6 +434,7 @@ public class PhaseControl {
                     Attack.destroyAllMonstersInTheBoard();
                     Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
                 }
+                Game.getGameView().reset();
             } else throw new MyException("There is no monster in this address!");
         }
     }
@@ -457,7 +457,7 @@ public class PhaseControl {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (currentPlayer.isThisMonsterOnDHPosition(address)) {
             int index = currentPlayer.getIndexOfThisCardByAddress(address);
-            if(!currentPlayer.didWeChangePositionThisCardInThisTurn(index)){
+            if (!currentPlayer.didWeChangePositionThisCardInThisTurn(index)) {
                 currentPlayer.convertThisMonsterFromDHToOO(address);
                 currentPlayer.setDidWeChangePositionThisCardInThisTurn(index);
                 MonsterCard monsterCard = currentPlayer.getMonsterCardByAddress(address);
@@ -523,7 +523,18 @@ public class PhaseControl {
                 SpellCard.doSpellAbsorptionEffect();
                 try {
                     currentPlayer.getSpellCardByStringAddress(address).doEffect(address);
-                } catch (MyException myException){
+                } catch (MyException myException) {
+                    throw new MyException(myException.getMessage());
+                }
+            }
+            if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Jammer")
+                    && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster() && !Game.getGameView().yesOrNo) {
+                currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
+                currentPlayer.setIsThisSpellActivated(true, index);
+                SpellCard.doSpellAbsorptionEffect();
+                try {
+                    currentPlayer.getSpellCardByStringAddress(address).doEffect(address);
+                } catch (MyException myException) {
                     throw new MyException(myException.getMessage());
                 }
             }
@@ -531,8 +542,8 @@ public class PhaseControl {
     }
 
     public void doMagicJammer(Address address) {
-        if(Game.getGameView().yesOrNo){
-            if (Game.getGameView().removeCardFromMyHand()) Game.whoseTurnPlayer().removeCard(address);
+        if (Game.getGameView().yesOrNo) {
+            Game.getGameView().removeCardFromMyHand(address);
         }
     }
 
@@ -622,4 +633,11 @@ public class PhaseControl {
         }
     }
 
+    public void removeCardForMagicJammer(Address submitedAddress, Address address) {
+        if (Game.whoseRivalPlayer().getCardByAddress(submitedAddress) != null) {
+            Game.whoseRivalPlayer().removeCard(submitedAddress);
+            Game.whoseTurnPlayer().removeCard(address);
+        }
+        Game.getGameView().reset();
+    }
 }

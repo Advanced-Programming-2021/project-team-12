@@ -611,7 +611,7 @@ public class Player {
 
     public boolean doIHaveMirageDragonMonster() {
         for (int i = 1; i <= 5; i++)
-            if (monsterZoneCardNumbers.containsKey(i) && monsterZoneCardNumbers.get(i).getCardName().equals("Migrage Dragon"))
+            if (monsterZoneCardNumbers.containsKey(i) && monsterZoneCardNumbers.get(i).getCardName().equals("Mirage Dragon"))
                 return true;
         return false;
     }

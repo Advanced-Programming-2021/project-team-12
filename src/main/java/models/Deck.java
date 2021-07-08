@@ -26,7 +26,7 @@ public class Deck {
     }
 
     public Boolean isValid() {
-        if (mainCards.size() >= 40)
+        if (mainCards.size() >= 20)
             return true;
         return false;
     }

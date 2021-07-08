@@ -196,7 +196,7 @@ public class GameView extends Application {
         }
     }
 
-    public void ritualSummon(Address monsterCardAddress, int monsterLevel) {
+    public void ritualSummon(Address monsterCardAddress, int monsterLevel) throws MyException {
         sumOfLevel = 0;
         setStateOfSubmit(false);
         setButtonsActivate(true);
@@ -210,28 +210,35 @@ public class GameView extends Application {
                     getMonsterForRitual(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
                 }
             } else if (!Game.isAITurn()) {
+                System.out.println("here1");
                 newMessageToLabel(Game.getCurrentPhase());
                 addMessageToLabel("You do not have the requirements to Summon this card");
                 setStateOfSubmit(true);
                 setButtonsActivate(false);
                 Game.getGameView().messageFromPlayer.setText("");
             }
+        }else {
+            setStateOfSubmit(true);
+            setButtonsActivate(false);
+            throw new MyException("You do not have Advanced Ritual Art");
         }
     }
 
     private void getMonsterForRitual(int monsterLevel, Address ritualSpellCardAddress, Address monsterCardAddress) {
-        addMessageToLabel("Please choose some monsters from your hand or on the board for tribute!\n" +
-                "Sum of the chosen monsters' level should be equal to level the monster you want to summon ritually" +
+        System.out.println("here2");
+        addMessageToLabel("Choose some monsters from your monster zone for tribute\n" +
+                "Sum of the chosen monsters' level should be equal to the level of the monster you want to summon ritually" +
                 "\nSubmit them separately");
         setStateOfSubmit(false);
         setButtonsActivate(true);
         submitButton.setOnMouseClicked(e -> {
             if (sumOfLevel < monsterLevel && Game.whoseTurnPlayer().canIContinueTribute(monsterLevel - sumOfLevel, monsterCardsAddress)) {
-                Address address = new Address(messageFromPlayer.getText());
+                Address address = new Address(Integer.parseInt(messageFromPlayer.getText()), "monster", true);
                 MonsterCard monsterCard1 = Board.whatKindaMonsterIsHere(address);
                 monsterCardsAddress.add(address);
                 sumOfLevel += monsterCard1.getLevel();
                 getMonsterForRitual(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
+                Game.getGameView().reset();
             } else if (sumOfLevel == monsterLevel) {
                 tributeThisCards(monsterCardsAddress);
                 for (Address cardsAddress : monsterCardsAddress) Game.whoseTurnPlayer().removeCard(cardsAddress);
@@ -240,8 +247,12 @@ public class GameView extends Application {
                 int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(monsterCardAddress);
                 Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
                 Game.whoseTurnPlayer().setHeSummonedOrSet(true);
+                setStateOfSubmit(true);
+                setButtonsActivate(false);
+                Game.getGameView().reset();
             } else {
                 giveError(monsterLevel, ritualSpellCardAddress, monsterCardAddress);
+                Game.getGameView().reset();
             }
             messageFromPlayer.setText("");
         });
@@ -439,7 +450,7 @@ public class GameView extends Application {
             answer = messageFromPlayer.getText();
             setButtonsActivate(false);
             setStateOfSubmit(true);
-            SpellCard.doMysticalSpaceTyphoonEffect(Game.whoseTurnPlayer());
+            SpellCard.doMysticalSpaceTyphoonEffect(Game.whoseRivalPlayer());
         } else {
             newMessageToLabel(Game.getCurrentPhase());
             addMessageToLabel("Incorrect input");
@@ -1224,7 +1235,7 @@ public class GameView extends Application {
 //        }
     }
 
-    public boolean removeCardFromMyHand() {
+    public void removeCardFromMyHand(Address address) {
         setStateOfSubmit(false);
         setButtonsActivate(true);
         newMessageToLabel(Game.getCurrentPhase());
@@ -1234,17 +1245,12 @@ public class GameView extends Application {
             setStateOfSubmit(true);
             setButtonsActivate(false);
             messageFromPlayer.setText("");
+            PhaseControl.getInstance().removeCardForMagicJammer(submitedAddrees, address);
         });
-        if (Game.whoseTurnPlayer().getCardByAddress(submitedAddrees) != null) {
-            Game.whoseTurnPlayer().removeCard(submitedAddrees);
-            return true;
-        }
-        return false;
     }
 
     private void setSubmitedAddrees() {
         submitedAddrees = new Address(Integer.parseInt(messageFromPlayer.getText()), "hand", true);
-        ;
     }
 
     private int getMaxAttackCard(HashMap<Integer, Card> graveyardCard) {

@@ -68,13 +68,13 @@ public class SpellCard {
             currentPlayer.removeCard(address);
         }
         if (namesForEffect.contains("Pot of Greed")) {
+            currentPlayer.removeCard(address);
             if (!currentPlayer.isHandFull()) {
                 currentPlayer.addCardFromUnusedToHand();
                 if (!currentPlayer.isHandFull()) {
                     currentPlayer.addCardFromUnusedToHand();
                 } else if (!Game.isAITurn()) throw new MyException("This effect can't be done completely.");
             } else if (!Game.isAITurn()) throw new MyException("This effect can't be done.");
-            currentPlayer.removeCard(address);
         }
         if (namesForEffect.contains("Raigeki")) {
             Attack.destroyAllRivalMonstersInTheBoard();
@@ -138,6 +138,7 @@ public class SpellCard {
         String input = Game.getGameView().answer;
         Address address1 = new Address(Integer.parseInt(input), "spell", false);
         currentPlayer.removeCard(address1);
+        Game.getGameView().reset();
     }
 
     public static void doTwinTwistersEffect(Player currentPlayer) {
