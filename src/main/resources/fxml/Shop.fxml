@@ -12,11 +12,31 @@
             <Image url="@../PNG/NEW/background3.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="label" layoutX="590.0" layoutY="700.0" prefHeight="36.0" prefWidth="200.0" textFill="#ffd518">
+      <Label fx:id="label" layoutX="552.0" layoutY="695.0" prefHeight="36.0" prefWidth="200.0" textFill="#ffd518">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="back" layoutX="662.0" layoutY="597.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="42.0" prefWidth="42.0" style="-fx-background-size: 42;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
+      <Button fx:id="back" layoutX="599.0" layoutY="597.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="42.0" prefWidth="42.0" style="-fx-background-size: 42;" styleClass="buttons" stylesheets="@../CSS/Buttons.css" />
+      <Label layoutX="570.0" layoutY="241.0" prefHeight="29.0" prefWidth="93.0" text="card's info:" textFill="#1aed13">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="priceCardLabel" layoutX="552.0" layoutY="290.0" prefHeight="29.0" prefWidth="143.0" text="price:" textFill="#eba10e">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="nameCardLabel" layoutX="553.0" layoutY="342.0" prefHeight="27.0" prefWidth="169.0" text="name:" textFill="#ff8c09">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="countCardLabel" layoutX="552.0" layoutY="398.0" prefHeight="27.0" prefWidth="137.0" text="count:" textFill="#f2890a">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

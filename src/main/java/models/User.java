@@ -50,7 +50,7 @@ public class User {
     }
 
     public ArrayList<Card> getAllCards() {
-        if (allCards == null) return  null;
+        if (allCards == null) return null;
         allCards.sort(Comparator.comparing(Card::getCardName));
         return allCards;
     }
@@ -133,7 +133,7 @@ public class User {
         return users;
     }
 
-    public void removeCardFromAllCard (Card card) {
+    public void removeCardFromAllCard(Card card) {
         allCards.remove(card);
     }
 
@@ -181,5 +181,11 @@ public class User {
 
     public void increaseCountAvatar() {
         countAvatar++;
+    }
+
+    public int getCountOfThisCardWeHave(String cardName) {
+        int count = 0;
+        for (Card deckAndAllCard : getDeckAndAllCards()) if (deckAndAllCard.getCardName().equals(cardName)) count++;
+        return count;
     }
 }

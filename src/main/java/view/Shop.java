@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 
+import controllers.Game;
 import controllers.SaveFile;
 import controllers.ShopControl;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.application.Application;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -26,6 +28,9 @@ public class Shop extends Application {
 
     public javafx.scene.control.Label label;
     public Pane pane;
+    public Label priceCardLabel;
+    public Label nameCardLabel;
+    public Label countCardLabel;
     private Button[] buttons = new Button[1000];
     private User user;
     private ArrayList<Card> cards;
@@ -88,14 +93,14 @@ public class Shop extends Application {
     }
 
     private void addCardAsButton(int counter1, Card card) {
-        int x = counter1 % 11;
-        int y = counter1 / 11;
+        int x = counter1 % 13;
+        int y = counter1 / 13;
         String kind = "SpellTrap";
         if (card.getKind().equals("Monster")) kind = "Monsters";
         Image image = getImage(card, kind);
         Button button = new Button();
         button.setText("buy");
-        button.setLayoutX(x * scale(90) + scale(20) + 790);
+        button.setLayoutX(x * scale(90) + scale(20) + 750);
         button.setLayoutY(y * scale(180) + scale(130));
         button.setPrefWidth(scale(80));
         button.setPrefHeight(scale(5));
@@ -106,10 +111,15 @@ public class Shop extends Application {
         buttons[counter1] = button;
         ImageView imageView = new ImageView();
         imageView.setImage(image);
-        imageView.setLayoutX(x * scale(90) + 800);
+        imageView.setLayoutX(x * scale(90) + 760);
         imageView.setLayoutY(y * scale(180));
         imageView.setFitHeight(scale(130));
         imageView.setFitWidth(scale(90));
+        imageView.setOnMouseEntered(e -> {
+            priceCardLabel.setText("price: " + card.getPrice());
+            nameCardLabel.setText("name: " + card.getCardName());
+            countCardLabel.setText("count: " + MainMenu.user.getCountOfThisCardWeHave(card.getCardName()));
+        });
         if (user.getMoney() < card.getPrice()) {
             cancelButton(button);
         }
