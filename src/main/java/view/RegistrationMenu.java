@@ -24,6 +24,7 @@ public class RegistrationMenu extends Application {
     public void start(Stage primaryStage) throws Exception {
         if (!startLoad) {
             LoadFile.loadData();
+            SaveFile.saveCards();
             startLoad = true;
             try {
                 clip = Sounds.play("src//main//resources//Sound//Menu.wav", 0);
