@@ -104,7 +104,7 @@ public class MonsterCard {
             if (monsterMode == MonsterMode.FAIRY) attack -= 200;
         }
         if (Board.doThisMonsterExistFacedUp("Command Knight")) attack = +400;
-        if (namesForEffect.contains("Calculator")) return 300 * Board.sumOfLevelOfFacedUpMonsters();//doubt
+        if (namesForEffect.contains("The Calculator")) return 300 * Board.sumOfLevelOfFacedUpMonsters(currentPlayer);
         if (attack < 0)
             return 0;
         System.out.println(attack);
@@ -222,8 +222,13 @@ public class MonsterCard {
     public static void welcomeToEffect() {
         if (Game.whoseRivalPlayer().getMonsterCardByAddress(Attack.defenderAddress) == null)
             if (Attack.defenderMonsterName.contains("Yomi Ship")) Attack.destroyThisAddress(Attack.attackerAddress);
-        if (Attack.defenderMonsterName.contains("Marshmallon"))
-            if (Attack.isDefenderFacedDown()) Attack.whichPlayerIsAttacker().decreaseLP(1000);
+        if (Attack.defenderMonsterName.contains("Marshmallon")){
+            System.out.println(Attack.isDefenderFacedDown());
+            if (Attack.isDefenderFacedDown()){
+                System.out.println(Attack.whichPlayerIsAttacker());
+                Attack.whichPlayerIsAttacker().decreaseLP(1000);
+            }
+        }
     }
 
     public int getNormalAttack() {

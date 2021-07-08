@@ -193,7 +193,7 @@ public class PhaseControl {
         if (rivalPlayer.doIHaveCardWithThisNameInMyHand(Game.getGameView().cardName)) {
             rivalPlayer.removeAllCardWithThisNameInMyHand(Game.getGameView().cardName);
         } else currentPlayer.removeOneOfHandCard();
-        currentPlayer.removeCard(address);
+        currentPlayer.removeOneOfTrapOrSpell("Mind Crush");
         Game.getGameView().reset();
     }
 
@@ -469,8 +469,7 @@ public class PhaseControl {
                 }
                 if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole")) {
                     if (monsterCard.getNormalAttack() >= 1000) {
-                        currentPlayer.removeCard(address);
-                        Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
+                        Game.getGameView().getPermissionForTrap("Trap Hole", false, null, address, 1, null);
                     }
                 }
             } else throw new MyException("You have changed this cards position in this turn");

@@ -670,7 +670,7 @@ public class Player {
     public void removeAllCardWithThisNameInMyHand(String cardName) {
         for (int i = 1; i <=5; i++)
             if (handCardNumbers.containsKey(i) && handCardNumbers.get(i).getCardName().equals(cardName))
-                removeCard(new Address(i, "hand", true));
+                removeCard(new Address(i, "hand", false));
     }
 
     public boolean doIHaveCardWithThisNameInMyHand(String cardName) {

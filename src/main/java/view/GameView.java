@@ -1156,11 +1156,11 @@ public class GameView extends Application {
         setButtonsActivate(true);
         if (!isMine && (!Game.getIsAI() || Game.isAITurn())) {
             newMessageToLabel(Game.getCurrentPhase());
-            addMessageToLabel("Dear " + Game.whoseRivalPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
+            addMessageToLabel("Dear " + Game.whoseRivalPlayer().getNickName() + ",do you want to activate " + cardName + " trap?\nType 'yes' or 'no'");
             getAnswer(cardName, myMonsterCard, address, number, monsterCard);
         } else if (!Game.isAITurn() && isMine) {
             newMessageToLabel(Game.getCurrentPhase());
-            addMessageToLabel("Dear " + Game.whoseTurnPlayer().getNickName() + ",do you want to activate " + cardName + "trap?\nType 'yes' or 'no'");
+            addMessageToLabel("Dear " + Game.whoseTurnPlayer().getNickName() + ",do you want to activate " + cardName + " trap?\nType 'yes' or 'no'");
             getAnswer(cardName, myMonsterCard, address, number, monsterCard);
         } else {
             yesOrNo = !cardName.equals("Solemn Warning");
@@ -1189,6 +1189,8 @@ public class GameView extends Application {
                     BattlePhaseController.getInstance().doNegateAttack();
                 } else if (cardName.equals("Mirror Force")) {
                     BattlePhaseController.getInstance().doMirrorForce();
+                } else if (cardName.equals("Trap Hole")) {
+                    BattlePhaseController.getInstance().doTrapHole(address);
                 } else if (cardName.equals("Magic Cylinder")) {
                     try {
                         BattlePhaseController.getInstance().doMagicCylinder(Game.whoseTurnPlayer(), myMonsterCard);

@@ -431,17 +431,14 @@ public class BattlePhaseController {
                             if (Game.whoseRivalPlayer().positionOfCardInBoardByAddress(address).equals(PositionOfCardInBoard.OO)) {
                                 int damage = myMonsterCard.getAttack(myAddress, Game.whoseTurnPlayer()) - rivalMonsterCard.getAttack(address, Game.whoseRivalPlayer());
                                 attackOO(myAddress, address, currentPlayer, damage);
-                                Attack.timeToEffectAfterAttack();
                             } else if (Game.whoseRivalPlayer().positionOfCardInBoardByAddress(address).equals(PositionOfCardInBoard.DO)) {
                                 if (rivalMonsterCard.getDefence(true, address) != -1) {
                                     int damage = myMonsterCard.getAttack(myAddress, Game.whoseTurnPlayer()) - rivalMonsterCard.getDefence(true, address);
                                     attackDO(myAddress, address, currentPlayer, damage);
-                                    Attack.timeToEffectAfterAttack();
                                 } else throw new MyException("Attack has been cancelled for effect of a card");
                             } else {
                                 int damage = myMonsterCard.getAttack(myAddress, Game.whoseTurnPlayer()) - rivalMonsterCard.getDefence(false, address);
                                 attackDH(myAddress, address, currentPlayer, rivalMonsterCard, damage);
-                                Attack.timeToEffectAfterAttack();
                             }
                         }
                     } else throw new MyException("there is no card to attack here");
@@ -483,22 +480,27 @@ public class BattlePhaseController {
             if (damage == 0) {
                 removeForAttack(address, myAddress);
                 removeForAttack(myAddress, address);
+                Attack.timeToEffectAfterAttack();
                 throw new MyException("Both you and your opponent monster cards are destroyed and no one receives damage");
             } else if (damage > 0) {
                 if(decreaseLP(address, Game.whoseRivalPlayer(), damage)){
                     removeForAttack(address, myAddress);
+                    Attack.timeToEffectAfterAttack();
                     throw new MyException("Your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
                 } else {
                     removeForAttack(address, myAddress);
+                    Attack.timeToEffectAfterAttack();
                     throw new MyException("Both cards got destroyed because of Exploder Dragon and no one received any damage");
                 }
             } else {
                 damage = (-1) * damage;
                 if(decreaseLP(myAddress, Game.whoseTurnPlayer(), damage)){
                     removeForAttack(myAddress, address);
+                    Attack.timeToEffectAfterAttack();
                     throw new MyException("Your monster card is destroyed and you received " + damage + " battle damage");
                 } else {
                     removeForAttack(myAddress, address);
+                    Attack.timeToEffectAfterAttack();
                     throw new MyException("Both cards got destroyed because of Exploder Dragon and no one received any damage");
                 }
             }
@@ -510,10 +512,12 @@ public class BattlePhaseController {
             if (damage == 0) throw new MyException("No card is destroyed");
             else if (damage > 0) {
                 removeForAttack(address, myAddress);
+                Attack.timeToEffectAfterAttack();
                 throw new MyException("The defense position monster is destroyed");
             } else {
                 damage = (-1) * damage;
                 decreaseLP(address, currentPlayer, damage);
+                Attack.timeToEffectAfterAttack();
                 throw new MyException("No card is destroyed and you received " + damage + " battle damage");
             }
         }
@@ -532,7 +536,8 @@ public class BattlePhaseController {
                 decreaseLP(address, currentPlayer, damage);
                 shouldBePrinted = "Opponent’s monster card was " + rivalMonsterCard.getRealName() + " and " + "no card is destroyed and you received " + damage + " battle damage";
             }
-            currentPlayer.setPositionOfCardInBoardByAddress(address, PositionOfCardInBoard.DO);
+            Attack.timeToEffectAfterAttack();
+            Game.whoseRivalPlayer().setPositionOfCardInBoardByAddress(address, PositionOfCardInBoard.DO);
             throw new MyException(shouldBePrinted);
         }
     }
@@ -555,6 +560,7 @@ public class BattlePhaseController {
                 Board.removeCardByAddress(theOtherAddress);
             if (Board.getCardByAddress(destroyedAddress).getCardName() != null && !Board.getCardByAddress(destroyedAddress).getCardName().equals("Marshmallon"))
                 Board.removeCardByAddress(destroyedAddress);
+            Game.getGameView().reset();
         }
     }
 
@@ -584,5 +590,13 @@ public class BattlePhaseController {
     private void forcedSetWinner() {
         Game.setWinner(Game.whoseTurnPlayer());
         //Game.playTurn("EndGame");
+    }
+
+    public void doTrapHole(Address address) {
+        if(Game.getGameView().yesOrNo){
+            Game.whoseTurnPlayer().removeCard(address);
+            Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
+            Game.getGameView().reset();
+        }
     }
 }

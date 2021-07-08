@@ -1,10 +1,7 @@
 package controllers.move;
 
 import controllers.Game;
-import models.Address;
-import models.Board;
-import models.Card;
-import models.Player;
+import models.*;
 import models.card.monster.MonsterCard;
 import models.card.spell.SpellCard;
 import models.card.trap.TrapCard;
@@ -61,7 +58,7 @@ public class Attack {
     }
 
     public static boolean isDefenderFacedDown() {
-        return Game.whoseRivalPlayer().isSpellFaceUp(defenderAddress.getNumber());
+        return Game.whoseRivalPlayer().getMonsterPosition(defenderAddress.getNumber()).equals(PositionOfCardInBoard.DH);
     }
 
     public static Player whichPlayerIsAttacker() {
