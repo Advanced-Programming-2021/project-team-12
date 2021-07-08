@@ -51,7 +51,6 @@ public class CreateCardController {
                 MainMenu.user.decreaseMoney(price / 10);
             }
         } catch (Exception e) {
-
         }
     }
 

@@ -118,7 +118,8 @@ public class CreateSpellCard extends Application {
     }
 
     public void submit(MouseEvent mouseEvent) throws Exception {
-        CreateCardController.createSpellCard(realName, spellMode, countThePrice(), spellCards);
+        realName = nameTextField.getText();
+        CreateCardController.createSpellCard(nameTextField.getText(), spellMode, countThePrice(), spellCards);
         new MainMenu().start(stage);
     }
 
