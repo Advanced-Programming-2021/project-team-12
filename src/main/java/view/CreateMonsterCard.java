@@ -95,7 +95,7 @@ public class CreateMonsterCard extends Application {
 
     public void submit(MouseEvent mouseEvent) throws Exception {
         CreateCardController.createMonsterCard(levelTextField.getText(), attackTextField.getText(), defenceTextField.getText(), monsterMode
-        ,name, countThePrice(), monsters);
+        ,nameTextField.getText(), countThePrice(), monsters);
         new MainMenu().start(stage);
     }
 

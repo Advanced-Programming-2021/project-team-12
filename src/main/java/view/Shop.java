@@ -89,7 +89,10 @@ public class Shop extends Application {
     private Image getImage(Card card, String kind) {
         if (card.isOriginal())
             return new Image(getClass().getResource("/PNG/Cards1/" + kind + "/" + card.getCardName() + ".jpg").toExternalForm());
-        else return new Image(getClass().getResource("/PNG/NEW/" + kind + "/1.png").toExternalForm());
+        else{
+            if(card.getKind().equals("Trap")) return new Image(getClass().getResource("/PNG/NEW/" + kind + "/2.png").toExternalForm());
+            else return new Image(getClass().getResource("/PNG/NEW/" + kind + "/1.png").toExternalForm());
+        }
     }
 
     private void addCardAsButton(int counter1, Card card) {
