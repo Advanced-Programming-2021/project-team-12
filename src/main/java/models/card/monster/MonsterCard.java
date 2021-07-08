@@ -70,8 +70,7 @@ public class MonsterCard {
         return !isOriginal;
     }
 
-    public int getAttack(Address address) {
-        Player currentPlayer = Game.whoseTurnPlayer();
+    public int getAttack(Address address, Player currentPlayer) {
         int attack = this.attack;
         int indexOfAttacker = currentPlayer.getIndexOfThisCardByAddress(address);
         int spellPlace = currentPlayer.getFromMonsterToSpellEquip(address.getNumber());
@@ -137,9 +136,11 @@ public class MonsterCard {
                 }
             }
         }
-        if (spellCard.getNamesForEffect().contains("United We Stand"))
+        if (spellCard.getNamesForEffect().contains("United We Stand")){
             attackOrDefence += (800 * Game.whoseTurnPlayer().getMonsterZoneCard().size());
-
+        }
+        System.out.println(attackOrDefence);
+        System.out.println(Game.whoseTurnPlayer().getMonsterZoneCard().size());
         return attackOrDefence;
     }
 

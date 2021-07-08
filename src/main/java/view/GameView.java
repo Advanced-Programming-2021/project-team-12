@@ -870,8 +870,8 @@ public class GameView extends Application {
             setMonsterOnMouseClicked(turnMonsters[i], i);
         for (int i = 1; i <= 5; i++)
             setRivalMonsterOnMouseClicked(rivalMonsters[i], i);
-        for (int j = 0; j <= 5; j++)
-            setSpellOrTrapOnMouseClicked(turnSpells[i], i);
+        for (int j = 1; j <= 5; j++)
+            setSpellOrTrapOnMouseClicked(turnSpells[j], j);
     }
 
     private void setRivalDeckOnMouseClick(ImageView rivalDeck) {
