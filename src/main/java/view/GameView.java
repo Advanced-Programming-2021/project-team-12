@@ -879,8 +879,8 @@ public class GameView extends Application {
             if (Game.getCurrentPhase().equals("Battle Phase")) {
                 if (selectedCardAddress.getKind().equals("monster") && selectedCardAddress.checkIsMine()) {
                     try {
-                        soundEffect(3);
                         BattlePhaseController.getInstance().directAttack(selectedCardAddress);
+                        soundEffect(3);
                         reset();
                     } catch (MyException myException) {
                         newMessageToLabel(Game.getCurrentPhase());
@@ -1529,8 +1529,8 @@ public class GameView extends Application {
             if (Game.getCurrentPhase().equals("Battle Phase")) {
                 if (selectedCardAddress != null && selectedCardAddress.getKind().equals("monster") && selectedCardAddress.checkIsMine()) {
                     try {
-                        soundEffect(2);
                         BattlePhaseController.getInstance().attack(new Address(i, "monster", false), selectedCardAddress);
+                        soundEffect(2);
                         reset();
                     } catch (MyException myException) {
                         newMessageToLabel(Game.getCurrentPhase());
@@ -1557,9 +1557,9 @@ public class GameView extends Application {
                         soundEffect(0);
                         reset();
                     } catch (MyException myException) {
-                        soundEffect(1);
                         newMessageToLabel(Game.getCurrentPhase());
                         addMessageToLabel(myException.getMessage());
+                        soundEffect(1);
                     }
                 } else {
                     try {
@@ -1572,16 +1572,16 @@ public class GameView extends Application {
                         soundEffect(0);
                         reset();
                     } catch (MyException myException) {
-                        soundEffect(1);
                         newMessageToLabel(Game.getCurrentPhase());
                         addMessageToLabel(myException.getMessage());
+                        soundEffect(1);
                     }
                 }
                 reset();
             } else {
-                soundEffect(1);
                 newMessageToLabel(Game.getCurrentPhase());
                 addMessageToLabel("You can't set/summon cards at this phase");
+                soundEffect(1);
             }
         });
     }
@@ -1614,7 +1614,7 @@ public class GameView extends Application {
         if (card.isOriginal())
             return new Image(getClass().getResource("/PNG/Cards1/" + cardName + ".jpg").toExternalForm());
         else
-            return new Image(getClass().getResource("/PNG/Cards1/" + card.getKind() + ".jpg").toExternalForm());
+            return new Image(getClass().getResource("/PNG/Cards1/" + card.getKind() + ".png").toExternalForm());
     }
 
     private void removeCard(int layoutX, int layoutY) {
