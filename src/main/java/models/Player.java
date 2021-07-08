@@ -237,6 +237,7 @@ public class Player {
         if(spellPlace != -1){
             removeCard(new Address(spellPlace, "spell", true));
         }
+        Game.getGameView().reset();
     }
 
     public Card getCardByAddress(Address address) {
@@ -493,14 +494,13 @@ public class Player {
 
     public boolean isOneHisSpellAbsorptionActivated() {
         for (int i = 0; i < isThisSpellActivated.length; i++)
-            if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("Absorption"))) return true;
+            if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("Spell Absorption"))) return true;
         return false;
     }
 
     public void removeOneOfTrapOrSpell(String name) {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(name)) {
-                System.out.println("woohoo");
                 removeCard(new Address(i, "spell", false));
                 Game.getGameView().reset();
                 return;

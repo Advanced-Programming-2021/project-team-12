@@ -10,6 +10,7 @@ import models.card.spell.SpellCard;
 import models.card.spell.SpellMode;
 import models.card.trap.TrapCard;
 import view.GameView;
+import view.Main;
 
 import java.util.regex.Matcher;
 
@@ -175,12 +176,14 @@ public class PhaseControl {
         if (Game.getGameView().yesOrNo) {
             PhaseControl.getInstance().setCanDraw(false);
             currentPlayer.removeCard(address);
+            Game.getGameView().reset();
         }
     }
 
     public void doMindCrush(Address address, Player currentPlayer) {
         if (Game.getGameView().yesOrNo) {
             Game.getGameView().doMindCrushEffect(address);
+            Game.getGameView().reset();
         }
     }
 
@@ -191,6 +194,7 @@ public class PhaseControl {
             rivalPlayer.removeAllCardWithThisNameInMyHand(Game.getGameView().cardName);
         } else currentPlayer.removeOneOfHandCard();
         currentPlayer.removeCard(address);
+        Game.getGameView().reset();
     }
 
     private void AISummonFromGraveyard() {
@@ -304,7 +308,6 @@ public class PhaseControl {
                     && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
                     && (!currentPlayer.isMonsterZoneFull())) {
                 currentPlayer.setCardFromHandToMonsterZone(address1);
-
                 Game.getGameView().reset();
             } else throw new MyException("Conditions are not met");
         } else throw new MyException("Canceled");
@@ -523,6 +526,7 @@ public class PhaseControl {
                 SpellCard.doSpellAbsorptionEffect();
                 try {
                     currentPlayer.getSpellCardByStringAddress(address).doEffect(address);
+                    Game.getGameView().reset();
                 } catch (MyException myException) {
                     throw new MyException(myException.getMessage());
                 }
@@ -534,6 +538,7 @@ public class PhaseControl {
                 SpellCard.doSpellAbsorptionEffect();
                 try {
                     currentPlayer.getSpellCardByStringAddress(address).doEffect(address);
+                    Game.getGameView().reset();
                 } catch (MyException myException) {
                     throw new MyException(myException.getMessage());
                 }
@@ -566,10 +571,12 @@ public class PhaseControl {
         Address shouldBeRemoved = new Address(Integer.parseInt(Game.getGameView().answer), "monster", true);
         if (!Board.isAddressEmpty(shouldBeRemoved)) {
             Game.getGameView().runEffect("Herald of Creation3", null, shouldBeRemoved);
+            Game.getGameView().reset();
         }
+        Game.getGameView().reset();
     }
 
-    public void doHeraldOfCreation3Effect(Player currentPlayer, Address shouldBeRemoved) {
+    public void doHeraldOfCreation3Effect(Player currentPlayer, Address shouldBeRemoved) throws MyException {
         Address comeBackFromGraveyard = new Address(Integer.parseInt(Game.getGameView().answer), "graveyard", true);
         MonsterCard monsterCardForHeraldOfCreation = Board.whatKindaMonsterIsHere(comeBackFromGraveyard);
         if (monsterCardForHeraldOfCreation != null) {
@@ -578,8 +585,9 @@ public class PhaseControl {
                 currentPlayer.setCardFromGraveyardToHand(comeBackFromGraveyard);
                 if (Game.getCurrentPhase().equals("Main Phase 1"))
                     Game.getGameView().increaseHowManyHeraldOfCreationDidWeUseEffect();
-            }
-        }
+                Game.getGameView().reset();
+            } else throw new MyException("The cars you selected was not level 7 or higher");
+        } else throw new MyException("There is no graveyard card at this address");
     }
 
     public void doManEaterBugEffect() {
@@ -639,5 +647,13 @@ public class PhaseControl {
             Game.whoseTurnPlayer().removeCard(address);
         }
         Game.getGameView().reset();
+    }
+
+    public void doBringBackCardFromGraveyard(boolean isMine, Player currentPlayer) throws MyException {
+        Address address = new Address(Integer.parseInt(Game.getGameView().answer), "graveyard", isMine);
+        if (currentPlayer.getMonsterCardByAddress(address) != null){
+            Board.summonThisCardFromGraveYardToMonsterZone(address);
+            Game.getGameView().reset();
+        } else throw new MyException("you chose the wrong card");
     }
 }

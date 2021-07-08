@@ -185,6 +185,7 @@ public class MonsterCard {
         int index = Attack.whatIndexOfDefender();
         if (Game.getGameView().answer.equals("yes")) {
             Attack.whichPlayerIsAttacker().addIndexToSuijin(index);
+            Game.getGameView().reset();
         }
     }
 
