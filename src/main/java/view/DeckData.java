@@ -87,10 +87,13 @@ public class DeckData extends Application {
     }
 
     private void setButton(int number, int max, ArrayList<Card> cards, Button[][] buttons, String flag, int x, int y) {
+        Image image;
         int row = number / max;
         int column = number % max;
         Card card = cards.get(number);
-        Image image = new Image(getClass().getResource("/PNG/Cards1/" + card.getCardName() + ".jpg").toExternalForm());
+        if (card.isOriginal())
+            image = new Image(getClass().getResource("/PNG/Cards1/" + card.getCardName() + ".jpg").toExternalForm());
+        else image = new Image(getClass().getResource("/PNG/Cards1/" + card.getKind() + ".png").toExternalForm());
         ImageView imageView = new ImageView(image);
         buttons[row][column] = new Button();
         buttons[row][column].setLayoutY(x + row * 64);

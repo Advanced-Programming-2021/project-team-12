@@ -20,6 +20,7 @@ public class TrapCard {
         this.isLimit = isLimit;
         this.price = price;
         realName = name;
+        isOriginal = true;
         this.description = description;
         trapCards.add(this);
         namesForEffect.add(name);

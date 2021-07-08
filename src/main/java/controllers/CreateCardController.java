@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Card;
 import models.card.monster.MonsterCard;
 import models.card.monster.MonsterMode;
 import models.card.spell.SpellCard;
@@ -26,6 +27,8 @@ public class CreateCardController {
             }
             if (monsterMode != null && realName != null && MonsterCard.getMonsterCardByName(realName) == null) {
                 new MonsterCard(levelI, attackI, defenceI, monsterMode, isRitual, realName, price, description, names, false);
+                new Card(realName, "Monster");
+                SaveFile.saveCards();
                 MainMenu.user.decreaseMoney(price / 10);
             }
         } catch (Exception e) {
@@ -43,10 +46,11 @@ public class CreateCardController {
                     names.add(spellCard.getRealName());
                 }
                 new SpellCard(realName, spellMode, price, description, names, false);
+                new Card(realName, "Spell");
+                SaveFile.saveCards();
                 MainMenu.user.decreaseMoney(price / 10);
             }
         } catch (Exception e) {
-
         }
     }
 
@@ -59,6 +63,8 @@ public class CreateCardController {
                 names.add(trapCard.getRealName());
             }
             new TrapCard(realName, price, description, names, false);
+            new Card(realName, "Trap");
+            SaveFile.saveCards();
             MainMenu.user.decreaseMoney(price / 10);
         }
     }
