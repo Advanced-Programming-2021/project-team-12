@@ -209,7 +209,7 @@ public class Player {
     }
 
     public void removeCard(Address address) {
-        if (Board.isAddressEmpty(address))
+        if (getCardByAddress(address) == null)
             return;
         if (getMonsterCardByAddress(address) != null) {
             unSetFromMonsterToSpellEquip(address.getNumber());
