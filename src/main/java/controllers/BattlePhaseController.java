@@ -470,7 +470,8 @@ public class BattlePhaseController {
     public void doNegateAttack() {
         if(Game.getGameView().yesOrNo){
             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Negate Attack");
-            Game.getGameView().goToMainPhaseTwo(null);
+            Game.getGameView().reset();
+            //Game.getGameView().goToMainPhaseTwo(null);
         }
     }
 

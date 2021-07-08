@@ -83,11 +83,17 @@ public class PhaseControl {
     public void doEffectEndPhase() {
         if (Game.firstPlayer.isOneHisSupplySquadActivated()) {
             if (Game.firstPlayer.isOneHisMonstersDestroyedInThisRound())
-                if (!Game.firstPlayer.isHandFull()) Game.firstPlayer.addCardFromUnusedToHand();
+                if (!Game.firstPlayer.isHandFull()) {
+                    Game.firstPlayer.addCardFromUnusedToHand();
+                    Game.getGameView().reset();
+                }
         }
         if (Game.secondPlayer.isOneHisSupplySquadActivated()) {
             if (Game.secondPlayer.isOneHisMonstersDestroyedInThisRound())
-                if (!Game.secondPlayer.isHandFull()) Game.secondPlayer.addCardFromUnusedToHand();
+                if (!Game.secondPlayer.isHandFull()) {
+                    Game.secondPlayer.addCardFromUnusedToHand();
+                    Game.getGameView().reset();
+                }
         }
     }
 
@@ -174,9 +180,17 @@ public class PhaseControl {
 
     public void doMindCrush(Address address, Player currentPlayer) {
         if (Game.getGameView().yesOrNo) {
-            Game.getGameView().doMindCrushEffect();
-            currentPlayer.removeCard(address);
+            Game.getGameView().doMindCrushEffect(address);
         }
+    }
+
+    public void doMindCrushEffect(Address address){
+        Player currentPlayer = Game.whoseTurnPlayer();
+        Player rivalPlayer = Game.whoseRivalPlayer();
+        if (rivalPlayer.doIHaveCardWithThisNameInMyHand(Game.getGameView().cardName)) {
+            rivalPlayer.removeAllCardWithThisNameInMyHand(Game.getGameView().cardName);
+        } else currentPlayer.removeOneOfHandCard();
+        currentPlayer.removeCard(address);
     }
 
     private void AISummonFromGraveyard() {
@@ -267,7 +281,6 @@ public class PhaseControl {
             currentPlayer.summonCardToMonsterZone(address).setIsScanner(true);
         } else if (currentPlayer.getMonsterCardByAddress(address).getNamesForEffect().contains("Terratiger, the Empowered Warrior")) {
             Game.getGameView().runEffect("Terratiger, the Empowered Warrior", null, null);
-            doTerratigerEffect(currentPlayer);
         } else currentPlayer.summonCardToMonsterZone(address);
         if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
             if (monsterCard.getNormalAttack() >= 1000) {
@@ -275,23 +288,25 @@ public class PhaseControl {
                 Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Trap Hole");
             }
         }
+        currentPlayer.setHeSummonedOrSet(true);
+        int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
+        Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
         if (Game.whoseRivalPlayer().doIHaveSpellCard("Torrential Tribute") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
             Attack.destroyAllMonstersInTheBoard();
             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
         }
-        currentPlayer.setHeSummonedOrSet(true);
-        int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
-        Game.whoseTurnPlayer().setDidWeChangePositionThisCardInThisTurn(index);
+        Game.getGameView().reset();
     }
 
-    public void doTerratigerEffect(Player currentPlayer) {
+    public void doTerratigerEffect(Player currentPlayer) throws MyException {
         if (Integer.parseInt(Game.getGameView().answer) != 0) {
             Address address1 = new Address(Integer.parseInt(Game.getGameView().answer), "hand", true);
             if ((currentPlayer.getMonsterCardByAddress(address1) != null)
                     && (currentPlayer.getMonsterCardByAddress(address1).getLevel() <= 4)
                     && (!currentPlayer.isMonsterZoneFull()))
                 currentPlayer.setCardFromHandToMonsterZone(address1);
-        }
+            else throw new MyException("Conditions are not met");
+        } else throw new MyException("Canceled");
     }
 
     public void summonAMediumLevelMonster(Address address) throws MyException {
@@ -322,6 +337,7 @@ public class PhaseControl {
                     Attack.destroyAllMonstersInTheBoard();
                     Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Torrential Tribute");
                 }
+                Game.getGameView().reset();
             } else throw new MyException("There is no monster in this address!");
         }
     }

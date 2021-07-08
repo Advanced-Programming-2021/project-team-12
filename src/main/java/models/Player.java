@@ -226,6 +226,7 @@ public class Player {
             indexOfCard.put(new Address(graveyardCardNumbers.size(), "graveyard", true), indexOfCard.get(new Address(1, "field", true)));
             fieldCardNumbers.remove(1);
         } else {
+            System.out.println("hi");
             int place = address.getNumber();
             HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
             graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, removeCardHashMap.get(place));
@@ -482,7 +483,7 @@ public class Player {
 
     public boolean isOneHisSupplySquadActivated() {
         for (int i = 0; i < isThisSpellActivated.length; i++)
-            if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("SupplySquad"))) return true;
+            if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("Supply Squad"))) return true;
         return false;
     }
 
@@ -495,12 +496,14 @@ public class Player {
     public void removeOneOfTrapOrSpell(String name) {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(name)) {
-                removeCard(new Address(i, "spell", true));
+                System.out.println("woohoo");
+                removeCard(new Address(i, "spell", false));
+                Game.getGameView().reset();
                 return;
             }
         }
         if (fieldCardNumbers.containsKey(1) && fieldCardNumbers.get(1).getCardName().equals(name))
-            removeCard(new Address(1, "field", true));
+            removeCard(new Address(1, "field", false));
     }
 
     public boolean doIHaveSpellCard(String cardName) {
