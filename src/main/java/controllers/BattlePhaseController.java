@@ -454,8 +454,10 @@ public class BattlePhaseController {
         if(Game.getGameView().yesOrNo){
             if (!currentPlayer.doIHaveSpellCard("Ring of defense")) {
                 currentPlayer.decreaseLP(myMonsterCard.getNormalAttack());
+                Game.getGameView().reset();
             }
             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Magic Cylinder");
+            Game.getGameView().reset();
             throw new MyException("Rival has trap named Magic Cylinder so its effect get done.");
         }
     }
@@ -464,6 +466,7 @@ public class BattlePhaseController {
         if(Game.getGameView().yesOrNo){
             Board.destroyAllAttackerMonster(Game.whoseTurnPlayer());
             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Mirror Force");
+            Game.getGameView().reset();
         }
     }
 

@@ -107,6 +107,7 @@ public class MonsterCard {
         if (namesForEffect.contains("Calculator")) return 300 * Board.sumOfLevelOfFacedUpMonsters();//doubt
         if (attack < 0)
             return 0;
+        System.out.println(attack);
         return attack;
     }
 
@@ -184,6 +185,7 @@ public class MonsterCard {
         int index = Attack.whatIndexOfDefender();
         if (Game.getGameView().answer.equals("yes")) {
             Attack.whichPlayerIsAttacker().addIndexToSuijin(index);
+            Game.getGameView().reset();
         }
     }
 
