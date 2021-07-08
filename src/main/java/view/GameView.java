@@ -745,7 +745,7 @@ public class GameView extends Application {
 
     private void createGraveYardSmallImages() {
         for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 6; j++) {
+            for (int j = 1; j <= 5; j++) {
                 graveYardSmallImages[i][j] = new ImageView();
                 graveYardSmallImages[i][j].setLayoutX(15 + 35 * (j - 1));
                 graveYardSmallImages[i][j].setLayoutY(130 + 50 * (i - 1));
@@ -772,9 +772,9 @@ public class GameView extends Application {
         if (isRival)
             graveyardZone = Game.whoseRivalPlayer().getGraveyardCard();
         for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 6; j++) {
-                if (graveyardZone.containsKey(6 * (i - 1) + j)) {
-                    graveYardSmallImages[i][j].setImage(createImage(graveyardZone.get(6 * (i - 1) + j).getCardName()));
+            for (int j = 1; j <= 5; j++) {
+                if (graveyardZone.containsKey(5 * (i - 1) + j)) {
+                    graveYardSmallImages[i][j].setImage(createImage(graveyardZone.get(5 * (i - 1) + j).getCardName()));
                     graveYardSmallImages[i][j].setVisible(true);
                     graveYardSmallImages[i][j].setDisable(false);
                 } else {
@@ -787,7 +787,7 @@ public class GameView extends Application {
 
     private void removeGraveYardButtons() {
         for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 6; j++) {
+            for (int j = 1; j <= 5; j++) {
                 graveYardSmallImages[i][j].setVisible(false);
                 graveYardSmallImages[i][j].setDisable(true);
             }
