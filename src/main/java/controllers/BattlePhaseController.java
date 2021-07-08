@@ -462,7 +462,7 @@ public class BattlePhaseController {
 
     public void doMirrorForce() {
         if(Game.getGameView().yesOrNo){
-            Board.destroyAllAttackerMonster(Game.whoseRivalPlayer());
+            Board.destroyAllAttackerMonster(Game.whoseTurnPlayer());
             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Mirror Force");
         }
     }
@@ -471,7 +471,7 @@ public class BattlePhaseController {
         if(Game.getGameView().yesOrNo){
             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Negate Attack");
             Game.getGameView().reset();
-            //Game.getGameView().goToMainPhaseTwo(null);
+            Game.getGameView().goToMainPhaseTwo(null);
         }
     }
 
