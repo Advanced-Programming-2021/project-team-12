@@ -129,8 +129,14 @@ public class Board {
         int place = player.getFirstEmptyPlace(player.getMonsterZoneCard(), 5);
         player.getMonsterZoneCard().put(place, graveYard.get(address.getNumber()));
         Address add = new Address(place, "monster", true);
-        player.setIndex(add, player.getIndexOfThisCardByAddress(address));
-        player.removeCard(address);
+        if (address.checkIsMine()) {
+            player.removeCard(address);
+            player.setIndex(add, player.getIndexOfThisCardByAddress(address));
+        }
+        else {
+            Game.whoseRivalPlayer().removeCard(address);
+            player.setIndex(add, player.getIndexes().size() + 1);
+        }
         player.setPositionOfCardInBoardByAddress(add, PositionOfCardInBoard.OO);
     }
 

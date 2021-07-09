@@ -76,7 +76,6 @@ public class OnlineDuel extends Application {
             maxHeight += 1;
         }
         if(maxHeight * 176 > 400){
-            System.out.println("yes");
             innerPane.setPrefHeight(176 * maxHeight + 20);
             innerPane.setPrefWidth(600.0);
             Image image = new Image(getClass().getResource("/PNG/NEW/background3.jpg").toExternalForm());

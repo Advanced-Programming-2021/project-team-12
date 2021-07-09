@@ -98,9 +98,11 @@ public class Game {
             SetSideAndMain.setUser(firstUser, firstPlayer);
             SetSideAndMain.setScoreAndWinner(winner.getName() + " won the game\n\nand the score is:\n\n" + firstPlayerWin + "-" + secondPlayerWin);
             new SetSideAndMain().start(stage);
-            firstPlayer.setHandCard();
-            if (!Game.isAIGame)
-                secondPlayer.setHandCard();
+        }
+        try {
+            Thread.currentThread().stop();
+        } catch (Exception e) {
+
         }
     }
 

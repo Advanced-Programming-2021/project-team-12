@@ -2,7 +2,6 @@ package view;
 
 import Exceptions.MyException;
 import Utility.Sounds;
-import controllers.DeckControllers;
 import controllers.Game;
 import controllers.SetMainAndSideController;
 import javafx.application.Application;
@@ -64,7 +63,6 @@ public class SetSideAndMain extends Application {
         setSide();
         setAllStyle();
         scoreAndWinner.setText(scoreAndWinnerData);
-        System.out.println(player.getMainCards().size());
     }
 
     private void setAllStyle() {
@@ -103,7 +101,6 @@ public class SetSideAndMain extends Application {
 
     private void setEvents(int number, ArrayList<Card> cards, Button[][] buttons, String flag, Button button, ImageView imageView) {
         button.setOnMouseClicked(e ->{
-            System.out.println(player.getMainCards().size());
             switch (flag) {
                 case "m":
                     selectedMain = number;
@@ -198,7 +195,12 @@ public class SetSideAndMain extends Application {
                 new SetMainAndSideController().setAICard();
                 new RockPaperScissors().start(stage);
             }
-            else new RockPaperScissors().start(stage);
+            else {
+                Game.firstPlayer.setHandCard();
+                if (!Game.getIsAI())
+                    Game.secondPlayer.setHandCard();
+                new RockPaperScissors().start(stage);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -249,7 +251,6 @@ public class SetSideAndMain extends Application {
     }
 
     public void dragOverHandler(DragEvent dragEvent) {
-        System.out.println(player.getMainCards().size());
         if (dragEvent.getDragboard().hasImage())
             dragEvent.acceptTransferModes(TransferMode.ANY);
     }

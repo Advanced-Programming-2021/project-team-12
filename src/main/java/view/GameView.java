@@ -45,6 +45,7 @@ public class GameView extends Application {
     public ImageView turnAvatar;
     public ImageView rivalAvatar;
     public ImageView imageViewInfo;
+    public ImageView bcg;
     public Button exitButton;
     public Button resumeButton;
     public Button pauseBackground;
@@ -991,13 +992,13 @@ public class GameView extends Application {
     }
 
     private void setFieldAndGraveYard() {
-        filedAndGraveyardSet(Game.whoseTurnPlayer().getFieldCard(), turnField);
-        filedAndGraveyardSet(Game.whoseRivalPlayer().getFieldCard(), rivalField);
-        filedAndGraveyardSet(Game.whoseTurnPlayer().getGraveyardCard(), turnGraveyard);
-        filedAndGraveyardSet(Game.whoseRivalPlayer().getGraveyardCard(), rivalGraveyard);
+        filedAndGraveyardSet(Game.whoseTurnPlayer().getFieldCard(), turnField, true, true);
+        filedAndGraveyardSet(Game.whoseRivalPlayer().getFieldCard(), rivalField, true, false);
+        filedAndGraveyardSet(Game.whoseTurnPlayer().getGraveyardCard(), turnGraveyard, false, true);
+        filedAndGraveyardSet(Game.whoseRivalPlayer().getGraveyardCard(), rivalGraveyard, false,false);
     }
 
-    private void filedAndGraveyardSet(HashMap<Integer, Card> zone, ImageView imageView) {
+    private void filedAndGraveyardSet(HashMap<Integer, Card> zone, ImageView imageView, boolean isField, boolean isMine) {
         if (zone.containsKey(1)) {
             imageView.setImage(createImage(zone.get(zone.size()).getCardName()));
             imageView.setDisable(false);
@@ -1005,6 +1006,19 @@ public class GameView extends Application {
         } else {
             imageView.setDisable(true);
             imageView.setVisible(false);
+        }
+        if (isField && isMine) {
+            if (zone.containsKey(1)) {
+                if (zone.get(1).getCardName().equals("Umiiruka"))
+                    bcg.setImage(new Image(getClass().getResource("/PNG/Field/fie_water.png").toExternalForm()));
+                if (zone.get(1).getCardName().equals("Closed Forest"))
+                    bcg.setImage(new Image(getClass().getResource("/PNG/Field/fie_mori.png").toExternalForm()));
+                if (zone.get(1).getCardName().equals("Forest"))
+                    bcg.setImage(new Image(getClass().getResource("/PNG/Field/fie_sougen.png").toExternalForm()));
+                if (zone.get(1).getCardName().equals("Yami"))
+                    bcg.setImage(new Image(getClass().getResource("/PNG/Field/fie_yami.png").toExternalForm()));
+            }
+            else bcg.setImage(new Image(getClass().getResource("/PNG/Field/fie_normal.png").toExternalForm()));
         }
     }
 
@@ -1239,14 +1253,39 @@ public class GameView extends Application {
             if (place != 0) {
                 PhaseControl.getInstance().checkIfGameEnded();
                 try {
-                    BattlePhaseController.getInstance().battlePhaseRun("select --monster " + place);
+                    int place1 = getWeakestMonster(Game.whoseRivalPlayer());
+                    if (place1 == 0)
+                        BattlePhaseController.getInstance().directAttack(new Address(place, "monster", true));
+                    else if (canAttack(place, place1))
+                        BattlePhaseController.getInstance().attack(new Address(place1
+                                , "monster", false), new Address(place, "monster", true));
                     Game.getGameView().reset();
                 } catch (Exception e) {
                     Game.getGameView().reset();
                 }
             }
-            doMainPhase2();
+            try {
+                doMainPhase2();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private boolean canAttack(int place, int place1) {
+        return Game.whoseTurnPlayer().getCardMonster(place).getAttack() >=  Game.whoseRivalPlayer().getCardMonster(place1).getAttack();
+    }
+
+    public int getWeakestMonster(Player player) {
+        int minAttack = 1000000;
+        int place = 0;
+        for (int i = 1; i < 6; i++) {
+            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() < minAttack) {
+                place = i;
+                minAttack = player.getCardMonster(i).getAttack();
+            }
+        }
+        return place;
     }
 
     public int getStrongestMonster(Player player) {

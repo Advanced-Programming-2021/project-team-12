@@ -367,8 +367,6 @@ public class PhaseControl {
         if (tributeCard2.equals("cancel")) {
             throw new MyException("Canceled successfully!");
         } else {
-            System.out.println(tributeCard1);
-            System.out.println(tributeCard2);
             if (Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard1))
                     && Game.whoseTurnPlayer().isMonsterInThisMonsterZoneTypeAddress(Integer.parseInt(tributeCard2))) {
                 Game.whoseTurnPlayer().setHeSummonedOrSet(true);
