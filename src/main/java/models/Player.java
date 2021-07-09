@@ -242,7 +242,6 @@ public class Player {
         if(spellPlace != -1){
             removeCard(new Address(spellPlace, "spell", true));
         }
-        Game.getGameView().reset();
     }
 
     public Card getCardByAddress(Address address) {
@@ -596,23 +595,34 @@ public class Player {
                 monsterZoneCardNumbers.put(place, handCardNumbers.get(i));
                 indexOfCard.put(add, indexOfCard.get(new Address(i, "hand", true)));
                 handCardNumbers.remove(i);
+                Game.getGameView().reset();
                 return;
             }
         }
+        System.out.println("monster name " + monsterName);
         for (int i = 1; i <= graveyardCardNumbers.size(); i++) {
+            if(graveyardCardNumbers.containsKey(i)){
+                System.out.println("grave card name" + graveyardCardNumbers.get(i).getCardName());
+            }
             if (graveyardCardNumbers.containsKey(i) && graveyardCardNumbers.get(i).getCardName().equals(monsterName)) {
+                System.out.println("i " +i);
+                System.out.println("add number " + add.getNumber());
+                System.out.println("add kind " + add.getKind());
                 monsterZoneCardNumbers.put(place, graveyardCardNumbers.get(i));
                 indexOfCard.put(add, indexOfCard.get(new Address(i, "graveyard", true)));
                 removeCard(new Address(i, "graveyard", true));
+                System.out.println("place " + place);
+                Game.getGameView().reset();
                 return;
             }
         }
-        for (int i = 1; i <= unusedCards.size(); i++) {
-            if (unusedCards.get(i).getCardName().equals(monsterName)) {
+        for (int i = 0; i < unusedCards.size(); i++) {
+            if (unusedCards.get(i) != null && unusedCards.get(i).getCardName().equals(monsterName)) {
                 monsterZoneCardNumbers.put(place, unusedCards.get(i));
                 indexOfCard.put(add, indexOfCard.size() + 1);
                 cardByIndex[indexOfCard.size()] = Card.getCardByName(monsterName);
                 unusedCards.remove(i);
+                Game.getGameView().reset();
             }
         }
     }

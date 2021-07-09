@@ -163,8 +163,8 @@ public class SpellCard {
     public static void doTerraformingEffect(Player currentPlayer) throws MyException {
         String fieldSpellName = Game.getGameView().answer;
         SpellCard spellCard = SpellCard.getSpellCardByName(fieldSpellName);
-        if ((spellCard != null) && (spellCard.spellMode == SpellMode.FIELD) && (currentPlayer.isThisCardInDeck("Terraforming"))) {
-            currentPlayer.bringCardFromDeckToHand("Terraforming");
+        if ((spellCard != null) && (spellCard.spellMode == SpellMode.FIELD) && (currentPlayer.isThisCardInDeck(fieldSpellName))) {
+            currentPlayer.bringCardFromDeckToHand(fieldSpellName);
             Game.getGameView().reset();
         } else if (!Game.isAITurn()) throw new MyException("you chose the wrong card.");
     }

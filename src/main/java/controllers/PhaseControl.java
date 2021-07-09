@@ -55,11 +55,10 @@ public class PhaseControl {
     }
 
     public String drawOneCard() throws Exception {
-        if (Game.getCurrentPhase().equals("Battle Phase"))
-            if (!canDraw) {
-                canDraw = true;
-                return "You can't draw a card because of rival's Time Seal";
-            }
+        if (!canDraw) {
+            canDraw = true;
+            return "You can't draw a card because of rival's Time Seal";
+        }
         if (Game.playerTurn == PlayerTurn.FIRSTPLAYER) {
             String newAddedCard = Game.firstPlayer.addCardFromUnusedToHand();
             if (newAddedCard.equals("unused is empty")) {
@@ -139,7 +138,7 @@ public class PhaseControl {
         }
     }
 
-    public void trapSet(Address address) throws MyException {
+    public void trapSet(Address address) throws Exception {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (!currentPlayer.isSpellZoneFull()) {
             activateSomeOfTraps(address, currentPlayer.getTrapCardByAddress(address), currentPlayer);
@@ -147,7 +146,7 @@ public class PhaseControl {
         } else throw new MyException("spell card zone is full!");
     }
 
-    private void activateSomeOfTraps(Address address, TrapCard trapCard, Player currentPlayer) throws MyException {
+    private void activateSomeOfTraps(Address address, TrapCard trapCard, Player currentPlayer) throws Exception {
         if (!Game.whoseRivalPlayer().doIHaveMirageDragonMonster()) {
             if (trapCard.getNamesForEffect().contains("Mind Crush")) {
                 Game.getGameView().getPermissionForTrap("Mind Crush", true, null, address, 1, null);
@@ -163,9 +162,10 @@ public class PhaseControl {
 
     public void doCallOfTheHaunted(Address address, Player currentPlayer) {
         if (Game.getGameView().yesOrNo) {
-            if (Game.isAITurn())
+            if (Game.isAITurn()){
                 AISummonFromGraveyard();
-            else
+                Game.getGameView().reset();
+            } else
                 Game.getGameView().doCallOfTheHauntedEffect(true);
             currentPlayer.removeCard(address);
         }
@@ -227,7 +227,7 @@ public class PhaseControl {
         }
     }
 
-    public void summonControl(Address address) throws MyException {
+    public void summonControl(Address address) throws Exception {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (currentPlayer.getMonsterCardByStringAddress(address) == null)
             throw new MyException("you can't summon spell or trap");
@@ -266,10 +266,12 @@ public class PhaseControl {
             int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
             Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
             Game.getGameView().summonForTribute(2, address);
+            Game.getGameView().reset();
         } else if (Game.getGameView().answer.equals("3")) {
             int index = Game.whoseTurnPlayer().getIndexOfThisCardByAddress(address);
             Game.whoseTurnPlayer().setDidBeastKingBarbarosSummonedSuperHighLevel(true, index);
             Game.getGameView().summonForTribute(3, address);
+            Game.getGameView().reset();
         }
     }
 
@@ -427,6 +429,9 @@ public class PhaseControl {
                 Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard1));
                 Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard2));
                 Game.whoseTurnPlayer().removeMonsterByInt(Integer.parseInt(tributeCard3));
+                if (Game.whoseTurnPlayer().getCardByAddress(address).equals("Beast King Barbaros")) {
+                    Board.destroyAllMonster(Game.whoseRivalPlayer());
+                }
                 Game.whoseTurnPlayer().summonCardToMonsterZone(address);
                 if (Game.whoseRivalPlayer().doIHaveSpellCard("Trap Hole") && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                     currentPlayer.removeCard(address);
@@ -455,7 +460,7 @@ public class PhaseControl {
         }
     }
 
-    public void flipSummon(Address address) throws MyException {
+    public void flipSummon(Address address) throws Exception {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (currentPlayer.isThisMonsterOnDHPosition(address)) {
             int index = currentPlayer.getIndexOfThisCardByAddress(address);
@@ -497,7 +502,7 @@ public class PhaseControl {
         }
     }
 
-    public void activeSpell(Address address) throws MyException {
+    public void activeSpell(Address address) throws Exception {
         Player currentPlayer = Game.whoseTurnPlayer();
         if (currentPlayer.getSpellCardByStringAddress(address) == null)
             return;
@@ -513,24 +518,12 @@ public class PhaseControl {
         } else throw new MyException("you have already activated this card");
     }
 
-    private void activateThisKindOfAddress(Address address, Player currentPlayer, int index) throws MyException {
+    private void activateThisKindOfAddress(Address address, Player currentPlayer, int index) throws Exception {
         if (SpellCard.canWeActivateThisSpell(address)) {
             if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Jammer")
                     && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
-                Game.getGameView().getPermissionForTrap("Magic Jammer", false, null, address, 1, null);
+                Game.getGameView().getPermissionForTrap("Magic Jammer", false, null, address, index, null);
             } else {
-                currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
-                currentPlayer.setIsThisSpellActivated(true, index);
-                SpellCard.doSpellAbsorptionEffect();
-                try {
-                    currentPlayer.getSpellCardByStringAddress(address).doEffect(address);
-                    Game.getGameView().reset();
-                } catch (MyException myException) {
-                    throw new MyException(myException.getMessage());
-                }
-            }
-            if (Game.whoseRivalPlayer().doIHaveSpellCard("Magic Jammer")
-                    && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster() && !Game.getGameView().yesOrNo) {
                 currentPlayer.setIsSpellFaceUp(address.getNumber(), true);
                 currentPlayer.setIsThisSpellActivated(true, index);
                 SpellCard.doSpellAbsorptionEffect();
@@ -544,9 +537,23 @@ public class PhaseControl {
         } else throw new MyException("Preparations of this spell are not done yet");
     }
 
-    public void doMagicJammer(Address address) {
+    private void continueWithoutMagicJammer(Address address, int index) throws MyException {
+        Game.whoseTurnPlayer().setIsSpellFaceUp(address.getNumber(), true);
+        Game.whoseTurnPlayer().setIsThisSpellActivated(true, index);
+        SpellCard.doSpellAbsorptionEffect();
+        try {
+            Game.whoseTurnPlayer().getSpellCardByStringAddress(address).doEffect(address);
+            Game.getGameView().reset();
+        } catch (MyException myException) {
+            throw new MyException(myException.getMessage());
+        }
+    }
+
+    public void doMagicJammer(Address address, int number) throws MyException {
         if (Game.getGameView().yesOrNo) {
             Game.getGameView().removeCardFromMyHand(address);
+        } else {
+            PhaseControl.getInstance().continueWithoutMagicJammer(address, number);
         }
     }
 
@@ -561,7 +568,7 @@ public class PhaseControl {
         int count = Integer.parseInt(Game.getGameView().answer);
         int numberOfHeraldOfCreation = Game.whoseTurnPlayer().howManyHeraldOfCreationDoWeHave();
         for (int i = 0; i < minOfTwoNumber(numberOfHeraldOfCreation, count) - Game.getGameView().howManyHeraldOfCreationDidWeUseEffect; i++) {
-            Game.getGameView().runEffect("Herald of Creation2", null, null);
+                Game.getGameView().runEffect("Herald of Creation2", null, null);
         }
     }
 
@@ -649,7 +656,7 @@ public class PhaseControl {
 
     public void doBringBackCardFromGraveyard(boolean isMine, Player currentPlayer) throws MyException {
         Address address = new Address(Integer.parseInt(Game.getGameView().answer), "graveyard", isMine);
-        if (currentPlayer.getMonsterCardByAddress(address) != null){
+        if (currentPlayer.getMonsterCardByAddress(address) != null) {
             Board.summonThisCardFromGraveYardToMonsterZone(address);
             Game.getGameView().reset();
         } else throw new MyException("you chose the wrong card");
