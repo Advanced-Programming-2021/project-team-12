@@ -209,9 +209,11 @@ public class Player {
     }
 
     public void removeCard(Address address) {
+        int spellPlace = -1;
         if (getCardByAddress(address) == null)
             return;
         if (getMonsterCardByAddress(address) != null) {
+            spellPlace = getFromMonsterToSpellEquip(address.getNumber());
             unSetFromMonsterToSpellEquip(address.getNumber());
             setOneHisMonstersDestroyedInThisRound(true);
         }
@@ -226,13 +228,16 @@ public class Player {
             indexOfCard.put(new Address(graveyardCardNumbers.size(), "graveyard", true), indexOfCard.get(new Address(1, "field", true)));
             fieldCardNumbers.remove(1);
         } else {
-            System.out.println("hi");
             int place = address.getNumber();
             HashMap<Integer, Card> removeCardHashMap = getHashMapByAddress(address);
             graveyardCardNumbers.put(graveyardCardNumbers.size() + 1, removeCardHashMap.get(place));
             indexOfCard.put(new Address(graveyardCardNumbers.size(), "graveyard", true), indexOfCard.get(address));
             removeCardHashMap.remove(place);
         }
+        if(spellPlace != -1){
+            removeCard(new Address(spellPlace, "spell", true));
+        }
+        Game.getGameView().reset();
     }
 
     public Card getCardByAddress(Address address) {
@@ -489,14 +494,13 @@ public class Player {
 
     public boolean isOneHisSpellAbsorptionActivated() {
         for (int i = 0; i < isThisSpellActivated.length; i++)
-            if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("Absorption"))) return true;
+            if ((isThisSpellActivated[i]) && (cardByIndex[i].getCardName().equals("Spell Absorption"))) return true;
         return false;
     }
 
     public void removeOneOfTrapOrSpell(String name) {
         for (int i = 1; i <= 5; i++) {
             if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(name)) {
-                System.out.println("woohoo");
                 removeCard(new Address(i, "spell", false));
                 Game.getGameView().reset();
                 return;
@@ -513,7 +517,7 @@ public class Player {
                         || isThisSpellActivated[indexOfCard.get(new Address(i, "spell", true))])
                     return true;
         if (fieldCardNumbers.containsKey(1) && fieldCardNumbers.get(1).getCardName().equals(cardName))
-            return false;
+            return true;
         return false;
     }
 
@@ -607,7 +611,7 @@ public class Player {
 
     public boolean doIHaveMirageDragonMonster() {
         for (int i = 1; i <= 5; i++)
-            if (monsterZoneCardNumbers.containsKey(i) && monsterZoneCardNumbers.get(i).getCardName().equals("Migrage Dragon"))
+            if (monsterZoneCardNumbers.containsKey(i) && monsterZoneCardNumbers.get(i).getCardName().equals("Mirage Dragon"))
                 return true;
         return false;
     }
@@ -641,6 +645,8 @@ public class Player {
     }
 
     public void setFromMonsterToSpellEquip(int spellPlace, int monsterPlace) {
+        System.out.println("spell place" + spellPlace);
+        System.out.println("monster Place" + monsterPlace);
         fromMonsterToSpellEquip[monsterPlace] = spellPlace;
     }
 
@@ -664,7 +670,7 @@ public class Player {
     public void removeAllCardWithThisNameInMyHand(String cardName) {
         for (int i = 1; i <=5; i++)
             if (handCardNumbers.containsKey(i) && handCardNumbers.get(i).getCardName().equals(cardName))
-                removeCard(new Address(i, "hand", true));
+                removeCard(new Address(i, "hand", false));
     }
 
     public boolean doIHaveCardWithThisNameInMyHand(String cardName) {

@@ -135,17 +135,15 @@ public class Board {
         player.setPositionOfCardInBoardByAddress(add, PositionOfCardInBoard.OO);
     }
 
-    public static int sumOfLevelOfFacedUpMonsters(){
+    public static int sumOfLevelOfFacedUpMonsters(Player currentPlayer){
         loadData();
         int number = 0;
-        for (int i = 1; i <= opponentPlayer.getGraveyardCard().size(); i++)
-            if (opponentPlayer.getCardGraveyard(i).getKind().equals("Monster")
-                    && !opponentPlayer.getMonsterPosition(i).equals(PositionOfCardInBoard.DH))
-                number += opponentPlayer.getCardGraveyard(i).getLevel();
-        for (int i = 1; i <= currentPlayer.getGraveyardCard().size(); i++)
-            if (currentPlayer.getCardGraveyard(i).getKind().equals("Monster")
-                    && !currentPlayer.getMonsterPosition(i).equals(PositionOfCardInBoard.DH))
-                number += currentPlayer.getCardGraveyard(i).getLevel();
+        for (int i = 1; i <= 5; i++){
+            if (currentPlayer.getCardMonster(i) != null
+                    && !currentPlayer.getMonsterPosition(i).equals(PositionOfCardInBoard.DH)){
+                number += currentPlayer.getCardMonster(i).getLevel();
+            }
+        }
         return number;
     }
 

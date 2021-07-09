@@ -71,8 +71,12 @@ public class OnlineDuel extends Application {
     }
 
     private void setInnerPane(Pane innerPane, ArrayList<User> sortedUsers) {
-        int maxHeight = sortedUsers.size() / 3;
+        int maxHeight = (int) Math.floor(sortedUsers.size() / 3);
+        if(!(maxHeight * 3 == sortedUsers.size())){
+            maxHeight += 1;
+        }
         if(maxHeight * 176 > 400){
+            System.out.println("yes");
             innerPane.setPrefHeight(176 * maxHeight + 20);
             innerPane.setPrefWidth(600.0);
             Image image = new Image(getClass().getResource("/PNG/NEW/background3.jpg").toExternalForm());

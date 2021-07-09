@@ -70,8 +70,7 @@ public class MonsterCard {
         return !isOriginal;
     }
 
-    public int getAttack(Address address) {
-        Player currentPlayer = Game.whoseTurnPlayer();
+    public int getAttack(Address address, Player currentPlayer) {
         int attack = this.attack;
         int indexOfAttacker = currentPlayer.getIndexOfThisCardByAddress(address);
         int spellPlace = currentPlayer.getFromMonsterToSpellEquip(address.getNumber());
@@ -105,9 +104,10 @@ public class MonsterCard {
             if (monsterMode == MonsterMode.FAIRY) attack -= 200;
         }
         if (Board.doThisMonsterExistFacedUp("Command Knight")) attack = +400;
-        if (namesForEffect.contains("Calculator")) return 300 * Board.sumOfLevelOfFacedUpMonsters();//doubt
+        if (namesForEffect.contains("The Calculator")) return 300 * Board.sumOfLevelOfFacedUpMonsters(currentPlayer);
         if (attack < 0)
             return 0;
+        System.out.println(attack);
         return attack;
     }
 
@@ -137,9 +137,11 @@ public class MonsterCard {
                 }
             }
         }
-        if (spellCard.getNamesForEffect().contains("United We Stand"))
+        if (spellCard.getNamesForEffect().contains("United We Stand")){
             attackOrDefence += (800 * Game.whoseTurnPlayer().getMonsterZoneCard().size());
-
+        }
+        System.out.println(attackOrDefence);
+        System.out.println(Game.whoseTurnPlayer().getMonsterZoneCard().size());
         return attackOrDefence;
     }
 
@@ -183,6 +185,7 @@ public class MonsterCard {
         int index = Attack.whatIndexOfDefender();
         if (Game.getGameView().answer.equals("yes")) {
             Attack.whichPlayerIsAttacker().addIndexToSuijin(index);
+            Game.getGameView().reset();
         }
     }
 
@@ -219,8 +222,13 @@ public class MonsterCard {
     public static void welcomeToEffect() {
         if (Game.whoseRivalPlayer().getMonsterCardByAddress(Attack.defenderAddress) == null)
             if (Attack.defenderMonsterName.contains("Yomi Ship")) Attack.destroyThisAddress(Attack.attackerAddress);
-        if (Attack.defenderMonsterName.contains("Marshmallon"))
-            if (Attack.isDefenderFacedDown()) Attack.whichPlayerIsAttacker().decreaseLP(1000);
+        if (Attack.defenderMonsterName.contains("Marshmallon")){
+            System.out.println(Attack.isDefenderFacedDown());
+            if (Attack.isDefenderFacedDown()){
+                System.out.println(Attack.whichPlayerIsAttacker());
+                Attack.whichPlayerIsAttacker().decreaseLP(1000);
+            }
+        }
     }
 
     public int getNormalAttack() {
