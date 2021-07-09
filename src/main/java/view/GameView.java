@@ -1245,6 +1245,7 @@ public class GameView extends Application {
                     Game.getGameView().reset();
                 }
             }
+            doMainPhase2();
         }
     }
 
