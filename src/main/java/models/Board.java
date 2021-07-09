@@ -29,7 +29,6 @@ public class Board {
     public static int howManyMonsterIsOnTheBoard() {
         loadData();
         int count = 0;
-        count += currentPlayer.getMonsterZoneCard().size();
         count += opponentPlayer.getMonsterZoneCard().size();
         return count;
     }

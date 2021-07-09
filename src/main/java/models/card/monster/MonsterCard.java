@@ -107,7 +107,6 @@ public class MonsterCard {
         if (namesForEffect.contains("The Calculator")) return 300 * Board.sumOfLevelOfFacedUpMonsters(currentPlayer);
         if (attack < 0)
             return 0;
-        System.out.println(attack);
         return attack;
     }
 
@@ -170,7 +169,6 @@ public class MonsterCard {
             if (monsterMode == MonsterMode.SPELLCASTER || monsterMode == MonsterMode.FIEND) defence += 200;
             if (monsterMode == MonsterMode.FAIRY) defence -= 200;
         }
-        if ((namesForEffect.contains("Command Knight")) && (Board.howManyMonsterIsOnTheBoard() > 1) && isFacedUp) return -1;
         return defence;
     }
 

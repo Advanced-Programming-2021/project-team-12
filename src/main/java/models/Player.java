@@ -217,6 +217,11 @@ public class Player {
             unSetFromMonsterToSpellEquip(address.getNumber());
             setOneHisMonstersDestroyedInThisRound(true);
         }
+        for (int i = 1; i <= 5; i++) {
+            if(fromMonsterToSpellEquip[i] == address.getNumber() && address.getKind().equals("spell")){
+                fromMonsterToSpellEquip[i] = -1;
+            }
+        }
         if (address.getKind().equals("graveyard")) {
             graveyardCardNumbers.remove(address.getNumber());
             for (int i = address.getNumber(); i < graveyardCardNumbers.size(); i++) {
@@ -511,11 +516,14 @@ public class Player {
     }
 
     public boolean doIHaveSpellCard(String cardName) {
-        for (int i = 1; i <= 5; i++)
-            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName))
+        for (int i = 1; i <= 5; i++){
+            if (spellZoneCardNumbers.containsKey(i) && spellZoneCardNumbers.get(i).getCardName().equals(cardName)){
                 if (spellZoneCardNumbers.get(i).getKind().equals("Trap")
-                        || isThisSpellActivated[indexOfCard.get(new Address(i, "spell", true))])
+                        || isThisSpellActivated[indexOfCard.get(new Address(i, "spell", true))]){
                     return true;
+                }
+            }
+        }
         if (fieldCardNumbers.containsKey(1) && fieldCardNumbers.get(1).getCardName().equals(cardName))
             return true;
         return false;

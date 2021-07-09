@@ -30,8 +30,7 @@ public class PhaseControl {
     }
 
     public void payMessengerOfPeaceSpellCardHarm(String answer) {
-        if (answer.equals("yes")) SetSpell.destroyMessengerOfPeace();
-        else Game.whoseTurnPlayer().decreaseLP(100);
+        Game.whoseTurnPlayer().decreaseLP(100);
     }
 
     public void resetMoves() {

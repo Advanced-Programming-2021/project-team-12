@@ -27,6 +27,10 @@ public class Attack {
         Board.destroyAllTrapAndSpells(Game.whoseRivalPlayer());
     }
 
+    public static void destroyAllRivalSpellAndTrapInTheBoard() {
+        Board.destroyAllTrapAndSpells(Game.whoseRivalPlayer());
+    }
+
     public static void destroyAllMonsters() {
         Board.destroyAllMonster(Game.whoseRivalPlayer());
         Board.destroyAllMonster(Game.whoseTurnPlayer());

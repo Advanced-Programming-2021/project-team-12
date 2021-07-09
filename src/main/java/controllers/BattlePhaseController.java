@@ -418,7 +418,7 @@ public class BattlePhaseController {
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Mirror Force")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             Game.getGameView().getPermissionForTrap("Mirror Force", false, null, null, 1, null);
-                        } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
+                        } else if ((Board.whatKindaMonsterIsHere(myAddress).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                             throw new MyException("You can't attack by monster with attack equal or more than 1500 " +
                                     "because of Messenger of peace.");
@@ -429,8 +429,10 @@ public class BattlePhaseController {
                             Game.getGameView().summonCyberse();
                         } else {
                             if (Game.whoseRivalPlayer().positionOfCardInBoardByAddress(address).equals(PositionOfCardInBoard.OO)) {
-                                int damage = myMonsterCard.getAttack(myAddress, Game.whoseTurnPlayer()) - rivalMonsterCard.getAttack(address, Game.whoseRivalPlayer());
-                                attackOO(myAddress, address, currentPlayer, damage);
+                                if (!(rivalMonsterCard.getNamesForEffect().contains("Command Knight") && (Board.howManyMonsterIsOnTheBoard() > 1))){
+                                    int damage = myMonsterCard.getAttack(myAddress, Game.whoseTurnPlayer()) - rivalMonsterCard.getAttack(address, Game.whoseRivalPlayer());
+                                    attackOO(myAddress, address, currentPlayer, damage);
+                                } else throw new MyException("You can't attack command knight because there is another monster in rival's monster zone");
                             } else if (Game.whoseRivalPlayer().positionOfCardInBoardByAddress(address).equals(PositionOfCardInBoard.DO)) {
                                 if (rivalMonsterCard.getDefence(true, address) != -1) {
                                     int damage = myMonsterCard.getAttack(myAddress, Game.whoseTurnPlayer()) - rivalMonsterCard.getDefence(true, address);
@@ -476,6 +478,7 @@ public class BattlePhaseController {
     }
 
     private void attackOO(Address myAddress, Address address, Player currentPlayer, int damage) throws MyException {
+        System.out.println("damage " + damage);
         if (Game.getCurrentPhase().equals("Battle Phase")) {
             if (damage == 0) {
                 removeForAttack(address, myAddress);

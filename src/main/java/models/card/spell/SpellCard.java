@@ -84,7 +84,7 @@ public class SpellCard {
             Game.getGameView().reset();
         }
         if (namesForEffect.contains("Harpie's Feather Duster")) {
-            Attack.destroyAllRivalMonstersAndTrapInTheBoard();
+            Attack.destroyAllRivalSpellAndTrapInTheBoard();
             currentPlayer.removeCard(address);
             Game.getGameView().reset();
         }

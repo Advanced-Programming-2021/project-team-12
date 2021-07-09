@@ -1225,10 +1225,9 @@ public class GameView extends Application {
     public void summonAMonsterCardFromGraveyard() {
         setStateOfSubmit(true);
         setButtonsActivate(false);
-        if (!Game.isAITurn()) {
+        if (!Game.isAITurn()){
             newMessageToLabel(Game.getCurrentPhase());
-            System.out.println("whose graveyard you want to summon from?(yours/rival's)");
-            //addMessageToLabel("type a card name so if rival has this kind of card all of them will be removed else one of your card will be removed randomly.");
+            addMessageToLabel("whose graveyard you want to summon from?(yours/rival's)");
             submitButton.setOnMouseClicked(e ->{
                 setStateOfSubmit(false);
                 setButtonsActivate(true);
@@ -1286,16 +1285,21 @@ public class GameView extends Application {
     }
 
     public void doCallOfTheHauntedEffect(boolean isMine) {
+        setStateOfSubmit(false);
+        setButtonsActivate(true);
         if (isMine) {
             newMessageToLabel(Game.getCurrentPhase());
-            addMessageToLabel("choose a monster from your graveyard to be summoned!(only type number)");
+            addMessageToLabel("choose a monster from graveyard to be summoned!(only type number)");
             submitButton.setOnMouseClicked(e ->{
                 setAnswer();
                 try {
                     PhaseControl.getInstance().doBringBackCardFromGraveyard(true, Game.whoseTurnPlayer());
+                    setStateOfSubmit(true);
+                    setButtonsActivate(false);
                 } catch (MyException myException) {
                     newMessageToLabel(Game.getCurrentPhase());
                     addMessageToLabel(myException.getMessage());
+                    doCallOfTheHauntedEffect(isMine);
                     reset();
                 }
             });
