@@ -1254,7 +1254,6 @@ public class GameView extends Application {
                 PhaseControl.getInstance().checkIfGameEnded();
                 try {
                     int place1 = getWeakestMonster(Game.whoseRivalPlayer());
-                    System.out.println(place1);
                     if (place1 == 0)
                         BattlePhaseController.getInstance().directAttack(new Address(place, "monster", true));
                     else if (canAttack(place, place1))

@@ -603,19 +603,11 @@ public class Player {
                 return;
             }
         }
-        System.out.println("monster name " + monsterName);
         for (int i = 1; i <= graveyardCardNumbers.size(); i++) {
-            if(graveyardCardNumbers.containsKey(i)){
-                System.out.println("grave card name" + graveyardCardNumbers.get(i).getCardName());
-            }
             if (graveyardCardNumbers.containsKey(i) && graveyardCardNumbers.get(i).getCardName().equals(monsterName)) {
-                System.out.println("i " +i);
-                System.out.println("add number " + add.getNumber());
-                System.out.println("add kind " + add.getKind());
                 monsterZoneCardNumbers.put(place, graveyardCardNumbers.get(i));
                 indexOfCard.put(add, indexOfCard.get(new Address(i, "graveyard", true)));
                 removeCard(new Address(i, "graveyard", true));
-                System.out.println("place " + place);
                 Game.getGameView().reset();
                 return;
             }
@@ -667,8 +659,6 @@ public class Player {
     }
 
     public void setFromMonsterToSpellEquip(int spellPlace, int monsterPlace) {
-        System.out.println("spell place" + spellPlace);
-        System.out.println("monster Place" + monsterPlace);
         fromMonsterToSpellEquip[monsterPlace] = spellPlace;
     }
 

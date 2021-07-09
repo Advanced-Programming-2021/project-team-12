@@ -105,7 +105,6 @@ public class MonsterCard {
         }
         if (Board.doThisMonsterExistFacedUp("Command Knight")) attack += 400;
         if (namesForEffect.contains("The Calculator")) return 300 * Board.sumOfLevelOfFacedUpMonsters(currentPlayer);
-        System.out.println("attack " + attack);
         if (attack < 0)
             return 0;
         return attack;
@@ -140,8 +139,6 @@ public class MonsterCard {
         if (spellCard.getNamesForEffect().contains("United We Stand")){
             attackOrDefence += (800 * Game.whoseTurnPlayer().getMonsterZoneCard().size());
         }
-        System.out.println(attackOrDefence);
-        System.out.println(Game.whoseTurnPlayer().getMonsterZoneCard().size());
         return attackOrDefence;
     }
 
@@ -222,9 +219,7 @@ public class MonsterCard {
         if (Game.whoseRivalPlayer().getMonsterCardByAddress(Attack.defenderAddress) == null)
             if (Attack.defenderMonsterName.contains("Yomi Ship")) Attack.destroyThisAddress(Attack.attackerAddress);
         if (Attack.defenderMonsterName.contains("Marshmallon")){
-            System.out.println(Attack.isDefenderFacedDown());
             if (Attack.isDefenderFacedDown()){
-                System.out.println(Attack.whichPlayerIsAttacker());
                 Attack.whichPlayerIsAttacker().decreaseLP(1000);
             }
         }

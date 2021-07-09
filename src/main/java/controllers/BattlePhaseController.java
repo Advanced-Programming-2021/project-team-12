@@ -478,7 +478,6 @@ public class BattlePhaseController {
     }
 
     private void attackOO(Address myAddress, Address address, Player currentPlayer, int damage) throws MyException {
-        System.out.println("damage " + damage);
         if (Game.getCurrentPhase().equals("Battle Phase")) {
             if (damage == 0) {
                 removeForAttack(address, myAddress);

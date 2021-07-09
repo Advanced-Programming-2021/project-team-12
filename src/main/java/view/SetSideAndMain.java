@@ -63,7 +63,6 @@ public class SetSideAndMain extends Application {
         setSide();
         setAllStyle();
         scoreAndWinner.setText(scoreAndWinnerData);
-        System.out.println(player.getMainCards().size());
     }
 
     private void setAllStyle() {
@@ -252,7 +251,6 @@ public class SetSideAndMain extends Application {
     }
 
     public void dragOverHandler(DragEvent dragEvent) {
-        System.out.println(player.getMainCards().size());
         if (dragEvent.getDragboard().hasImage())
             dragEvent.acceptTransferModes(TransferMode.ANY);
     }
