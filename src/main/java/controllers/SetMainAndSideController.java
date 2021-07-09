@@ -5,15 +5,15 @@ import models.Player;
 
 import java.util.Random;
 
-public class SetMainAndSlide {
+public class SetMainAndSideController {
 
-    public void setMainToSlide(int mainNumber, Player player) throws MyException {
+    public void setMainToSide(int mainNumber, Player player) throws MyException {
         if (player.getNumberOfUnusedCard() > 45)
             player.setMainToSlide(mainNumber);
         else throw new MyException("you cant have less than 45 card in main deck");
     }
 
-    public void setSlideToMain(int slideNumber, Player player) throws MyException {
+    public void setSideToMain(int slideNumber, Player player) throws MyException {
         if (player.getNumberOfUnusedCard() < 60)
             player.setSlideToMain(slideNumber);
         else throw new MyException("you cant have more than 60 card in main deck");

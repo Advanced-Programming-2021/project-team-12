@@ -828,6 +828,11 @@ public class GameView extends Application {
     }
 
     public void reset() {
+        try {
+            checkIfGameEnded();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         setHand();
         setMonster();
         setSpells();
@@ -835,6 +840,16 @@ public class GameView extends Application {
         setAvatar();
         setNames();
         setFieldAndGraveYard();
+    }
+
+    private void checkIfGameEnded() throws Exception {
+        if (Game.firstPlayer.getLP() <= 0) {
+            Game.setWinner(Game.secondPlayer);
+            Game.EndGame(stage);
+        } else if (Game.secondPlayer.getLP() <= 0) {
+            Game.setWinner(Game.firstPlayer);
+            Game.EndGame(stage);
+        }
     }
 
     private void createImageView(ImageView[] imageView, int X, int Y, int size) {

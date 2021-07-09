@@ -1,8 +1,10 @@
 package controllers;
 
 import java.util.Random;
+import java.util.Set;
 
 
+import javafx.stage.Stage;
 import view.*;
 import view.phase.*;
 import view.phase.MainPhase;
@@ -77,7 +79,7 @@ public class Game {
         secondPlayerMaxLP = 0;
     }
 
-    private static void EndGame() throws Exception {
+    public static void EndGame(Stage stage) throws Exception {
         int floorWin = 0;
         if (round == 3)
             floorWin = 1;
@@ -86,12 +88,13 @@ public class Game {
             System.out.println(winner.getName() + " won the whole match with score: " + firstPlayerWin + "-" + secondPlayerWin);
             setScoreAndMoneyOfPlayers();
         } else {
-            System.out.println(winner.getName() + " won the game and the score is: " + firstPlayerWin + "-" + secondPlayerWin);
             firstPlayer.reset();
             if (Game.isAIGame)
                 secondPlayer = new Player();
             else secondPlayer.reset();
-            new SetMainCards(firstPlayer, secondPlayer);
+            SetSideAndMain.setUser(firstUser, firstPlayer);
+            SetSideAndMain.setScoreAndWinner(winner.getName() + " won the game and the score is: " + firstPlayerWin + "-" + secondPlayerWin);
+            new SetSideAndMain().start(stage);
             generateRandomTurn();
         }
     }

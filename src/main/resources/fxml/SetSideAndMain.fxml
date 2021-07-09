@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="pane" prefHeight="718.0" prefWidth="952.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SetSideAndMain">
+    <children>
+        <ImageView fitHeight="718.0" fitWidth="952.0" layoutX="-1.0" pickOnBounds="true">
+            <image>
+                <Image url="@../PNG/NEW/111.jpg" />
+            </image>
+        </ImageView>
+        <Button layoutX="339.0" layoutY="4.0" mnemonicParsing="false" onDragDropped="#mainHandlerDrop" onDragOver="#dragOverHandler" opacity="0.91" prefHeight="475.0" prefWidth="603.0" style="-fx-background-color: #e5bf9e;" textFill="#e5bf9e" />
+        <Button layoutX="339.0" layoutY="482.0" mnemonicParsing="false" onDragDropped="#sideHandlerDrop" onDragOver="#dragOverHandler" opacity="0.91" prefHeight="225.0" prefWidth="603.0" style="-fx-background-color: #e5bf9e;">
+            <textFill>
+                <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                    <stops>
+                        <Stop>
+                            <color>
+                                <Color />
+                            </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                            <color>
+                                <Color red="1.0" green="1.0" blue="1.0" />
+                            </color>
+                        </Stop>
+                    </stops>
+                </RadialGradient>
+            </textFill>
+        </Button>
+        <Button layoutX="11.0" layoutY="3.0" mnemonicParsing="false" onDragDropped="#handHandlerDrop" onDragOver="#dragOverHandler" opacity="0.91" prefHeight="216.0" prefWidth="322.0" style="-fx-background-color: #e5bf9e;" />
+        <Button layoutX="346.0" layoutY="660.0" mnemonicParsing="false" onMouseClicked="#addSideToMain" prefHeight="46.0" prefWidth="119.0" style="-fx-background-size: 120;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Add To Main" textFill="#ffed78">
+            <font>
+                <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="12.0" />
+            </font>
+        </Button>
+        <Button layoutX="346.0" layoutY="432.0" mnemonicParsing="false" onMouseClicked="#addMainToSide" prefHeight="46.0" prefWidth="119.0" style="-fx-background-size: 120;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Add To Side" textFill="#ffed78">
+            <font>
+                <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="12.0" />
+            </font>
+        </Button>
+        <Label layoutX="608.0" layoutY="7.0" text="Main Cards">
+            <font>
+                <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="616.0" layoutY="485.0" text="Side Cards">
+            <font>
+                <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
+            </font>
+        </Label>
+        <Label fx:id="userName" alignment="CENTER" contentDisplay="CENTER" layoutX="36.0" layoutY="7.0" prefHeight="34.0" prefWidth="272.0" text="User Cards" textAlignment="CENTER">
+            <font>
+                <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="14.0" />
+            </font>
+        </Label>
+        <Button layoutX="109.0" layoutY="154.0" mnemonicParsing="false" onMouseClicked="#back" prefHeight="46.0" prefWidth="130.0" style="-fx-background-size: 130;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Set Layout" textFill="#ffed78">
+            <font>
+                <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="13.0" />
+            </font>
+        </Button>
+        <Button layoutX="11.0" layoutY="232.0" mnemonicParsing="false" opacity="0.92" prefHeight="475.0" prefWidth="322.0" style="-fx-background-color: #e5bf9e;" />
+        <Label fx:id="deckName" layoutX="20.0" layoutY="578.0" prefHeight="53.0" prefWidth="304.0" textFill="#1a0a84">
+            <font>
+                <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="16.0" />
+            </font>
+        </Label>
+        <Label fx:id="msg" alignment="TOP_LEFT" layoutX="19.0" layoutY="638.0" prefHeight="65.0" prefWidth="304.0" textFill="#9a0000">
+            <font>
+                <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="16.0" />
+            </font>
+        </Label>
+        <Label fx:id="mainNumber" layoutX="630.0" layoutY="445.0" text="Label" textFill="#043e2a">
+            <font>
+                <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="15.0" />
+            </font>
+        </Label>
+        <Label fx:id="sideNumber" layoutX="626.0" layoutY="673.0" text="Label" textFill="#043e2a">
+            <font>
+                <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="15.0" />
+            </font>
+        </Label>
+      <Label fx:id="scoreAndWinner" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="29.0" layoutY="251.0" prefHeight="279.0" prefWidth="272.0" text="Label" textFill="#704e02">
+         <font>
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="24.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>
