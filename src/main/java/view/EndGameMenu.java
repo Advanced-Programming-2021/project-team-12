@@ -1,6 +1,7 @@
 package view;
 
 import controllers.Game;
+import controllers.LoadFile;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,6 +42,8 @@ public class EndGameMenu extends Application {
 
     public void back() {
         try {
+//            LoadFile.loadData();
+            User.addUser(MainMenu.user);
             new MainMenu().start(stage);
         } catch (Exception e) {
             e.printStackTrace();

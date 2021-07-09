@@ -48,7 +48,7 @@ public class Player {
         this.user = user;
         this.nickName = user.getNickName();
         this.name = user.getName();
-        LP = 80;
+        LP = 8000;
         unusedCards = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getMainCards().clone();
         secondaryCard = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getSideCards().clone();
         for (int i = 0; i < 5; i++)
@@ -550,7 +550,7 @@ public class Player {
     }
 
     public void reset() {
-        LP = 80;
+        LP = 8000;
         unusedCards = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getMainCards().clone();
         secondaryCard = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getSideCards().clone();
         isOneHisMonstersDestroyedInThisRound = false;
@@ -574,6 +574,10 @@ public class Player {
     public void setHandCard() {
         for (int i = 0; i < 5; i++)
             addCardFromUnusedToHand();
+    }
+
+    public HashMap<Address, Integer>  getIndexes() {
+        return indexOfCard;
     }
 
     public ArrayList<Card> getMainCards() {

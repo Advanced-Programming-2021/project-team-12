@@ -37,6 +37,10 @@ public class User {
         avatar = 13;
     }
 
+    public static void addUser(User user) {
+        users.add(user);
+    }
+
     public void increaseScore(int score) {
         this.score += score;
     }

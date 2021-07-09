@@ -41,8 +41,10 @@ public class SaveFile {
         JSONObject obj = new JSONObject();
         ArrayList<String> userCardsName = new ArrayList<>();
         if (user.getAllCards() != null)
-            for (Card card : user.getAllCards())
-                userCardsName.add(card.getCardName());
+            for (Card card : user.getAllCards()) {
+                if (card != null)
+                    userCardsName.add(card.getCardName());
+            }
         obj.put("userName", user.getName());
         obj.put("nickName", user.getNickName());
         obj.put("password", user.getPassword());

@@ -7,6 +7,7 @@ import Exceptions.MyException;
 import controllers.BattlePhaseController;
 import controllers.Game;
 import controllers.PhaseControl;
+import models.Address;
 import models.Board;
 import models.Player;
 import view.Main;
@@ -56,7 +57,12 @@ public class BattlePhase {
         if (place != 0) {
             PhaseControl.getInstance().checkIfGameEnded();
             try {
-                BattlePhaseController.getInstance().battlePhaseRun("select --monster " + place);
+                int place1 = getWeakestMonster(Game.whoseRivalPlayer());
+                if (place1 == 0)
+                    BattlePhaseController.getInstance().directAttack(new Address(place, "monster", true));
+                else
+                BattlePhaseController.getInstance().attack(new Address(place1
+                        , "monster", false), new Address(place, "monster", true));
             } catch (MyException e) {
                 System.out.println(e.getMessage());
             } catch (Exception e) {
@@ -73,6 +79,18 @@ public class BattlePhase {
             if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() > maxAttack) {
                 place = i;
                 maxAttack = player.getCardMonster(i).getAttack();
+            }
+        }
+        return place;
+    }
+
+    public int getWeakestMonster(Player player) {
+        int minAttack = 0;
+        int place = 0;
+        for (int i = 1; i < 6; i++) {
+            if (player.getMonsterZoneCard().containsKey(i) && player.getCardMonster(i).getAttack() < minAttack) {
+                place = i;
+                minAttack = player.getCardMonster(i).getAttack();
             }
         }
         return place;

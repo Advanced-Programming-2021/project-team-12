@@ -7,7 +7,7 @@
 
 <Pane fx:id="pane" prefHeight="600.0" prefWidth="1055.0" styleClass="main" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GameView">
    <children>
-      <ImageView fitHeight="600.0" fitWidth="602.0" layoutX="227.0" pickOnBounds="true">
+      <ImageView fx:id="bcg" fitHeight="600.0" fitWidth="602.0" layoutX="227.0" pickOnBounds="true">
          <image>
             <Image url="@../PNG/Field/FieldPNG/fie_normal.png" />
          </image>
