@@ -1,6 +1,7 @@
 package view;
 
 import Exceptions.MyException;
+import Utility.Sounds;
 import controllers.DeckControllers;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -86,6 +87,19 @@ public class DeckData extends Application {
             setButton(i, 6, handCards, handButtons, "h", 27, 20);
     }
 
+    private void soundEffect(int number) {
+        try {
+            if (number == 0)
+                Sounds.play("src//main//resources//Sound//CARD_MOVE_1.wav", 1).start();
+            if (number == 1)
+                Sounds.play("src//main//resources//Sound//TURNEX.wav", 1).start();
+            if (number == 2)
+                Sounds.play("src//main//resources//Sound//Cancel.wav", 1).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setButton(int number, int max, ArrayList<Card> cards, Button[][] buttons, String flag, int x, int y) {
         Image image;
         int row = number / max;
@@ -163,32 +177,40 @@ public class DeckData extends Application {
     }
 
     public void addSideToMain(MouseEvent mouseEvent) {
-        if (selectedSide == -1)
+        if (selectedSide == -1){
             msg.setText("Didn't Choose Any Card");
+            soundEffect(2);
+        }
         else {
             try {
                 removeAll();
                 Card card = sideCards.get(selectedSide);
                 new DeckControllers().removeCard(card.getCardName(), deck.getName(), true);
                 new DeckControllers().addCard(card.getCardName(), deck.getName(), false);
+                soundEffect(0);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
+                soundEffect(2);
             }
             resetAll();
         }
     }
 
     public void addMainToSide(MouseEvent mouseEvent) {
-        if (selectedMain == -1)
+        if (selectedMain == -1){
             msg.setText("Didn't Choose Any Card");
+            soundEffect(2);
+        }
         else {
             try {
                 removeAll();
                 Card card = mainCards.get(selectedMain);
                 new DeckControllers().removeCard(card.getCardName(), deck.getName(), false);
                 new DeckControllers().addCard(card.getCardName(), deck.getName(), true);
+                soundEffect(0);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
+                soundEffect(2);
             }
             resetAll();
         }
@@ -203,14 +225,18 @@ public class DeckData extends Application {
     }
 
     public void removeCard(Integer selected, ArrayList<Card> cards, boolean isSide) {
-        if (selected == -1)
+        if (selected == -1){
             msg.setText("Didn't Choose Any Card");
+            soundEffect(2);
+        }
         else {
             try {
                 removeAll();
                 new DeckControllers().removeCard(cards.get(selected).getCardName(), deck.getName(), isSide);
+                soundEffect(0);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
+                soundEffect(2);
             }
             resetAll();
         }
@@ -219,6 +245,7 @@ public class DeckData extends Application {
     public void back(MouseEvent mouseEvent) {
         try {
             new DeckMenu().start(stage);
+            soundEffect(1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -229,14 +256,18 @@ public class DeckData extends Application {
     }
 
     private void moveCardFromHand(Integer selected, ArrayList<Card> cards, boolean isSide) {
-        if (selected == -1)
+        if (selected == -1) {
             msg.setText("Didn't Choose Any Card");
+            soundEffect(2);
+        }
         else {
             try {
                 removeAll();
                 new DeckControllers().addCard(cards.get(selected).getCardName(), deck.getName(), isSide);
+                soundEffect(0);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
+                soundEffect(2);
             }
             resetAll();
         }
@@ -276,8 +307,10 @@ public class DeckData extends Application {
                 Card card = sideCards.get(dragAddress.getNumber());
                 new DeckControllers().removeCard(card.getCardName(), deck.getName(), true);
                 new DeckControllers().addCard(card.getCardName(), deck.getName(), false);
+                soundEffect(0);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
+                soundEffect(2);
             }
             resetAll();
         }
@@ -297,8 +330,10 @@ public class DeckData extends Application {
                 Card card = mainCards.get(dragAddress.getNumber());
                 new DeckControllers().removeCard(card.getCardName(), deck.getName(), false);
                 new DeckControllers().addCard(card.getCardName(), deck.getName(), true);
+                soundEffect(0);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
+                soundEffect(2);
             }
             resetAll();
         }

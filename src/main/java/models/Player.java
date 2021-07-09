@@ -48,7 +48,7 @@ public class Player {
         this.user = user;
         this.nickName = user.getNickName();
         this.name = user.getName();
-        LP = 8000;
+        LP = 80;
         unusedCards = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getMainCards().clone();
         secondaryCard = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getSideCards().clone();
         for (int i = 0; i < 5; i++)
@@ -543,7 +543,7 @@ public class Player {
     }
 
     public void reset() {
-        LP = 8000;
+        LP = 80;
         unusedCards = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getMainCards().clone();
         secondaryCard = (ArrayList<Card>) Deck.getActiveDeckOfUser(user.getName()).getSideCards().clone();
         isOneHisMonstersDestroyedInThisRound = false;
@@ -681,13 +681,13 @@ public class Player {
     }
 
     public void setSlideToMain(int slideNumber) {
-        unusedCards.add(secondaryCard.get(slideNumber - 1));
-        secondaryCard.remove(slideNumber - 1);
+        unusedCards.add(secondaryCard.get(slideNumber));
+        secondaryCard.remove(slideNumber);
     }
 
     public void setMainToSlide(int mainNumber) {
-        secondaryCard.add(unusedCards.get(mainNumber - 1));
-        unusedCards.remove(mainNumber - 1);
+        secondaryCard.add(unusedCards.get(mainNumber));
+        unusedCards.remove(mainNumber);
     }
 
     public boolean doIHaveMonsterCardInMonsterZone(String cardName) {

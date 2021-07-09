@@ -1,12 +1,9 @@
 package controllers;
 
-import java.util.Random;
-import java.util.Set;
 
-
+import Utility.Sounds;
 import javafx.stage.Stage;
 import view.*;
-import view.phase.*;
 import view.phase.MainPhase;
 import models.Player;
 import models.PlayerTurn;
@@ -80,23 +77,35 @@ public class Game {
     }
 
     public static void EndGame(Stage stage) throws Exception {
+        soundEffect(2);
         int floorWin = 0;
         if (round == 3)
             floorWin = 1;
         setWinnData();
         if (firstPlayerWin > floorWin || secondPlayerWin > floorWin) {
-            System.out.println(winner.getName() + " won the whole match with score: " + firstPlayerWin + "-" + secondPlayerWin);
+            firstPlayer.reset();
+            if (Game.isAIGame)
+                secondPlayer = new Player();
+            else secondPlayer.reset();
             setScoreAndMoneyOfPlayers();
+            EndGameMenu.setLabelText(" the whole match with score:\n\n\t\t\t" + firstPlayerWin + "-" + secondPlayerWin);
+            new EndGameMenu().start(stage);
         } else {
             firstPlayer.reset();
             if (Game.isAIGame)
                 secondPlayer = new Player();
             else secondPlayer.reset();
             SetSideAndMain.setUser(firstUser, firstPlayer);
-            SetSideAndMain.setScoreAndWinner(winner.getName() + " won the game and the score is: " + firstPlayerWin + "-" + secondPlayerWin);
+            SetSideAndMain.setScoreAndWinner(winner.getName() + " won the game\n\nand the score is:\n\n" + firstPlayerWin + "-" + secondPlayerWin);
             new SetSideAndMain().start(stage);
-            generateRandomTurn();
+            firstPlayer.setHandCard();
+            if (!Game.isAIGame)
+                secondPlayer.setHandCard();
         }
+    }
+
+    public static String getWinnerName() {
+        return winner.getName();
     }
 
     private static void setScoreAndMoneyOfPlayers() {
@@ -153,6 +162,19 @@ public class Game {
 
     private static void generateRandomTurn() throws Exception {
         new RockPaperScissors().start(Duel.stage);
+    }
+
+    private static void soundEffect(int number) {
+        try {
+            if (number == 0)
+                Sounds.play("src//main//resources//Sound//CARD_MOVE_1.wav", 1).start();
+            if (number == 1)
+                Sounds.play("src//main//resources//Sound//Cancel.wav", 1).start();
+            if (number == 2)
+                Sounds.play("src//main//resources//Sound//DUEL_END.wav", 1).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void playTurn(String phase) throws Exception {

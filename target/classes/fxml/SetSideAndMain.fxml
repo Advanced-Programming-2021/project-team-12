@@ -32,7 +32,7 @@
                 </RadialGradient>
             </textFill>
         </Button>
-        <Button layoutX="11.0" layoutY="3.0" mnemonicParsing="false" onDragDropped="#handHandlerDrop" onDragOver="#dragOverHandler" opacity="0.91" prefHeight="216.0" prefWidth="322.0" style="-fx-background-color: #e5bf9e;" />
+        <Button layoutX="11.0" layoutY="3.0" mnemonicParsing="false" opacity="0.91" prefHeight="216.0" prefWidth="322.0" style="-fx-background-color: #e5bf9e;" />
         <Button layoutX="346.0" layoutY="660.0" mnemonicParsing="false" onMouseClicked="#addSideToMain" prefHeight="46.0" prefWidth="119.0" style="-fx-background-size: 120;" styleClass="button1" stylesheets="@../CSS/Buttons.css" text="Add To Main" textFill="#ffed78">
             <font>
                 <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="12.0" />
@@ -84,9 +84,9 @@
                 <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="15.0" />
             </font>
         </Label>
-      <Label fx:id="scoreAndWinner" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="29.0" layoutY="251.0" prefHeight="279.0" prefWidth="272.0" text="Label" textFill="#704e02">
+      <Label fx:id="scoreAndWinner" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="15.0" layoutY="251.0" prefHeight="279.0" prefWidth="312.0" text="Label" textFill="#704e02">
          <font>
-            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="24.0" />
+            <Font name="Yu-Gi-Oh! ITC Stone Serif LT Italic" size="25.0" />
          </font>
       </Label>
     </children>

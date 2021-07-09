@@ -180,11 +180,13 @@ public class DeckMenu extends Application {
         msg.setVisible(false);
         if (selectedDeck == -1)
             setMsg(false, "Didn't Choose Any Deck");
-        try {
-            DeckData.setDeck(Deck.getDecksOfUser(user).get(selectedDeck));
-            new DeckData().start(stage);
-        } catch (Exception e) {
-            e.printStackTrace();
+        else {
+            try {
+                DeckData.setDeck(Deck.getDecksOfUser(user).get(selectedDeck));
+                new DeckData().start(stage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

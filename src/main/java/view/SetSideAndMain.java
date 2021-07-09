@@ -1,6 +1,7 @@
 package view;
 
 import Exceptions.MyException;
+import Utility.Sounds;
 import controllers.DeckControllers;
 import controllers.Game;
 import controllers.SetMainAndSideController;
@@ -24,7 +25,6 @@ import java.util.Objects;
 
 public class SetSideAndMain extends Application {
     public static Stage stage;
-    private static Deck deck;
     private static User user;
     private static Player player;
     public Pane pane;
@@ -35,7 +35,8 @@ public class SetSideAndMain extends Application {
     public Label mainNumber;
     public Label sideNumber;
     public Label userName;
-    private static Label scoreAndWinner;
+    private static String scoreAndWinnerData;
+    public Label scoreAndWinner;
     private ArrayList<Card> mainCards;
     private ArrayList<Card> sideCards;
     private final Button[][] mainButtons = new Button[40][25];
@@ -44,8 +45,8 @@ public class SetSideAndMain extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        DeckData.stage = stage;
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/DeckData.fxml")));
+        SetSideAndMain.stage = stage;
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/SetSideAndMain.fxml")));
         stage.setScene(new Scene(root));
         stage.show();
     }
@@ -57,11 +58,13 @@ public class SetSideAndMain extends Application {
         File file = new File ("src//main//resources//CSS//Buttons.css");
         pane.getStylesheets().add(file.toURI().toString());
         setDeckName();
-        mainCards = deck.getMainCards();
-        sideCards = deck.getSideCards();
+        mainCards = player.getMainCards();
+        sideCards = player.getSideCards();
         setMain();
         setSide();
         setAllStyle();
+        scoreAndWinner.setText(scoreAndWinnerData);
+        System.out.println(player.getMainCards().size());
     }
 
     private void setAllStyle() {
@@ -100,6 +103,7 @@ public class SetSideAndMain extends Application {
 
     private void setEvents(int number, ArrayList<Card> cards, Button[][] buttons, String flag, Button button, ImageView imageView) {
         button.setOnMouseClicked(e ->{
+            System.out.println(player.getMainCards().size());
             switch (flag) {
                 case "m":
                     selectedMain = number;
@@ -127,28 +131,27 @@ public class SetSideAndMain extends Application {
         });
     }
 
-    private void setStyle(ArrayList<Card> cards, int selected, Button[][] handButtons) {
+    private void setStyle(ArrayList<Card> cards, int selected, Button[][] buttons) {
         for (int i = 0; i < cards.size(); i++) {
             int row = i / 12;
             int column = i % 12;
             if (selected == i)
-                handButtons[row][column].setId("selected");
-            else handButtons[row][column].setId("nonSelected");
+                buttons[row][column].setId("selected");
+            else buttons[row][column].setId("nonSelected");
         }
     }
 
     private void setDeckName() {
-        sideNumber.setText(String.valueOf(deck.getNumberOfCard("s")));
-        mainNumber.setText(String.valueOf(deck.getNumberOfCard("m")));
+        sideNumber.setText(String.valueOf(player.getSideCards().size()));
+        mainNumber.setText(String.valueOf(player.getMainCards().size()));
         userName.setText("User Name: " + user.getName());
     }
 
     public static void setScoreAndWinner(String msg) {
-        scoreAndWinner.setText(msg);
+        scoreAndWinnerData = msg;
     }
 
     public static void setUser(User _user, Player _player) {
-        deck = Deck.getActiveDeckOfUser(_user.getName());
         user = _user;
         player = _player;
     }
@@ -160,6 +163,7 @@ public class SetSideAndMain extends Application {
             try {
                 removeAll();
                 new SetMainAndSideController().setSideToMain(selectedSide, player);
+                soundEffect(0);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
             }
@@ -174,6 +178,7 @@ public class SetSideAndMain extends Application {
             try {
                 removeAll();
                 new SetMainAndSideController().setMainToSide(selectedMain, player);
+                soundEffect(0);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
             }
@@ -183,7 +188,9 @@ public class SetSideAndMain extends Application {
 
     public void back() {
         try {
+            soundEffect(1);
             if (player.getName().equals(Game.firstPlayer.getName()) && !Game.getIsAI()) {
+                removeAll();
                 setUser(Game.secondPlayer.getUser(), Game.secondPlayer);
                 resetAll();
             }
@@ -197,7 +204,21 @@ public class SetSideAndMain extends Application {
         }
     }
 
+    private void soundEffect(int number) {
+        try {
+            if (number == 0)
+                Sounds.play("src//main//resources//Sound//CARD_MOVE_1.wav", 1).start();
+            if (number == 1)
+                Sounds.play("src//main//resources//Sound//TURNEX.wav", 1).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void resetAll() {
+        setDeckName();
+        mainCards = player.getMainCards();
+        sideCards = player.getSideCards();
         selectedMain = -1;
         selectedSide = -1;
         setMain();
@@ -218,9 +239,8 @@ public class SetSideAndMain extends Application {
         if (dragAddress.getKind().equals("side")) {
             try {
                 removeAll();
-                Card card = sideCards.get(dragAddress.getNumber());
-                new DeckControllers().removeCard(card.getCardName(), deck.getName(), true);
-                new DeckControllers().addCard(card.getCardName(), deck.getName(), false);
+                new SetMainAndSideController().setSideToMain(dragAddress.getNumber(), player);
+                soundEffect(0);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
             }
@@ -229,6 +249,7 @@ public class SetSideAndMain extends Application {
     }
 
     public void dragOverHandler(DragEvent dragEvent) {
+        System.out.println(player.getMainCards().size());
         if (dragEvent.getDragboard().hasImage())
             dragEvent.acceptTransferModes(TransferMode.ANY);
     }
@@ -237,9 +258,8 @@ public class SetSideAndMain extends Application {
         if (dragAddress.getKind().equals("main")) {
             try {
                 removeAll();
-                Card card = mainCards.get(dragAddress.getNumber());
-                new DeckControllers().removeCard(card.getCardName(), deck.getName(), false);
-                new DeckControllers().addCard(card.getCardName(), deck.getName(), true);
+                new SetMainAndSideController().setMainToSide(dragAddress.getNumber(), player);
+                soundEffect(0);
             } catch (MyException e) {
                 msg.setText(e.getMessage());
             }

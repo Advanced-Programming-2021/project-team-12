@@ -51,20 +51,15 @@ public class User {
 
     public ArrayList<Card> getAllCards() {
         if (allCards == null) return null;
-        allCards.sort(Comparator.comparing(Card::getCardName));
         return allCards;
     }
 
     public ArrayList<Card> getDeckAndAllCards() {
-        ArrayList<Card> cards = new ArrayList<>();
         ArrayList<Deck> deckCards = Deck.getDecksOfUser(this);
-        for (int i = 0; i < allCards.size(); i++)
-            cards.add(allCards.get(i));
-        for (int i = 0; i < deckCards.size(); i++) {
-            for (Card mainCard : deckCards.get(i).getMainCards())
-                cards.add(mainCard);
-            for (Card sideCard : deckCards.get(i).getSideCards())
-                cards.add(sideCard);
+        ArrayList<Card> cards = new ArrayList<>(allCards);
+        for (Deck deckCard : deckCards) {
+            cards.addAll(deckCard.getMainCards());
+            cards.addAll(deckCard.getSideCards());
         }
         return cards;
     }

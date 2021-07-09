@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import Utility.Sounds;
+import models.User;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
@@ -24,7 +25,7 @@ public class RegistrationMenu extends Application {
     public void start(Stage primaryStage) throws Exception {
         if (!startLoad) {
             LoadFile.loadData();
-            SaveFile.saveCards();
+            SaveFile.saveUser(User.getUserByName("qq"));
             startLoad = true;
             try {
                 clip = Sounds.play("src//main//resources//Sound//Menu.wav", 0);

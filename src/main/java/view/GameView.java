@@ -833,7 +833,7 @@ public class GameView extends Application {
 
     private void filedAndGraveyardSet(HashMap<Integer, Card> zone, ImageView imageView) {
         if (zone.containsKey(1)) {
-            imageView.setImage(createImage(zone.get(1).getCardName()));
+            imageView.setImage(createImage(zone.get(zone.size()).getCardName()));
             imageView.setDisable(false);
             imageView.setVisible(true);
         } else {
@@ -914,12 +914,13 @@ public class GameView extends Application {
             if (Game.getCurrentPhase().equals("Battle Phase")) {
                 if (selectedCardAddress.getKind().equals("monster") && selectedCardAddress.checkIsMine()) {
                     try {
-                        BattlePhaseController.getInstance().directAttack(selectedCardAddress);
                         soundEffect(3);
+                        BattlePhaseController.getInstance().directAttack(selectedCardAddress);
                         reset();
                     } catch (MyException myException) {
                         newMessageToLabel(Game.getCurrentPhase());
                         addMessageToLabel(myException.getMessage());
+                        soundEffect(1);
                         reset();
                     }
                     reset();
@@ -1597,6 +1598,7 @@ public class GameView extends Application {
                     } catch (MyException myException) {
                         newMessageToLabel(Game.getCurrentPhase());
                         addMessageToLabel(myException.getMessage());
+                        soundEffect(1);
                     }
                 }
             }
