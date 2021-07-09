@@ -259,6 +259,6 @@ public class Game {
         } else {
             playerTurn = PlayerTurn.SECONDPLAYER;
         }
-        gameView.start(OnlineDuel.stage);
+        gameView.start(MainMenu.stage);
     }
 }

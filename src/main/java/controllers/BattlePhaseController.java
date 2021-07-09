@@ -21,7 +21,7 @@ public class BattlePhaseController {
         return instance;
     }
 
-    public boolean battlePhaseRun(String input) throws MyException {
+    public boolean battlePhaseRun(String input) throws Exception {
         if (input.matches("^[ ]*next phase[ ]*$"))
             return true;
         else if (input.matches("^[ ]*select .*$"))
@@ -55,7 +55,7 @@ public class BattlePhaseController {
         return false;
     }
 
-    public void whatIsSelected(String input) throws MyException {
+    public void whatIsSelected(String input) throws Exception {
         if (Address.isAddressValid(input) && Board.getCardByAddress(new Address(input)) == null)
             throw new MyException("address is empty");
         PhaseControl.getInstance().checkIfGameEnded();
@@ -79,7 +79,7 @@ public class BattlePhaseController {
             throw new MyException("invalid command");
     }
 
-    private void selectMonster(Matcher matcher) throws MyException {
+    private void selectMonster(Matcher matcher) throws Exception {
         if (matcher.find()) {
             if (!Game.isAITurn())
                 Board.showBoard();
@@ -155,7 +155,7 @@ public class BattlePhaseController {
         else return "attack " + place;
     }
 
-    private void selectOpponentMonster(Matcher matcher) throws MyException {
+    private void selectOpponentMonster(Matcher matcher) throws Exception {
         if (matcher.find()) {
             Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
@@ -198,7 +198,7 @@ public class BattlePhaseController {
         }
     }
 
-    private void selectSpell(Matcher matcher) throws MyException {
+    private void selectSpell(Matcher matcher) throws Exception {
         if (matcher.find()) {
             Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
@@ -241,7 +241,7 @@ public class BattlePhaseController {
         }
     }
 
-    private void selectOpponentSpell(Matcher matcher) throws MyException {
+    private void selectOpponentSpell(Matcher matcher) throws Exception {
         if (matcher.find()) {
             if (Address.isAddressValid(matcher.group(1))) {
                 String selectedCard = matcher.group(1);
@@ -283,7 +283,7 @@ public class BattlePhaseController {
         }
     }
 
-    private void selectField() throws MyException {
+    private void selectField() throws Exception {
         String input;
         while (true) {
             PhaseControl.getInstance().checkIfGameEnded();
@@ -320,7 +320,7 @@ public class BattlePhaseController {
         }
     }
 
-    private void selectOpponentField() throws MyException {
+    private void selectOpponentField() throws Exception {
         String input;
         while (true) {
             PhaseControl.getInstance().checkIfGameEnded();
@@ -357,7 +357,7 @@ public class BattlePhaseController {
         }
     }
 
-    private void selectHand(Matcher matcher) throws MyException {
+    private void selectHand(Matcher matcher) throws Exception {
         if (matcher.find()) {
             Board.showBoard();
             if (Address.isAddressValid(matcher.group(1))) {
@@ -400,7 +400,7 @@ public class BattlePhaseController {
         }
     }
 
-    public void attack(Address address, Address myAddress) throws MyException {
+    public void attack(Address address, Address myAddress) throws Exception {
         if (Game.getCurrentPhase().equals("Battle Phase")) {
             Player currentPlayer = Game.whoseTurnPlayer();
             Attack.setAddress(myAddress, true);
@@ -418,7 +418,7 @@ public class BattlePhaseController {
                         } else if (Game.whoseRivalPlayer().doIHaveSpellCard("Mirror Force")
                                 && !Game.whoseTurnPlayer().doIHaveMirageDragonMonster()) {
                             Game.getGameView().getPermissionForTrap("Mirror Force", false, null, null, 1, null);
-                        } else if ((Board.whatKindaMonsterIsHere(address).getNormalAttack() >= 1500)
+                        } else if ((Board.whatKindaMonsterIsHere(myAddress).getNormalAttack() >= 1500)
                                 && (SetSpell.doAnyOneHaveMessengerOfPeace())) {
                             throw new MyException("You can't attack by monster with attack equal or more than 1500 " +
                                     "because of Messenger of peace.");
@@ -429,8 +429,10 @@ public class BattlePhaseController {
                             Game.getGameView().summonCyberse();
                         } else {
                             if (Game.whoseRivalPlayer().positionOfCardInBoardByAddress(address).equals(PositionOfCardInBoard.OO)) {
-                                int damage = myMonsterCard.getAttack(myAddress, Game.whoseTurnPlayer()) - rivalMonsterCard.getAttack(address, Game.whoseRivalPlayer());
-                                attackOO(myAddress, address, currentPlayer, damage);
+                                if (!(rivalMonsterCard.getNamesForEffect().contains("Command Knight") && (Board.howManyMonsterIsOnTheBoard() > 1))){
+                                    int damage = myMonsterCard.getAttack(myAddress, Game.whoseTurnPlayer()) - rivalMonsterCard.getAttack(address, Game.whoseRivalPlayer());
+                                    attackOO(myAddress, address, currentPlayer, damage);
+                                } else throw new MyException("You can't attack command knight because there is another monster in rival's monster zone");
                             } else if (Game.whoseRivalPlayer().positionOfCardInBoardByAddress(address).equals(PositionOfCardInBoard.DO)) {
                                 if (rivalMonsterCard.getDefence(true, address) != -1) {
                                     int damage = myMonsterCard.getAttack(myAddress, Game.whoseTurnPlayer()) - rivalMonsterCard.getDefence(true, address);
@@ -467,7 +469,7 @@ public class BattlePhaseController {
         }
     }
 
-    public void doNegateAttack() {
+    public void doNegateAttack() throws Exception {
         if(Game.getGameView().yesOrNo){
             Game.whoseRivalPlayer().removeOneOfTrapOrSpell("Negate Attack");
             Game.getGameView().reset();
@@ -476,6 +478,7 @@ public class BattlePhaseController {
     }
 
     private void attackOO(Address myAddress, Address address, Player currentPlayer, int damage) throws MyException {
+        System.out.println("damage " + damage);
         if (Game.getCurrentPhase().equals("Battle Phase")) {
             if (damage == 0) {
                 removeForAttack(address, myAddress);
